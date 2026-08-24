@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Índice de Unidades Didácticas</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+                
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary { 
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+        
+        
+        
+        /* ============================================
+           ESTILOS GENERALES (tomados del modelo)
+           ============================================ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        /* ---------- CABECERA ---------- */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+            background: #f7fafc;
+            border-color: #a0aec0;
+        }
+        .section h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #2d3748;
+        }
+        .section h2 i {
+            color: #4a5568;
+        }
+
+        /* ---------- LISTA DE UNIDADES ---------- */
+        .unidad-bloque {
+            margin-bottom: 30px;
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 20px;
+        }
+        .unidad-bloque:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .unidad-titulo {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #2b6cb0;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .unidad-titulo i {
+            color: #4299e1;
+        }
+        .unidad-titulo .nombre-unidad {
+            font-weight: 400;
+            color: #4a5568;
+            font-size: 0.75em;
+            background: #edf2f7;
+            padding: 2px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+        .lista-conceptos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px 20px;
+            padding-left: 5px;
+        }
+        .concepto-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .concepto-item:hover {
+            background: #edf2f7;
+        }
+        .concepto-item i {
+            color: #718096;
+            font-size: 0.9em;
+            width: 18px;
+            text-align: center;
+        }
+        .concepto-item a {
+            text-decoration: none;
+            color: #2d3748;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: color 0.2s;
+        }
+        .concepto-item a:hover {
+            color: #2b6cb0;
+            text-decoration: underline;
+        }
+        .concepto-item .codigo-corto {
+            font-weight: 400;
+            color: #718096;
+            font-size: 0.8em;
+            background: #e2e8f0;
+            padding: 0 8px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        /* ---------- MENSAJE SIN UNIDADES ---------- */
+        .sin-unidades {
+            text-align: center;
+            padding: 40px 20px;
+            color: #718096;
+        }
+        .sin-unidades i {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #a0aec0;
+        }
+        .sin-unidades p {
+            font-size: 1.2em;
+        }
+
+        /* ---------- CIERRE ESTÉTICO ---------- */
+        .footer-cierre {
+            text-align: center;
+            padding: 30px 20px 20px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .footer-cierre::before {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin: 0 auto 20px auto;
+            border-radius: 4px;
+        }
+        .footer-cierre .icono-cierre {
+            font-size: 2.2em;
+            color: #a0aec0;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .footer-cierre .icono-cierre:hover {
+            color: #667eea;
+            transform: scale(1.15) rotate(5deg);
+        }
+        .footer-cierre .linea-decorativa {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .footer-cierre .linea-decorativa span {
+            display: inline-block;
+            width: 30px;
+            height: 2px;
+            background: #e2e8f0;
+            border-radius: 2px;
+        }
+        .footer-cierre .linea-decorativa .punto {
+            width: 8px;
+            height: 8px;
+            background: #cbd5e0;
+            border-radius: 50%;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: center;
+            }
+            .lista-conceptos {
+                grid-template-columns: 1fr;
+            }
+            .section {
+                padding: 18px 16px;
+                margin: 10px;
+            }
+            .unidad-titulo .nombre-unidad {
+                font-size: 0.7em;
+                padding: 2px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ============================================
+         CABECERA (igual que en el modelo)
+         ============================================ -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="https://drive.google.com/thumbnail?id=17DqK7br81vGC7SE-PSokRagy1Wx_wSQW&sz=w40" alt="Logo del centro">
+                <span class="codigo">#Índice</span>
+                <span class="texto">Unidades Didácticas</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="https://drive.google.com/thumbnail?id=10mEGElcFrzZVfmP6XKNBDbxarmRwhnkc&sz=w1000" alt="Logo del centro">
+        </div>
+    </div>
+
+    <!-- ============================================
+         SECCIÓN PRINCIPAL
+         ============================================ -->
+    <div class="section">
+        <h2><i class="fas fa-book-open"></i> Unidades disponibles</h2>
+
+        <!-- Aquí se inyectará la lista generada por JavaScript -->
+        <div id="listaUnidades"></div>
+
+        <!-- ============================================
+             CIERRE ESTÉTICO (sin texto)
+             ============================================ -->
+        <div class="footer-cierre">
+            <div class="icono-cierre">
+                <i class="fas fa-chevron-circle-down"></i>
+            </div>
+            <div class="linea-decorativa">
+                <span></span>
+                <span class="punto"></span>
+                <span></span>
+                <span class="punto"></span>
+                <span></span>
+            </div>
+        </div>
+
+    </div>
+
+</div> <!-- fin container -->
+
+<!-- ============================================
+     SCRIPT PRINCIPAL (con listas VISIBLES)
+     ============================================ -->
+<script>
+    // ============================================================
+    // 1. CONFIGURACIÓN
+    //    -------------------------------------------------------
+    //    - UNIDADES_VISIBLES: números de unidad a mostrar.
+    //      Si está vacío [], se muestran todas (1-10).
+    //    - CONCEPTOS_VISIBLES: nombres completos o claves cortas
+    //      de los conceptos que se desean mostrar.
+    //      Si está vacío [], se muestran todos.
+    //    - NOMBRES_UNIDADES: nombres descriptivos de cada unidad.
+    // ============================================================
+
+    // 👇 UNIDADES QUE QUIERES MOSTRAR (vacío = todas)
+    const UNIDADES_VISIBLES = [
+        // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10  // descomenta las que quieras
+        
+        //Puedo dejar todas las unidades visibles y de esta forma sólo con modificar los conceptos es suficiente.
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11 //Esta unidad es para poner mis archivos
+    ];
+
+    // 👇 CONCEPTOS QUE QUIERES MOSTRAR (vacío = todos)
+    const CONCEPTOS_VISIBLES = [
+        // Ejemplos:
+        // "U01c05 - Regla de propagación de cifras significativas",
+        // "U03c12"
+        // Deja el array vacío para mostrar todos
+
+        // "U01c01 - Deducción de la fórmula del error relativo",
+        //... (A modo de ejemplo)
+        "U01c01 - Deducción de la fórmula del error relativo",
+        "U01c02 - Consistencia dimensional en factores de conversión",
+        "U01c03 - Deducción de la ley de Hooke",
+        "U01c04 - Ley de Boyle-Mariotte",
+        "U01c05 - Regla de propagación de cifras significativas",
+        "U01c06 - Relación entre precisión, exactitud y sensibilidad",
+        "U01c07 - Magnitudes escalares y vectoriales",
+        "U01c08 - Propagación de errores en operaciones",
+        "U02c01 - Relación entre número másico, número atómico y neutrones",
+        "U02c02 - Cálculo de la masa atómica ponderada a partir de isótopos",
+        "U02c03 - Relación ondulatoria de la radiación electromagnética",
+        "U02c04 - Energía de un fotón",
+        "U02c05 - Fórmula de Rydberg para el espectro del hidrógeno",
+        "U02c06 - Energía de los niveles cuánticos del hidrógeno",
+        "U02c07 - Capacidad máxima de electrones por nivel energético",
+        "U02c08 - De la configuración electrónica al grupo y período de la tabla periódica",
+        "U02c09 - Determinación de la electrovalencia a partir de la configuración electrónica",
+        "U02c10 - Determinación de la covalencia y la regla del octeto",
+        "U03c01 - Ley de las proporciones definidas",
+        "U03c02 - Ley de las proporciones múltiples",
+        "U03c03 - Ley de conservación de la masa",
+        "U03c04 - Hipótesis de Avogadro y ley de los volúmenes de combinación",
+        "U03c05 - Deducción de la ecuación de Clapeyron",
+        "U03c06 - Relación densidad-masa molecular",
+        "U03c07 - Puente conceptual masa-moles-entidades",
+        "U03c08 - Composición centesimal",
+        "U03c09 - Fórmula empírica y molecular",
+        "U03c10 - Fracción molar y presión parcial",
+        "U03c11 - Molaridad y normalidad",
+        "U03c12 - Molalidad y molaridad",
+        "U03c13 - Disminución de la presión de vapor ley de Raoult",
+        "U03c14 - Descenso crioscópico",
+        "U03c15 - Presión osmótica",
+        "U04c01 - Conservación de la masa y ajuste de ecuaciones químicas",
+        "U04c02 - El factor de conversión estequiométrico",
+        "U04c03 - Ecuación de los gases ideales",
+        "U04c04 - Estequiometría en volumen de gases",
+        "U04c05 - Identificación del reactivo limitante",
+        "U04c06 - Rendimiento de una reacción química",
+        "U04c07 - Ley de Hess la entalpía como función de estado",
+        "U04c08 - Cálculo de la entalpía de reacción",
+        "U04c09 - Relación entre riqueza, densidad y concentración molar",
+        "U04c10 - Neutralización ácido-base y concepto de normalidad",
+        "U05c01 - Deducción de la fórmula general de los alcanos acíclicos",
+        "U05c02 - Deducción de la fórmula general de los cicloalcanos y alquenos acíclicos",
+        "U05c03 - Relación entre el tipo de hibridación del carbono y la geometría molecular",
+        "U05c04 - Cálculo del grado de insaturación a partir de la fórmula molecular",
+        "U05c05 - Clasificación de la isomería estructural",
+        "U05c06 - Condiciones necesarias para la isomería geométrica en compuestos orgánicos",
+        "U05c07 - Condición del carbono asimétrico como requisito para la isomería óptica",
+        "U05c08 - Relación entre fórmula molecular, fórmula empírica y fórmula semidesarrollada",
+        "U05c09 - Principio de conservación de la masa en la combustión completa de hidrocarburos",
+        "U05c10 - Derivación de la relación entre densidad de un gas y su masa molar a partir de la ecuación de Clapeyron",
+        "U05c11 - Balanceo general de la ecuación de combustión completa de hidrocarburos",
+        "U05c12 - Estructura de resonancia del benceno fórmula de Kekulé y estabilidad por deslocalización electrónica",
+        "U05c13 - Estructura cristalina del diamante y del grafito relación entre tipo de enlace y propiedades físicas",
+        "U05c14 - Estructura y propiedades del grafeno y del fullereno",
+        "U05c15 - Definición de serie homóloga y deducción de su fórmula general",
+        "U06c01 - Primera ecuación del MRUA",
+        "U06c02 - Segunda ecuación del MRUA",
+        "U06c03 - Tercera ecuación del MRUA",
+        "U06c04 - Ecuaciones del tiro vertical",
+        "U06c05 - Aceleración centrípeta en movimiento circular uniforme",
+        "U06c06 - Relación entre velocidad lineal y angular",
+        "U06c07 - Ecuación de la trayectoria parabólica del proyectil",
+        "U06c08 - Alcance máximo y altura máxima del proyectil",
+        "U07c01 - Primera ley de Newton",
+        "U07c02 - Segunda ley de Newton",
+        "U07c03 - Tercera ley de Newton",
+        "U07c04 - Fuerza de rozamiento en plano horizontal",
+        "U07c05 - Fuerza de rozamiento en plano inclinado",
+        "U07c06 - Ley de Hooke y constante elástica",
+        "U07c07 - Equilibrio estático de un punto material",
+        "U07c08 - Momento de una fuerza y equilibrio de rotación",
+        "U07c09 - Fuerza centrípeta en movimiento circular uniforme",
+        "U07c10 - Conservación del momento lineal",
+        "U07c11 - Teorema del impulso y la cantidad de movimiento",
+        "U07c12 - Ley de gravitación universal de Newton",
+        "U07c13 - Relación entre gravedad terrestre y masa de la Tierra",
+        "U07c14 - Velocidad orbital y período de un satélite",
+        "U07c15 - Peralte de una curva sin rozamiento",
+        "U08c01 - Fórmula del trabajo mecánico",
+        "U08c02 - Energía cinética",
+        "U08c03 - Energía potencial gravitatoria",
+        "U08c04 - Energía potencial elástica",
+        "U08c05 - Conservación de la energía mecánica",
+        "U08c06 - Teorema de las fuerzas vivas",
+        "U08c07 - Potencia media e instantánea",
+        "U08c08 - Equivalencia masa-energía",
+        "U08c09 - Trabajo de rozamiento y pérdida de energía",
+        "U08c10 - Conservación de la energía en un péndulo",
+        "U09c01 - Trabajo en procesos de expansión y compresión a presión constante",
+        "U09c02 - Primer principio de la termodinámica",
+        "U09c03 - Ecuación de estado de los gases ideales",
+        "U09c04 - Ley de Boyle-Mariotte",
+        "U09c05 - Ley de Charles y Gay-Lussac",
+        "U09c06 - Ley de Gay-Lussac",
+        "U09c07 - Trabajo en proceso isotérmico reversible",
+        "U09c08 - Relación de Mayer",
+        "U09c09 - Ecuaciones de procesos adiabáticos reversibles",
+        "U09c10 - Rendimiento máximo de una máquina térmica",
+        "U09c11 - Coeficiente de rendimiento de una máquina frigorífica",
+        "U09c12 - Equivalencia entre unidades de trabajo y calor",
+        "U10c01 - Ley de Coulomb",
+        "U10c02 - Definición de campo eléctrico",
+        "U10c03 - Principio de superposición",
+        "U10c04 - Relación entre campo eléctrico y potencial",
+        "U10c05 - Potencial eléctrico de una carga puntual",
+        "U10c06 - Resistencias en serie",
+        "U10c07 - Resistencias en paralelo",
+        "U10c08 - Ley de Joule",
+        "U10c09 - Eficiencia energética",
+        "U10c10 - Ley de Ohm generalizada",
+        "U11c01 - Gravitación-Nivel 1",
+        "U11c02 - Gravitación-Nivel 2",
+        "U11c03 - Gravitación-Nivel 3",
+        "U11c04 - Gravitación-Todo y problemas seguidos",
+        "U11c05 - Scrap",
+        "U11c06 - Stern 1",
+        "U11c07 - Stern 2",
+        "U11c08 - Stern 3"
+    ];
+
+    // 👇 NOMBRES DE CADA UNIDAD (para mostrar junto al código)
+    const NOMBRES_UNIDADES = {
+       1: "La física y la química como ciencias experimentales",
+       2: "Estructura atómica",
+       3: "Leyes y conceptos básicos en química",
+       4: "Estequiometría y química industrial",
+       5: "Química del carbono",
+       6: "Cinemática del punto material. Elementos y magnitudes del movimiento",
+       7: "Dinámica",
+       8: "Trabajo y energía mecánica",
+       9: "Termodinámica",
+       10: "Interacción electrostática",
+       11: "Auxiliares"
+    };
+
+    // ============================================================
+    // 2. LISTA MAESTRA DE CONCEPTOS (extraída del archivo original)
+    // ============================================================
+    const todosLosConceptos = [
+        "U01c01 - Deducción de la fórmula del error relativo",
+        "U01c02 - Consistencia dimensional en factores de conversión",
+        "U01c03 - Deducción de la ley de Hooke",
+        "U01c04 - Ley de Boyle-Mariotte",
+        "U01c05 - Regla de propagación de cifras significativas",
+        "U01c06 - Relación entre precisión, exactitud y sensibilidad",
+        "U01c07 - Magnitudes escalares y vectoriales",
+        "U01c08 - Propagación de errores en operaciones",
+        "U02c01 - Relación entre número másico, número atómico y neutrones",
+        "U02c02 - Cálculo de la masa atómica ponderada a partir de isótopos",
+        "U02c03 - Relación ondulatoria de la radiación electromagnética",
+        "U02c04 - Energía de un fotón",
+        "U02c05 - Fórmula de Rydberg para el espectro del hidrógeno",
+        "U02c06 - Energía de los niveles cuánticos del hidrógeno",
+        "U02c07 - Capacidad máxima de electrones por nivel energético",
+        "U02c08 - De la configuración electrónica al grupo y período de la tabla periódica",
+        "U02c09 - Determinación de la electrovalencia a partir de la configuración electrónica",
+        "U02c10 - Determinación de la covalencia y la regla del octeto",
+        "U03c01 - Ley de las proporciones definidas",
+        "U03c02 - Ley de las proporciones múltiples",
+        "U03c03 - Ley de conservación de la masa",
+        "U03c04 - Hipótesis de Avogadro y ley de los volúmenes de combinación",
+        "U03c05 - Deducción de la ecuación de Clapeyron",
+        "U03c06 - Relación densidad-masa molecular",
+        "U03c07 - Puente conceptual masa-moles-entidades",
+        "U03c08 - Composición centesimal",
+        "U03c09 - Fórmula empírica y molecular",
+        "U03c10 - Fracción molar y presión parcial",
+        "U03c11 - Molaridad y normalidad",
+        "U03c12 - Molalidad y molaridad",
+        "U03c13 - Disminución de la presión de vapor ley de Raoult",
+        "U03c14 - Descenso crioscópico",
+        "U03c15 - Presión osmótica",
+        "U04c01 - Conservación de la masa y ajuste de ecuaciones químicas",
+        "U04c02 - El factor de conversión estequiométrico",
+        "U04c03 - Ecuación de los gases ideales",
+        "U04c04 - Estequiometría en volumen de gases",
+        "U04c05 - Identificación del reactivo limitante",
+        "U04c06 - Rendimiento de una reacción química",
+        "U04c07 - Ley de Hess la entalpía como función de estado",
+        "U04c08 - Cálculo de la entalpía de reacción",
+        "U04c09 - Relación entre riqueza, densidad y concentración molar",
+        "U04c10 - Neutralización ácido-base y concepto de normalidad",
+        "U05c01 - Deducción de la fórmula general de los alcanos acíclicos",
+        "U05c02 - Deducción de la fórmula general de los cicloalcanos y alquenos acíclicos",
+        "U05c03 - Relación entre el tipo de hibridación del carbono y la geometría molecular",
+        "U05c04 - Cálculo del grado de insaturación a partir de la fórmula molecular",
+        "U05c05 - Clasificación de la isomería estructural",
+        "U05c06 - Condiciones necesarias para la isomería geométrica en compuestos orgánicos",
+        "U05c07 - Condición del carbono asimétrico como requisito para la isomería óptica",
+        "U05c08 - Relación entre fórmula molecular, fórmula empírica y fórmula semidesarrollada",
+        "U05c09 - Principio de conservación de la masa en la combustión completa de hidrocarburos",
+        "U05c10 - Derivación de la relación entre densidad de un gas y su masa molar a partir de la ecuación de Clapeyron",
+        "U05c11 - Balanceo general de la ecuación de combustión completa de hidrocarburos",
+        "U05c12 - Estructura de resonancia del benceno fórmula de Kekulé y estabilidad por deslocalización electrónica",
+        "U05c13 - Estructura cristalina del diamante y del grafito relación entre tipo de enlace y propiedades físicas",
+        "U05c14 - Estructura y propiedades del grafeno y del fullereno",
+        "U05c15 - Definición de serie homóloga y deducción de su fórmula general",
+        "U06c01 - Primera ecuación del MRUA",
+        "U06c02 - Segunda ecuación del MRUA",
+        "U06c03 - Tercera ecuación del MRUA",
+        "U06c04 - Ecuaciones del tiro vertical",
+        "U06c05 - Aceleración centrípeta en movimiento circular uniforme",
+        "U06c06 - Relación entre velocidad lineal y angular",
+        "U06c07 - Ecuación de la trayectoria parabólica del proyectil",
+        "U06c08 - Alcance máximo y altura máxima del proyectil",
+        "U07c01 - Primera ley de Newton",
+        "U07c02 - Segunda ley de Newton",
+        "U07c03 - Tercera ley de Newton",
+        "U07c04 - Fuerza de rozamiento en plano horizontal",
+        "U07c05 - Fuerza de rozamiento en plano inclinado",
+        "U07c06 - Ley de Hooke y constante elástica",
+        "U07c07 - Equilibrio estático de un punto material",
+        "U07c08 - Momento de una fuerza y equilibrio de rotación",
+        "U07c09 - Fuerza centrípeta en movimiento circular uniforme",
+        "U07c10 - Conservación del momento lineal",
+        "U07c11 - Teorema del impulso y la cantidad de movimiento",
+        "U07c12 - Ley de gravitación universal de Newton",
+        "U07c13 - Relación entre gravedad terrestre y masa de la Tierra",
+        "U07c14 - Velocidad orbital y período de un satélite",
+        "U07c15 - Peralte de una curva sin rozamiento",
+        "U08c01 - Fórmula del trabajo mecánico",
+        "U08c02 - Energía cinética",
+        "U08c03 - Energía potencial gravitatoria",
+        "U08c04 - Energía potencial elástica",
+        "U08c05 - Conservación de la energía mecánica",
+        "U08c06 - Teorema de las fuerzas vivas",
+        "U08c07 - Potencia media e instantánea",
+        "U08c08 - Equivalencia masa-energía",
+        "U08c09 - Trabajo de rozamiento y pérdida de energía",
+        "U08c10 - Conservación de la energía en un péndulo",
+        "U09c01 - Trabajo en procesos de expansión y compresión a presión constante",
+        "U09c02 - Primer principio de la termodinámica",
+        "U09c03 - Ecuación de estado de los gases ideales",
+        "U09c04 - Ley de Boyle-Mariotte",
+        "U09c05 - Ley de Charles y Gay-Lussac",
+        "U09c06 - Ley de Gay-Lussac",
+        "U09c07 - Trabajo en proceso isotérmico reversible",
+        "U09c08 - Relación de Mayer",
+        "U09c09 - Ecuaciones de procesos adiabáticos reversibles",
+        "U09c10 - Rendimiento máximo de una máquina térmica",
+        "U09c11 - Coeficiente de rendimiento de una máquina frigorífica",
+        "U09c12 - Equivalencia entre unidades de trabajo y calor",
+        "U10c01 - Ley de Coulomb",
+        "U10c02 - Definición de campo eléctrico",
+        "U10c03 - Principio de superposición",
+        "U10c04 - Relación entre campo eléctrico y potencial",
+        "U10c05 - Potencial eléctrico de una carga puntual",
+        "U10c06 - Resistencias en serie",
+        "U10c07 - Resistencias en paralelo",
+        "U10c08 - Ley de Joule",
+        "U10c09 - Eficiencia energética",
+        "U10c10 - Ley de Ohm generalizada",
+        "U11c01 - Gravitación-Nivel 1",
+        "U11c02 - Gravitación-Nivel 2",
+        "U11c03 - Gravitación-Nivel 3",
+        "U11c04 - Gravitación-Todo y problemas seguidos",
+        "U11c05 - Scrap",
+        "U11c06 - Stern 1",
+        "U11c07 - Stern 2",
+        "U11c08 - Stern 3"
+    ];
+
+    // ============================================================
+    // 3. LÓGICA DE PROCESAMIENTO Y RENDERIZADO
+    // ============================================================
+
+    // Convertir listas visibles a Set para búsqueda rápida
+    const unidadesSet = new Set(UNIDADES_VISIBLES);
+    const conceptosSet = new Set(CONCEPTOS_VISIBLES);
+
+    /**
+     * Extrae la unidad (ej. "U01") y el código corto (ej. "c01")
+     * de un nombre completo como "U01c01 - Deducción..."
+     */
+    function parsearConcepto(nombre) {
+        const match = nombre.match(/^(U\d{2})(c\d{2}) - (.+)$/);
+        if (!match) return null;
+        return {
+            unidad: match[1],          // "U01"
+            codigo: match[2],          // "c01"
+            descripcion: match[3],     // "Deducción..."
+            nombreCompleto: nombre,    // "U01c01 - Deducción..."
+            numeroUnidad: parseInt(match[1].substring(1), 10), // 1, 2, ...
+            clave: match[1] + match[2] // "U01c01"
+        };
+    }
+
+    /**
+     * Agrupa los conceptos por unidad y filtra según:
+     *  - UNIDADES_VISIBLES (si no está vacío)
+     *  - CONCEPTOS_VISIBLES (si no está vacío)
+     */
+    function obtenerUnidadesFiltradas() {
+        const agrupadas = {};
+
+        // Determinar qué unidades se van a mostrar
+        let unidadesAMostrar;
+        if (unidadesSet.size > 0) {
+            // Solo las indicadas en UNIDADES_VISIBLES
+            unidadesAMostrar = new Set(unidadesSet);
+        } else {
+            // Todas (1-10)
+            unidadesAMostrar = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        }
+
+        // Si CONCEPTOS_VISIBLES no está vacío, usamos el Set para filtrar
+        const usarFiltroConceptos = conceptosSet.size > 0;
+
+        todosLosConceptos.forEach(nombre => {
+            const parsed = parsearConcepto(nombre);
+            if (!parsed) return;
+
+            const { unidad, numeroUnidad, clave, codigo, descripcion, nombreCompleto } = parsed;
+
+            // 1. Filtrar por unidad
+            if (!unidadesAMostrar.has(numeroUnidad)) return;
+
+            // 2. Filtrar por concepto (si se ha definido una lista visible)
+            if (usarFiltroConceptos) {
+                // El concepto es visible si su nombre completo o su clave está en conceptosSet
+                if (!conceptosSet.has(nombreCompleto) && !conceptosSet.has(clave)) {
+                    return; // no está en la lista de visibles, lo omitimos
+                }
+            }
+
+            // Si pasa los filtros, lo agregamos al grupo
+            if (!agrupadas[unidad]) {
+                agrupadas[unidad] = {
+                    numero: numeroUnidad,
+                    conceptos: []
+                };
+            }
+            agrupadas[unidad].conceptos.push({
+                codigo,
+                descripcion,
+                nombreCompleto,
+                clave
+            });
+        });
+
+        // Ordenar las unidades por número
+        const unidadesOrdenadas = Object.keys(agrupadas).sort((a, b) => {
+            const numA = parseInt(a.substring(1), 10);
+            const numB = parseInt(b.substring(1), 10);
+            return numA - numB;
+        });
+
+        const resultado = [];
+        unidadesOrdenadas.forEach(unidad => {
+            const grupo = agrupadas[unidad];
+            // Ordenar conceptos por código (c01, c02, ...)
+            grupo.conceptos.sort((a, b) => a.codigo.localeCompare(b.codigo));
+            resultado.push({
+                unidad: unidad,
+                numero: grupo.numero,
+                conceptos: grupo.conceptos
+            });
+        });
+
+        return resultado;
+    }
+
+    /**
+     * Genera el HTML para las unidades activas y lo inserta en el contenedor
+     */
+    function renderizarUnidades() {
+        const contenedor = document.getElementById('listaUnidades');
+        const unidades = obtenerUnidadesFiltradas();
+
+        if (unidades.length === 0) {
+            contenedor.innerHTML = `
+                <div class="sin-unidades">
+                    <i class="fas fa-ban"></i>
+                    <p>No hay unidades disponibles en este momento.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        unidades.forEach(grupo => {
+            const numUnidad = grupo.numero.toString().padStart(2, '0');
+            const nombreUnidad = NOMBRES_UNIDADES[grupo.numero] || '';
+
+            html += `
+                <div class="unidad-bloque">
+                    <div class="unidad-titulo">
+                        <i class="fas fa-folder-open"></i>
+                        U${numUnidad}
+                        ${nombreUnidad ? `<span class="nombre-unidad">${nombreUnidad}</span>` : ''}
+                    </div>
+                    <div class="lista-conceptos">
+            `;
+            grupo.conceptos.forEach(concepto => {
+                const ruta = `Unidades/${encodeURIComponent(concepto.nombreCompleto)}.html`;
+                html += `
+                    <div class="concepto-item">
+                        <i class="fas fa-file-alt"></i>
+                        <a href="${ruta}" target="_blank">${concepto.descripcion}</a>
+                        <span class="codigo-corto">${concepto.codigo}</span>
+                    </div>
+                `;
+            });
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+
+        contenedor.innerHTML = html;
+    }
+
+    // ============================================================
+    // 4. EJECUCIÓN
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', renderizarUnidades);
+</script>
+
+</body>
+</html>

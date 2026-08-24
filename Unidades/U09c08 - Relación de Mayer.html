@@ -1,0 +1,640 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.08 - Demostración: Relación de Mayer</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.08.- </span>
+                    <span class="texto">Demostración: Relación de Mayer</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo de la definición de calor específico a presión constante \( c_p \), del calor específico a volumen constante \( c_V \), del Primer Principio de la Termodinámica \( \Delta U = Q + W \), y de la ecuación de estado de los gases ideales, demostrar que para un gas ideal se cumple la relación de Mayer:</p>
+            <div class="formula-box">
+                \[ c_p = c_V + \frac{R}{M} \]
+            </div>
+            <p>o en forma molar:</p>
+            <div class="formula-box">
+                \[ C_p = C_V + R \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c08 - Relación de Mayer.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar que el calor específico a presión constante es siempre mayor que el calor específico a volumen constante, y que la diferencia entre ambos es una constante universal dividida por la masa molar del gas. Esta relación es fundamental para comprender por qué se necesita más energía para calentar un gas a presión constante que a volumen constante: parte del calor suministrado se invierte en realizar trabajo de expansión.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definiciones de calores específicos:</strong> Para un proceso con una masa \( m \) de gas que experimenta una variación de temperatura \( \Delta T \):
+                <div class="formula-box">
+                    \[ Q_p = m c_p \Delta T \quad \text{(a presión constante)} \]
+                    \[ Q_V = m c_V \Delta T \quad \text{(a volumen constante)} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Primer Principio en proceso isocórico:</strong> A volumen constante no hay trabajo (\( W = 0 \)), por lo que:
+                <div class="formula-box">
+                    \[ \Delta U = Q_V = m c_V \Delta T \]
+                </div>
+                La energía interna de un gas ideal solo depende de la temperatura, por lo que \( \Delta U \) es la misma para cualquier proceso entre los mismos estados térmicos.
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Primer Principio en proceso isobárico:</strong> A presión constante, el gas se expande realizando trabajo \( W = -p\Delta V \). Aplicando el Primer Principio:
+                <div class="formula-box">
+                    \[ \Delta U = Q_p + W = Q_p - p\Delta V \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Igualación de variaciones de energía interna:</strong> Como la energía interna de un gas ideal depende solo de la temperatura, y en ambos procesos la variación de temperatura es la misma \( \Delta T \):
+                <div class="formula-box">
+                    \[ m c_V \Delta T = Q_p - p\Delta V \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Sustitución de \( Q_p \):</strong> Como \( Q_p = m c_p \Delta T \):
+                <div class="formula-box">
+                    \[ m c_V \Delta T = m c_p \Delta T - p\Delta V \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Uso de la ecuación de estado:</strong> De \( pV = nRT \) y \( n = \frac{m}{M} \), obtenemos \( p\Delta V = nR\Delta T = \frac{m}{M} R \Delta T \) para un proceso isobárico. Sustituyendo:
+                <div class="formula-box">
+                    \[ m c_V \Delta T = m c_p \Delta T - \frac{m}{M} R \Delta T \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Simplificación:</strong> Dividimos toda la ecuación por \( m \Delta T \) (suponiendo \( \Delta T \neq 0 \)):
+                <div class="formula-box">
+                    \[ c_V = c_p - \frac{R}{M} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">8</span>
+                <strong>Despeje final:</strong> Reordenando términos obtenemos la relación de Mayer:
+                <div class="formula-box">
+                    \[ c_p = c_V + \frac{R}{M} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">9</span>
+                <strong>Forma molar:</strong> Multiplicando por la masa molar \( M \):
+                <div class="formula-box">
+                    \[ C_p = C_V + R \]
+                </div>
+                donde \( C_p = M c_p \) y \( C_V = M c_V \) son los calores molares.
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ c_p = c_V + \frac{R}{M} \quad \text{(forma específica)} \]
+            </div>
+            <div class="formula-box">
+                \[ C_p = C_V + R \quad \text{(forma molar)} \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> La relación de Mayer muestra que \( c_p > c_V \) siempre, porque al calentar a presión constante parte de la energía se "pierde" en trabajo de expansión. Para gases monoatómicos, \( C_V = \frac{3}{2}R \) y \( C_p = \frac{5}{2}R \), por lo que \( \gamma = \frac{C_p}{C_V} = \frac{5}{3} \approx 1{,}67 \). Para gases diatómicos a temperatura ambiente, \( C_V = \frac{5}{2}R \) y \( C_p = \frac{7}{2}R \), dando \( \gamma = \frac{7}{5} = 1{,}4 \). Estos valores de \( \gamma \) se utilizan en la demostración de los procesos adiabáticos.
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO la Relación de Mayer</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Cálculo de \(c_p\) a partir de \(c_V\)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El gas nitrógeno (\(N_2\), \(M = 28 \, \text{g/mol}\)) tiene un calor específico a volumen constante \(c_V = 740 \, \text{J kg}^{-1}\text{K}^{-1}\). Calcula su calor específico a presión constante \(c_p\).</p>
+                        <p>Dato: \(R = 8.31 \, \text{J mol}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Convertir \(M\) a kg/mol: \(M = 28 \times 10^{-3} \, \text{kg/mol}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Aplicar \(c_p = c_V + \frac{R}{M} = 740 + \frac{8.31}{28 \times 10^{-3}}\).</p>
+                        <p>\(\frac{R}{M} = \frac{8.31}{0.028} \approx 296.8 \, \text{J kg}^{-1}\text{K}^{-1}\).</p>
+                        <p><span class="step-label">Paso 3:</span> \(c_p = 740 + 296.8 = 1036.8 \, \text{J kg}^{-1}\text{K}^{-1}\).</p>
+                        <p><span class="step-label">Resultado:</span> \(c_p \approx 1037 \, \text{J kg}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Cálculo de \(c_V\) a partir de \(c_p\)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El gas helio (\(M = 4 \, \text{g/mol}\)) tiene \(c_p = 5225 \, \text{J kg}^{-1}\text{K}^{-1}\). Determina su \(c_V\).</p>
+                        <p>Dato: \(R = 8.31 \, \text{J mol}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Convertir \(M\) a kg/mol: \(M = 4 \times 10^{-3} \, \text{kg/mol}\).</p>
+                        <p><span class="step-label">Paso 2:</span> \(\frac{R}{M} = \frac{8.31}{0.004} = 2077.5 \, \text{J kg}^{-1}\text{K}^{-1}\).</p>
+                        <p><span class="step-label">Paso 3:</span> De \(c_p = c_V + \frac{R}{M}\), despejamos \(c_V = c_p - \frac{R}{M}\).</p>
+                        <p>\(c_V = 5225 - 2077.5 = 3147.5 \, \text{J kg}^{-1}\text{K}^{-1}\).</p>
+                        <p><span class="step-label">Resultado:</span> \(c_V \approx 3148 \, \text{J kg}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Relación de Mayer en forma molar y cálculo de \(\gamma\)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Para un gas ideal diatómico, \(C_V = \frac{5}{2}R\).</p>
+                        <ul>
+                            <li>a) Calcula \(C_p\) usando la relación de Mayer.</li>
+                            <li>b) Determina el coeficiente adiabático \(\gamma = \frac{C_p}{C_V}\).</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(C_p = C_V + R = \frac{5}{2}R + R = \frac{7}{2}R\).</p>
+                        <p><span class="step-label">b)</span> \(\gamma = \frac{C_p}{C_V} = \frac{\frac{7}{2}R}{\frac{5}{2}R} = \frac{7}{5} = 1.4\).</p>
+                        <p><span class="step-label">Resultado:</span> \(C_p = \frac{7}{2}R\) y \(\gamma = 1.4\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Comparación de calor suministrado en procesos isobárico e isocórico</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Se tienen 2 moles de un gas ideal monoatómico (\(C_V = \frac{3}{2}R\)). Se calientan desde \(300 \, \text{K}\) hasta \(350 \, \text{K}\).</p>
+                        <ul>
+                            <li>a) Calcula el calor necesario si el proceso es a volumen constante.</li>
+                            <li>b) Calcula el calor necesario si el proceso es a presión constante.</li>
+                            <li>c) ¿Cuánto trabajo se realiza en el proceso isobárico?</li>
+                        </ul>
+                        <p>Dato: \(R = 8.31 \, \text{J mol}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(Q_V = n C_V \Delta T = 2 \times \frac{3}{2} \times 8.31 \times (350-300) = 2 \times 1.5 \times 8.31 \times 50 = 1246.5 \, \text{J}\).</p>
+                        <p><span class="step-label">b)</span> \(C_p = C_V + R = \frac{3}{2}R + R = \frac{5}{2}R\).</p>
+                        <p>\(Q_p = n C_p \Delta T = 2 \times \frac{5}{2} \times 8.31 \times 50 = 2 \times 2.5 \times 8.31 \times 50 = 2077.5 \, \text{J}\).</p>
+                        <p><span class="step-label">c)</span> \(W = -p\Delta V = -nR\Delta T = -2 \times 8.31 \times 50 = -831 \, \text{J}\) (trabajo realizado por el sistema).</p>
+                        <p><span class="step-label">Resultado:</span> \(Q_V = 1.25 \, \text{kJ}\), \(Q_p = 2.08 \, \text{kJ}\), \(W = -0.83 \, \text{kJ}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Contexto real: calentamiento de aire en un motor</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>En un cilindro de motor, 0.1 kg de aire (\(M = 29 \, \text{g/mol}\), \(c_V \approx 718 \, \text{J kg}^{-1}\text{K}^{-1}\)) se calienta desde \(27^\circ\text{C}\) hasta \(127^\circ\text{C}\).</p>
+                        <ul>
+                            <li>a) Calcula el calor necesario si el pistón está bloqueado (volumen constante).</li>
+                            <li>b) Calcula el calor necesario si el pistón se mueve manteniendo presión constante.</li>
+                            <li>c) ¿Cuánto trabajo realiza el aire en el caso b)?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(\Delta T = 100 \, \text{K}\). \(Q_V = m c_V \Delta T = 0.1 \times 718 \times 100 = 7180 \, \text{J}\).</p>
+                        <p><span class="step-label">b)</span> Primero calculamos \(c_p\): \(c_p = c_V + \frac{R}{M} = 718 + \frac{8.31}{0.029} \approx 718 + 286.6 = 1004.6 \, \text{J kg}^{-1}\text{K}^{-1}\).</p>
+                        <p>\(Q_p = m c_p \Delta T = 0.1 \times 1004.6 \times 100 = 10046 \, \text{J}\).</p>
+                        <p><span class="step-label">c)</span> \(W = -p\Delta V = -\frac{m}{M}R\Delta T = -\frac{0.1}{0.029} \times 8.31 \times 100 \approx -2866 \, \text{J}\).</p>
+                        <p><span class="step-label">Resultado:</span> \(Q_V \approx 7.18 \, \text{kJ}\), \(Q_p \approx 10.05 \, \text{kJ}\), \(W \approx -2.87 \, \text{kJ}\).</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La relación de Mayer (\(c_p = c_V + R/M\)) muestra que el calor específico a presión constante es siempre mayor porque parte del calor se convierte en trabajo de expansión. Esta diferencia es una constante universal (R) dividida por la masa molar, lo que la hace independiente de la temperatura para gases ideales. ¡Recuerda que la energía interna de un gas ideal solo depende de la temperatura!
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

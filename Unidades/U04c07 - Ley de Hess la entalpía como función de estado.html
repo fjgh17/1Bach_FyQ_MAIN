@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T04.07 - Ley de Hess: La entalpía como función de estado</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            background: rgba(255,255,255,0.2);
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .formula-box-highlight {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        .note-prof {
+            background: #f0fff4;
+            border: 1px dashed #48bb78;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #22543d;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 25px;
+            margin-bottom: 12px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #feebc8 0%, #feebc8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+        }
+        .cycle-diagram {
+            background: #fffaf0;
+            border: 2px dashed #ed8936;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        /* ========== ESTILOS PARA EL DESPLEGABLE ========== */
+        details {
+            margin: 2.5rem 1.5rem 1.5rem 1.5rem;
+            background: #f2f6fd;
+            border-radius: 20px;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            border: 1px solid #cdddec;
+            transition: background 0.2s;
+        }
+        details[open] {
+            background: #e8f0fe;
+            padding-bottom: 1.5rem;
+        }
+        summary {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            cursor: pointer;
+            padding: 0.8rem 0.5rem 0.8rem 0.2rem;
+            list-style: none;
+            outline: none;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i.fa-chevron-circle-down {
+            font-size: 1.5rem;
+            color: #2a7de1;
+            transition: transform 0.25s ease;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        summary .badge-pulsa {
+            background: #2a7de1;
+            color: #fff;
+            padding: 0.15rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .ejercicios-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            margin-top: 1.2rem;
+            padding-right: 0.5rem;
+        }
+        .ejercicio-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #d5e0ec;
+        }
+        .ejercicio-card .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e6edf5;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .ejercicio-card .encabezado .num {
+            font-weight: 700;
+            color: #1e4a6f;
+            background: #e0ebf9;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+        .ejercicio-card .encabezado .titulo {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #0b3b5c;
+        }
+        .ejercicio-card .enunciado {
+            font-size: 0.98rem;
+            margin-bottom: 0.8rem;
+        }
+        .ejercicio-card .enunciado ul {
+            padding-left: 1.2rem;
+            margin: 0.3rem 0;
+        }
+        .ejercicio-card .solucion {
+            background: #f4f8ff;
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            border-left: 4px solid #2a7de1;
+            font-size: 0.95rem;
+            margin-top: 0.8rem;
+        }
+        .ejercicio-card .solucion .paso {
+            margin: 0.5rem 0;
+        }
+        .ejercicio-card .solucion .math {
+            display: inline-block;
+            background: #eef2f7;
+            padding: 0.1rem 0.6rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        .pie-clave {
+            margin-top: 1.5rem;
+            background: #dfe9f5;
+            border-radius: 14px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            color: #0b3b5c;
+            border-left: 6px solid #1e4a6f;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+            color: #1e4a6f;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            .section {
+                padding: 20px 18px;
+                margin: 12px;
+            }
+            details {
+                margin: 1.5rem 0.5rem;
+                padding: 0.3rem;
+            }
+            summary {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T04.07.- </span>
+                <span class="texto">Ley de Hess: La entalpía como función de estado</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la <strong>definición de función de estado</strong> como una propiedad del sistema cuya variación depende únicamente del estado inicial y del estado final, y no del camino seguido, y de la <strong>primera ley de la termodinámica</strong> (\(\Delta U = q + w\)), demostrar que:</p>
+        
+        <div class="formula-box-highlight">
+            La <strong>variación de entalpía</strong> \(\Delta H\) de una reacción química es una <strong>función de estado</strong>, y por tanto, si una reacción puede realizarse por varios caminos diferentes, la suma algebraica de las entalpías de cada etapa es <strong>idéntica</strong> a la entalpía de la reacción directa. Formalmente, para un ciclo termodinámico:
+            \[\Delta H_{\text{total}} = \sum_{i} \Delta H_i = 0\]
+            y para un proceso de estado inicial \(A\) a estado final \(B\):
+            \[\Delta H_{A \rightarrow B} = \Delta H_{A \rightarrow C} + \Delta H_{C \rightarrow B}\]
+        </div>
+        
+        <p style="margin-top: 15px;">Es decir, demostrar que la <span class="highlight">entalpía es independiente del camino</span> y que las ecuaciones termoquímicas pueden combinarse algebraicamente como si fueran ecuaciones matemáticas.</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U04c07 - Ley de Hess la entalpía como función de estado.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Se pretende obtener una <strong>justificación rigurosa de la Ley de Hess</strong> a partir del carácter de función de estado de la entalpía, demostrando que:</p>
+        <ul>
+            <li>La entalpía \(H = U + pV\) es una función de estado porque \(U\), \(p\) y \(V\) son funciones de estado.</li>
+            <li>En procesos a <strong>presión constante</strong>, el calor intercambiado \(q_p\) coincide con \(\Delta H\).</li>
+            <li>Las ecuaciones termoquímicas pueden <strong>sumarse, restarse, multiplicar por coeficientes</strong> e <strong>invertirse</strong> (cambiando el signo de \(\Delta H\)), manteniendo la validez física.</li>
+        </ul>
+        <p>Esta demostración es fundamental porque justifica el método de cálculo de entalpías de reacción a partir de entalpías de formación o de combustión.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔬 Procedimiento</h2>
+        
+        <div class="step">
+            <span class="step-num">1</span> <strong>Definición de entalpía y su carácter de función de estado</strong>
+            <p>La <strong>entalpía</strong> se define como:</p>
+            <div class="formula-box">
+                \[H = U + pV\]
+            </div>
+            <p>donde \(U\) es la energía interna, \(p\) la presión y \(V\) el volumen. Como \(U\) es función de estado (primera ley), y \(p\) y \(V\) son variables de estado, la combinación \(H\) también es función de estado.</p>
+            <p>Para un proceso cualquiera:</p>
+            <div class="formula-box">
+                \[\Delta H = \Delta U + \Delta(pV)\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">2</span> <strong>Procesos a presión constante: equivalencia entre calor y entalpía</strong>
+            <p>Para un proceso a presión constante (\(p = \text{cte}\)) en el que solo se realiza trabajo de expansión (\(w = -p\Delta V\)):</p>
+            <div class="formula-box">
+                \[\Delta H = \Delta U + p\Delta V\]
+            </div>
+            <p>Aplicando la primera ley (\(\Delta U = q_p + w = q_p - p\Delta V\)):</p>
+            <div class="formula-box">
+                \[\Delta H = (q_p - p\Delta V) + p\Delta V = q_p\]
+            </div>
+            <div class="formula-box-highlight">
+                \[\Delta H = q_p \quad (\text{a presión constante})\]
+            </div>
+            <p>Por tanto, el calor intercambiado a presión constante mide directamente la variación de entalpía.</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">3</span> <strong>Ciclo termodinámico y conservación de la entalpía</strong>
+            <p>Consideremos un sistema que evoluciona desde un estado inicial \(A\) hasta un estado final \(B\) por dos caminos diferentes:</p>
+            <div class="cycle-diagram">
+                <strong>Camino 1 (directo):</strong> \(A \xrightarrow{\Delta H_1} B\)<br>
+                <strong>Camino 2 (indirecto):</strong> \(A \xrightarrow{\Delta H_2} C \xrightarrow{\Delta H_3} B\)
+            </div>
+            <p>Como \(H\) es función de estado, la variación solo depende de \(A\) y \(B\):</p>
+            <div class="formula-box">
+                \[\Delta H_{A \rightarrow B} = H_B - H_A\]
+            </div>
+            <p>Por el camino 1: \(\Delta H_{\text{camino 1}} = \Delta H_1\)</p>
+            <p>Por el camino 2: \(\Delta H_{\text{camino 2}} = \Delta H_2 + \Delta H_3\)</p>
+            <p>Como ambos parten de \(A\) y llegan a \(B\):</p>
+            <div class="formula-box-highlight">
+                \[\Delta H_1 = \Delta H_2 + \Delta H_3\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">4</span> <strong>Demostración de la Ley de Hess para ciclos cerrados</strong>
+            <p>Si el sistema regresa al estado inicial formando un ciclo \(A \rightarrow B \rightarrow A\):</p>
+            <div class="formula-box">
+                \[\Delta H_{\text{ciclo}} = \Delta H_{A \rightarrow B} + \Delta H_{B \rightarrow A} = 0\]
+            </div>
+            <p>Como \(\Delta H_{B \rightarrow A} = -\Delta H_{A \rightarrow B}\) (inversión del proceso cambia el signo):</p>
+            <div class="formula-box-highlight">
+                \[\sum_{i} \Delta H_i = 0 \quad \text{(para un ciclo cerrado)}\]
+            </div>
+            <p>Esta es la <strong>formulación matemática de la Ley de Hess</strong>: la suma algebraica de las variaciones de entalpía en un ciclo termodinámico es nula.</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">5</span> <strong>Reglas de manipulación algebraica de ecuaciones termoquímicas</strong>
+            <p>De la propiedad de función de estado se derivan las siguientes reglas operativas:</p>
+            <ul>
+                <li><strong>Suma:</strong> Si \(\Delta H_1\) corresponde a \(A \rightarrow B\) y \(\Delta H_2\) a \(B \rightarrow C\), entonces \(A \rightarrow C\) tiene \(\Delta H = \Delta H_1 + \Delta H_2\).</li>
+                <li><strong>Inversión:</strong> Si \(A \rightarrow B\) tiene \(\Delta H\), entonces \(B \rightarrow A\) tiene \(\Delta H' = -\Delta H\).</li>
+                <li><strong>Multiplicación por coeficiente:</strong> Si una ecuación se multiplica por \(n\), su \(\Delta H\) también se multiplica por \(n\): \(\Delta H' = n \cdot \Delta H\).</li>
+            </ul>
+            <div class="formula-box">
+                \[\text{Si } A \rightarrow B \quad \Delta H\]
+                \[\text{Entonces } nA \rightarrow nB \quad n \cdot \Delta H\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">6</span> <strong>Aplicación al cálculo de entalpías de reacción</strong>
+            <p>Para calcular la entalpía de una reacción \(R \rightarrow P\), se puede construir un ciclo que pase por los <strong>estados de referencia</strong> (elementos en su forma más estable):</p>
+            <div class="formula-box">
+                \[R \xrightarrow{\Delta H_r} P\]
+                \[\downarrow{\scriptstyle -\Delta H_f(R)} \quad \uparrow{\scriptstyle +\Delta H_f(P)}\]
+                \[\text{Elementos}\]
+            </div>
+            <p>Aplicando la Ley de Hess al ciclo:</p>
+            <div class="formula-box-highlight">
+                \[\Delta H_r = \sum \Delta H_f(\text{productos}) - \sum \Delta H_f(\text{reactivos})\]
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que la <strong>entalpía es una función de estado</strong> y que, como consecuencia, las variaciones de entalpía en procesos químicos cumplen la <strong>Ley de Hess</strong>.</p>
+        
+        <div class="formula-box-highlight">
+            <strong>Resultados fundamentales:</strong><br><br>
+            
+            <strong>1. Carácter de función de estado:</strong>
+            \[\Delta H = H_{\text{final}} - H_{\text{inicial}}\]
+            \[\text{(independiente del camino)}\]
+            
+            <strong>2. Ley de Hess (ciclo cerrado):</strong>
+            \[\sum_{i} \Delta H_i = 0\]
+            
+            <strong>3. Ley de Hess (proceso indirecto):</strong>
+            \[\Delta H_{A \rightarrow B} = \sum_{j} \Delta H_{A \rightarrow C_j \rightarrow B}\]
+            
+            <strong>4. Cálculo de entalpía de reacción:</strong>
+            \[\Delta H_r^\circ = \sum \nu_i \, \Delta H_f^\circ(\text{productos}) - \sum \nu_j \, \Delta H_f^\circ(\text{reactivos})\]
+        </div>
+        
+        <p style="margin-top: 15px;">Estos resultados permiten:</p>
+        <ul>
+            <li>Calcular entalpías de reacción <strong>imposibles de medir directamente</strong> en el laboratorio.</li>
+            <li>Combinar datos de <strong>entalpías de formación, combustión o enlace</strong> para obtener cualquier \(\Delta H_r\).</li>
+            <li>Predecir la <strong>dirección espontánea</strong> de procesos termodinámicos (junto con la entropía).</li>
+        </ul>
+        
+        <div class="note-prof">
+            <strong>💡 Observaciones sobre el alumnado:</strong><br>
+            Es fundamental que los estudiantes comprendan que la Ley de Hess no es una ley empírica adicional, sino una <strong>consecuencia directa</strong> del carácter de función de estado de la entalpía. Recomendar siempre dibujar el ciclo termodinámico antes de aplicar la ley, ya que la visualización del camino evita errores de signo. Un error frecuente es olvidar cambiar el signo de \(\Delta H\) al invertir una ecuación termoquímica. También conviene recordar que las entalpías de formación de los elementos en su estado estándar de referencia son cero por convención.
+        </div>
+    </div>
+
+    <!-- ============ BLOQUE DESPLEGABLE (TAREA 1) ============ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO la Ley de Hess</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+
+        <div class="ejercicios-grid">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo">Cálculo de ΔH a partir de entalpías de formación</span>
+                </div>
+                <div class="enunciado">
+                    <p>Calcula la entalpía estándar de la siguiente reacción a 298 K:</p>
+                    <div class="formula-box" style="background:#eef2f7; padding:0.4rem; margin:0.2rem 0;">2 C₂H₆(g) + 7 O₂(g) → 4 CO₂(g) + 6 H₂O(l)</div>
+                    <p>Datos: \(\Delta H_f^\circ\) (C₂H₆) = –84,7 kJ/mol; CO₂ = –393,5 kJ/mol; H₂O(l) = –285,8 kJ/mol; O₂(g) = 0.</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Aplicamos \(\Delta H_r^\circ = \sum \nu \Delta H_f^\circ(\text{productos}) - \sum \nu \Delta H_f^\circ(\text{reactivos})\).</div>
+                    <div class="paso">Productos: \(4 \times (-393,5) + 6 \times (-285,8) = -1574,0 - 1714,8 = -3288,8 \, \text{kJ}\).</div>
+                    <div class="paso">Reactivos: \(2 \times (-84,7) + 7 \times 0 = -169,4 \, \text{kJ}\).</div>
+                    <div class="paso">\(\Delta H_r^\circ = -3288,8 - (-169,4) = -3119,4 \, \text{kJ}\).</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H_r^\circ = -3119,4 \, \text{kJ}\) (reacción exotérmica).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo">Ley de Hess con combustiones</span>
+                </div>
+                <div class="enunciado">
+                    <p>La entalpía de combustión del benceno (C₆H₆) es –3268 kJ/mol, la del carbono (grafito) es –393,5 kJ/mol, y la del H₂(g) es –285,8 kJ/mol. Calcula la entalpía de formación del benceno líquido.</p>
+                    <p>Ecuación de formación: 6 C(s) + 3 H₂(g) → C₆H₆(l)</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Escribimos las ecuaciones de combustión:</div>
+                    <div class="paso">(1) C₆H₆(l) + 15/2 O₂ → 6 CO₂ + 3 H₂O &nbsp; \(\Delta H = -3268\) kJ</div>
+                    <div class="paso">(2) C(s) + O₂ → CO₂ &nbsp; \(\Delta H = -393,5\) kJ</div>
+                    <div class="paso">(3) H₂ + ½ O₂ → H₂O &nbsp; \(\Delta H = -285,8\) kJ</div>
+                    <div class="paso">Invertimos (1): 6 CO₂ + 3 H₂O → C₆H₆ + 15/2 O₂ &nbsp; \(\Delta H = +3268\)</div>
+                    <div class="paso">Multiplicamos (2) por 6: 6 C + 6 O₂ → 6 CO₂ &nbsp; \(\Delta H = 6 \times (-393,5) = -2361\)</div>
+                    <div class="paso">Multiplicamos (3) por 3: 3 H₂ + 3/2 O₂ → 3 H₂O &nbsp; \(\Delta H = 3 \times (-285,8) = -857,4\)</div>
+                    <div class="paso">Sumamos todas: 6 C + 3 H₂ → C₆H₆ &nbsp; \(\Delta H = 3268 - 2361 - 857,4 = 49,6 \, \text{kJ}\).</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H_f^\circ(\text{C}_6\text{H}_6) = +49,6 \, \text{kJ/mol}\) (endotérmico).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo">Ciclo de reacción con dos caminos</span>
+                </div>
+                <div class="enunciado">
+                    <p>Se sabe que la reacción \(A \rightarrow C\) tiene \(\Delta H = -120\) kJ. Además, la reacción \(A \rightarrow B\) tiene \(\Delta H = +50\) kJ. Calcula \(\Delta H\) para \(B \rightarrow C\).</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Según la Ley de Hess, \(\Delta H_{A \rightarrow C} = \Delta H_{A \rightarrow B} + \Delta H_{B \rightarrow C}\).</div>
+                    <div class="paso">Sustituimos: \(-120 = 50 + \Delta H_{B \rightarrow C}\) → \(\Delta H_{B \rightarrow C} = -170 \, \text{kJ}\).</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H_{B \rightarrow C} = -170 \, \text{kJ}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo">Entalpía de hidrogenación a partir de combustiones</span>
+                </div>
+                <div class="enunciado">
+                    <p>Las entalpías de combustión del eteno (C₂H₄), del etano (C₂H₆) y del H₂ son –1411 kJ/mol, –1560 kJ/mol y –286 kJ/mol respectivamente. Calcula la entalpía de la reacción de hidrogenación:</p>
+                    <div class="formula-box" style="background:#eef2f7; padding:0.4rem; margin:0.2rem 0;">C₂H₄(g) + H₂(g) → C₂H₆(g)</div>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Escribimos las combustiones:</div>
+                    <div class="paso">(1) C₂H₄ + 3 O₂ → 2 CO₂ + 2 H₂O &nbsp; \(\Delta H = -1411\)</div>
+                    <div class="paso">(2) C₂H₆ + 7/2 O₂ → 2 CO₂ + 3 H₂O &nbsp; \(\Delta H = -1560\)</div>
+                    <div class="paso">(3) H₂ + ½ O₂ → H₂O &nbsp; \(\Delta H = -286\)</div>
+                    <div class="paso">Queremos: C₂H₄ + H₂ → C₂H₆. Para obtenerlo, invertimos (2): 2 CO₂ + 3 H₂O → C₂H₆ + 7/2 O₂ &nbsp; \(\Delta H = +1560\).</div>
+                    <div class="paso">Sumamos (1) + (3) + (invertida 2):</div>
+                    <div class="paso">C₂H₄ + 3 O₂ + H₂ + ½ O₂ + 2 CO₂ + 3 H₂O → 2 CO₂ + 2 H₂O + C₂H₆ + 7/2 O₂</div>
+                    <div class="paso">Simplificando: C₂H₄ + H₂ → C₂H₆.</div>
+                    <div class="paso">\(\Delta H = -1411 + (-286) + (+1560) = -137 \, \text{kJ}\).</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H = -137 \, \text{kJ/mol}\) de eteno.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo">Cálculo de ΔH a partir de energías de enlace (relación con Hess)</span>
+                </div>
+                <div class="enunciado">
+                    <p>Utilizando la Ley de Hess y las energías de enlace (promedio), calcula la entalpía de la reacción:</p>
+                    <div class="formula-box" style="background:#eef2f7; padding:0.4rem; margin:0.2rem 0;">H₂(g) + Cl₂(g) → 2 HCl(g)</div>
+                    <p>Datos: \(E(\text{H–H}) = 436\) kJ/mol, \(E(\text{Cl–Cl}) = 243\) kJ/mol, \(E(\text{H–Cl}) = 432\) kJ/mol.</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">La entalpía de reacción se puede calcular como: \(\Delta H = \sum E_{\text{rotos}} - \sum E_{\text{formados}}\).</div>
+                    <div class="paso">Enlaces rotos: 1 H–H (436) + 1 Cl–Cl (243) = 679 kJ.</div>
+                    <div class="paso">Enlaces formados: 2 H–Cl (2 × 432 = 864) kJ.</div>
+                    <div class="paso">\(\Delta H = 679 - 864 = -185 \, \text{kJ}\).</div>
+                    <div class="paso">(Este método es una aplicación directa de Hess, ya que las energías de enlace son entalpías de procesos ficticios que forman un ciclo.)</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H = -185 \, \text{kJ/mol}\) de reacción.</p>
+                </div>
+            </div>
+
+        </div> <!-- fin ejercicios-grid -->
+
+        <div class="pie-clave">
+            <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> 
+            La Ley de Hess convierte la termoquímica en un <strong>álgebra de ecuaciones</strong>. 
+            El mayor error es no mantener la coherencia en los estados de agregación o no cambiar el signo al invertir una reacción. 
+            Siempre dibujar un ciclo ayuda a visualizar el camino y a evitar equivocaciones.
+        </div>
+
+    </details>
+    <!-- ============ FIN BLOQUE DESPLEGABLE ============ -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.13 - Demostración: Estructura de resonancia del benceno</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILOS ORIGINALES (se mantienen)
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .resonance-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 16px 0;
+        }
+        .resonance-box {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .resonance-box .title {
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+        .resonance-arrow {
+            font-size: 2em;
+            color: #667eea;
+            padding: 0 10px;
+        }
+        .modern-structure {
+            background: #fef3c7;
+            border: 3px solid #f6ad55;
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            margin: 16px 0;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            .resonance-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            .resonance-arrow { transform: rotate(90deg); padding: 10px 0; }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (TAREA 1)
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #eef4fa;
+            border-radius: 16px;
+            padding: 10px 20px 20px;
+            border: 1px solid #bdd6e8;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.6rem;
+            color: #2a7faa;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        .exercise-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #d3e2ed;
+        }
+        .exercise-card h3 {
+            margin-top: 0;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        .exercise-card h3 .badge {
+            background: #2a7faa;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+        }
+        .solution {
+            background: #f7fbfe;
+            border-left: 4px solid #2a7faa;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 0.98rem;
+        }
+        .solution .step {
+            background: transparent;
+            border-left: none;
+            padding: 6px 0;
+            margin: 6px 0;
+            box-shadow: none;
+        }
+        .solution .step strong {
+            color: #0b3b5c;
+        }
+        .didactic-footer {
+            background: #d7e7f3;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #144a66;
+        }
+        .didactic-footer i {
+            font-size: 1.8rem;
+        }
+        .highlight-sol {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.12.- </span>
+                <span class="texto">Demostración: Estructura de resonancia del benceno</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la fórmula molecular del benceno \( C_6H_6 \) y de la hibridación \( sp^2 \) de sus átomos de carbono, demostrar que la estructura real del benceno no puede representarse por una única fórmula de Lewis con enlaces dobles localizados, sino que corresponde a un <strong>híbrido de resonancia</strong> en el que los 6 electrones \( \pi \) están deslocalizados sobre todo el anillo, confiriendo estabilidad excepcional al sistema.</p>
+        <div class="formula-box">
+            Híbrido de resonancia con 6 electrones \( \pi \) deslocalizados en un orbital molecular \( \pi \) extendido
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U05c12 - Estructura de resonancia del benceno fórmula de Kekulé y estabilidad por deslocalización electrónica.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Comprender por qué el benceno no se comporta como un trieno conjugado típico (como el hexa-1,3,5-trieno) y por qué presenta una estabilidad anómala. El estudiante debe ser capaz de:</p>
+        <ul>
+            <li>Distinguir entre estructuras resonantes (formas límite) y el híbrido de resonancia (estructura real).</li>
+            <li>Explicar la longitud de enlace intermedia entre simple y doble (1,39 Å) en el benceno.</li>
+            <li>Justificar la reactividad del benceno (sustitución electrofílica aromática frente a adición).</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Analizar la insuficiencia de una única estructura de Kekulé.</strong> Si el benceno tuviera tres dobles enlaces fijos alternados (estructura ciclotrieno), se esperarían:
+            <ul>
+                <li>Longitudes de enlace C—C diferentes: ~1,34 Å (doble) y ~1,54 Å (simple).</li>
+                <li>Calor de hidrogenación tres veces mayor que el del ciclohexeno (aproximadamente \( 3 \times 120 = 360 \) kJ/mol).</li>
+                <li>Alta reactividad de adición característica de alquenos (reacción con \( Br_2 \), \( H_2 \), etc.).</li>
+            </ul>
+            <p><strong>Experimentalmente se observa:</strong> todas las distancias C—C son idénticas (1,39 Å), el calor de hidrogenación es solo 208 kJ/mol (152 kJ/mol <em>menos</em> que el esperado), y el benceno reacciona por sustitución, no por adición.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Proponer las dos estructuras resonantes de Kekulé.</strong> Cada estructura muestra dobles enlaces en posiciones alternadas, pero ninguna representa la realidad por sí sola:
+            <div class="resonance-container">
+                <div class="resonance-box">
+                    <div class="title">Estructura resonante I</div>
+                    <p style="font-size: 1.3em; margin: 10px 0;">Hexágono con dobles enlaces entre C1=C2, C3=C4, C5=C6</p>
+                    <p style="font-size: 0.9em; color: #718096;">Dobles enlaces: posiciones 1-2, 3-4, 5-6</p>
+                </div>
+                <div class="resonance-arrow">↔</div>
+                <div class="resonance-box">
+                    <div class="title">Estructura resonante II</div>
+                    <p style="font-size: 1.3em; margin: 10px 0;">Hexágono con dobles enlaces entre C2=C3, C4=C5, C6=C1</p>
+                    <p style="font-size: 0.9em; color: #718096;">Dobles enlaces: posiciones 2-3, 4-5, 6-1</p>
+                </div>
+            </div>
+            <p style="text-align: center; color: #718096; font-size: 0.9em; margin-top: 8px;">Las flechas de doble punta (↔) indican resonancia, no equilibrio</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Describir el híbrido de resonancia.</strong> La estructura real es un promedio ponderado de las formas resonantes. Cada enlace C—C tiene carácter de 1,5 enlace (intermedio entre simple y doble). Los 6 electrones \( \pi \) no están confinados entre dos carbonos, sino que forman un <strong>orbital molecular \( \pi \) deslocalizado</strong> que se extiende por todo el anillo por encima y por debajo del plano molecular.
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Representación moderna del benceno.</strong> El círculo interior del hexágono representa la nube electrónica \( \pi \) deslocalizada:
+            <div class="modern-structure">
+                <p style="font-size: 1.4em; font-weight: 600; color: #744210;">Hexágono regular con círculo interior</p>
+                <p style="margin-top: 10px; color: #975a16;">El círculo simboliza los 6 electrones \( \pi \) deslocalizados</p>
+                <p style="margin-top: 6px; font-size: 0.9em; color: #975a16;">Longitud de enlace C—C: 1,39 Å (intermedia entre 1,34 Å y 1,54 Å)</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Justificar la estabilidad por deslocalización (energía de resonancia).</strong> La diferencia entre la energía esperada para un ciclotrieno y la energía real del benceno se denomina <strong>energía de resonancia</strong> o <strong>energía de deslocalización</strong>:
+            <div class="formula-box">
+                \( E_{\text{resonancia}} = E_{\text{ciclotrieno esperada}} - E_{\text{benceno real}} \approx 152 \, \text{kJ/mol} \)
+            </div>
+            <p>Esta estabilidad adicional explica por qué el benceno prefiere reaccionar por <strong>sustitución</strong> (conservando el anillo aromático) en lugar de por <strong>adición</strong> (que destruiría la deslocalización).</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Cumplimiento de la regla de Hückel.</strong> El benceno cumple los criterios de aromaticidad: anillo plano, sistema cíclico conjugado, y \( 4n+2 \) electrones \( \pi \) (con \( n=1 \): 6 electrones \( \pi \)).
+            <div class="formula-box">
+                \( \text{Electrones } \pi = 4n + 2 \quad \text{con} \quad n = 1 \quad \Longrightarrow \quad 6 \, e^- \pi \)
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Es fundamental que los estudiantes comprendan que las estructuras de Kekulé son <em>formas límite</em> que no existen por separado. El benceno no oscila entre ambas estructuras; su estructura real es un híbrido estático. El círculo en la representación moderna no indica un "enlace circular", sino una nube electrónica deslocalizada. Se recomienda contrastar el benceno con el hexa-1,3,5-trieno (no aromático) para evidenciar la importancia del anillo cerrado en la estabilidad por resonancia.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Híbrido de resonancia del benceno</strong>
+            <p style="font-size: 1.05em; margin: 10px 0 0 0;">
+                \[ \boxed{\text{Benceno} = \text{Híbrido de las dos estructuras de Kekulé}} \]
+            </p>
+            <p style="margin-top: 10px;">6 electrones \( \pi \) deslocalizados en un orbital molecular extendido</p>
+        </div>
+        <div class="formula-box" style="margin-top: 12px;">
+            <strong>Propiedades consecuencia de la resonancia</strong>
+            <p style="text-align: left; font-size: 0.95em; margin: 10px 0 0 0;">
+                <strong>Longitud de enlace C—C:</strong> 1,39 Å (intermedia entre simple y doble)<br><br>
+                <strong>Energía de resonancia:</strong> ~152 kJ/mol (estabilización adicional)<br><br>
+                <strong>Reactividad:</strong> Sustitución electrofílica (no adición)<br><br>
+                <strong>Regla de Hückel:</strong> \( 4n + 2 = 6 \) electrones \( \pi \) (aromático)
+            </p>
+        </div>
+        <p>La demostración realizada mediante el análisis de las evidencias experimentales y la teoría de resonancia confirma que el benceno posee una estructura de anillo hexagonal con electrones \( \pi \) deslocalizados, lo que le confiere una estabilidad excepcional y una reactividad característica de los compuestos aromáticos.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> El benceno representa el paradigma de la aromaticidad, donde la deslocalización electrónica y la resonancia son fundamentales para entender su estructura, estabilidad y reactividad química.</p>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- BLOQUE DESPLEGABLE (TAREA 1)                 -->
+    <!-- ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame 👉 🧪 DESMITIFICANDO la estructura de resonancia del benceno</span>
+        </summary>
+
+        <!-- Ejercicio 1 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 1</span> Longitudes de enlace comparadas</h3>
+            <p><strong>Enunciado:</strong> Dadas las siguientes longitudes de enlace C—C (en Å): etano (1,54), eteno (1,34), benceno (1,39). Explica por qué la longitud del benceno es intermedia y qué relación tiene con la deslocalización electrónica.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Interpretación:</strong> En el etano, el enlace es simple (1,54 Å); en el eteno es doble (1,34 Å). El benceno tiene un valor de 1,39 Å, que está entre ambos.</div>
+                <div class="step"><strong>2. Explicación:</strong> Esto se debe a que los enlaces C—C en el benceno no son ni simples ni dobles puros, sino que tienen un orden de enlace de 1,5 (promedio entre los dos tipos). La deslocalización de los 6 electrones \( \pi \) hace que la densidad electrónica se reparta uniformemente, dando lugar a enlaces intermedios.</div>
+                <div class="step"><span class="highlight-sol">Conclusión:</span> La longitud intermedia es una evidencia experimental de la resonancia y la aromaticidad del benceno.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 2</span> Cálculo de la energía de resonancia</h3>
+            <p><strong>Enunciado:</strong> El calor de hidrogenación del ciclohexeno es de 120 kJ/mol. Si el benceno (C₆H₆) se hidrogenara completamente a ciclohexano, el calor experimental es de 208 kJ/mol. Calcula la energía de resonancia del benceno y compárala con la esperada para un hipotético 1,3,5-ciclohexatrieno.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Calor esperado para el ciclotrieno:</strong> Si el benceno tuviera 3 dobles enlaces aislados, el calor de hidrogenación sería \( 3 \times 120 = 360 \, \text{kJ/mol} \).</div>
+                <div class="step"><strong>2. Energía de resonancia:</strong> \( E_{\text{res}} = 360 - 208 = 152 \, \text{kJ/mol} \).</div>
+                <div class="step"><strong>3. Significado:</strong> Esta energía es la estabilización adicional que confiere la deslocalización electrónica. El benceno es 152 kJ/mol más estable que el hipotético ciclotrieno.</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La energía de resonancia del benceno es de 152 kJ/mol.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 3</span> Reactividad del benceno frente a la adición de bromo</h3>
+            <p><strong>Enunciado:</strong> El bromo (Br₂) reacciona rápidamente con ciclohexeno por adición, pero no reacciona con benceno en las mismas condiciones. Explica esta diferencia en términos de la estructura del benceno.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Reactividad del ciclohexeno:</strong> Tiene un doble enlace localizado, que es nucleofílico y reacciona con Br₂ por adición electrofílica (típica de alquenos).</div>
+                <div class="step"><strong>2. Benceno:</strong> Los electrones \( \pi \) están deslocalizados en todo el anillo, lo que reduce la densidad electrónica en cualquier enlace particular y estabiliza la molécula. Una adición de Br₂ rompería la aromaticidad, perdiendo la estabilidad de resonancia (152 kJ/mol).</div>
+                <div class="step"><strong>3. Conclusión:</strong> El benceno prefiere reaccionar por <strong>sustitución electrofílica</strong> (conservando el anillo aromático) en lugar de adición, que destruiría el sistema deslocalizado.</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La deslocalización electrónica hace que el benceno sea mucho menos reactivo frente a la adición que los alquenos típicos.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 4</span> Aplicación de la regla de Hückel</h3>
+            <p><strong>Enunciado:</strong> Determina si los siguientes compuestos son aromáticos aplicando la regla de Hückel: a) ciclobutadieno (C₄H₄), b) piridina (C₅H₅N), c) ciclopentadienuro (C₅H₅⁻).</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Regla de Hückel:</strong> Un compuesto es aromático si es cíclico, plano, conjugado y tiene \( 4n+2 \) electrones \( \pi \).</div>
+                <div class="step"><strong>2. Ciclobutadieno:</strong> Tiene 4 electrones \( \pi \) (n=1 → 4 = 4·1+0, no cumple 4n+2). No es aromático (es antiaromático).</div>
+                <div class="step"><strong>3. Piridina:</strong> Es un anillo de seis miembros con un nitrógeno. Tiene 6 electrones \( \pi \) (5 del C y 1 del N). 6 = 4·1+2 → <span class="highlight-sol">aromático</span>.</div>
+                <div class="step"><strong>4. Ciclopentadienuro:</strong> Anión de cinco miembros con 6 electrones \( \pi \) (4 del dieno + 2 del par solitario del carbono cargado). 6 = 4·1+2 → <span class="highlight-sol">aromático</span>.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 5</span> Dibujo de estructuras resonantes del naftaleno</h3>
+            <p><strong>Enunciado:</strong> El naftaleno (C₁₀H₈) es un hidrocarburo aromático policíclico formado por dos anillos de benceno fusionados. Dibuja las tres estructuras resonantes principales del naftaleno y explica por qué es estable.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Estructura del naftaleno:</strong> Dos anillos hexagonales fusionados que comparten un enlace C—C. Tiene 10 electrones \( \pi \) (5 dobles enlaces).</div>
+                <div class="step"><strong>2. Estructuras resonantes:</strong> Se pueden dibujar tres formas resonantes principales (como las de Kekulé para el benceno, pero para el naftaleno hay tres distribuciones posibles de los dobles enlaces que cumplen la regla de octeto y la valencia del carbono).</div>
+                <div class="step"><strong>3. Estabilidad:</strong> La deslocalización de los 10 electrones \( \pi \) sobre los dos anillos confiere una gran estabilidad, aunque menor que la de dos bencenos independientes debido a la pérdida de aromaticidad en el anillo fusionado.</div>
+                <div class="step"><span class="highlight-sol">Conclusión:</span> El naftaleno es aromático porque cumple la regla de Hückel (10 electrones \( \pi \), n=2) y su estabilidad se debe a la resonancia.</div>
+            </div>
+        </div>
+
+        <!-- Pie didáctico -->
+        <div class="didactic-footer">
+            <i class="fas fa-graduation-cap"></i>
+            <span><strong>Observaciones claves:</strong> La estructura de resonancia del benceno es el ejemplo más claro de cómo la teoría de orbitales moleculares explica propiedades que no pueden ser descritas por estructuras de Lewis simples. La "trampa" habitual es pensar que el benceno oscila entre las dos formas de Kekulé; en realidad, la estructura real es un híbrido estático con electrones deslocalizados. Entender esto es esencial para comprender la química de los compuestos aromáticos.</span>
+        </div>
+    </details>
+    <!-- FIN DEL BLOQUE DESPLEGABLE -->
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

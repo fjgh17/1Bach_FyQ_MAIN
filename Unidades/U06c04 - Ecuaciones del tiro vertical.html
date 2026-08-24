@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T06.04 - Ecuaciones del tiro vertical (caída libre)</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+            color: #ffecb0;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 300;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 4px;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.8em;
+            line-height: 1.7;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* =========================================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (añadido)
+           ========================================================= */
+        details {
+            margin: 30px 15px 20px 15px;
+            background: #ffffff;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            padding: 0.2rem 0.2rem 0.5rem 0.2rem;
+            box-shadow: 0 6px 14px rgba(102, 126, 234, 0.2);
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            background: #f0f4ff;
+            border-radius: 18px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .fa-chevron-circle-down {
+            font-size: 1.6rem;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details summary .icon-pulsame {
+            background: #667eea;
+            color: white;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        details .details-content {
+            padding: 0.5rem 1.8rem 2rem 1.8rem;
+        }
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .exercise-card {
+            background: #f9fcff;
+            border: 1px solid #dce7f2;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem 1.8rem;
+            margin: 1.8rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .exercise-card .ex-title {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin-bottom: 0.4rem;
+        }
+        .exercise-card .ex-title .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 40px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.85rem;
+        }
+        .exercise-card .enunciado {
+            background: #f1f6fd;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            margin: 0.6rem 0 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        .exercise-card .solucion {
+            background: #eef3f9;
+            padding: 0.8rem 1.5rem;
+            border-radius: 14px;
+            border: 1px solid #d3e0ee;
+            margin-top: 0.8rem;
+        }
+        .exercise-card .solucion .paso {
+            margin: 0.5rem 0;
+        }
+        .exercise-card .solucion .paso strong {
+            color: #2b3a67;
+        }
+        .clave-didactica {
+            background: #e6f0fa;
+            padding: 1rem 1.8rem;
+            border-radius: 40px;
+            margin-top: 1.8rem;
+            font-weight: 500;
+            color: #1a365d;
+            border-left: 6px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T06.04.- </span>
+                <span class="texto">Ecuaciones del tiro vertical (caída libre)</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- SECCIÓN ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de las ecuaciones del MRUA y de la condición de que la aceleración de un cuerpo en caída libre es constante e igual a la aceleración gravitatoria \( \vec{g} \) dirigida verticalmente hacia abajo, demostrar que las ecuaciones del tiro vertical adoptan la forma:</p>
+        <div class="formula-box">\[ v = v_0 - gt \qquad \text{y} \qquad y = y_0 + v_0 t - \frac{1}{2} g t^2 \]</div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U06c04 - Ecuaciones del tiro vertical.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- SECCIÓN OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Adaptar las ecuaciones generales del movimiento rectilíneo uniformemente acelerado al caso particular del movimiento vertical bajo la acción de la gravedad, estableciendo el convenio de signos adecuado para el eje vertical.</p>
+    </div>
+
+    <!-- SECCIÓN PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Sistema de referencia</strong>
+            <p>Establecemos un sistema de referencia con el eje \( Oy \) vertical y orientado hacia arriba. El origen puede situarse en el suelo o en el punto de lanzamiento según convenga.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Aceleración gravitatoria</strong>
+            <p>En caída libre se desprecia la resistencia del aire, por lo que la única aceleración es la de la gravedad, constante y dirigida hacia abajo. En nuestro convenio:</p>
+            <div class="formula-box">\[ a = -g \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Ecuación de velocidad</strong>
+            <p>Partimos de la primera ecuación del MRUA, \( v = v_0 + at \), y sustituimos la aceleración:</p>
+            <div class="formula-box">\[ v = v_0 + (-g)t \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Ecuación de posición</strong>
+            <p>De manera análoga, sustituimos \( a = -g \) en la ecuación de la posición \( x = x_0 + v_0 t + \frac{1}{2} a t^2 \), renombrando la posición como \( y \):</p>
+            <div class="formula-box">\[ y = y_0 + v_0 t + \frac{1}{2} (-g) t^2 \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Expresiones finales</strong>
+            <p>Reordenando los signos se obtienen las expresiones características del tiro vertical:</p>
+            <div class="formula-box">\[ v = v_0 - gt \]</div>
+            <div class="formula-box">\[ y = y_0 + v_0 t - \frac{1}{2} g t^2 \]</div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN RESULTADO -->
+    <div class="section resultado">
+        <h2>📊 Resultado</h2>
+        <div class="formula-box" style="border-color: #38b2ac; border-width: 3px; background: #e6fffa;">\[ v = v_0 - gt \qquad \text{y} \qquad y = y_0 + v_0 t - \frac{1}{2} g t^2 \]</div>
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> El signo negativo del término gravitatorio depende del sistema de referencia elegido. Si se orienta el eje \( Oy \) hacia abajo, las ecuaciones aparecen con signo positivo. Es fundamental que se defina claramente su convenio de signos antes de aplicar las fórmulas.
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- BLOQUE DESPLEGABLE (añadido según la TAREA 1)             -->
+    <!-- ========================================================= -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO Ecuaciones del tiro vertical (caída libre)</span>
+            <span class="icon-pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Lanzamiento vertical hacia arriba desde el suelo</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Se lanza una pelota verticalmente hacia arriba desde el suelo (\( y_0 = 0 \)) con una velocidad inicial de \( 25 \, \text{m/s} \). Usando \( g = 9.8 \, \text{m/s}^2 \), calcula:</p>
+                    <ul>
+                        <li>a) La altura máxima que alcanza.</li>
+                        <li>b) El tiempo que tarda en alcanzar esa altura.</li>
+                        <li>c) La velocidad al cabo de \( 4.0 \, \text{s} \).</li>
+                    </ul>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( v_0 = 25 \, \text{m/s} \), \( g = 9.8 \, \text{m/s}^2 \), \( y_0 = 0 \).</div>
+                    <div class="paso"><strong>Paso 2 (a):</strong> En la altura máxima \( v = 0 \). Usamos \( v^2 = v_0^2 - 2g(y - y_0) \) → \( 0 = 25^2 - 2 \cdot 9.8 \cdot y_{\text{max}} \) → \( y_{\text{max}} = \frac{625}{19.6} \approx 31.9 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 3 (b):</strong> Tiempo de subida: \( v = v_0 - gt \) → \( 0 = 25 - 9.8 t \) → \( t = \frac{25}{9.8} \approx 2.55 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 4 (c):</strong> Velocidad a los 4.0 s: \( v = 25 - 9.8 \cdot 4.0 = 25 - 39.2 = -14.2 \, \text{m/s} \) (signo negativo indica que está bajando).</div>
+                    <div class="paso"><strong>Resultados:</strong> a) \( 31.9 \, \text{m} \) b) \( 2.55 \, \text{s} \) c) \( -14.2 \, \text{m/s} \) (hacia abajo).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Caída libre desde un edificio</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Se deja caer una piedra desde la azotea de un edificio de \( 60 \, \text{m} \) de altura (\( v_0 = 0 \)). Calcula:</p>
+                    <ul>
+                        <li>a) El tiempo que tarda en llegar al suelo.</li>
+                        <li>b) La velocidad con que impacta.</li>
+                    </ul>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Tomamos el suelo como referencia \( y = 0 \) y la azotea como \( y_0 = 60 \, \text{m} \). \( v_0 = 0 \), \( g = 9.8 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Paso 2 (a):</strong> Usamos \( y = y_0 - \frac{1}{2} g t^2 \) → \( 0 = 60 - 4.9 t^2 \) → \( t^2 = \frac{60}{4.9} \approx 12.24 \) → \( t \approx 3.50 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 3 (b):</strong> Velocidad de impacto: \( v = -g t = -9.8 \cdot 3.50 \approx -34.3 \, \text{m/s} \) (el signo negativo indica hacia abajo).</div>
+                    <div class="paso"><strong>Resultados:</strong> a) \( 3.50 \, \text{s} \) b) \( 34.3 \, \text{m/s} \) hacia abajo.</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Lanzamiento desde una altura con velocidad inicial hacia arriba</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Desde el borde de un acantilado de \( 40 \, \text{m} \) de altura se lanza una piedra verticalmente hacia arriba con \( v_0 = 15 \, \text{m/s} \). Calcula:</p>
+                    <ul>
+                        <li>a) La altura máxima sobre el nivel del mar.</li>
+                        <li>b) El tiempo que tarda en llegar al agua.</li>
+                        <li>c) La velocidad al llegar al agua.</li>
+                    </ul>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Tomamos el nivel del mar como \( y = 0 \), y el borde del acantilado como \( y_0 = 40 \, \text{m} \). \( v_0 = 15 \, \text{m/s} \), \( g = 9.8 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Paso 2 (a):</strong> Altura máxima sobre el borde: \( y_{\text{max}}' = \frac{v_0^2}{2g} = \frac{225}{19.6} \approx 11.5 \, \text{m} \). Sobre el nivel del mar: \( 40 + 11.5 = 51.5 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 3 (b):</strong> Cuando llega al agua \( y = 0 \). Usamos \( y = y_0 + v_0 t - \frac{1}{2} g t^2 \) → \( 0 = 40 + 15 t - 4.9 t^2 \). Reordenamos: \( 4.9 t^2 - 15 t - 40 = 0 \). Resolvemos: \( t = \frac{15 \pm \sqrt{225 + 4 \cdot 4.9 \cdot 40}}{2 \cdot 4.9} = \frac{15 \pm \sqrt{225 + 784}}{9.8} = \frac{15 \pm \sqrt{1009}}{9.8} \approx \frac{15 \pm 31.76}{9.8} \). Solución positiva: \( t \approx \frac{46.76}{9.8} \approx 4.77 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 4 (c):</strong> Velocidad al llegar: \( v = v_0 - g t = 15 - 9.8 \cdot 4.77 \approx 15 - 46.75 = -31.75 \, \text{m/s} \).</div>
+                    <div class="paso"><strong>Resultados:</strong> a) \( 51.5 \, \text{m} \) b) \( 4.77 \, \text{s} \) c) \( 31.75 \, \text{m/s} \) hacia abajo.</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Comparación de tiempos de caída con y sin velocidad inicial</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Desde lo alto de un puente de \( 30 \, \text{m} \) se deja caer una pelota A sin velocidad inicial y se lanza otra pelota B hacia abajo con \( v_0 = 5.0 \, \text{m/s} \). ¿Cuánto tarda cada una en llegar al agua? ¿Cuál es la diferencia de tiempos?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Para A: \( v_0 = 0 \), \( y_0 = 30 \), \( y = 0 \). \( 0 = 30 - 4.9 t_A^2 \) → \( t_A = \sqrt{\frac{30}{4.9}} \approx \sqrt{6.12} \approx 2.47 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Para B: \( v_0 = -5.0 \, \text{m/s} \) (hacia abajo, pero usamos el convenio de signos con el eje hacia arriba, por lo que es negativa). Ecuación: \( 0 = 30 - 5.0 t_B - 4.9 t_B^2 \) → \( 4.9 t_B^2 + 5.0 t_B - 30 = 0 \). Resolvemos: \( t_B = \frac{-5.0 \pm \sqrt{25 + 4 \cdot 4.9 \cdot 30}}{2 \cdot 4.9} = \frac{-5.0 \pm \sqrt{25 + 588}}{9.8} = \frac{-5.0 \pm \sqrt{613}}{9.8} \approx \frac{-5.0 \pm 24.76}{9.8} \). Solución positiva: \( t_B \approx \frac{19.76}{9.8} \approx 2.02 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> Diferencia: \( t_A - t_B \approx 2.47 - 2.02 = 0.45 \, \text{s} \).</div>
+                    <div class="paso"><strong>Resultados:</strong> A: \( 2.47 \, \text{s} \), B: \( 2.02 \, \text{s} \), diferencia \( 0.45 \, \text{s} \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Determinación de la velocidad inicial a partir del tiempo de vuelo</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Se lanza una piedra verticalmente hacia arriba y se observa que tarda \( 6.0 \, \text{s} \) en volver al punto de lanzamiento. Calcula:</p>
+                    <ul>
+                        <li>a) La velocidad inicial.</li>
+                        <li>b) La altura máxima alcanzada.</li>
+                    </ul>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> El tiempo total de vuelo es \( 2 \cdot t_{\text{subida}} \), por lo que \( t_{\text{subida}} = 3.0 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 2 (a):</strong> En la subida, \( v = 0 = v_0 - g t_{\text{subida}} \) → \( v_0 = g \cdot 3.0 = 9.8 \cdot 3.0 = 29.4 \, \text{m/s} \).</div>
+                    <div class="paso"><strong>Paso 3 (b):</strong> Altura máxima: \( y_{\text{max}} = \frac{v_0^2}{2g} = \frac{(29.4)^2}{2 \cdot 9.8} = \frac{864.36}{19.6} \approx 44.1 \, \text{m} \).</div>
+                    <div class="paso"><strong>Resultados:</strong> a) \( 29.4 \, \text{m/s} \) b) \( 44.1 \, \text{m} \).</div>
+                </div>
+            </div>
+
+            <!-- Pie didáctico -->
+            <div class="clave-didactica">
+                <i class="fas fa-lightbulb" style="margin-right: 0.6rem; color: #f1c40f;"></i>
+                <strong>Observaciones claves:</strong> La caída libre es un MRUA con aceleración constante \( -g \). La "trampa" mental es olvidar que la velocidad y la posición tienen signo, y que al subir la velocidad disminuye hasta cero y luego se vuelve negativa al bajar. Estos ejercicios muestran la importancia del convenio de signos y cómo aplicar las ecuaciones en diferentes situaciones (lanzamiento hacia arriba, caída libre, desde una altura, etc.).
+            </div>
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

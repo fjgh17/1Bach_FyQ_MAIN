@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 12: Molalidad y su Independencia de la Temperatura</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        .comparison-box {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .comparison-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL DESPLEGABLE INTERACTIVO
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: 1.15em;
+            color: #2d3748;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #4a5568;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 20px 25px;
+            background: white;
+        }
+        .exercise-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .exercise-header {
+            background: #4a5568;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .exercise-header .badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.85em;
+        }
+        .exercise-body {
+            padding: 18px 20px;
+        }
+        .exercise-body .statement {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .exercise-body .resolution {
+            background: #f0fff4;
+            padding: 15px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .exercise-body .resolution .math {
+            margin: 8px 0;
+        }
+        .didactic-footer {
+            background: #ebf4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-left: 5px solid #3182ce;
+            font-style: italic;
+        }
+        .didactic-footer strong {
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T03.12.- </span>
+                <span class="texto">Molalidad y su Independencia de la Temperatura</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES TRANSFORMADAS ===== -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de las <strong>definiciones de molaridad</strong> (moles de soluto por litro de disolución) y <strong>molalidad</strong> (moles de soluto por kilogramo de disolvente), demostrar que la molalidad es <strong>independiente de la temperatura</strong>, a diferencia de la molaridad, debido a que la masa del disolvente no varía con la temperatura mientras que el volumen de la disolución sí.</p>
+        <div class="formula-box">
+            \[ M = \frac{n_{\text{soluto}}}{V_{\text{disolución (L)}}} \quad \text{vs.} \quad m = \frac{n_{\text{soluto}}}{m_{\text{disolvente (kg)}}} \]
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U03c12 - Molalidad y molaridad.png" alt="Imagen" width="800">
+            <!-- -----FIN-------- -->
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta demostración permite:</p>
+        <ul>
+            <li>Comprender por qué la <strong>molalidad</strong> se usa en propiedades coligativas (crioscopia, ebulioscopia), donde la temperatura varía.</li>
+            <li>Justificar la preferencia de la molalidad en <strong>estudios termodinámicos</strong> y equilibrios en disolución.</li>
+            <li>Entender las limitaciones de la molaridad en experimentos con cambios térmicos.</li>
+            <li>Distinguir claramente entre dos concentraciones que se suelen confundir por su similitud nominal.</li>
+        </ul>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definimos ambas concentraciones</strong>:
+            <div class="comparison-box">
+                <table class="comparison-table">
+                    <tr>
+                        <th>Magnitud</th>
+                        <th>Definición</th>
+                        <th>Unidades</th>
+                        <th>Denominador</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Molaridad (M)</strong></td>
+                        <td>\( \frac{n_{\text{soluto}}}{V_{\text{disolución}}} \)</td>
+                        <td>mol/L</td>
+                        <td>Volumen (L)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Molalidad (m)</strong></td>
+                        <td>\( \frac{n_{\text{soluto}}}{m_{\text{disolvente}}} \)</td>
+                        <td>mol/kg</td>
+                        <td>Masa (kg)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Analizamos el efecto de la temperatura sobre el volumen</strong>. Por el principio de dilatación térmica, el volumen de una disolución líquida aumenta con la temperatura:
+            <div class="formula-box">
+                \[ V(T) = V_0 \cdot [1 + \alpha \cdot (T - T_0)] \]
+            </div>
+            <p>donde \( \alpha \) es el coeficiente de dilatación térmica del líquido. Por tanto, <strong>el volumen de la disolución no es constante</strong> con la temperatura.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Analizamos el efecto de la temperatura sobre la masa</strong>. La masa de una sustancia es una <strong>propiedad invariante</strong> (conservación de la masa). El cambio de temperatura no altera la cantidad de materia:
+            <div class="formula-box">
+                \[ m_{\text{disolvente}}(T_1) = m_{\text{disolvente}}(T_2) \quad \forall \, T_1, T_2 \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Demostramos la dependencia térmica de la molaridad</strong>. Si la temperatura aumenta de \( T_1 \) a \( T_2 \):
+            <div class="formula-box">
+                \[ M(T_1) = \frac{n}{V(T_1)} \quad ; \quad M(T_2) = \frac{n}{V(T_2)} \]
+            </div>
+            <p>Como \( V(T_2) > V(T_1) \) (dilatación):</p>
+            <div class="formula-box">
+                \[ M(T_2) = \frac{n}{V(T_1) \cdot [1 + \alpha \cdot \Delta T]} = \frac{M(T_1)}{1 + \alpha \cdot \Delta T} < M(T_1) \]
+            </div>
+            <p>La molaridad <strong>disminuye al aumentar la temperatura</strong>.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Demostramos la independencia térmica de la molalidad</strong>:
+            <div class="formula-box">
+                \[ m(T_1) = \frac{n}{m_{\text{disolvente}}} \quad ; \quad m(T_2) = \frac{n}{m_{\text{disolvente}}} \]
+            </div>
+            <p>Como la masa del disolvente no cambia:</p>
+            <div class="formula-box">
+                \[ m(T_1) = m(T_2) = \text{cte.} \]
+            </div>
+            <p>La molalidad es <strong>independiente de la temperatura</strong>.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Implicaciones prácticas</strong>. En propiedades coligativas:
+            <ul>
+                <li>El <strong>descenso crioscópico</strong> \( \Delta T_f = K_f \cdot m \) usa molalidad porque el punto de congelación depende de la concentración a la temperatura de congelación.</li>
+                <li>El <strong>ascenso ebulloscópico</strong> \( \Delta T_b = K_b \cdot m \) también usa molalidad por la misma razón.</li>
+                <li>La <strong>presión osmótica</strong> \( \pi = MRT \) usa molaridad porque se mide a temperatura constante.</li>
+            </ul>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Relación aproximada en disoluciones diluidas</strong>. Para disoluciones muy diluidas en agua (donde la densidad ≈ 1 kg/L):
+            <div class="formula-box">
+                \[ m \approx M \quad \text{(solo en disoluciones acuosas diluidas a } \approx 25^\circ\text{C)} \]
+            </div>
+            <p>Esta aproximación <strong>no es válida</strong> para disoluciones concentradas o disolventes distintos del agua.</p>
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que:</p>
+        <div class="formula-box">
+            <strong>Molaridad:</strong> \( M = \frac{n}{V} \) → <span style="color: #e53e3e;">Depende de T</span> (el volumen varía con la temperatura)
+            <br><br>
+            <strong>Molalidad:</strong> \( m = \frac{n}{m_{\text{disolvente}}} \) → <span style="color: #38a169;">Independiente de T</span> (la masa es invariante)
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">La molalidad es la concentración de elección cuando la temperatura varía durante el experimento o proceso químico.</p>
+        <div class="comparison-box">
+            <strong>Resumen comparativo:</strong>
+            <table class="comparison-table">
+                <tr>
+                    <th>Característica</th>
+                    <th>Molaridad (M)</th>
+                    <th>Molalidad (m)</th>
+                </tr>
+                <tr>
+                    <td>Dependencia de T</td>
+                    <td style="color: #e53e3e;">Sí (disminuye con T)</td>
+                    <td style="color: #38a169;">No</td>
+                </tr>
+                <tr>
+                    <td>Facilidad de preparación</td>
+                    <td>Alta (matraz aforado)</td>
+                    <td>Media (balanza + disolvente puro)</td>
+                </tr>
+                <tr>
+                    <td>Uso en coligativas</td>
+                    <td>No recomendada</td>
+                    <td>Recomendada</td>
+                </tr>
+                <tr>
+                    <td>Uso en valoraciones</td>
+                    <td>Recomendada</td>
+                    <td>Poco frecuente</td>
+                </tr>
+            </table>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  La confusión entre molaridad y molalidad es uno de los errores más persistentes. Recomiendo enfatizar la etimología: molaridad → "moles por litro" (volumen); molalidad → "moles por masa" (kg de disolvente). Un truco mnemotécnico: "Molaridad con V de Volumen; Molalidad con masa". Es crucial practicar la preparación de disoluciones molales: se pesa el disolvente directamente, se disuelve el soluto y no se necesita matraz aforado. Para disoluciones acuosas diluidas, la aproximación \( m \approx M \) es útil pero debe usarse con cautela. En problemas de propiedades coligativas, insistir en el uso estricto de molalidad para evitar errores sistemáticos.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="flex: 1;">🧪 DESMITIFICANDO Molalidad y su Independencia de la Temperatura</span>
+            <span style="font-size: 0.9em; color: #4a5568; background: #e2e8f0; padding: 2px 12px; border-radius: 20px;">
+                <i class="fas fa-hand-pointer"></i> Púlsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Cálculo de la molalidad a partir de masas</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Se disuelven 25,0 g de cloruro de sodio (NaCl) en 200 g de agua. Calcular la molalidad de la disolución. (Masa molar NaCl = 58,5 g/mol).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Moles de NaCl: \( n = \frac{25,0}{58,5} \approx 0,427 \, \text{mol} \).</li>
+                            <li>Masa de disolvente en kg: \( 200 \, \text{g} = 0,200 \, \text{kg} \).</li>
+                            <li>Molalidad: \( m = \frac{0,427}{0,200} = 2,14 \, \text{mol/kg} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Comparación de molaridad y molalidad a diferentes temperaturas</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Se prepara una disolución acuosa con 0,50 mol de sacarosa en agua hasta 1,00 L a 20 °C. La densidad de la disolución a 20 °C es 1,05 g/mL. Calcular:</p>
+                        <ul>
+                            <li>a) La molaridad a 20 °C y a 60 °C (suponiendo que el volumen aumenta un 2% al calentar).</li>
+                            <li>b) La molalidad a ambas temperaturas (masa de disolvente ≈ 950 g).</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>a) \( M(20°C) = \frac{0,50}{1,00} = 0,50 \, \text{mol/L} \). A 60 °C, \( V = 1,00 \times 1,02 = 1,02 \, \text{L} \) → \( M(60°C) = \frac{0,50}{1,02} \approx 0,49 \, \text{mol/L} \).</li>
+                            <li>b) Molalidad: \( m = \frac{0,50}{0,950} \approx 0,526 \, \text{mol/kg} \) (constante con la temperatura).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Descenso crioscópico usando molalidad</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Una disolución de etilenglicol en agua tiene una molalidad de 2,50 mol/kg. Calcular su punto de congelación si la constante crioscópica del agua es \( K_f = 1,86 \, \text{°C·kg/mol} \).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>\( \Delta T_f = K_f \cdot m = 1,86 \times 2,50 = 4,65 \, \text{°C} \).</li>
+                            <li>Punto de congelación: \( T_f = 0 - 4,65 = -4,65 \, \text{°C} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Preparación de una disolución molal</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> ¿Cuántos gramos de urea (CO(NH₂)₂, masa molar 60 g/mol) se necesitan para preparar 500 g de una disolución acuosa 0,80 molal?</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Molalidad \( m = 0,80 = \frac{n_{\text{urea}}}{m_{\text{agua (kg)}}} \).</li>
+                            <li>Masa de agua: 500 g = 0,500 kg (suponiendo que la masa de soluto es pequeña).</li>
+                            <li>\( n_{\text{urea}} = 0,80 \times 0,500 = 0,40 \, \text{mol} \).</li>
+                            <li>Masa de urea: \( m = 0,40 \times 60 = 24 \, \text{g} \).</li>
+                            <li><span style="color: #2b6cb0;">Nota: Para precisión, la masa de disolvente debe ser la de agua pura, no la masa total de la disolución.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Determinación de masa molar mediante descenso crioscópico</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Se disuelven 5,00 g de un soluto no electrolito en 100 g de agua. La disolución congela a -0,93 °C. Calcular la masa molar del soluto. \( K_f(\text{agua}) = 1,86 \, \text{°C·kg/mol} \).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>\( \Delta T_f = 0 - (-0,93) = 0,93 \, \text{°C} \).</li>
+                            <li>\( m = \frac{\Delta T_f}{K_f} = \frac{0,93}{1,86} = 0,50 \, \text{mol/kg} \).</li>
+                            <li>\( n_{\text{soluto}} = m \times m_{\text{agua (kg)}} = 0,50 \times 0,100 = 0,050 \, \text{mol} \).</li>
+                            <li>Masa molar: \( M = \frac{5,00}{0,050} = 100 \, \text{g/mol} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="didactic-footer">
+                <strong>💡 Observaciones claves:</strong> La molalidad es la concentración que <strong>no cambia con la temperatura</strong>, lo que la hace ideal para propiedades coligativas como el descenso crioscópico y el ascenso ebulloscópico. El error más común es <strong>confundir molalidad con molaridad</strong>; recuerda que la molalidad usa <strong>kilogramos de disolvente</strong>, mientras que la molaridad usa <strong>litros de disolución</strong>. La molalidad se prepara pesando el disolvente, no midiendo su volumen, lo que la hace más precisa cuando la temperatura fluctúa.
+            </div>
+
+        </div>
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

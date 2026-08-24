@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SG02. El espín como giro mecánico – contradicción con la relatividad</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1e293b;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4a1a2c, #7a2d4f);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .header h1 i { color: #fcd34d; font-size: 2rem; }
+        .header p { opacity: 0.9; font-size: 1.1rem; max-width: 500px; }
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 40px;
+        }
+        .nav-tabs a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            opacity: 0.85;
+        }
+        .nav-tabs a:hover, .nav-tabs a.active {
+            background: rgba(255,255,255,0.25);
+            opacity: 1;
+        }
+        .nav-tabs a.active { background: white; color: #4a1a2c; opacity: 1; }
+        .section {
+            padding: 30px 40px;
+            border-bottom: 1px solid #e9edf2;
+        }
+        .section:last-of-type { border-bottom: none; }
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #4a1a2c;
+        }
+        .section h2 i { color: #7a2d4f; }
+        .section p { line-height: 1.7; margin-bottom: 16px; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #7a2d4f;
+            padding: 15px 20px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #7a2d4f;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            color: #744210;
+        }
+        .note-danger {
+            background: #fce4ec;
+            border: 1px solid #e53e3e;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            color: #880e4f;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 18px 22px;
+            border-left: 6px solid #7a2d4f;
+        }
+        .card h3 { font-size: 1.2rem; margin-bottom: 8px; }
+        .card ul { list-style: none; padding-left: 0; line-height: 1.9; }
+        .card ul li::before { content: "● "; color: #7a2d4f; font-weight: 700; }
+        .resultado-destacado {
+            background: #fef9e7;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #b45309;
+        }
+        details {
+            margin: 25px 0 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #7a2d4f;
+            box-shadow: 0 8px 20px rgba(122,45,79,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #4a1a2c;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary i { font-size: 1.8rem; color: #7a2d4f; transition: transform 0.3s ease; }
+        details[open] summary i { transform: rotate(180deg); }
+        summary .titulo-principal { flex: 1; }
+        summary .badge-pulsa {
+            background: #fce4ec;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #880e4f;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #fce4ec;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej { background: #7a2d4f; color: white; font-weight: 700; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.9rem; }
+        .cabecera-ej .titulo-ej { font-weight: 600; font-size: 1.2rem; color: #0b1e33; }
+        .enunciado-ej { margin-bottom: 1rem; background: #f9fafb; padding: 0.8rem 1.2rem; border-radius: 12px; border-left: 4px solid #94a3b8; }
+        .solucion-ej { background: #f1f5f9; padding: 1.2rem 1.8rem; border-radius: 16px; border: 1px solid #cbd5e1; font-size: 0.98rem; }
+        .solucion-ej .paso { margin: 0.6rem 0; }
+        .solucion-ej .paso strong { color: #7a2d4f; }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #fce4ec;
+            border-radius: 40px;
+            border-left: 6px solid #7a2d4f;
+            font-weight: 500;
+            color: #4a1a2c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i { font-size: 1.6rem; color: #7a2d4f; }
+        .footer {
+            background: #4a1a2c;
+            color: white;
+            padding: 24px 40px;
+            text-align: center;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        .footer a { color: #fcd34d; text-decoration: none; }
+        .btn-volver { display: inline-block; padding: 12px 24px; background: #fcd34d; color: #4a1a2c; text-decoration: none; border-radius: 12px; font-weight: bold; }
+        .btn-volver:hover { background: #fbbf24; }
+        @media (max-width: 768px) {
+            .header { padding: 20px; flex-direction: column; align-items: stretch; text-align: center; }
+            .header h1 { font-size: 1.6rem; justify-content: center; }
+            .nav-tabs { justify-content: center; }
+            .section { padding: 20px; }
+        }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+<div class="container" id="top">
+
+    <!-- HEADER -->
+    <header class="header">
+        <div>
+            <h1><i class="fas fa-spinner"></i> Espín: ¿giro real?</h1>
+            <p>La propuesta de Uhlenbeck y Goudsmit y la contradicción con la relatividad</p>
+        </div>
+        <nav class="nav-tabs">
+            <a href="#intro" class="active"><i class="fas fa-home"></i> Intro</a>
+            <a href="#propuesta"><i class="fas fa-lightbulb"></i> Propuesta</a>
+            <a href="#modelo"><i class="fas fa-cog"></i> Modelo</a>
+            <a href="#calculo"><i class="fas fa-calculator"></i> Cálculo</a>
+            <a href="#contradiccion"><i class="fas fa-exclamation-triangle"></i> Contradicción</a>
+            <a href="#ejercicios"><i class="fas fa-pencil-alt"></i> Ejercicios</a>
+        </nav>
+    </header>
+
+    <!-- INTRODUCCIÓN -->
+    <section class="section" id="intro">
+        <h2><i class="fas fa-info-circle"></i> Contexto histórico</h2>
+        <p>Tras el experimento de Stern-Gerlach (1922), quedó claro que el momento magnético del electrón estaba cuantizado. Pero ¿qué era lo que producía ese momento magnético? En 1925, los físicos holandeses <strong>George Uhlenbeck</strong> y <strong>Samuel Goudsmit</strong> propusieron una explicación audaz: el electrón posee un <strong>momento angular intrínseco</strong>, como si estuviera <strong>girando sobre sí mismo</strong>.</p>
+        <p>Llamaron a esta propiedad <strong>espín</strong> (del inglés 'spin', que significa 'giro'). La idea era que el electrón se comporta como una <strong>esfera maciza cargada</strong> que rota, generando así un momento magnético.</p>
+        <div class="note">
+            <i class="fas fa-lightbulb"></i> <strong>La idea clave:</strong> Si el electrón gira como una peonza, su carga en movimiento crea una corriente que produce un campo magnético, es decir, un momento magnético.
+        </div>
+    </section>
+
+    <!-- LA PROPUESTA -->
+    <section class="section" id="propuesta">
+        <h2><i class="fas fa-lightbulb"></i> La propuesta de Uhlenbeck y Goudsmit</h2>
+        <p>Uhlenbeck y Goudsmit propusieron que:</p>
+        <ul style="line-height:2; padding-left:20px; margin-bottom:16px;">
+            <li>El electrón tiene un <strong>momento angular intrínseco</strong> \( \vec{S} \) independiente de su movimiento orbital.</li>
+            <li>Su proyección sobre cualquier eje está cuantizada: \( S_z = \pm \frac{1}{2}\hbar \).</li>
+            <li>El momento magnético asociado es \( \vec{\mu} = -g \frac{e}{2m_e} \vec{S} \), con \( g \approx 2 \).</li>
+            <li>El electrón se comporta como una <strong>esfera uniformemente cargada</strong> que gira sobre su eje.</li>
+        </ul>
+        <p>Este modelo explicaba perfectamente el resultado de Stern-Gerlach: el electrón solo puede tener dos orientaciones de giro ("arriba" y "abajo").</p>
+        <div style="background:#e0f2fe; padding:14px 20px; border-radius:12px; margin:10px 0;">
+            <i class="fas fa-rocket" style="color:#0369a1;"></i>
+            <strong>Éxito inicial:</strong> El modelo del espín como giro mecánico parecía funcionar. Pero había un problema enorme...
+        </div>
+    </section>
+
+    <!-- MODELO DE LA ESFERA MACIZA -->
+    <section class="section" id="modelo">
+        <h2><i class="fas fa-cog"></i> Modelo de la esfera maciza giratoria</h2>
+        <p>Para que el espín fuera un giro real, el electrón debería ser una esfera con un radio finito \( r \), masa \( m_e \) y carga \( e \). El momento angular de una esfera uniforme que gira con velocidad angular \( \omega \) es:</p>
+        <div class="formula-box">
+            \[ S = I \omega = \frac{2}{5} m_e r^2 \omega \]
+        </div>
+        <p>La velocidad tangencial en el ecuador de la esfera es:</p>
+        <div class="formula-box">
+            \[ v = \omega r = \frac{5}{2} \frac{S}{m_e r} \]
+        </div>
+        <p>Si el espín tiene el valor \( S = \frac{1}{2}\hbar \), entonces:</p>
+        <div class="formula-box">
+            \[ v = \frac{5}{2} \frac{\hbar}{2 m_e r} = \frac{5\hbar}{4 m_e r} \]
+        </div>
+        <p>Para poder calcular \( v \), necesitamos el radio del electrón. En la física clásica, el <strong>radio de Thomson</strong> (o radio clásico del electrón) es:</p>
+        <div class="formula-box">
+            \[ r_e = \frac{e^2}{4\pi \epsilon_0 m_e c^2} \approx 2.82 \times 10^{-15} \, \text{m} \]
+        </div>
+        <p>Este radio se obtiene igualando la energía electrostática de una esfera cargada con su energía en reposo \( m_e c^2 \).</p>
+        <div class="note">
+            <i class="fas fa-info-circle"></i> <strong>Observación:</strong> El radio clásico del electrón es una estimación basada en argumentos puramente electromagnéticos. En la física moderna, el electrón se considera una partícula puntual (sin radio medible).
+        </div>
+    </section>
+
+    <!-- CÁLCULO DE LA VELOCIDAD -->
+    <section class="section" id="calculo">
+        <h2><i class="fas fa-calculator"></i> Cálculo de la velocidad tangencial</h2>
+        <p>Sustituyendo los valores numéricos en la fórmula de la velocidad tangencial:</p>
+        <ul style="line-height:2; padding-left:20px; margin-bottom:16px;">
+            <li>\( \hbar = 1.054 \times 10^{-34} \, \text{J·s} \)</li>
+            <li>\( m_e = 9.109 \times 10^{-31} \, \text{kg} \)</li>
+            <li>\( r_e = 2.82 \times 10^{-15} \, \text{m} \)</li>
+        </ul>
+        <div class="formula-box" style="font-size:1.2rem;">
+            \[ v = \frac{5\hbar}{4 m_e r_e} = \frac{5 \cdot 1.054 \times 10^{-34}}{4 \cdot 9.109 \times 10^{-31} \cdot 2.82 \times 10^{-15}} \approx 1.28 \times 10^{11} \, \text{m/s} \]
+        </div>
+        <p>La velocidad de la luz en el vacío es \( c = 2.998 \times 10^8 \, \text{m/s} \). Por tanto:</p>
+        <div class="resultado-destacado">
+            \[ \frac{v}{c} \approx \frac{1.28 \times 10^{11}}{2.998 \times 10^8} \approx 427 \]
+        </div>
+        <p>Es decir, la superficie del electrón tendría que girar a <strong>más de 400 veces la velocidad de la luz</strong>.</p>
+        <div class="note-danger">
+            <i class="fas fa-exclamation-triangle"></i> <strong>Contradicción:</strong> Según la teoría de la relatividad especial de Einstein, ninguna partícula con masa puede alcanzar o superar la velocidad de la luz. Por tanto, el modelo de la esfera giratoria es <strong>incompatible</strong> con la física conocida.
+        </div>
+    </section>
+
+    <!-- CONTRADICCIÓN Y SOLUCIÓN -->
+    <section class="section" id="contradiccion">
+        <h2><i class="fas fa-exclamation-triangle"></i> La contradicción con la relatividad</h2>
+        <p>Uhlenbeck y Goudsmit se dieron cuenta de este problema. Si el electrón girara físicamente, su velocidad superficial superaría la velocidad de la luz, lo que viola la relatividad especial. Esto llevó a una conclusión fundamental:</p>
+        <div style="background:#fce4ec; border-left:6px solid #e53e3e; padding:16px 20px; border-radius:12px; margin:15px 0;">
+            <h3 style="color:#880e4f; font-size:1.2rem;">El espín no es un giro mecánico real</h3>
+            <p style="margin-top:8px; line-height:1.7;">El espín es una <strong>propiedad cuántica intrínseca</strong> de las partículas elementales, <strong>sin análogo clásico</strong>. No se puede visualizar como una esfera que gira, sino como un <strong>grado de libertad interno</strong> descrito por la mecánica cuántica.</p>
+        </div>
+        <p>La teoría que describe formalmente el espín es:</p>
+        <ul style="line-height:2; padding-left:20px; margin:16px 0;">
+            <li><strong>Ecuación de Pauli (1927):</strong> versión no relativista de la mecánica cuántica que incluye el espín de forma fenomenológica.</li>
+            <li><strong>Ecuación de Dirac (1928):</strong> teoría relativista del electrón que <strong>predice el espín de forma natural</strong> a partir de la combinación de la mecánica cuántica y la relatividad especial. En la ecuación de Dirac, el espín surge automáticamente sin necesidad de postular un giro mecánico.</li>
+        </ul>
+        <p>La ecuación de Dirac demostró que el espín es una consecuencia <strong>inevitable</strong> de la relatividad y la mecánica cuántica, y que su valor \( \frac{1}{2}\hbar \) es el único posible para un fermión.</p>
+        <div style="background:#d1fae5; padding:14px 20px; border-radius:12px; margin:10px 0;">
+            <i class="fas fa-gem" style="color:#065f46;"></i>
+            <strong>Conclusión final:</strong> El espín es una propiedad cuántica fundamental, no un giro mecánico. La velocidad superlumínica no es un problema porque el electrón <strong>no gira físicamente</strong>. La ecuación de Dirac resuelve la contradicción de forma elegante.
+        </div>
+    </section>
+
+    <!-- EJERCICIOS -->
+    <details id="ejercicios">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">✏️ Ejercicios de autoevaluación</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Momento angular de una esfera uniforme</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Una esfera uniforme de masa \( m = 1 \, \text{kg} \) y radio \( r = 0.1 \, \text{m} \) gira con velocidad angular \( \omega = 10 \, \text{rad/s} \). Calcula su momento angular.</p>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        Para una esfera uniforme, el momento de inercia es \( I = \frac{2}{5} m r^2 \).<br>
+                        \( I = \frac{2}{5} \cdot 1 \cdot (0.1)^2 = 0.004 \, \text{kg·m}^2 \).<br>
+                        El momento angular es \( S = I \omega = 0.004 \cdot 10 = 0.04 \, \text{kg·m}^2/\text{s} \).
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Velocidad tangencial del electrón</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Demuestra que la velocidad tangencial de la superficie del electrón en el modelo de la esfera giratoria es \( v = \frac{5\hbar}{4 m_e r} \), siendo \( S = \frac{1}{2}\hbar \).</p>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        Partimos de \( S = I \omega = \frac{2}{5} m_e r^2 \omega \).<br>
+                        Despejamos \( \omega = \frac{5S}{2 m_e r^2} \).<br>
+                        La velocidad tangencial es \( v = \omega r = \frac{5S}{2 m_e r} \).<br>
+                        Sustituyendo \( S = \frac{1}{2}\hbar \): \( v = \frac{5}{2} \cdot \frac{1}{2} \frac{\hbar}{m_e r} = \frac{5\hbar}{4 m_e r} \).
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Contradicción con la relatividad</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Usando el resultado del ejercicio anterior, con \( r = 2.82 \times 10^{-15} \, \text{m} \), calcula la velocidad tangencial y compárala con \( c \). ¿Qué concluyes?</p>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        \( v = \frac{5 \cdot 1.054 \times 10^{-34}}{4 \cdot 9.109 \times 10^{-31} \cdot 2.82 \times 10^{-15}} \approx 1.28 \times 10^{11} \, \text{m/s} \).<br>
+                        \( \frac{v}{c} = \frac{1.28 \times 10^{11}}{2.998 \times 10^8} \approx 427 \).<br>
+                        <strong>Conclusión:</strong> La velocidad tangencial supera la velocidad de la luz en más de 400 veces, lo que contradice la relatividad especial. Por tanto, el electrón no puede ser una esfera que gira físicamente.
+                    </div>
+                </div>
+            </div>
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Clave:</strong> El modelo de la esfera giratoria falla porque predice velocidades superlumínicas. La solución es aceptar que el espín es una propiedad cuántica intrínseca, descrita por la ecuación de Dirac, que no requiere un giro mecánico real.</span>
+            </div>
+        </div>
+    </details>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p><i class="fas fa-spinner"></i> El espín no es un giro real – Contradicción con la relatividad</p>
+        <p style="opacity:0.7; font-size:0.85rem; margin-top:4px;">
+            <i class="fas fa-code"></i> Recurso educativo interactivo · 2025
+        </p>
+        <p><a href="#top" class="btn-volver" style="background:#fcd34d; color:#4a1a2c;">Volver arriba</a></p>
+    </footer>
+</div>
+</body>
+</html>

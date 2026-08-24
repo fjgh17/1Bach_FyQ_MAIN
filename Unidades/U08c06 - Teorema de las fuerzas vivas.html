@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 6: Teorema de las Fuerzas Vivas (Teorema de la Energía Cinética)</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.06.- </span>
+                    <span class="texto">Demostración 6: Teorema de las Fuerzas Vivas (Teorema de la Energía Cinética)</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la segunda ley de Newton y de la definición de trabajo mecánico, demostrar que el trabajo neto realizado por todas las fuerzas que actúan sobre un cuerpo es igual a la variación de su energía cinética:</p>
+            <div class="formula-box">
+                \[ W_{\text{neto}} = \Delta E_c = E_{c,f} - E_{c,i} = \frac{1}{2} m v_f^{2} - \frac{1}{2} m v_i^{2} \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c06 - Teorema de las fuerzas vivas.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Generalizar la relación trabajo-energía para cualquier conjunto de fuerzas (conservativas y no conservativas), estableciendo que el trabajo neto siempre se traduce en variación de energía cinética. Este teorema es más general que el principio de conservación de la energía mecánica y permite incluir fuerzas disipativas como el rozamiento.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Planteamiento con fuerzas múltiples</strong>
+                <p>Consideramos un cuerpo de masa \( m \) sobre el que actúan \( n \) fuerzas simultáneamente: \( \vec{F}_1, \vec{F}_2, \ldots, \vec{F}_n \). Estas fuerzas pueden ser conservativas (peso, elástica) o no conservativas (rozamiento, resistencia del aire, fuerzas externas aplicadas).</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Segunda ley de Newton</strong>
+                <p>La fuerza neta o resultante es la suma vectorial de todas las fuerzas:</p>
+                <div class="formula-box">
+                    \[ \vec{F}_{\text{neto}} = \sum_{i=1}^{n} \vec{F}_i = m \vec{a} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Trabajo de la fuerza neta</strong>
+                <p>El trabajo neto es la suma de los trabajos de todas las fuerzas individuales:</p>
+                <div class="formula-box">
+                    \[ W_{\text{neto}} = \sum_{i=1}^{n} W_i = \sum_{i=1}^{n} \int \vec{F}_i \cdot d\vec{r} = \int \vec{F}_{\text{neto}} \cdot d\vec{r} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Sustitución de la fuerza neta</strong>
+                <p>Sustituimos \( \vec{F}_{\text{neto}} = m\vec{a} \):</p>
+                <div class="formula-box">
+                    \[ W_{\text{neto}} = \int m \vec{a} \cdot d\vec{r} = m \int \vec{a} \cdot d\vec{r} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Relación entre aceleración y velocidad</strong>
+                <p>Recordamos que la aceleración es la derivada temporal de la velocidad: \( \vec{a} = \frac{d\vec{v}}{dt} \). Además, el desplazamiento infinitesimal es \( d\vec{r} = \vec{v} \, dt \). Sustituyendo:</p>
+                <div class="formula-box">
+                    \[ W_{\text{neto}} = m \int \frac{d\vec{v}}{dt} \cdot \vec{v} \, dt = m \int \vec{v} \cdot d\vec{v} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Evaluación de la integral</strong>
+                <p>La integral del producto escalar \( \vec{v} \cdot d\vec{v} \) es:</p>
+                <div class="formula-box">
+                    \[ \int \vec{v} \cdot d\vec{v} = \int v \, dv = \frac{v^{2}}{2} \]
+                </div>
+                <p>Evaluando entre la velocidad inicial \( v_i \) y final \( v_f \):</p>
+                <div class="formula-box">
+                    \[ W_{\text{neto}} = m \left[ \frac{v^{2}}{2} \right]_{v_i}^{v_f} = \frac{1}{2} m v_f^{2} - \frac{1}{2} m v_i^{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Identificación con la energía cinética</strong>
+                <p>Reconociendo las expresiones de energía cinética inicial y final:</p>
+                <div class="formula-box">
+                    \[ W_{\text{neto}} = E_{c,f} - E_{c,i} = \Delta E_c \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">8</span>
+                <strong>Descomposición del trabajo neto</strong>
+                <p>Es útil separar el trabajo neto en trabajo de fuerzas conservativas \( W_c \) y trabajo de fuerzas no conservativas \( W_{nc} \):</p>
+                <div class="formula-box">
+                    \[ W_{\text{neto}} = W_c + W_{nc} = \Delta E_c \]
+                </div>
+                <p>Como el trabajo de las fuerzas conservativas es \( W_c = -\Delta E_p \), obtenemos:</p>
+                <div class="formula-box">
+                    \[ -\Delta E_p + W_{nc} = \Delta E_c \]
+                </div>
+                <p>Reordenando:</p>
+                <div class="formula-box">
+                    \[ W_{nc} = \Delta E_c + \Delta E_p = \Delta E_m \]
+                </div>
+                <p>El trabajo de las fuerzas no conservativas es igual a la variación de la energía mecánica total.</p>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ W_{\text{neto}} = \Delta E_c = \frac{1}{2} m v_f^{2} - \frac{1}{2} m v_i^{2} \]
+            </div>
+            <p>El teorema de las fuerzas vivas establece que el trabajo neto realizado sobre un cuerpo se transforma integramente en variación de su energía cinética. Cuando solo actúan fuerzas conservativas, este teorema se reduce al principio de conservación de la energía mecánica. Cuando existen fuerzas no conservativas (como el rozamiento), su trabajo representa la pérdida de energía mecánica del sistema.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Este teorema es más general y poderoso que el principio de conservación de la energía mecánica, ya que no requiere que todas las fuerzas sean conservativas. Es fundamental que los estudiantes distingan entre: (a) <strong>trabajo neto</strong> = variación de energía cinética (siempre válido), y (b) <strong>trabajo de fuerzas no conservativas</strong> = variación de energía mecánica. Un ejercicio recomendado es resolver el mismo problema con rozamiento usando ambos enfoques: (1) dinámica newtoniana con aceleración, y (2) teorema de la energía cinética, para apreciar la elegancia del método energético. El nombre histórico "fuerzas vivas" (vis viva) proviene de Leibniz y refleja la visión del movimiento como una "fuerza viva" almacenada en el cuerpo.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO el Teorema de las Fuerzas Vivas (Teorema de la Energía Cinética)</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Frenado y coeficiente de rozamiento -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Frenado de un vehículo y coeficiente de rozamiento</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un coche de 1200 kg circula a 72 km/h y frena hasta detenerse en una distancia de 50 m. Calcula:</p>
+                <ul>
+                    <li>a) El trabajo neto realizado sobre el coche.</li>
+                    <li>b) La fuerza media de rozamiento (supuesta constante).</li>
+                    <li>c) El coeficiente de rozamiento dinámico.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) \( v_i = 72 \, \text{km/h} = 20 \, \text{m/s} \), \( v_f = 0 \).</p>
+                    <p>\( W_{\text{neto}} = \Delta E_c = 0 - \frac{1}{2} \cdot 1200 \cdot 20^2 = -240\,000 \, \text{J} = -2,4 \times 10^5 \, \text{J} \).</p>
+                    <p>b) La única fuerza horizontal que actúa es el rozamiento (opuesto al movimiento): \( W_{\text{neto}} = -F_r \cdot d \).</p>
+                    <p>\( -F_r \cdot 50 = -240\,000 \Rightarrow F_r = 4\,800 \, \text{N} \).</p>
+                    <p>c) \( F_r = \mu m g \Rightarrow \mu = \frac{F_r}{m g} = \frac{4800}{1200 \cdot 9,8} \approx 0,408 \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Fuerza oblicua con rozamiento -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Tirón oblicuo con rozamiento en superficie horizontal</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un bloque de 8,0 kg se encuentra en reposo sobre una superficie horizontal. Se aplica una fuerza de 50 N que forma 30° con la horizontal, y el coeficiente de rozamiento es 0,25. Si el bloque se desplaza 6,0 m, calcula la velocidad final.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Fuerzas: componente horizontal de la fuerza aplicada: \( F_x = 50 \cos 30^\circ \approx 43,3 \, \text{N} \).</p>
+                    <p>Componente vertical de la fuerza: \( F_y = 50 \sin 30^\circ = 25 \, \text{N} \) (hacia arriba, reduce la normal).</p>
+                    <p>Normal: \( N = m g - F_y = 8 \cdot 9,8 - 25 = 78,4 - 25 = 53,4 \, \text{N} \).</p>
+                    <p>Fuerza de rozamiento: \( F_r = \mu N = 0,25 \cdot 53,4 \approx 13,35 \, \text{N} \).</p>
+                    <p>Fuerza neta horizontal: \( F_{\text{neto}} = F_x - F_r = 43,3 - 13,35 \approx 29,95 \, \text{N} \).</p>
+                    <p>Trabajo neto: \( W_{\text{neto}} = F_{\text{neto}} \cdot d = 29,95 \cdot 6,0 \approx 179,7 \, \text{J} \).</p>
+                    <p>Por el teorema: \( \Delta E_c = W_{\text{neto}} \Rightarrow \frac{1}{2} m v_f^2 - 0 = 179,7 \).</p>
+                    <p>\( v_f = \sqrt{\frac{2 \cdot 179,7}{8}} = \sqrt{44,925} \approx 6,70 \, \text{m/s} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Ascenso con rozamiento en plano inclinado -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Subida por plano inclinado con rozamiento</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un bloque de 5,0 kg es lanzado hacia arriba por un plano inclinado 25° con velocidad inicial de 8,0 m/s. El coeficiente de rozamiento es 0,30. Calcula la distancia que recorre hasta detenerse.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Sobre el bloque actúan: peso (con componente paralela y normal), normal y rozamiento.</p>
+                    <p>Componente del peso paralela al plano: \( P_{\parallel} = m g \sin 25^\circ = 5 \cdot 9,8 \cdot 0,4226 \approx 20,71 \, \text{N} \) (hacia abajo).</p>
+                    <p>Normal: \( N = m g \cos 25^\circ = 5 \cdot 9,8 \cdot 0,9063 \approx 44,41 \, \text{N} \).</p>
+                    <p>Rozamiento: \( F_r = \mu N = 0,30 \cdot 44,41 \approx 13,32 \, \text{N} \) (hacia abajo).</p>
+                    <p>Fuerza neta a lo largo del plano (frenadora): \( F_{\text{neto}} = P_{\parallel} + F_r = 20,71 + 13,32 \approx 34,03 \, \text{N} \).</p>
+                    <p>El trabajo neto es: \( W_{\text{neto}} = -F_{\text{neto}} \cdot d \) (negativo, porque la fuerza neta es opuesta al desplazamiento).</p>
+                    <p>Inicial: \( E_{c,i} = \frac{1}{2} \cdot 5 \cdot 8^2 = 160 \, \text{J} \), final \( E_{c,f} = 0 \).</p>
+                    <p>\( \Delta E_c = -160 \, \text{J} = -F_{\text{neto}} \cdot d \Rightarrow d = \frac{160}{34,03} \approx 4,70 \, \text{m} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Caída vertical con resistencia del aire -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Caída vertical con resistencia del aire</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un objeto de 0,80 kg se deja caer desde una altura de 12 m. Llega al suelo con una velocidad de 10 m/s. Calcula el trabajo realizado por la resistencia del aire (fuerza no conservativa).</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Inicial: \( E_{c,i} = 0 \), \( E_{p,i} = m g h = 0,8 \cdot 9,8 \cdot 12 = 94,08 \, \text{J} \).</p>
+                    <p>Final (suelo): \( E_{p,f} = 0 \), \( E_{c,f} = \frac{1}{2} \cdot 0,8 \cdot 10^2 = 40 \, \text{J} \).</p>
+                    <p>El trabajo neto es: \( W_{\text{neto}} = \Delta E_c = 40 - 0 = 40 \, \text{J} \).</p>
+                    <p>Pero \( W_{\text{neto}} = W_{\text{peso}} + W_{\text{aire}} \). El trabajo del peso es \( W_{\text{peso}} = -\Delta E_p = -(0 - 94,08) = 94,08 \, \text{J} \).</p>
+                    <p>Por tanto: \( 94,08 + W_{\text{aire}} = 40 \Rightarrow W_{\text{aire}} = 40 - 94,08 = -54,08 \, \text{J} \).</p>
+                    <p>La resistencia del aire realiza trabajo negativo (disipa energía).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Montaña rusa con rozamiento (pérdida de energía) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Montaña rusa con rozamiento</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un coche de 150 kg (incluidos ocupantes) en una montaña rusa parte del reposo desde una altura de 25 m. Al llegar al suelo, su velocidad es de 18 m/s. Calcula el trabajo de las fuerzas no conservativas (rozamiento y resistencia del aire) durante el recorrido.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Inicial: \( E_{c,i} = 0 \), \( E_{p,i} = m g h = 150 \cdot 9,8 \cdot 25 = 36\,750 \, \text{J} \).</p>
+                    <p>Final (suelo): \( E_{p,f} = 0 \), \( E_{c,f} = \frac{1}{2} \cdot 150 \cdot 18^2 = 0,5 \cdot 150 \cdot 324 = 24\,300 \, \text{J} \).</p>
+                    <p>La energía mecánica inicial es \( E_{m,i} = 36\,750 \, \text{J} \), la final es \( E_{m,f} = 24\,300 \, \text{J} \).</p>
+                    <p>La variación de energía mecánica es \( \Delta E_m = E_{m,f} - E_{m,i} = 24\,300 - 36\,750 = -12\,450 \, \text{J} \).</p>
+                    <p>Por el teorema: \( W_{nc} = \Delta E_m = -12\,450 \, \text{J} \).</p>
+                    <p>Las fuerzas no conservativas han realizado un trabajo negativo de 12,45 kJ, que corresponde a la energía perdida por rozamiento y resistencia.</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> El teorema de las fuerzas vivas (\( W_{\text{neto}} = \Delta E_c \)) es la herramienta más general de la mecánica energética. A diferencia de la conservación de la energía mecánica, <em>siempre</em> es aplicable, independientemente de que actúen fuerzas conservativas o no. Es crucial que los estudiantes aprendan a calcular el trabajo neto como la suma de los trabajos de todas las fuerzas (cada una con su signo) y lo igualen a la variación de energía cinética. Un error común es olvidar incluir el trabajo del peso o de la normal cuando no son perpendiculares al desplazamiento. La descomposición \( W_{nc} = \Delta E_m \) es especialmente útil para entender la disipación de energía en sistemas reales.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

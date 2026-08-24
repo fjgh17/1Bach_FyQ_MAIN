@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.02 - Demostración: Fórmula general de alcanos acíclicos</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 20px 30px 30px 30px;
+            background: #fefefe;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+        }
+        details summary {
+            padding: 16px 24px;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1e293b;
+            cursor: pointer;
+            list-style: none;          /* Oculta el triángulo por defecto */
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #f1f5f9;
+        }
+        /* Oculta el triángulo en navegadores WebKit */
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        /* Icono que rota al abrir/cerrar */
+        details summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        /* Contenido interno del desplegable */
+        .details-content {
+            padding: 0 24px 24px 24px;
+        }
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .ejercicio-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #edf2f7;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #2d3748;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ejercicio-card .card-header .badge {
+            background: #4a5568;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8em;
+        }
+        .ejercicio-card .card-body {
+            padding: 18px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .ejercicio-card .card-body .resolucion {
+            background: #f0fff4;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .ejercicio-card .card-body .resolucion .paso {
+            margin: 8px 0;
+        }
+        .pie-didactico {
+            background: #fef9e7;
+            border-left: 6px solid #f59e0b;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: #78350f;
+        }
+        .pie-didactico strong {
+            color: #92400e;
+        }
+
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            details { margin: 10px; }
+            .details-content { padding: 0 16px 16px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.01.- </span>
+                <span class="texto">Demostración: Fórmula general de alcanos acíclicos</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la definición de alcano como hidrocarburo acíclico saturado en el que todos los enlaces carbono-carbono son sencillos y cada átomo de carbono presenta hibridación \( sp^3 \) con cuatro enlaces covalentes, demostrar que la fórmula general de los alcanos acíclicos es:</p>
+        <div class="formula-box">
+            \( C_nH_{2n+2} \)
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c01 - Deducción de la fórmula general de los alcanos acíclicos.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Se busca establecer una relación algebraica general que permita conocer el número de átomos de hidrógeno de cualquier alcano acíclico a partir únicamente del número de átomos de carbono \( n \). Esta fórmula es fundamental porque:</p>
+        <ul>
+            <li>Permite verificar si una fórmula molecular corresponde a un alcano saturado.</li>
+            <li>Sirve de base para deducir las fórmulas de otros grupos funcionales (alquenos, alquinos, cicloalcanos).</li>
+            <li>Facilita el cálculo del grado de insaturación de cualquier compuesto orgánico.</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Analizar la valencia del carbono.</strong> El carbono es tetravalente, es decir, forma exactamente 4 enlaces covalentes. En un alcano saturado, todos estos enlaces son sencillos (\( \sigma \)).
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Considerar una cadena lineal de \( n \) átomos de carbono.</strong> Los carbonos se unen entre sí mediante enlaces C—C. En una cadena abierta de \( n \) carbonos existen exactamente \( n-1 \) enlaces C—C.
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Calcular los enlaces disponibles para hidrógeno.</strong> Cada carbono tiene 4 enlaces totales. Los enlaces C—C consumen 2 enlaces por cada carbono intermedio y 1 enlace para cada carbono terminal. Equivalentemente, el número total de enlaces C—C es \( n-1 \), por lo que los enlaces disponibles para hidrógeno son:
+            <div class="formula-box">
+                \( \text{Enlaces C—H} = 4n - 2(n-1) = 4n - 2n + 2 = 2n + 2 \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Verificación con ejemplos concretos:</strong>
+            <ul>
+                <li>Metano (\( n=1 \)): \( 2(1) + 2 = 4 \) hidrógenos \( \rightarrow CH_4 \) ✓</li>
+                <li>Etano (\( n=2 \)): \( 2(2) + 2 = 6 \) hidrógenos \( \rightarrow C_2H_6 \) ✓</li>
+                <li>Propano (\( n=3 \)): \( 2(3) + 2 = 8 \) hidrógenos \( \rightarrow C_3H_8 \) ✓</li>
+                <li>Butano (\( n=4 \)): \( 2(4) + 2 = 10 \) hidrógenos \( \rightarrow C_4H_{10} \) ✓</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Generalización inductiva.</strong> Como el patrón se cumple para todos los casos, la fórmula general válida para cualquier alcano acíclico saturado es:
+            <div class="formula-box">
+                \( \boxed{C_nH_{2n+2}} \)
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Esta fórmula solo es válida para hidrocarburos acíclicos saturados. Si el compuesto presenta anillos, dobles o triples enlaces, el número de hidrógenos disminuye. Esta fórmula constituye el punto de partida para introducir el concepto de <em>grado de insaturación</em> (IHD).
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Fórmula general de los alcanos acíclicos</strong><br>
+            \( \boxed{C_nH_{2n+2}} \)
+        </div>
+        <p>La demostración realizada mediante el conteo de enlaces valida que para cualquier número \( n \geq 1 \) de átomos de carbono en una cadena abierta, el número de hidrógenos es \( 2n+2 \). Esta relación se cumple para todos los alcanos lineales y ramificados, ya que el número de enlaces C—C en una molécula acíclica siempre es \( n-1 \), independientemente de la ramificación.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> La fórmula \( C_nH_{2n+2} \) es una herramienta fundamental para la identificación y clasificación de hidrocarburos saturados.</p>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS
+         ================================================== -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO Demostración: Fórmula general de alcanos acíclicos</span>
+            <span style="margin-left: auto; font-size: 0.8em; color: #64748b; font-weight: 400;">
+                <i class="fas fa-hand-pointer"></i> Pulsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 1</span>
+                    Aplicación directa: escribir fórmula y nombre
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Dado un alcano acíclico con \( n = 8 \) átomos de carbono:
+                        <ul>
+                            <li>a) Escribe su fórmula molecular.</li>
+                            <li>b) Nombra el compuesto (cadena lineal).</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. Aplicamos la fórmula general: \( C_nH_{2n+2} \).</div>
+                        <div class="paso">2. Sustituimos \( n = 8 \): \( C_8H_{2\cdot8+2} = C_8H_{18} \).</div>
+                        <div class="paso">3. El nombre para una cadena lineal de 8 carbonos es <strong>octano</strong>.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Resultado: \( C_8H_{18} \) → octano.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 2</span>
+                    Verificación de fórmula molecular
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Un hidrocarburo tiene fórmula molecular \( C_6H_{14} \). ¿Puede ser un alcano acíclico? Justifica la respuesta y, si es así, nómbralo (considera la cadena lineal).
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. Para un alcano acíclico, la fórmula debe cumplir \( C_nH_{2n+2} \).</div>
+                        <div class="paso">2. Aquí \( n = 6 \), por lo que el número de H esperado es \( 2\cdot6+2 = 14 \).</div>
+                        <div class="paso">3. La fórmula dada \( C_6H_{14} \) coincide exactamente → es un alcano.</div>
+                        <div class="paso">4. Su nombre lineal es <strong>hexano</strong>.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Sí, es un alcano. Fórmula: \( C_6H_{14} \) → hexano.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 3</span>
+                    Determinación de \( n \) a partir de la masa molar
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Un alcano acíclico tiene una masa molar de \( 72 \, \text{g/mol} \). Determina su fórmula molecular y su nombre (cadena lineal).
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. La masa molar de un alcano es \( M = 12n + 1\cdot(2n+2) = 14n + 2 \) (en g/mol).</div>
+                        <div class="paso">2. Igualamos: \( 14n + 2 = 72 \) → \( 14n = 70 \) → \( n = 5 \).</div>
+                        <div class="paso">3. Fórmula molecular: \( C_5H_{2\cdot5+2} = C_5H_{12} \).</div>
+                        <div class="paso">4. Nombre lineal: <strong>pentano</strong>.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ \( C_5H_{12} \) → pentano.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 4</span>
+                    Comparación con cicloalcanos (insaturación)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Un compuesto tiene fórmula \( C_5H_{10} \). Explica por qué <strong>no</strong> puede ser un alcano acíclico y sugiere qué tipo de compuesto podría ser.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. Si fuera un alcano acíclico, con \( n=5 \) debería tener \( 2\cdot5+2 = 12 \) hidrógenos.</div>
+                        <div class="paso">2. Sin embargo, tiene solo 10 H, lo que indica que le faltan 2 H.</div>
+                        <div class="paso">3. Esa diferencia de 2 H corresponde a <strong>un grado de insaturación</strong> (un doble enlace o un ciclo).</div>
+                        <div class="paso">4. Podría ser un <strong>cicloalcano</strong> (p. ej. ciclopentano, \( C_5H_{10} \)) o un <strong>alqueno</strong> de cadena abierta (p. ej. pent-1-eno).</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ No es alcano; es un cicloalcano o un alqueno.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 5</span>
+                    Aplicación en combustión (contexto real)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Se queman completamente \( 2{,}5 \, \text{mol} \) de un alcano acíclico de 7 carbonos. Calcula los moles de \( CO_2 \) y \( H_2O \) producidos.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. El alcano es \( C_7H_{2\cdot7+2} = C_7H_{16} \) (heptano).</div>
+                        <div class="paso">2. Ecuación de combustión ajustada:<br>
+                            \( C_7H_{16} + 11\,O_2 \rightarrow 7\,CO_2 + 8\,H_2O \).<br>
+                            (Por cada mol de alcano se producen 7 mol de \( CO_2 \) y 8 mol de \( H_2O \)).
+                        </div>
+                        <div class="paso">3. Para \( 2{,}5 \, \text{mol} \) de alcano:<br>
+                            \( CO_2 = 2{,}5 \times 7 = 17{,}5 \, \text{mol} \)<br>
+                            \( H_2O = 2{,}5 \times 8 = 20 \, \text{mol} \).
+                        </div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Se producen \( 17{,}5 \, \text{mol} \) de \( CO_2 \) y \( 20 \, \text{mol} \) de \( H_2O \).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-didactico">
+                <strong>🧠 Observaciones claves:</strong> La fórmula \( C_nH_{2n+2} \) no solo permite escribir la fórmula de cualquier alcano, sino que también es la base para detectar <em>insaturaciones</em> o <em>ciclos</em> comparando con el número real de hidrógenos. Dominar esta relación es el primer paso para entender toda la química de los hidrocarburos y sus derivados.
+            </div>
+
+        </div><!-- fin details-content -->
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div><!-- fin container -->
+</body>
+</html>

@@ -1,0 +1,651 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.09 - Demostración: Relación entre fórmula molecular, empírica y semidesarrollada</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            margin: 20px 0;
+        }
+        .flow-box {
+            background: #ffffff;
+            border: 3px solid;
+            border-radius: 14px;
+            padding: 18px 28px;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+        .flow-box.molecular { border-color: #4299e1; background: #ebf8ff; }
+        .flow-box.empirical { border-color: #48bb78; background: #f0fff4; }
+        .flow-box.semi { border-color: #ed8936; background: #fffaf0; }
+        .flow-box.developed { border-color: #a0aec0; background: #f7fafc; }
+        .flow-arrow {
+            font-size: 2em;
+            color: #667eea;
+            margin: 4px 0;
+        }
+        .flow-label {
+            font-size: 0.8em;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 20px 30px 30px 30px;
+            background: #fefefe;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+        }
+        details summary {
+            padding: 16px 24px;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1e293b;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #f1f5f9;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 0 24px 24px 24px;
+        }
+        .ejercicio-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #edf2f7;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #2d3748;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ejercicio-card .card-header .badge {
+            background: #4a5568;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8em;
+        }
+        .ejercicio-card .card-body {
+            padding: 18px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .ejercicio-card .card-body .resolucion {
+            background: #f0fff4;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .ejercicio-card .card-body .resolucion .paso {
+            margin: 8px 0;
+        }
+        .pie-didactico {
+            background: #fef9e7;
+            border-left: 6px solid #f59e0b;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: #78350f;
+        }
+        .pie-didactico strong {
+            color: #92400e;
+        }
+
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            details { margin: 10px; }
+            .details-content { padding: 0 16px 16px 16px; }
+            .flow-box { max-width: 100%; padding: 14px 18px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.08.- </span>
+                <span class="texto">Demostración: Relación entre fórmula molecular, empírica y semidesarrollada</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la definición de cada tipo de fórmula química, demostrar la relación jerárquica entre la <strong>fórmula molecular</strong>, la <strong>fórmula empírica</strong> y la <strong>fórmula semidesarrollada</strong>, estableciendo cómo se obtiene una a partir de otra y qué información estructural aporta cada una.</p>
+        <div class="formula-box">
+            Fórmula molecular \( \rightarrow \) Fórmula empírica (simplificación)<br>
+            Fórmula molecular \( \rightarrow \) Fórmula semidesarrollada (información de conectividad)
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c08 - Relación entre fórmula molecular, fórmula empírica y fórmula semidesarrollada.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Diferenciar claramente los tres niveles de representación de una molécula orgánica y comprender qué información se pierde o se gana en cada transformación. Esto permite al estudiante:</p>
+        <ul>
+            <li>Interpretar correctamente datos experimentales (análisis elemental da fórmula empírica; espectrometría de masas da fórmula molecular).</li>
+            <li>Escribir la fórmula semidesarrollada a partir de la molecular para identificar grupos funcionales.</li>
+            <li>Reconocer que una misma fórmula molecular puede corresponder a múltiples fórmulas semidesarrolladas (isomería).</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definir la fórmula molecular.</strong> Indica el número exacto de átomos de cada elemento presentes en una molécula. Se obtiene experimentalmente mediante espectrometría de masas o a partir de datos de densidad y composición centesimal.
+            <div class="formula-box">
+                Ejemplo: \( C_4H_8O_2 \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Obtener la fórmula empírica.</strong> Se divide cada subíndice de la fórmula molecular por el máximo común divisor (MCD) de todos los subíndices. La fórmula empírica representa la proporción más sencilla entre los átomos.
+            <div class="formula-box">
+                Fórmula molecular: \( C_4H_8O_2 \)<br>
+                MCD(4, 8, 2) = 2<br>
+                Fórmula empírica: \( C_2H_4O \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Relación matemática formal.</strong> Si la fórmula empírica es \( C_aH_bO_c \) y la molecular es \( C_xH_yO_z \), entonces existe un entero positivo \( n \) tal que:
+            <div class="formula-box">
+                \( x = n \cdot a \quad ; \quad y = n \cdot b \quad ; \quad z = n \cdot c \)<br>
+                \( n = \dfrac{M_{\text{molecular}}}{M_{\text{empírica}}} \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Obtener la fórmula semidesarrollada.</strong> A partir de la fórmula molecular, se distribuyen los átomos mostrando todos los enlaces entre carbonos y los grupos funcionales, sin explicitar los enlaces C—H individuales.
+            <div class="formula-box">
+                Ejemplos para \( C_4H_8O_2 \)<br>
+                \( CH_3-CH_2-CH_2-COOH \) &nbsp;&nbsp;<strong>ácido butanoico</strong><br>
+                \( CH_3-COO-CH_2-CH_3 \) &nbsp;&nbsp;<strong>etanoato de etilo</strong><br>
+                \( CH_3-CHOH-CH_2-CHO \) &nbsp;&nbsp;<strong>3-hidroxibutanal</strong>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Diagrama jerárquico de información:</strong>
+            <div class="flow-diagram">
+                <div class="flow-box molecular">
+                    <strong>Fórmula molecular</strong>
+                    <div class="flow-label">\( C_4H_8O_2 \) — Número total de átomos</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box empirical">
+                    <strong>Fórmula empírica</strong>
+                    <div class="flow-label">\( C_2H_4O \) — Proporción más sencilla</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box semi">
+                    <strong>Fórmula semidesarrollada</strong>
+                    <div class="flow-label">\( CH_3-CH_2-CH_2-COOH \) — Conectividad</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-box developed">
+                    <strong>Fórmula desarrollada</strong>
+                    <div class="flow-label">Todos los enlaces explícitos</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Es frecuente que los estudiantes confundan fórmula empírica con fórmula molecular. Se recomienda enfatizar que la fórmula empírica <em>no identifica unívocamente</em> un compuesto: tanto el eteno (\( C_2H_4 \)) como el ciclobutano (\( C_4H_8 \)) comparten la fórmula empírica \( CH_2 \). La fórmula molecular sí identifica la composición exacta, pero no la estructura. Solo la fórmula semidesarrollada (o desarrollada) revela la disposición de los átomos y permite identificar el grupo funcional.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Relaciones fundamentales</strong>
+            <p style="text-align: left; font-size: 0.95em; margin: 10px 0 0 0;">
+                <strong>Fórmula molecular</strong> \( = n \times \) <strong>Fórmula empírica</strong><br><br>
+                <strong>Fórmula semidesarrollada</strong> \( \rightarrow \) aporta información de <em>conectividad</em> a partir de la fórmula molecular<br><br>
+                <strong>Fórmula desarrollada</strong> \( \rightarrow \) muestra <em>todos los enlaces</em> explícitamente
+            </p>
+        </div>
+        <p>La demostración realizada mediante el análisis de las definiciones y ejemplos confirma la relación jerárquica entre los diferentes tipos de fórmulas químicas, así como la información estructural que cada una proporciona.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> La correcta interpretación y transformación entre fórmula molecular, empírica y semidesarrollada es fundamental para el estudio de la química orgánica, permitiendo pasar de la composición elemental a la estructura molecular completa.</p>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS
+         ================================================== -->
+    <details id="ejerciciosDesplegable">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO Relación entre fórmula molecular, empírica y semidesarrollada</span>
+            <span style="margin-left: auto; font-size: 0.8em; color: #64748b; font-weight: 400;">
+                <i class="fas fa-hand-pointer"></i> Pulsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 1</span>
+                    Obtención de la fórmula empírica a partir de la molecular
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Un compuesto tiene fórmula molecular \( C_6H_{12}O_3 \). Escribe su fórmula empírica y justifica el procedimiento.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. Identificamos los subíndices: C=6, H=12, O=3.</div>
+                        <div class="paso">2. Calculamos el máximo común divisor (MCD) de 6, 12 y 3: MCD = 3.</div>
+                        <div class="paso">3. Dividimos cada subíndice por 3: C=2, H=4, O=1.</div>
+                        <div class="paso">4. Fórmula empírica: \( C_2H_4O \).</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ \( C_6H_{12}O_3 \) → \( C_2H_4O \).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 2</span>
+                    Determinación de la fórmula molecular a partir de empírica y masa molar
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> La fórmula empírica de un compuesto es \( CH_2O \) y su masa molar es \( 90 \, \text{g/mol} \). Determina su fórmula molecular.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. Calculamos la masa molar de la fórmula empírica: \( 12 + 2\cdot1 + 16 = 30 \, \text{g/mol} \).</div>
+                        <div class="paso">2. Dividimos la masa molar real entre la empírica: \( n = \dfrac{90}{30} = 3 \).</div>
+                        <div class="paso">3. Multiplicamos los subíndices de la empírica por 3: \( C_3H_6O_3 \).</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Fórmula molecular: \( C_3H_6O_3 \).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 3</span>
+                    Escribir fórmulas semidesarrolladas a partir de la molecular
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Dada la fórmula molecular \( C_3H_6O \), escribe al menos dos fórmulas semidesarrolladas diferentes que sean isómeros de función.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. La fórmula \( C_3H_6O \) tiene un grado de insaturación (IHD = 1), por lo que puede ser aldehído, cetona o alqueno con alcohol/éter.</div>
+                        <div class="paso">2. Isómero 1 (aldehído): \( CH_3-CH_2-CHO \) (propanal).</div>
+                        <div class="paso">3. Isómero 2 (cetona): \( CH_3-CO-CH_3 \) (propanona).</div>
+                        <div class="paso">4. Otro isómero (éter insaturado): \( CH_2=CH-O-CH_3 \) (etenilmetiléter).</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Ejemplos: \( CH_3-CH_2-CHO \), \( CH_3-CO-CH_3 \), \( CH_2=CH-O-CH_3 \).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 4</span>
+                    Comprobación de coherencia entre fórmulas
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Un estudiante propone la fórmula semidesarrollada \( CH_3-CH_2-CH_2-COOH \) para un compuesto de fórmula molecular \( C_4H_8O_2 \). ¿Es correcta? Justifícalo.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. Contamos los átomos en la semidesarrollada: C: 4 (CH₃ + CH₂ + CH₂ + COOH), H: 3+2+2+1 = 8, O: 2.</div>
+                        <div class="paso">2. La fórmula molecular resultante es exactamente \( C_4H_8O_2 \).</div>
+                        <div class="paso">3. Coincide con la dada, por lo que la propuesta es correcta.</div>
+                        <div class="paso">4. Además, el compuesto es el ácido butanoico (un ácido carboxílico saturado).</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Sí, es correcta: \( CH_3-CH_2-CH_2-COOH \) corresponde a \( C_4H_8O_2 \).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 5</span>
+                    Aplicación en análisis elemental (contexto real)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Un compuesto orgánico contiene 52,17 % de C, 13,04 % de H y el resto oxígeno. Su masa molar es \( 46 \, \text{g/mol} \). Determina su fórmula molecular y escribe una posible fórmula semidesarrollada.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. %O = 100 - 52,17 - 13,04 = 34,79 %.</div>
+                        <div class="paso">2. Calculamos moles de cada elemento en 100 g: C: 52,17/12 = 4,3475; H: 13,04/1 = 13,04; O: 34,79/16 = 2,174.</div>
+                        <div class="paso">3. Dividimos por el menor (2,174): C: 2,0; H: 6,0; O: 1,0 → fórmula empírica \( C_2H_6O \).</div>
+                        <div class="paso">4. Masa molar empírica = 24+6+16 = 46 g/mol, que coincide con la dada → fórmula molecular \( C_2H_6O \).</div>
+                        <div class="paso">5. Posibles semidesarrolladas: etanol \( CH_3-CH_2OH \) o éter metílico \( CH_3-O-CH_3 \).</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Fórmula molecular: \( C_2H_6O \). Posible semidesarrollada: etanol (\( CH_3-CH_2OH \)).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-didactico">
+                <strong>🧠 Observaciones claves:</strong> La fórmula molecular es la "fotografía de la composición" de una molécula, pero no su "plano estructural". La fórmula empírica es una simplificación que oculta la verdadera identidad (muchos compuestos comparten la misma empírica). Solo la fórmula semidesarrollada (o desarrollada) revela la conectividad y permite identificar el grupo funcional, la cadena y la posible isomería. Dominar estas relaciones es esencial para interpretar datos analíticos y para la formulación química.
+            </div>
+
+        </div><!-- fin details-content -->
+    </details>
+
+</div><!-- fin container -->
+
+<script>
+    // Forzar la re-renderización de MathJax cuando se abre el desplegable
+    document.addEventListener('DOMContentLoaded', function() {
+        const details = document.getElementById('ejerciciosDesplegable');
+        if (details) {
+            details.addEventListener('toggle', function() {
+                if (this.open && window.MathJax && window.MathJax.typesetPromise) {
+                    MathJax.typesetPromise();
+                }
+            });
+        }
+    });
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.03. Tercera Ley de Newton</title>
+    <!-- MathJax para fórmulas -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        /* Ocultar el triángulo nativo del navegador */
+        details summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* Contenedor principal del desplegable */
+        .desplegable-didactico {
+            margin: 25px 30px 30px 30px;
+            border: 2px solid #667eea;
+            border-radius: 16px;
+            background: #f8faff;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .desplegable-didactico summary {
+            padding: 18px 24px;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2d3748;
+            background: #edf2ff;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .desplegable-didactico summary:hover {
+            background: #dce3ff;
+        }
+        .desplegable-didactico summary i {
+            font-size: 1.6em;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+        /* Rotación del icono al abrir */
+        .desplegable-didactico[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+
+        /* Contenido interno */
+        .desplegable-contenido {
+            padding: 20px 28px 30px 28px;
+        }
+        .desplegable-contenido .ejercicio {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 18px 22px;
+            margin-bottom: 25px;
+            border-left: 6px solid #667eea;
+        }
+        .desplegable-contenido .ejercicio-header {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.15em;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .desplegable-contenido .ejercicio-header .num {
+            background: #667eea;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.85em;
+        }
+        .desplegable-contenido .ejercicio-enunciado {
+            margin-bottom: 12px;
+            font-style: italic;
+            color: #4a5568;
+        }
+        .desplegable-contenido .resolucion {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 16px 20px;
+            border: 1px solid #e2e8f0;
+            margin-top: 8px;
+        }
+        .desplegable-contenido .resolucion p {
+            margin-bottom: 8px;
+        }
+        .desplegable-contenido .resolucion .formula-box {
+            background: #e9edf5;
+            border-color: #b0bdd0;
+        }
+        .pie-didactico {
+            background: #eef2ff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 20px;
+            border-left: 5px solid #667eea;
+            font-weight: 500;
+            color: #2d3748;
+        }
+        .pie-didactico i {
+            color: #667eea;
+            margin-right: 8px;
+        }
+        /* Ajustes para móviles */
+        @media (max-width: 600px) {
+            .desplegable-didactico summary {
+                font-size: 1.0em;
+                padding: 14px 16px;
+            }
+            .desplegable-contenido {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T07.03.- </span>
+                    <span class="texto">Tercera Ley de Newton</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES PRINCIPALES -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de fuerza como interacción entre dos cuerpos, y del principio de conservación del momento lineal para un sistema aislado de dos partículas, demostrar que las fuerzas que dos cuerpos ejercen mutuamente entre sí son iguales en módulo, de la misma dirección y de sentidos opuestos.</p>
+            <div class="formula-box">
+                \[ \vec{F}_{A \to B} = -\vec{F}_{B \to A} \]
+
+                <!-- Insertando imagen -->
+                <style>
+                  img {
+                    width: 100%;
+                    height: auto;
+                    max-width: 100%;
+                  }
+                </style>
+
+                <img src="../imagenes/U07c03 - Tercera ley de Newton.png" alt="Imagen" width="800">
+                <!-- -----FIN-------- -->
+
+            </div>
+        </div>
+
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar formalmente que las fuerzas de interacción entre dos cuerpos constituyen un par de fuerzas de acción y reacción. Esta demostración es esencial para comprender que las fuerzas nunca aparecen aisladamente y para evitar la confusión entre fuerzas de acción-reacción y fuerzas equilibradas que actúan sobre el mismo cuerpo.</p>
+        </div>
+
+        <div class="section procedimiento">
+            <h2>🔧 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Sistema aislado de dos partículas:</strong> Consideremos dos cuerpos, A y B, que forman un sistema aislado, es decir, no interactúan con ningún otro objeto exterior. Sean \( m_A \) y \( m_B \) sus masas, y \( \vec{v}_A \) y \( \vec{v}_B \) sus velocidades respectivas. La cantidad de movimiento total del sistema es:
+                <div class="formula-box">
+                    \[ \vec{p}_{\text{total}} = \vec{p}_A + \vec{p}_B = m_A\vec{v}_A + m_B\vec{v}_B \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Principio de conservación del momento:</strong> Para un sistema aislado, la cantidad de movimiento total se conserva. Por tanto, su derivada temporal es nula:
+                <div class="formula-box">
+                    \[ \frac{\mathrm{d}\vec{p}_{\text{total}}}{\mathrm{d}t} = \frac{\mathrm{d}\vec{p}_A}{\mathrm{d}t} + \frac{\mathrm{d}\vec{p}_B}{\mathrm{d}t} = \vec{0} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Aplicación de la segunda ley a cada cuerpo:</strong> Las únicas fuerzas que actúan sobre cada cuerpo son las que ejerce el otro cuerpo (por ser un sistema aislado). Aplicando la segunda ley de Newton a cada uno:
+                <div class="formula-box">
+                    \[ \vec{F}_{B \to A} = \frac{\mathrm{d}\vec{p}_A}{\mathrm{d}t} \quad ; \quad \vec{F}_{A \to B} = \frac{\mathrm{d}\vec{p}_B}{\mathrm{d}t} \]
+                </div>
+                donde \( \vec{F}_{B \to A} \) es la fuerza que B ejerce sobre A, y \( \vec{F}_{A \to B} \) es la fuerza que A ejerce sobre B.
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Sustitución en la ecuación de conservación:</strong> Sustituyendo las expresiones anteriores en la ecuación de conservación del momento:
+                <div class="formula-box">
+                    \[ \vec{F}_{B \to A} + \vec{F}_{A \to B} = \vec{0} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Despeje y conclusión:</strong> Despejando una fuerza en función de la otra, obtenemos la relación fundamental:
+                <div class="formula-box">
+                    \[ \vec{F}_{A \to B} = -\vec{F}_{B \to A} \]
+                </div>
+                Esto significa que las dos fuerzas tienen el mismo módulo, la misma dirección (están sobre la misma recta) y sentidos opuestos.
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Análisis de las propiedades del par acción-reacción:</strong> De la relación anterior se deducen las siguientes propiedades:
+                <ul>
+                    <li>Las fuerzas actúan sobre <strong>cuerpos distintos</strong>: \( \vec{F}_{A \to B} \) sobre B, y \( \vec{F}_{B \to A} \) sobre A.</li>
+                    <li>Son del <strong>mismo tipo físico</strong>: si una es de contacto, la otra también; si una es gravitatoria, la otra también.</li>
+                    <li><strong>No se anulan</strong> entre sí porque actúan sobre cuerpos diferentes. No pueden producir equilibrio de un solo cuerpo.</li>
+                    <li>Se producen <strong>simultáneamente</strong>; no hay retardo temporal entre acción y reacción.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>Se ha demostrado que, para cualquier par de cuerpos en interacción, las fuerzas mutuas constituyen un par de acción y reacción que cumplen:</p>
+            <div class="formula-box">
+                \[ \boxed{\vec{F}_{A \to B} = -\vec{F}_{B \to A}} \]
+            </div>
+            <p>Es decir, son <strong>iguales en módulo</strong>, <strong>de la misma dirección</strong> y <strong>de sentidos opuestos</strong>, actuando cada una sobre un cuerpo diferente.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Este es uno de los conceptos más difíciles para los estudiantes. Es crucial distinguir entre un par acción-reacción (fuerzas sobre cuerpos distintos) y fuerzas equilibradas sobre un mismo cuerpo (que sí pueden anularse). Un ejemplo efectivo: cuando un estudiante empuja una pared, la pared empuja al estudiante con la misma fuerza; el estudiante no se mueve porque la fuerza de rozamiento del suelo equilibra el empuje de la pared, no porque la fuerza de la pared sobre el estudiante sea menor. El hecho de que la masa del estudiante sea mucho menor que la de la pared solo afecta a la aceleración que cada uno adquiere, no al módulo de las fuerzas.
+            </div>
+        </div>
+
+        <!-- ============================================
+             BLOQUE DESPLEGABLE DIDÁCTICO (AÑADIDO)
+             ============================================ -->
+        <details class="desplegable-didactico">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO Tercera Ley de Newton</span>
+                <span style="font-size:0.7em; font-weight:400; margin-left:auto; color:#4a5568;">🖱️ Pulsame</span>
+            </summary>
+            <div class="desplegable-contenido">
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio">
+                    <div class="ejercicio-header">
+                        <span class="num">Ejercicio 1</span>
+                        <span>Patinadores en el hielo</span>
+                    </div>
+                    <div class="ejercicio-enunciado">
+                        Dos patinadores, A (60 kg) y B (80 kg), están inicialmente en reposo sobre una pista de hielo sin rozamiento. Se empujan mutuamente de modo que A sale hacia la derecha con una velocidad de 3,0 m/s. 
+                        <ul>
+                            <li>a) ¿Con qué velocidad (módulo y sentido) se mueve B?</li>
+                            <li>b) Demuestra que las fuerzas que se ejercen mutuamente son iguales y opuestas.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>a)</strong> Al ser un sistema aislado (sin rozamiento), se conserva la cantidad de movimiento total. Inicialmente el momento total es cero. Por tanto:</p>
+                        <div class="formula-box">
+                            \[
+                            m_A \cdot v_A + m_B \cdot v_B = 0 \quad \Rightarrow \quad 
+                            60 \cdot 3,0 + 80 \cdot v_B = 0
+                            \]
+                            \[
+                            v_B = - \frac{60 \cdot 3,0}{80} = -2,25\ \text{m/s}
+                            \]
+                        </div>
+                        <p>El signo negativo indica que B se mueve en sentido contrario a A (hacia la izquierda) con <strong>2,25 m/s</strong>.</p>
+                        <p><strong>b)</strong> Durante el empuje, sobre A actúa la fuerza que B ejerce sobre él (\( \vec{F}_{B\to A} \)) y sobre B actúa la fuerza que A ejerce sobre él (\( \vec{F}_{A\to B} \)). Por la conservación del momento lineal, \( \vec{F}_{B\to A} + \vec{F}_{A\to B} = 0 \), luego \( \vec{F}_{A\to B} = -\vec{F}_{B\to A} \). Ambas fuerzas tienen el mismo módulo (depende de la intensidad del empuje) y sentidos opuestos. La diferencia de masas solo afecta a las aceleraciones, no a las fuerzas.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio">
+                    <div class="ejercicio-header">
+                        <span class="num">Ejercicio 2</span>
+                        <span>Empuje de un cohete</span>
+                    </div>
+                    <div class="ejercicio-enunciado">
+                        Un cohete expulsa gases hacia atrás a una velocidad de 2000 m/s con un flujo másico de 50 kg/s. 
+                        <ul>
+                            <li>a) Calcula la fuerza de empuje que actúa sobre el cohete.</li>
+                            <li>b) Identifica el par acción-reacción.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> La fuerza de empuje se obtiene a partir del impulso que los gases comunican al cohete. Por la tercera ley, la fuerza que el cohete ejerce sobre los gases es igual y opuesta a la que los gases ejercen sobre el cohete. El módulo de la fuerza media es:</p>
+                        <div class="formula-box">
+                            \[
+                            F = \frac{\Delta p}{\Delta t} = \frac{\Delta m}{\Delta t} \cdot v = 50\ \text{kg/s} \times 2000\ \text{m/s} = 100\,000\ \text{N}
+                            \]
+                        </div>
+                        <p><strong>b)</strong> El par acción-reacción: 
+                        <br> - <strong>Acción:</strong> el cohete empuja los gases hacia atrás (fuerza sobre los gases). 
+                        <br> - <strong>Reacción:</strong> los gases empujan el cohete hacia adelante (fuerza sobre el cohete).
+                        <br> Ambas fuerzas tienen el mismo módulo (100 000 N) y direcciones opuestas.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio">
+                    <div class="ejercicio-header">
+                        <span class="num">Ejercicio 3</span>
+                        <span>Libro sobre una mesa</span>
+                    </div>
+                    <div class="ejercicio-enunciado">
+                        Un libro de 2,0 kg está en reposo sobre una mesa horizontal. 
+                        <ul>
+                            <li>a) Identifica todas las fuerzas que actúan sobre el libro y sobre la mesa.</li>
+                            <li>b) ¿El peso del libro y la normal que la mesa ejerce sobre el libro constituyen un par acción-reacción? Razona la respuesta.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Sobre el libro actúan: su peso (\( \vec{P} = m\vec{g} \), hacia abajo) y la fuerza normal (\( \vec{N} \), hacia arriba) que la mesa ejerce sobre él. Sobre la mesa actúan: su propio peso, la fuerza que el libro ejerce sobre ella (hacia abajo, igual en módulo a la normal que la mesa hace sobre el libro) y la reacción del suelo.</p>
+                        <p><strong>b)</strong> <strong>No</strong>. El peso del libro y la normal son fuerzas que actúan sobre el <em>mismo</em> cuerpo (el libro) y, al ser iguales y opuestas, se equilibran. Un par acción-reacción debe actuar sobre cuerpos distintos. El par correspondiente al peso es la atracción gravitatoria que el libro ejerce sobre la Tierra (actúa sobre la Tierra). El par correspondiente a la normal es la fuerza que el libro ejerce sobre la mesa (actúa sobre la mesa).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio">
+                    <div class="ejercicio-header">
+                        <span class="num">Ejercicio 4</span>
+                        <span>Empujando una pared</span>
+                    </div>
+                    <div class="ejercicio-enunciado">
+                        Un estudiante empuja una pared vertical con una fuerza horizontal de 120 N. 
+                        <ul>
+                            <li>a) ¿Qué fuerza ejerce la pared sobre el estudiante?</li>
+                            <li>b) Si el estudiante está sobre una superficie con rozamiento despreciable (hielo), ¿qué ocurrirá? Explica aplicando la tercera ley.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Por la tercera ley de Newton, la pared ejerce sobre el estudiante una fuerza igual en módulo y opuesta en dirección: <strong>120 N</strong> horizontal en sentido contrario al empuje.</p>
+                        <p><strong>b)</strong> Sobre el estudiante actúa la reacción de la pared (120 N hacia atrás). Si no hay rozamiento, esta fuerza neta horizontal lo acelerará hacia atrás. El estudiante se desplazará en sentido contrario a su empuje. La pared, al estar fijada al suelo, no se mueve apreciablemente porque recibe también fuerzas del suelo que compensan la acción del estudiante.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio">
+                    <div class="ejercicio-header">
+                        <span class="num">Ejercicio 5</span>
+                        <span>Máquina de Atwood (dos masas)</span>
+                    </div>
+                    <div class="ejercicio-enunciado">
+                        Dos masas, \( m_1 = 3,0\ \text{kg} \) y \( m_2 = 5,0\ \text{kg} \), están unidas por una cuerda ideal que pasa por una polea sin masa ni rozamiento. 
+                        <ul>
+                            <li>a) Calcula la aceleración del sistema.</li>
+                            <li>b) ¿Qué relación existe entre la tensión que la cuerda ejerce sobre \( m_1 \) y la que ejerce sobre \( m_2 \)?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Aplicando la segunda ley a cada masa (tomando como positivo hacia abajo para \( m_2 \) y hacia arriba para \( m_1 \)):</p>
+                        <div class="formula-box">
+                            \[
+                            \begin{cases}
+                            m_2 g - T = m_2 a \\
+                            T - m_1 g = m_1 a
+                            \end{cases}
+                            \]
+                            \[
+                            \Rightarrow \quad a = \frac{(m_2 - m_1)}{m_1 + m_2} g = \frac{5 - 3}{8} \cdot 9,8 = 2,45\ \text{m/s}^2
+                            \]
+                        </div>
+                        <p><strong>b)</strong> La tensión en la cuerda es la misma en ambos extremos (cuerda ideal y polea sin masa). Sin embargo, las fuerzas de tensión sobre cada masa son un <em>par acción-reacción</em> a nivel de la cuerda: la cuerda tira de \( m_1 \) hacia arriba y \( m_1 \) tira de la cuerda hacia abajo con la misma fuerza; análogamente para \( m_2 \). La tensión sobre \( m_1 \) y sobre \( m_2 \) son iguales en módulo (si la cuerda es inextensible y la polea ideal), pero actúan sobre cuerpos distintos. En este caso, la tensión no es un par acción-reacción entre \( m_1 \) y \( m_2 \), sino entre cada masa y la cuerda.</p>
+                    </div>
+                </div>
+
+                <!-- PIE DIDÁCTICO -->
+                <div class="pie-didactico">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Observaciones claves:</strong> La tercera ley de Newton es, posiblemente, la ley más malinterpretada. El error más común es pensar que las fuerzas de acción y reacción se anulan mutuamente porque son iguales y opuestas. ¡Pero actúan sobre <em>cuerpos distintos</em>! Solo se anulan si actúan sobre el <em>mismo</em> cuerpo (como en el equilibrio de fuerzas). Practicar con ejemplos cotidianos (patinadores, cohetes, empujar paredes) ayuda a interiorizar que la fuerza neta sobre un cuerpo no es cero por el simple hecho de que exista una reacción.
+                </div>
+
+            </div> <!-- /desplegable-contenido -->
+        </details>
+
+        <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+    </div> <!-- /container -->
+</body>
+</html>

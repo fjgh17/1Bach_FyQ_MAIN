@@ -1,0 +1,572 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#T10.04 · Relación Campo Eléctrico y Potencial</title>
+<!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome (versión 6) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ============================================
+   ESTILOS EXISTENTES (no modificados)
+   ============================================ */
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.header-left h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+.header-left p {
+    margin: 6px 0 0 0;
+    font-size: 1em;
+}
+.header-right img {
+    max-height: 70px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+}
+.section {
+    padding: 25px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border-left: 5px solid;
+}
+.enunciado { background: #f7fafc; border-color: #a0aec0; }
+.objetivo  { background: #fffaf0; border-color: #ed8936; }
+.procedimiento { background: #f0fff4; border-color: #48bb78; }
+.resultado { background: #ebf8ff; border-color: #4299e1; }
+.section h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.enunciado h2 { color: #4a5568; }
+.objetivo h2  { color: #c05621; }
+.procedimiento h2 { color: #276749; }
+.resultado h2 { color: #2b6cb0; }
+.formula-box {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+}
+.step {
+    background: white;
+    border-left: 4px solid #a0aec0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.step-num {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #744210;
+}
+p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.header-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.header-sub img {
+    height: 28px;
+    width: auto;
+    display: block;
+    border-radius: 4px;
+}
+.header-sub .codigo {
+    font-weight: 700;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+    color: #f0e6ff;
+}
+.header-sub .texto {
+    font-size: 1em;
+    color: #f0e6ff;
+    font-weight: 500;
+}
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+/* ============================================
+   NUEVOS ESTILOS PARA EL BLOQUE DESPLEGABLE
+   ============================================ */
+details.desmitificando {
+    margin: 30px 15px 20px 15px;
+    border: 2px solid #4299e1;
+    border-radius: 12px;
+    background: #ebf8ff;
+    padding: 0.5rem 1rem 1rem 1rem;
+    transition: all 0.2s;
+}
+details.desmitificando summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.5rem 0;
+    user-select: none;
+}
+details.desmitificando summary::-webkit-details-marker {
+    display: none;
+}
+details.desmitificando summary i.fa-chevron-circle-down {
+    transition: transform 0.3s ease;
+    color: #4299e1;
+    font-size: 1.6rem;
+}
+details.desmitificando[open] summary i.fa-chevron-circle-down {
+    transform: rotate(180deg);
+}
+details.desmitificando summary .pulsame {
+    font-size: 0.8rem;
+    color: #2b6cb0;
+    background: #bee3f8;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+details.desmitificando .contenido-ejercicios {
+    margin-top: 0.5rem;
+    border-top: 1px solid #90cdf4;
+    padding-top: 1rem;
+}
+
+.ejercicio-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    border: 1px solid #90cdf4;
+}
+.ejercicio-header {
+    background: linear-gradient(135deg, #4299e1 0%, #2b6cb0 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ejercicio-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.ejercicio-body {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+}
+.ejercicio-body .enunciado-ej {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.ejercicio-body ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+.resolucion {
+    background: #ebf8ff;
+    border-left: 4px solid #4299e1;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 0.5rem 0;
+    font-size: 0.98rem;
+}
+.resolucion .paso {
+    margin-bottom: 0.6rem;
+}
+.resolucion .paso strong {
+    color: #2b6cb0;
+}
+.pie-clave {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: #744210;
+}
+.pie-clave i {
+    margin-right: 8px;
+    color: #d69e2e;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== CABECERA OBLIGATORIA ===== -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T10.04.- </span>
+                <span class="texto">Relación Campo Eléctrico y Potencial</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES EXISTENTES ===== -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de trabajo realizado por el campo eléctrico al desplazar una carga entre dos puntos, y de la definición de potencial eléctrico como trabajo por unidad de carga, demostrar que en un campo eléctrico uniforme la relación entre la intensidad del campo y la diferencia de potencial entre dos puntos separados una distancia d viene dada por:</p>
+        <div class="formula-box">
+            \[ E = \frac{V_A - V_B}{d} \quad \text{o equivalentemente} \quad V_A - V_B = E \cdot d \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U10c04 - Relación entre campo eléctrico y potencial.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Establecer el vínculo matemático entre dos magnitudes fundamentales de la electrostática: el campo eléctrico (intensidad) y el potencial eléctrico. Esta relación permite calcular campos a partir de diferencias de potencial (método experimentalmente más accesible) y viceversa. Es esencial para comprender el funcionamiento de condensadores, aceleradores de partículas y circuitos eléctricos.</p>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definición de trabajo del campo.</strong> El trabajo realizado por el campo eléctrico uniforme \( \vec{E} \) al desplazar una carga \( q \) desde un punto \( A \) hasta un punto \( B \), separados una distancia \( d \) a lo largo de la dirección del campo, es:
+            <div class="formula-box">
+                \[ W_{A \to B} = \vec{F} \cdot \vec{d} = F \cdot d \cdot \cos(0^{\circ}) = F \cdot d \]
+            </div>
+            <p>ya que la fuerza \( \vec{F} = q\vec{E} \) y el desplazamiento son paralelos.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Expresión de la fuerza.</strong> Sustituimos la fuerza eléctrica en función del campo:
+            <div class="formula-box">
+                \[ W_{A \to B} = q \cdot E \cdot d \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Definición de diferencia de potencial.</strong> La diferencia de potencial entre dos puntos se define como el trabajo realizado por el campo por unidad de carga, con signo negativo (ya que el campo realiza trabajo disminuyendo la energía potencial):
+            <div class="formula-box">
+                \[ V_B - V_A = -\frac{W_{A \to B}}{q} \]
+            </div>
+            <p>O equivalentemente, el trabajo realizado por una fuerza externa (que equilibra la fuerza del campo) es:</p>
+            <div class="formula-box">
+                \[ W_{\text{ext}} = q(V_B - V_A) \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Sustitución y relación.</strong> Sustituimos la expresión del trabajo del campo en la definición de potencial:
+            <div class="formula-box">
+                \[ V_B - V_A = -\frac{q \cdot E \cdot d}{q} = -E \cdot d \]
+            </div>
+            <p>La carga \( q \) se cancela, confirmando que la relación es independiente de la carga de prueba.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Reordenación.</strong> Multiplicando ambos miembros por \( -1 \) obtenemos:
+            <div class="formula-box">
+                \[ V_A - V_B = E \cdot d \]
+            </div>
+            <p>Despejando la intensidad del campo:</p>
+            <div class="formula-box">
+                \[ E = \frac{V_A - V_B}{d} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Generalización vectorial.</strong> En forma vectorial, para un desplazamiento infinitesimal \( d\vec{l} \):
+            <div class="formula-box">
+                \[ dV = -\vec{E} \cdot d\vec{l} \]
+            </div>
+            <p>lo que implica que el campo es el <strong>gradiente negativo</strong> del potencial:</p>
+            <div class="formula-box">
+                \[ \vec{E} = -\vec{\nabla}V \]
+            </div>
+            <p>En una dimensión (campo uniforme): \( E = -\frac{dV}{dx} \).</p>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong> Es fundamental destacar que esta relación solo es válida para <strong>campos uniformes</strong> (como el creado por placas paralelas). En campos no uniformes, la relación correcta es \( E = -\frac{dV}{dr} \) (derivada). El signo negativo indica que el campo apunta en la dirección de <strong>disminución</strong> del potencial. Esta conexión campo-potencial es análoga a la relación entre fuerza gravitatoria y energía potencial gravitatoria, lo que facilita la transferencia de aprendizajes.
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            \[ E = \frac{V_A - V_B}{d} \quad \text{o} \quad V_A - V_B = E \cdot d \]
+        </div>
+        <p>En un campo eléctrico uniforme, la intensidad del campo es igual a la diferencia de potencial dividida por la distancia entre los puntos. Esta relación es fundamental para el cálculo de campos en condensadores y para la comprensión de la conexión entre campo y potencial.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- BLOQUE DESPLEGABLE AÑADIDO (TAREA 1)      -->
+    <!-- ======================================== -->
+    <details class="desmitificando">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO la Relación Campo Eléctrico y Potencial</span>
+            <span class="pulsame">🖱️ Pulsame</span>
+        </summary>
+        <div class="contenido-ejercicios">
+
+            <!-- EJERCICIO 1: Cálculo directo de E -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">1</span>
+                    <span>Cálculo directo de la intensidad del campo</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos placas paralelas separadas \( 3{,}0\,\text{cm} \) crean un campo eléctrico uniforme. Si la diferencia de potencial entre ellas es de \( 1500\,\text{V} \), calcula la intensidad del campo entre las placas.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Identificamos los datos: \( V_A - V_B = 1500\,\text{V} \), \( d = 0{,}030\,\text{m} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Aplicamos la fórmula \( E = \frac{V_A - V_B}{d} \):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ E = \frac{1500}{0{,}030} = 5{,}0 \times 10^{4}\,\text{N/C} \]
+                        </div>
+                        <div class="paso"><strong>Resultado:</strong> El campo eléctrico tiene una intensidad de \( 5{,}0 \times 10^{4}\,\text{N/C} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Despeje de la distancia -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">2</span>
+                    <span>Determinación de la distancia a partir de E y ΔV</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>En un campo eléctrico uniforme de \( 2{,}0 \times 10^{4}\,\text{N/C} \), la diferencia de potencial entre dos puntos es de \( 600\,\text{V} \). ¿Cuál es la distancia que los separa a lo largo de la dirección del campo?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Despejamos \( d \) de la fórmula: \( d = \frac{V_A - V_B}{E} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( d = \frac{600}{2{,}0 \times 10^{4}} = 0{,}030\,\text{m} = 3{,}0\,\text{cm} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La distancia entre los puntos es de \( 3{,}0\,\text{cm} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Variación al duplicar la distancia -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">3</span>
+                    <span>Efecto de duplicar la distancia (ΔV constante)</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Entre dos puntos de un campo uniforme hay una diferencia de potencial de \( 200\,\text{V} \) y están separados \( 4{,}0\,\text{cm} \). Si la separación se duplica manteniendo la misma diferencia de potencial, ¿cuál será la nueva intensidad del campo?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Situación inicial: \( E_1 = \frac{200}{0{,}040} = 5{,}0 \times 10^{3}\,\text{N/C} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Nueva distancia: \( d_2 = 0{,}080\,\text{m} \). Como \( \Delta V \) no cambia: \( E_2 = \frac{200}{0{,}080} = 2{,}5 \times 10^{3}\,\text{N/C} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La intensidad del campo se reduce a la mitad: \( 2{,}5 \times 10^{3}\,\text{N/C} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Trabajo y energía potencial -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">4</span>
+                    <span>Cálculo del trabajo y variación de energía potencial</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Un campo eléctrico uniforme de \( 1{,}5 \times 10^{3}\,\text{N/C} \) actúa sobre una carga de \( +2{,}0\,\mu\text{C} \). Si la carga se desplaza \( 0{,}20\,\text{m} \) en el sentido del campo, calcula el trabajo realizado por el campo y la variación de energía potencial de la carga.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Trabajo del campo: \( W = q \cdot E \cdot d = (2{,}0\times10^{-6}) \cdot (1{,}5\times10^{3}) \cdot 0{,}20 \).</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ W = 2{,}0\times10^{-6} \times 1{,}5\times10^{3} \times 0{,}20 = 6{,}0\times10^{-4}\,\text{J} \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> La variación de energía potencial es el negativo del trabajo del campo: \( \Delta U = -W = -6{,}0\times10^{-4}\,\text{J} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> El campo realiza \( 6{,}0\times10^{-4}\,\text{J} \) de trabajo y la energía potencial disminuye en esa misma cantidad.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Contexto real (acelerador de partículas) -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">5</span>
+                    <span>Aplicación en acelerador de partículas</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>En un acelerador lineal, un protón (carga \( +1{,}6\times10^{-19}\,\text{C} \), masa \( 1{,}67\times10^{-27}\,\text{kg} \)) parte del reposo y es acelerado por una diferencia de potencial de \( 10\,\text{kV} \) entre dos electrodos separados \( 2{,}0\,\text{cm} \). Calcula: a) la intensidad del campo entre los electrodos; b) la velocidad final del protón.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> a) \( E = \frac{\Delta V}{d} = \frac{10\,000}{0{,}020} = 5{,}0\times10^{5}\,\text{N/C} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> b) El trabajo del campo es \( W = q\,\Delta V = (1{,}6\times10^{-19})(10\,000) = 1{,}6\times10^{-15}\,\text{J} \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Por el teorema de la energía cinética: \( \frac{1}{2} m v^2 = W \) → \( v = \sqrt{\frac{2W}{m}} \).</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ v = \sqrt{\frac{2 \times 1{,}6\times10^{-15}}{1{,}67\times10^{-27}}}
+                            = \sqrt{1{,}92\times10^{12}} \approx 1{,}39\times10^{6}\,\text{m/s} \]
+                        </div>
+                        <div class="paso"><strong>Resultados:</strong> a) \( E = 5{,}0\times10^{5}\,\text{N/C} \); b) \( v \approx 1{,}39\times10^{6}\,\text{m/s} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE Observaciones claves -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La relación \( E = \Delta V / d \) solo es válida para campos uniformes. La "trampa" más común es aplicarla en campos radiales (como el de una carga puntual), donde la relación correcta es \( E = -\frac{dV}{dr} \). Recuerda que el campo apunta siempre en la dirección de <strong>máxima disminución</strong> del potencial, y que el potencial es una función escalar mientras que el campo es vectorial.
+            </div>
+
+        </div> <!-- /contenido-ejercicios -->
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- /container -->
+</body>
+</html>

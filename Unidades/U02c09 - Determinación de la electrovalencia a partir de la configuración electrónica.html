@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T02.10. Determinación de la electrovalencia a partir de la configuración electrónica</title>
+    <!-- FontAwesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;      /* <--- ESTA ES LA CLAVE */
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajuste para el subtítulo de la cabecera */
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;  /* mismo padding que las secciones */
+            border: 2px solid #cbd5e0;
+            border-radius: 20px;
+            background: #f8fafc;
+            padding: 0.2rem 0.6rem 0.6rem 0.6rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        details[open] {
+            border-color: #667eea;
+            background: #f4f7ff;
+        }
+
+        details summary {
+            list-style: none;           /* oculta el triángulo por defecto en Firefox/Chrome */
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 0.4rem 0.8rem 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            border-radius: 16px;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;              /* oculta el triángulo en WebKit */
+        }
+
+        details summary i.fa-chevron-circle-down {
+            font-size: 2rem;
+            color: #667eea;
+            transition: transform 0.35s ease;
+        }
+
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+            color: #764ba2;
+        }
+
+        details summary .titulo-desplegable {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.3rem 0.8rem;
+        }
+
+        details summary .titulo-desplegable .pulsame {
+            font-size: 1rem;
+            font-weight: 400;
+            background: #e9edf4;
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            color: #2d3748;
+            letter-spacing: 0.3px;
+        }
+
+        .contenido-desplegable {
+            padding: 0.2rem 0.8rem 1.2rem 0.8rem;
+        }
+
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .ejercicio-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #dde6ef;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .ejercicio-card .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .ejercicio-card .ej-header .num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.1rem 0.9rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .ejercicio-card .ej-header .tit {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #2d3748;
+        }
+
+        .ejercicio-card .enunciado {
+            margin: 0.6rem 0 1rem 0;
+            padding-left: 0.6rem;
+            border-left: 3px solid #b3cbe0;
+        }
+
+        .ejercicio-card .enunciado ul {
+            list-style: disc;
+            padding-left: 1.6rem;
+            margin: 0.4rem 0;
+        }
+
+        .ejercicio-card .enunciado ul li {
+            margin-bottom: 0.2rem;
+        }
+
+        .resolucion {
+            background: #f2f7fd;
+            border-radius: 16px;
+            padding: 1rem 1.6rem;
+            border: 1px solid #d4e2f0;
+            margin-top: 0.8rem;
+        }
+
+        .resolucion p {
+            margin-bottom: 0.4rem;
+        }
+
+        .clave-didactica {
+            margin-top: 1.2rem;
+            padding: 0.8rem 1.6rem;
+            background: #e5eff9;
+            border-radius: 40px;
+            color: #1a3c5e;
+            font-weight: 500;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T02.09.- </span>
+                    <span class="texto">Determinación de la electrovalencia a partir de la configuración electrónica</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIÓN ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la configuración electrónica de un elemento y de la regla de estabilidad de los gases nobles (octeto), demostrar que la carga iónica más estable (electrovalencia) viene dada por:</p>
+            <div class="formula-box">
+                \[ q = Z - e^-_{\text{valencia}} - e^-_{\text{transferidos}} \quad \Longleftrightarrow \quad q = \pm (8 - e^-_{\text{valencia}}) \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U02c09 - Determinación de la electrovalencia a partir de la configuración electrónica.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- SECCIÓN OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Justificar por qué los metales tienden a formar cationes (pérdida de electrones) y los no metales tienden a formar aniones (ganancia de electrones), y obtener una regla práctica para predecir la carga iónica más probable sin necesidad de memorizar tablas.</p>
+        </div>
+
+        <!-- SECCIÓN PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔧 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Enunciar la regla del octeto:</strong> los átomos tienden a ganar, perder o compartir electrones hasta alcanzar una configuración electrónica externa de 8 electrones, igual a la de un gas noble (o 2 electrones para el helio).
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Analizar un metal del grupo 1 (alcalinos):</strong> poseen configuración de valencia \(ns^1\). Para alcanzar la configuración del gas noble anterior (configuración de capa completa con \(n-1\) niveles), deben perder 1 electrón:
+                <div class="formula-box">
+                    \[ \text{Electrovalencia} = +1 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Analizar un metal del grupo 2 (alcalinotérreos):</strong> poseen configuración \(ns^2\). Deben perder 2 electrones para vaciar la capa de valencia y alcanzar la configuración del gas noble anterior:
+                <div class="formula-box">
+                    \[ \text{Electrovalencia} = +2 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Analizar un no metal del grupo 17 (halógenos):</strong> poseen configuración \(ns^2 np^5\), es decir, 7 electrones de valencia. Para completar el octeto deben ganar 1 electrón:
+                <div class="formula-box">
+                    \[ \text{Electrovalencia} = -1 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Analizar un no metal del grupo 16 (calcógenos):</strong> poseen configuración \(ns^2 np^4\), es decir, 6 electrones de valencia. Para completar el octeto deben ganar 2 electrones:
+                <div class="formula-box">
+                    \[ \text{Electrovalencia} = -2 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Generalizar la regla:</strong> para los elementos representativos, la carga iónica más estable es igual al número de electrones que deben ganar o perder para alcanzar 8 electrones de valencia:
+                <div class="formula-box">
+                    \[ q = +(e^-_{\text{valencia}}) \quad \text{(metales, pérdida)} \]
+                    \[ q = -(8 - e^-_{\text{valencia}}) \quad \text{(no metales, ganancia)} \]
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ q = \begin{cases} 
+                +e^-_{\text{valencia}} & \text{si } e^-_{\text{valencia}} \leq 3 \text{ (metales)} \\
+                -(8 - e^-_{\text{valencia}}) & \text{si } e^-_{\text{valencia}} \geq 5 \text{ (no metales)}
+                \end{cases} \]
+            </div>
+            <div class="note">
+                <strong>Observaciones sobre el alumnado:</strong> Los elementos del grupo 14 (4 electrones de valencia) y grupo 15 (5 electrones) pueden presentar ambos comportamientos o formar enlaces covalentes, por lo que la regla del octeto en su forma iónica pura es menos predictiva. Es importante recordar que la electrovalencia es una consecuencia de la configuración electrónica, no una propiedad arbitraria, y que los metales de transición complican esta regla al poder perder electrones de subniveles d.
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- BLOQUE DESPLEGABLE CON EJERCICIOS TIPO        -->
+        <!-- ============================================ -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo-desplegable">
+                    <span>🧪 DESMITIFICANDO Determinación de la electrovalencia a partir de la configuración electrónica</span>
+                    <span class="pulsame"><i class="fas fa-hand-pointer" style="margin-right: 6px;"></i>Púlsame</span>
+                </span>
+            </summary>
+            <div class="contenido-desplegable">
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">1</span>
+                        <span class="tit">Electrovalencia a partir de la configuración</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Dadas las siguientes configuraciones electrónicas de átomos neutros, determina la electrovalencia (carga iónica más estable) de cada elemento e indica si formará cationes o aniones:</p>
+                        <ul>
+                            <li>A: \(1s^2\,2s^2\,2p^6\,3s^2\,3p^3\)</li>
+                            <li>B: \(1s^2\,2s^2\,2p^6\,3s^2\)</li>
+                            <li>C: \(1s^2\,2s^2\,2p^5\)</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>A:</strong> Capa de valencia: \(3s^2 3p^3\) → 5 electrones de valencia. Está en el grupo 15 (no metal). Para completar el octeto necesita ganar 3 electrones: \(q = -(8-5) = -3\). Forma aniones \(A^{3-}\).</p>
+                        <p><strong>B:</strong> Capa de valencia: \(3s^2\) → 2 electrones de valencia. Es un metal alcalinotérreo (grupo 2). Pierde 2 electrones: \(q = +2\). Forma cationes \(B^{2+}\).</p>
+                        <p><strong>C:</strong> Capa de valencia: \(2s^2 2p^5\) → 7 electrones de valencia. Halógeno (grupo 17). Gana 1 electrón: \(q = -1\). Forma aniones \(C^{-}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">2</span>
+                        <span class="tit">Determinar la configuración y electrovalencia a partir del grupo y periodo</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un elemento pertenece al periodo 4 y grupo 16 de la tabla periódica.</p>
+                        <ul>
+                            <li><strong>a)</strong> Escribe su configuración electrónica de valencia.</li>
+                            <li><strong>b)</strong> ¿Cuál será su electrovalencia más probable?</li>
+                            <li><strong>c)</strong> ¿Qué ion formará y con qué carga?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Periodo 4 → capa de valencia \(n=4\). Grupo 16 → pertenece al bloque p (grupo ≥ 13). Para bloque p, grupo = electrones de valencia + 10 → electrones de valencia = 6. La configuración de valencia es \(4s^2 4p^4\).</p>
+                        <p><strong>b)</strong> Tiene 6 electrones de valencia. Para alcanzar el octeto debe ganar 2 electrones: \(q = -(8-6) = -2\).</p>
+                        <p><strong>c)</strong> Formará el ion \(X^{2-}\) (anión). Se trata del selenio (Se), que forma \(Se^{2-}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">3</span>
+                        <span class="tit">Ion más estable a partir del número atómico</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Dado el elemento con número atómico \(Z = 12\):</p>
+                        <ul>
+                            <li><strong>a)</strong> Escribe su configuración electrónica.</li>
+                            <li><strong>b)</strong> Determina la carga de su ion más estable.</li>
+                            <li><strong>c)</strong> Escribe la configuración electrónica de dicho ion.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Z=12 (magnesio, Mg): \(1s^2 2s^2 2p^6 3s^2\).</p>
+                        <p><strong>b)</strong> Capa de valencia: \(3s^2\) (2 electrones). Es un metal alcalinotérreo (grupo 2). Pierde 2 electrones para alcanzar la configuración del gas noble anterior (Ne): \(q = +2\).</p>
+                        <p><strong>c)</strong> Ion \(Mg^{2+}\): \(1s^2 2s^2 2p^6\) (configuración de Ne).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">4</span>
+                        <span class="tit">Comparación de electrovalencias de dos elementos</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Los elementos X e Y tienen las siguientes configuraciones:</p>
+                        <ul>
+                            <li>X: \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^2 3d^{10} 4p^1\)</li>
+                            <li>Y: \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^2 3d^{10} 4p^5\)</li>
+                        </ul>
+                        <ul>
+                            <li><strong>a)</strong> Indica el grupo y periodo de cada uno.</li>
+                            <li><strong>b)</strong> ¿Cuál es la electrovalencia más probable de cada uno?</li>
+                            <li><strong>c)</strong> Si reaccionan entre sí, ¿qué fórmula tendrá el compuesto iónico que forman?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Ambos tienen \(n_{\text{máx}} = 4\) (periodo 4). X tiene configuración de valencia \(4s^2 4p^1\) (3 electrones de valencia, bloque p) → grupo \(3+10=13\). Y tiene \(4s^2 4p^5\) (7 electrones, bloque p) → grupo \(7+10=17\).</p>
+                        <p><strong>b)</strong> X (grupo 13, metaloide o metal) tiende a perder 3 electrones: \(q = +3\). Y (halógeno) gana 1 electrón: \(q = -1\).</p>
+                        <p><strong>c)</strong> Para formar un compuesto iónico neutro, se necesita un ion \(X^{3+}\) y tres iones \(Y^{-}\): fórmula \(XY_3\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">5</span>
+                        <span class="tit">Caso especial: elementos con dos electrovalencias posibles</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El estaño (Sn) tiene número atómico \(Z=50\) y puede formar iones \(Sn^{2+}\) y \(Sn^{4+}\).</p>
+                        <ul>
+                            <li><strong>a)</strong> Escribe su configuración electrónica.</li>
+                            <li><strong>b)</strong> Explica por qué puede presentar dos electrovalencias distintas usando la regla del octeto y la estabilidad de subcapas.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Configuración del Sn (Z=50): \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^2 3d^{10} 4p^6 5s^2 4d^{10} 5p^2\). Capa de valencia: \(5s^2 5p^2\) (4 electrones de valencia).</p>
+                        <p><strong>b)</strong> El estaño puede perder los dos electrones \(5p^2\) para quedar con configuración \(5s^2\) (par inerte), formando \(Sn^{2+}\). También puede perder los 4 electrones de valencia (\(5s^2 5p^2\)) para alcanzar la configuración del gas noble anterior (Cd, con subnivel 4d completo), formando \(Sn^{4+}\). Ambas configuraciones son relativamente estables: el \(Sn^{2+}\) conserva el par \(5s^2\) (efecto del par inerte) y el \(Sn^{4+}\) alcanza la configuración de gas noble. Por eso presenta ambas electrovalencias.</p>
+                    </div>
+                </div>
+
+                <!-- Observaciones claves -->
+                <div class="clave-didactica">
+                    💡 <strong>Observaciones claves:</strong> La electrovalencia se deduce contando los electrones de valencia. Los metales (grupos 1, 2 y algunos del 13) pierden electrones para quedar como el gas noble anterior. Los no metales (grupos 15, 16, 17) ganan electrones para completar el octeto. Recuerda que el hidrógeno y los elementos del grupo 14 son casos especiales que suelen formar enlaces covalentes.
+                </div>
+
+            </div> <!-- fin contenido-desplegable -->
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

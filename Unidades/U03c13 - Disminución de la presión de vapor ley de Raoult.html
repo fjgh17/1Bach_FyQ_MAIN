@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 13: Ley de Raoult</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul, ol { padding-left: 1.5rem; }
+        li { margin-bottom: 6px; }
+
+        .raoult-box {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        /* Ocultar el triángulo nativo del navegador */
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 12px 20px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary:hover {
+            background: #e6edff;
+        }
+        /* Animación del icono FontAwesome */
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+
+        /* Estilo de las tarjetas de ejercicios dentro del desplegable */
+        .ejercicio-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .ejercicio-card .card-header {
+            background: #f7fafc;
+            padding: 12px 20px;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 600;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ejercicio-card .card-header .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 50px;
+            padding: 2px 12px;
+            font-size: 0.8em;
+        }
+        .ejercicio-card .card-body {
+            padding: 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            background: #f9f9fc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+            margin-bottom: 15px;
+        }
+        .ejercicio-card .card-body .resolucion {
+            background: #f0fff4;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #c6f6d5;
+            margin-top: 10px;
+        }
+        .ejercicio-card .card-body .resolucion p {
+            margin: 8px 0;
+        }
+        .pie-clave {
+            background: #edf2f7;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            font-style: italic;
+            border-left: 6px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T03.13.- </span>
+                <span class="texto">Ley de Raoult</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES ORIGINALES ===== -->
+    <!-- Enunciado -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la definición de <strong>presión de vapor</strong> como la presión ejercida por el vapor de un líquido en equilibrio con su fase líquida a una temperatura dada, y del modelo de que las moléculas de soluto no volátil <strong>ocupan posiciones en la superficie del líquido</strong> reduciendo la evaporación del disolvente, demostrar que la presión de vapor de una disolución diluida es igual a la presión de vapor del disolvente puro multiplicada por su fracción molar.</p>
+        <div class="formula-box">
+            \[ p = x_{\text{disolvente}} \cdot p^0 \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U03c13 - Disminución de la presión de vapor ley de Raoult.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- Objetivo -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta demostración permite:</p>
+        <ul>
+            <li>Comprender el <strong>origen molecular</strong> de las propiedades coligativas: el soluto altera el equilibrio líquido-vapor del disolvente.</li>
+            <li>Justificar por qué la disminución de presión de vapor es <strong>independiente de la naturaleza del soluto</strong> y solo depende de su concentración.</li>
+            <li>Establecer la base teórica para las demás propiedades coligativas (ebullición, congelación, osmosis).</li>
+            <li>Conectar con aplicaciones prácticas: <strong>destilación fraccionada</strong>, <strong>análisis de presiones de vapor</strong> en mezclas.</li>
+        </ul>
+    </div>
+
+    <!-- Procedimiento -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Modelo de evaporación en el disolvente puro</strong>. En un líquido puro, la presión de vapor \( p^0 \) se establece cuando la tasa de evaporación iguala a la tasa de condensación. La evaporación depende de la <strong>fracción de moléculas del disolvente en la superficie</strong>, que en el caso puro es 1 (100%).
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Introducimos el soluto no volátil</strong>. Al añadir un soluto que no se evapora (no contribuye a la presión de vapor), las moléculas de soluto ocupan posiciones en la superficie del líquido, reduciendo la fracción de moléculas de disolvente disponibles para evaporarse:
+            <div class="formula-box">
+                \[ \text{Fracción de disolvente en superficie} = x_{\text{disolvente}} = \frac{n_{\text{disolvente}}}{n_{\text{disolvente}} + n_{\text{soluto}}} < 1 \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Aplicamos el modelo cinético</strong>. La tasa de evaporación es proporcional al número de moléculas de disolvente en la superficie, es decir, proporcional a \( x_{\text{disolvente}} \). La tasa de condensación depende de la presión de vapor en el espacio de vapor. En equilibrio:
+            <div class="formula-box">
+                \[ \text{Tasa de evaporación} \propto x_{\text{disolvente}} \]
+                \[ \text{Tasa de condensación} \propto p \]
+            </div>
+            <p>En el equilibrio dinámico, ambas tasas se igualan:</p>
+            <div class="formula-box">
+                \[ p \propto x_{\text{disolvente}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Determinamos la constante de proporcionalidad</strong>. Cuando \( x_{\text{disolvente}} = 1 \) (disolvente puro), la presión de vapor es \( p^0 \):
+            <div class="formula-box">
+                \[ p^0 = k \cdot 1 \implies k = p^0 \]
+            </div>
+            <p>Por tanto, la constante de proporcionalidad es la <strong>presión de vapor del disolvente puro</strong>.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Escribimos la Ley de Raoult</strong>:
+            <div class="formula-box">
+                \[ p = x_{\text{disolvente}} \cdot p^0 \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Expresamos la disminución de presión de vapor</strong>. Como \( x_{\text{disolvente}} + x_{\text{soluto}} = 1 \):
+            <div class="formula-box">
+                \[ \Delta p = p^0 - p = p^0 - x_{\text{disolvente}} \cdot p^0 = p^0 \cdot (1 - x_{\text{disolvente}}) = x_{\text{soluto}} \cdot p^0 \]
+            </div>
+            <p>La disminución relativa es:</p>
+            <div class="formula-box">
+                \[ \frac{\Delta p}{p^0} = x_{\text{soluto}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Verificamos el carácter coligativo</strong>. Para disoluciones diluidas, \( n_{\text{soluto}} \ll n_{\text{disolvente}} \), por lo que:
+            <div class="formula-box">
+                \[ x_{\text{soluto}} = \frac{n_{\text{soluto}}}{n_{\text{disolvente}} + n_{\text{soluto}}} \approx \frac{n_{\text{soluto}}}{n_{\text{disolvente}}} \]
+            </div>
+            <p>Esta aproximación muestra que el efecto depende solo de la <strong>cantidad relativa de partículas de soluto</strong>, no de su naturaleza química.</p>
+        </div>
+    </div>
+
+    <!-- Resultado -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado la <strong>Ley de Raoult</strong> para disoluciones de solutos no volátiles:</p>
+        <div class="formula-box">
+            \[ p = x_{\text{disolvente}} \cdot p^0 \]
+        </div>
+        <div class="raoult-box">
+            <strong>Formas equivalentes:</strong><br><br>
+            \[ \Delta p = x_{\text{soluto}} \cdot p^0 \]
+            <br>
+            \[ \frac{\Delta p}{p^0} = x_{\text{soluto}} \]
+            <br>
+            <em>Para disoluciones diluidas:</em> \( \Delta p \approx \frac{n_{\text{soluto}}}{n_{\text{disolvente}}} \cdot p^0 \)
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">La presión de vapor de una disolución es directamente proporcional a la fracción molar del disolvente, siendo la presión del disolvente puro la constante de proporcionalidad.</p>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  La Ley de Raoult es el fundamento de todas las propiedades coligativas. Es crucial que se comprenda que el soluto "diluye" el disolvente en la superficie, reduciendo su capacidad de evaporación. El modelo cinético (equilibrio entre evaporación y condensación) es más intuitivo que el termodinámico para este nivel. Un error frecuente es confundir la fracción molar del disolvente con la del soluto al aplicar la fórmula. Recomiendo siempre identificar primero cuál es el disolvente (mayoritario) y cuál el soluto. Para disoluciones de electrolitos, el efecto se amplifica por el número de iones (factor de Van 't Hoff), lo cual se trata en la demostración de la presión osmótica.
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- BLOQUE DESPLEGABLE: EJERCICIOS RESUELTOS (NUEVOS)        -->
+    <!-- ========================================================= -->
+    <details style="margin: 20px 30px 30px 30px;">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="font-weight: 600;">🖱️ Pulsame 👉 🧪 DESMITIFICANDO Ley de Raoult</span>
+        </summary>
+
+        <div style="padding: 5px 0;">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 1</span>
+                    Presión de vapor de una disolución de sacarosa
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> A 25 °C, la presión de vapor del agua pura es 23,76 mmHg. Se disuelven 34,2 g de sacarosa (C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>, M = 342 g/mol) en 180 g de agua. Calcula:</p>
+                        <ul>
+                            <li>a) La fracción molar del disolvente y del soluto.</li>
+                            <li>b) La presión de vapor de la disolución.</li>
+                            <li>c) La disminución absoluta y relativa de la presión de vapor.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Moles de cada componente:</strong></p>
+                        <p>\( n_{\text{sacarosa}} = \dfrac{34,2}{342} = 0,100 \ \text{mol} \)</p>
+                        <p>\( n_{\text{agua}} = \dfrac{180}{18} = 10,0 \ \text{mol} \)</p>
+                        <p><strong>Paso 2 → Fracciones molares:</strong></p>
+                        <p>\( x_{\text{agua}} = \dfrac{10,0}{10,0 + 0,100} = \dfrac{10,0}{10,1} = 0,9901 \)</p>
+                        <p>\( x_{\text{sacarosa}} = 1 - 0,9901 = 0,0099 \)</p>
+                        <p><strong>Paso 3 → Presión de vapor de la disolución (Ley de Raoult):</strong></p>
+                        <p>\( p = x_{\text{agua}} \cdot p^0 = 0,9901 \times 23,76 = 23,52 \ \text{mmHg} \)</p>
+                        <p><strong>Paso 4 → Disminución de presión:</strong></p>
+                        <p>\( \Delta p = p^0 - p = 23,76 - 23,52 = 0,24 \ \text{mmHg} \)</p>
+                        <p>\( \dfrac{\Delta p}{p^0} = \dfrac{0,24}{23,76} = 0,0101 \approx x_{\text{sacarosa}} \) (comprobación).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 2</span>
+                    Masa de soluto para conseguir una disminución determinada
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> A 30 °C, la presión de vapor del agua es 31,82 mmHg. ¿Qué masa de glucosa (C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>, M = 180 g/mol) se debe disolver en 500 g de agua para que la presión de vapor de la disolución sea 31,00 mmHg? (suponer comportamiento ideal).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Calcular la fracción molar del agua necesaria:</strong></p>
+                        <p>\( p = x_{\text{agua}} \cdot p^0 \Rightarrow x_{\text{agua}} = \dfrac{p}{p^0} = \dfrac{31,00}{31,82} = 0,9742 \)</p>
+                        <p><strong>Paso 2 → Fracción molar del soluto:</strong></p>
+                        <p>\( x_{\text{glucosa}} = 1 - 0,9742 = 0,0258 \)</p>
+                        <p><strong>Paso 3 → Relación entre moles:</strong></p>
+                        <p>\( x_{\text{glucosa}} = \dfrac{n_{\text{glucosa}}}{n_{\text{glucosa}} + n_{\text{agua}}} \)</p>
+                        <p>\( n_{\text{agua}} = \dfrac{500}{18} = 27,78 \ \text{mol} \)</p>
+                        <p>Despejando: \( n_{\text{glucosa}} = \dfrac{x_{\text{glucosa}} \cdot n_{\text{agua}}}{1 - x_{\text{glucosa}}} = \dfrac{0,0258 \times 27,78}{0,9742} = 0,735 \ \text{mol} \)</p>
+                        <p><strong>Paso 4 → Masa de glucosa:</strong></p>
+                        <p>\( m = n \cdot M = 0,735 \times 180 = 132,3 \ \text{g} \)</p>
+                        <p>Se necesitan aproximadamente <strong>132 g de glucosa</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 3</span>
+                    Comparación de dos solutos (efecto coligativo)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Se preparan dos disoluciones acuosas a 25 °C (p<sup>0</sup> = 23,76 mmHg). La primera contiene 0,50 mol de urea (no electrolito) en 1,00 kg de agua. La segunda contiene 0,50 mol de NaCl (electrolito fuerte) en 1,00 kg de agua. Calcula la presión de vapor de cada disolución y explica la diferencia.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Disolución de urea (no electrolito):</strong></p>
+                        <p>\( n_{\text{agua}} = \dfrac{1000}{18} = 55,56 \ \text{mol} \)</p>
+                        <p>\( x_{\text{urea}} = \dfrac{0,50}{0,50 + 55,56} = 0,00892 \)</p>
+                        <p>\( x_{\text{agua}} = 0,99108 \)</p>
+                        <p>\( p_{\text{urea}} = 0,99108 \times 23,76 = 23,55 \ \text{mmHg} \)</p>
+                        <p><strong>Paso 2 → Disolución de NaCl (electrolito):</strong></p>
+                        <p>El NaCl se disocia en 2 iones: Na⁺ y Cl⁻. El número de partículas efectivas es \( i \cdot n_{\text{NaCl}} = 2 \times 0,50 = 1,00 \ \text{mol de partículas} \).</p>
+                        <p>\( x_{\text{partículas}} = \dfrac{1,00}{1,00 + 55,56} = 0,0177 \)</p>
+                        <p>\( x_{\text{agua}} = 0,9823 \)</p>
+                        <p>\( p_{\text{NaCl}} = 0,9823 \times 23,76 = 23,34 \ \text{mmHg} \)</p>
+                        <p><strong>Conclusión:</strong> La presión de vapor es menor para el NaCl porque el número de partículas de soluto es el doble, reduciendo más la fracción molar del disolvente. Esto ilustra el <strong>factor de Van 't Hoff</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 4</span>
+                    Determinación de la masa molar a partir del descenso de presión de vapor
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> A 40 °C, la presión de vapor del benceno (C<sub>6</sub>H<sub>6</sub>) es 183,0 mmHg. Se disuelven 2,50 g de un compuesto orgánico no volátil en 100,0 g de benceno, y la presión de vapor de la disolución resultante es 179,0 mmHg. Calcula la masa molar del compuesto.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Disminución de presión:</strong></p>
+                        <p>\( \Delta p = p^0 - p = 183,0 - 179,0 = 4,0 \ \text{mmHg} \)</p>
+                        <p><strong>Paso 2 → Fracción molar del soluto:</strong></p>
+                        <p>\( \dfrac{\Delta p}{p^0} = x_{\text{soluto}} \Rightarrow x_{\text{soluto}} = \dfrac{4,0}{183,0} = 0,02186 \)</p>
+                        <p><strong>Paso 3 → Moles de benceno:</strong></p>
+                        <p>\( n_{\text{benceno}} = \dfrac{100,0}{78,0} = 1,282 \ \text{mol} \) (M benceno = 78 g/mol)</p>
+                        <p><strong>Paso 4 → Relación para el soluto:</strong></p>
+                        <p>\( x_{\text{soluto}} = \dfrac{n_{\text{soluto}}}{n_{\text{soluto}} + n_{\text{benceno}}} \)</p>
+                        <p>Despejando: \( n_{\text{soluto}} = \dfrac{x_{\text{soluto}} \cdot n_{\text{benceno}}}{1 - x_{\text{soluto}}} = \dfrac{0,02186 \times 1,282}{0,97814} = 0,02865 \ \text{mol} \)</p>
+                        <p><strong>Paso 5 → Masa molar:</strong></p>
+                        <p>\( M = \dfrac{m}{n} = \dfrac{2,50}{0,02865} = 87,3 \ \text{g/mol} \)</p>
+                        <p>La masa molar del compuesto es aproximadamente <strong>87 g/mol</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 5</span>
+                    Aplicación a la destilación: mezcla de dos líquidos volátiles
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> A 80 °C, las presiones de vapor del benceno y del tolueno son 757 mmHg y 290 mmHg, respectivamente. Se prepara una mezcla líquida ideal con 0,40 moles de benceno y 0,60 moles de tolueno. Calcula:</p>
+                        <ul>
+                            <li>a) La presión total de vapor sobre la mezcla.</li>
+                            <li>b) La composición (fracción molar) del vapor en equilibrio.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Fracciones molares en líquido:</strong></p>
+                        <p>\( x_{\text{benceno}} = 0,40 \), \( x_{\text{tolueno}} = 0,60 \)</p>
+                        <p><strong>Paso 2 → Presión parcial de cada componente (Ley de Raoult):</strong></p>
+                        <p>\( p_{\text{benceno}} = x_{\text{benceno}} \cdot p^0_{\text{benceno}} = 0,40 \times 757 = 302,8 \ \text{mmHg} \)</p>
+                        <p>\( p_{\text{tolueno}} = x_{\text{tolueno}} \cdot p^0_{\text{tolueno}} = 0,60 \times 290 = 174,0 \ \text{mmHg} \)</p>
+                        <p><strong>Paso 3 → Presión total:</strong></p>
+                        <p>\( p_{\text{total}} = 302,8 + 174,0 = 476,8 \ \text{mmHg} \)</p>
+                        <p><strong>Paso 4 → Composición del vapor (Ley de Dalton):</strong></p>
+                        <p>\( y_{\text{benceno}} = \dfrac{p_{\text{benceno}}}{p_{\text{total}}} = \dfrac{302,8}{476,8} = 0,635 \)</p>
+                        <p>\( y_{\text{tolueno}} = 1 - 0,635 = 0,365 \)</p>
+                        <p>El vapor es más rico en el componente más volátil (benceno).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                💡 <strong>Observaciones claves:</strong> La Ley de Raoult relaciona la presión de vapor con la composición de la fase líquida. Su principal utilidad es <strong>predecir el comportamiento de las mezclas</strong> y constituye la base de la <strong>destilación fraccionada</strong> y de todas las propiedades coligativas. El error más común es olvidar que la fracción molar que aparece en la fórmula es la del <strong>disolvente</strong> (o del componente en fase líquida) y no la del soluto. Además, para electrolitos hay que corregir por el número de iones (factor de Van 't Hoff), un detalle que suele pasarse por alto.
+            </div>
+
+        </div>
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- Fin del contenedor principal -->
+</body>
+</html>

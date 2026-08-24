@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T02.09. De la configuración electrónica al grupo y periodo de la tabla periódica</title>
+    <!-- FontAwesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;      /* <--- ESTA ES LA CLAVE */
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajuste para el subtítulo de la cabecera */
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+        ul {
+            margin: 8px 0 0 20px;
+            padding-left: 10px;
+        }
+        ul li {
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;  /* mismo padding que las secciones */
+            border: 2px solid #cbd5e0;
+            border-radius: 20px;
+            background: #f8fafc;
+            padding: 0.2rem 0.6rem 0.6rem 0.6rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        details[open] {
+            border-color: #667eea;
+            background: #f4f7ff;
+        }
+
+        details summary {
+            list-style: none;           /* oculta el triángulo por defecto en Firefox/Chrome */
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 0.4rem 0.8rem 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            border-radius: 16px;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;              /* oculta el triángulo en WebKit */
+        }
+
+        details summary i.fa-chevron-circle-down {
+            font-size: 2rem;
+            color: #667eea;
+            transition: transform 0.35s ease;
+        }
+
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+            color: #764ba2;
+        }
+
+        details summary .titulo-desplegable {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.3rem 0.8rem;
+        }
+
+        details summary .titulo-desplegable .pulsame {
+            font-size: 1rem;
+            font-weight: 400;
+            background: #e9edf4;
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            color: #2d3748;
+            letter-spacing: 0.3px;
+        }
+
+        .contenido-desplegable {
+            padding: 0.2rem 0.8rem 1.2rem 0.8rem;
+        }
+
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .ejercicio-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #dde6ef;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .ejercicio-card .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .ejercicio-card .ej-header .num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.1rem 0.9rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .ejercicio-card .ej-header .tit {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #2d3748;
+        }
+
+        .ejercicio-card .enunciado {
+            margin: 0.6rem 0 1rem 0;
+            padding-left: 0.6rem;
+            border-left: 3px solid #b3cbe0;
+        }
+
+        .ejercicio-card .enunciado ul {
+            list-style: disc;
+            padding-left: 1.6rem;
+            margin: 0.4rem 0;
+        }
+
+        .ejercicio-card .enunciado ul li {
+            margin-bottom: 0.2rem;
+        }
+
+        .resolucion {
+            background: #f2f7fd;
+            border-radius: 16px;
+            padding: 1rem 1.6rem;
+            border: 1px solid #d4e2f0;
+            margin-top: 0.8rem;
+        }
+
+        .resolucion p {
+            margin-bottom: 0.4rem;
+        }
+
+        .clave-didactica {
+            margin-top: 1.2rem;
+            padding: 0.8rem 1.6rem;
+            background: #e5eff9;
+            border-radius: 40px;
+            color: #1a3c5e;
+            font-weight: 500;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T02.08.- </span>
+                    <span class="texto">De la configuración electrónica al grupo y periodo de la tabla periódica</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIÓN ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la configuración electrónica de un átomo en su estado fundamental, demostrar las reglas que permiten determinar su periodo y su grupo en la tabla periódica:</p>
+            <div class="formula-box">
+                \[ \text{Periodo} = n_{\text{máx}} \quad ; \quad \text{Grupo} = f(\text{electrones de valencia}) \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U02c08 - De la configuración electrónica al grupo y período de la tabla periódica.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- SECCIÓN OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Establecer las reglas generales que conectan la estructura electrónica con la posición en la tabla periódica, permitiendo predecir las propiedades químicas de un elemento sin necesidad de memorizar su ubicación.</p>
+        </div>
+
+        <!-- SECCIÓN PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔧 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Determinar el periodo:</strong> el periodo al que pertenece un elemento coincide con el número cuántico principal \(n\) de su capa de valencia (la capa más externa ocupada por electrones):
+                <div class="formula-box">
+                    \[ \text{Periodo} = n_{\text{máx}} \]
+                </div>
+                <p style="margin-top: 8px;">Por ejemplo, si el electrón diferenciador está en \(4s^1\), el elemento pertenece al periodo 4.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Identificar el bloque:</strong> el subnivel de valencia determina el bloque de la tabla periódica:
+                <ul>
+                    <li>Subnivel \(s\): bloque s (grupos 1 y 2)</li>
+                    <li>Subnivel \(p\): bloque p (grupos 13 a 18)</li>
+                    <li>Subnivel \(d\): bloque d (grupos 3 a 12)</li>
+                    <li>Subnivel \(f\): bloque f (lantánidos y actínidos)</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Determinar el grupo en el bloque s:</strong> para los elementos cuya configuración de valencia termina en \(ns^x\), el número de grupo es igual al número de electrones de valencia:
+                <div class="formula-box">
+                    \[ \text{Grupo (bloque s)} = x \quad (x = 1 \text{ o } 2) \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Determinar el grupo en el bloque p:</strong> para los elementos cuya configuración de valencia termina en \(ns^2 np^x\), el número de grupo se obtiene sumando 10 a los electrones de valencia:
+                <div class="formula-box">
+                    \[ \text{Grupo (bloque p)} = 10 + (2 + x) = 12 + x \quad (x = 1 \text{ a } 6) \]
+                </div>
+                <p style="margin-top: 8px;">Equivalentemente: grupo = número de electrones de valencia + 10.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Determinar el grupo en el bloque d:</strong> para los elementos de transición cuya configuración de valencia es \((n-1)d^x ns^2\) (o similar), el número de grupo es:
+                <div class="formula-box">
+                    \[ \text{Grupo (bloque d)} = x + 2 \quad (\text{con algunas excepciones}) \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Regla general para grupos principales:</strong> para los grupos representativos (bloques s y p), el grupo se puede obtener directamente contando los electrones de valencia (capa más externa):
+                <div class="formula-box">
+                    \[ \text{Grupo (representativos)} = \text{número de electrones de valencia} \quad (\text{para grupos 1-2}) \]
+                    \[ \text{Grupo (representativos)} = \text{número de electrones de valencia} + 10 \quad (\text{para grupos 13-18}) \]
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ \text{Periodo} = n_{\text{máx}} \]
+                \[ \text{Grupo} = \begin{cases} 
+                e^-_{\text{valencia}} & \text{(bloque s)} \\
+                e^-_{\text{valencia}} + 10 & \text{(bloque p)} \\
+                e^-_{(n-1)d} + 2 & \text{(bloque d)}
+                \end{cases} \]
+            </div>
+            <div class="note">
+                <strong>Observaciones sobre el alumnado:</strong> Es fundamental que los estudiantes practiquen con ejemplos concretos. Por ejemplo, el cloro (\(Z=17\), configuración \(1s^2 2s^2 2p^6 3s^2 3p^5\)) tiene \(n_{\text{máx}} = 3\) (periodo 3) y \(2+5 = 7\) electrones de valencia, que sumando 10 da grupo 17 (halógenos). El potasio (\(Z=19\), \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^1\)) está en periodo 4 y grupo 1 (alcalino). Esta regla conecta directamente la estructura electrónica con las propiedades periódicas.
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- BLOQUE DESPLEGABLE CON EJERCICIOS TIPO        -->
+        <!-- ============================================ -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo-desplegable">
+                    <span>🧪 DESMITIFICANDO De la configuración electrónica al grupo y periodo de la tabla periódica</span>
+                    <span class="pulsame"><i class="fas fa-hand-pointer" style="margin-right: 6px;"></i>Púlsame</span>
+                </span>
+            </summary>
+            <div class="contenido-desplegable">
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">1</span>
+                        <span class="tit">Determinar grupo y periodo a partir de la configuración</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Dada la configuración electrónica de un átomo neutro:</p>
+                        <p style="text-align: center; font-weight: 600;">\(1s^2\,2s^2\,2p^6\,3s^2\,3p^4\)</p>
+                        <ul>
+                            <li><strong>a)</strong> Indica su periodo y grupo en la tabla periódica.</li>
+                            <li><strong>b)</strong> ¿A qué elemento corresponde? (Z = número de electrones).</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> La capa más externa es \(3s^2 3p^4\), por lo que \(n_{\text{máx}} = 3\) → <strong>periodo 3</strong>.</p>
+                        <p>Es un elemento del bloque p (termina en p). Los electrones de valencia son \(2 + 4 = 6\). Para bloque p, grupo = electrones de valencia + 10 = \(6 + 10 = 16\) → <strong>grupo 16</strong> (anfígenos).</p>
+                        <p><strong>b)</strong> El número atómico es la suma de electrones: \(2+2+6+2+4 = 16\). Z=16 corresponde al <strong>azufre (S)</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">2</span>
+                        <span class="tit">Configuración a partir del grupo y periodo</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un elemento se encuentra en el periodo 5 y grupo 15 de la tabla periódica.</p>
+                        <ul>
+                            <li><strong>a)</strong> Escribe la configuración electrónica de su capa de valencia.</li>
+                            <li><strong>b)</strong> Indica el símbolo del elemento y su número atómico.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Periodo 5 → capa de valencia \(n=5\). Grupo 15 → bloque p (porque 15 ≥ 13). Para bloque p, grupo = electrones de valencia + 10 → electrones de valencia = 5. La configuración de valencia es \(5s^2 5p^3\) (2+3=5).</p>
+                        <p><strong>b)</strong> El elemento con esa configuración es el <strong>arsénico (As)</strong>, Z=33. Configuración completa: \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^2 3d^{10} 4p^6 5s^2 4d^{10} 5p^3\) (nótese que el subnivel 4d se llena antes que el 5p).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">3</span>
+                        <span class="tit">Identificar grupo y periodo a partir del número atómico</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El elemento con número atómico \(Z = 42\).</p>
+                        <ul>
+                            <li><strong>a)</strong> Escribe su configuración electrónica.</li>
+                            <li><strong>b)</strong> Determina su periodo y su grupo.</li>
+                            <li><strong>c)</strong> ¿A qué bloque pertenece?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Z=42 (molibdeno, Mo). Configuración (estado fundamental, excepción por semillenado): \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^2 3d^{10} 4p^6 5s^1 4d^5\).</p>
+                        <p><strong>b)</strong> La capa más externa es \(5s^1\) (aunque el subnivel 4d también está ocupado, la capa de valencia es \(n=5\)). Por tanto, <strong>periodo 5</strong>. Es un elemento de transición (bloque d). Para bloque d, grupo = electrones en el subnivel d + 2 = \(5 + 2 = 7\) → <strong>grupo 7</strong>.</p>
+                        <p><strong>c)</strong> Bloque <strong>d</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">4</span>
+                        <span class="tit">Comparación de posiciones de dos elementos</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Dados los elementos A y B con configuraciones:</p>
+                        <ul>
+                            <li>A: \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^2 3d^6\)</li>
+                            <li>B: \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^1 3d^5\)</li>
+                        </ul>
+                        <ul>
+                            <li><strong>a)</strong> Determina el periodo y grupo de cada uno.</li>
+                            <li><strong>b)</strong> Indica si pertenecen al mismo periodo y/o al mismo grupo.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Ambos tienen \(n_{\text{máx}} = 4\) → <strong>periodo 4</strong> para ambos.</p>
+                        <p>Para A: capa de valencia es \(4s^2 3d^6\) (bloque d). Grupo = \(6 + 2 = 8\) → <strong>grupo 8</strong> (hierro, Fe).</p>
+                        <p>Para B: capa de valencia es \(4s^1 3d^5\) (bloque d, excepción). Grupo = \(5 + 2 = 7\) → <strong>grupo 7</strong> (manganeso, Mn).</p>
+                        <p><strong>b)</strong> Están en el mismo periodo (4) pero en grupos diferentes (8 y 7).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">5</span>
+                        <span class="tit">Aplicación a los gases nobles</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Los gases nobles ocupan el grupo 18 de la tabla periódica.</p>
+                        <ul>
+                            <li><strong>a)</strong> Escribe la configuración de valencia genérica de un gas noble de periodo \(n\).</li>
+                            <li><strong>b)</strong> ¿Por qué todos los gases nobles pertenecen al grupo 18?</li>
+                            <li><strong>c)</strong> Escribe la configuración del cuarto gas noble (Z=36) y comprueba que está en el periodo 4 y grupo 18.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Para un gas noble del periodo \(n\), la capa de valencia está completa: \(ns^2 np^6\) (excepto el He, que es \(1s^2\)).</p>
+                        <p><strong>b)</strong> Tienen 8 electrones de valencia (excepto He con 2). En el bloque p, grupo = electrones de valencia + 10 = \(8 + 10 = 18\). Por eso todos están en el grupo 18.</p>
+                        <p><strong>c)</strong> Z=36 es el <strong>kriptón (Kr)</strong>. Configuración: \(1s^2 2s^2 2p^6 3s^2 3p^6 4s^2 3d^{10} 4p^6\). Capa de valencia: \(4s^2 4p^6\) → \(n=4\) (periodo 4), electrones de valencia = \(2+6=8\) → grupo \(8+10=18\). Correcto.</p>
+                    </div>
+                </div>
+
+                <!-- Observaciones claves -->
+                <div class="clave-didactica">
+                    💡 <strong>Observaciones claves:</strong> Para determinar grupo y periodo, siempre identifica primero el nivel más externo (periodo) y cuenta los electrones de valencia. Luego, según el bloque (s, p, d, f), aplica la regla correspondiente. Recuerda que los elementos de transición (bloque d) pueden tener excepciones en la configuración, pero la regla general \(grupo = e^-_{(n-1)d} + 2\) funciona en la mayoría de los casos.
+                </div>
+
+            </div> <!-- fin contenido-desplegable -->
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

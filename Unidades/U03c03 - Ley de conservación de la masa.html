@@ -1,0 +1,635 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 3: Ley de Conservación de la Masa</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        .reaction-box {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .system-diagram {
+            background: #f0fff4;
+            border: 2px dashed #48bb78;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL DESPLEGABLE INTERACTIVO
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: 1.15em;
+            color: #2d3748;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #4a5568;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 20px 25px;
+            background: white;
+        }
+        .exercise-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .exercise-header {
+            background: #4a5568;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .exercise-header .badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.85em;
+        }
+        .exercise-body {
+            padding: 18px 20px;
+        }
+        .exercise-body .statement {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .exercise-body .resolution {
+            background: #f0fff4;
+            padding: 15px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .exercise-body .resolution .math {
+            margin: 8px 0;
+        }
+        .didactic-footer {
+            background: #ebf4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-left: 5px solid #3182ce;
+            font-style: italic;
+        }
+        .didactic-footer strong {
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T03.03.- </span>
+                <span class="texto">Ley de Conservación de la Masa (Lavoisier)</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES TRANSFORMADAS ===== -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la definición de <strong>sistema cerrado</strong> (aquél que no intercambia materia con el exterior) y del principio de que los átomos se reorganizan pero no se crean ni se destruyen en una reacción química ordinaria, demostrar que <strong>la masa total de los reactivos es igual a la masa total de los productos</strong> en toda reacción química.</p>
+        <div class="formula-box">
+            En un sistema cerrado, para cualquier reacción química:
+            \[ \sum m_{\text{reactivos}} = \sum m_{\text{productos}} \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U03c03 - Ley de conservación de la masa.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta ley constituye el <strong>fundamento de la estequiometría</strong>. Sus implicaciones didácticas son:</p>
+        <ul>
+            <li>Permite <strong>balancear ecuaciones químicas</strong> ajustando coeficientes estequiométricos.</li>
+            <li>Justifica los <strong>cálculos de rendimiento</strong> y la identificación del reactivo limitante.</li>
+            <li>Conecta con la <strong>teoría atómica</strong>: los átomos se redistribuyen, pero su número y masa se conservan.</li>
+            <li>Es la base para comprender que las reacciones nucleares (fisión, fusión) <strong>no obedecen</strong> esta ley estrictamente, debido a la equivalencia masa-energía (\( E = mc^2 \)).</li>
+        </ul>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definimos el sistema</strong>. Consideremos una reacción química en un <strong>recipiente cerrado e impermeable</strong>, de modo que no entren ni salgan átomos del sistema. La reacción genérica es:
+            <div class="reaction-box">
+                \[ a\text{A} + b\text{B} \rightarrow c\text{C} + d\text{D} \]
+            </div>
+            donde \( a, b, c, d \) son los coeficientes estequiométricos enteros.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Aplicamos el principio de conservación de los átomos</strong>. En una reacción química ordinaria (no nuclear), los átomos de cada elemento se conservan:
+            <div class="formula-box">
+                Número de átomos de cada elemento en reactivos = Número de átomos de ese elemento en productos
+            </div>
+            <p>Esto se expresa matemáticamente a través de los <strong>coeficientes estequiométricos</strong>, que ajustan la ecuación para que se cumpla la conservación atómica.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Relacionamos átomos con masa</strong>. Cada átomo de un elemento tiene una masa atómica determinada (\( m_{\text{átomo}} \)). La masa total de un elemento en los reactivos es:
+            <div class="formula-box">
+                \[ m_{\text{elemento, reactivos}} = N_{\text{átomos}} \cdot m_{\text{átomo}} \]
+            </div>
+            <p>Análogamente, en los productos:</p>
+            <div class="formula-box">
+                \[ m_{\text{elemento, productos}} = N'_{\text{átomos}} \cdot m_{\text{átomo}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Igualamos las masas por elemento</strong>. Como el número de átomos se conserva (\( N_{\text{átomos}} = N'_{\text{átomos}} \)) y la masa de cada átomo es constante:
+            <div class="formula-box">
+                \[ m_{\text{elemento, reactivos}} = m_{\text{elemento, productos}} \quad \text{para cada elemento} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Sumamos sobre todos los elementos</strong>. La masa total de los reactivos es la suma de las masas de todos los elementos presentes en los reactivos. Análogamente para los productos:
+            <div class="formula-box">
+                \[ \sum_{\text{elementos}} m_{\text{elemento, reactivos}} = \sum_{\text{elementos}} m_{\text{elemento, productos}} \]
+            </div>
+            <p>Por lo tanto:</p>
+            <div class="formula-box">
+                \[ m_{\text{total, reactivos}} = m_{\text{total, productos}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Condición necesaria: sistema cerrado</strong>. Si el sistema no estuviera cerrado, podrían escapar gases (como \( \text{CO}_2 \) en la reacción ácido-base con bicarbonato) o entrar reactivos del aire (como \( \text{O}_2 \) en una oxidación), alterando aparentemente la masa. La ley solo se cumple estrictamente cuando se controla todo el sistema.
+            <div class="system-diagram">
+                <strong>Sistema cerrado:</strong> Recipiente hermético + balanza de precisión<br>
+                \[ m_{\text{inicial}} = m_{\text{final}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Conexión con la ecuación ajustada</strong>. Los coeficientes estequiométricos \( a, b, c, d \) garantizan la conservación atómica. Si multiplicamos cada coeficiente por la masa molar del respectivo compuesto, la suma de masas molares de reactivos (ponderada por coeficientes) igualará la de productos:
+            <div class="formula-box">
+                \[ a \cdot M_{\text{A}} + b \cdot M_{\text{B}} = c \cdot M_{\text{C}} + d \cdot M_{\text{D}} \]
+            </div>
+            <p>Esta igualdad es la <strong>base cuantitativa</strong> de todos los cálculos estequiométricos.</p>
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que en cualquier reacción química en <strong>sistema cerrado</strong>:</p>
+        <div class="formula-box">
+            \[ \sum_{i} m_{\text{reactivo } i} = \sum_{j} m_{\text{producto } j} \]
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">La masa total se conserva: los átomos se redistribuyen, pero no se crean ni se destruyen en una reacción química ordinaria.</p>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  Es importante destacar que esta ley fue establecida por Lavoisier mediante experimentos cuantitativos meticulosos con la balanza, revolucionando la química al sustituir la teoría del flogisto. En el aula, la experiencia con vinagre y bicarbonato en un recipiente cerrado sobre una balanza (con globo para recoger el CO₂) es una demostración visual impactante. Se debe enfatizar que la <strong>aparente pérdida de masa</strong> en sistemas abiertos se debe a la salida de gases, no a una violación de la ley. Esta ley, junto con las de Proust y Dalton, conforma el triángulo fundamental de las leyes ponderales que sustentan la estequiometría moderna.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="flex: 1;">🧪 DESMITIFICANDO Ley de Conservación de la Masa (Lavoisier)</span>
+            <span style="font-size: 0.9em; color: #4a5568; background: #e2e8f0; padding: 2px 12px; border-radius: 20px;">
+                <i class="fas fa-hand-pointer"></i> Púlsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Verificación de la conservación de masa en una combustión</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> En un recipiente cerrado se queman 2,40 g de magnesio con 1,60 g de oxígeno, obteniéndose óxido de magnesio (MgO).</p>
+                        <ul>
+                            <li>a) Escribir la ecuación ajustada.</li>
+                            <li>b) Calcular la masa de MgO formada y verificar la ley de conservación de la masa.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li><strong>Apartado a)</strong> Ecuación: \( 2\text{Mg} + \text{O}_2 \rightarrow 2\text{MgO} \).</li>
+                            <li><strong>Apartado b)</strong> Por conservación atómica, todos los átomos de Mg y O pasan al producto. La masa total inicial es \( 2,40 + 1,60 = 4,00 \) g. Según la ley, la masa final debe ser también 4,00 g. Calculamos la masa de MgO: \( 2,40 \) g de Mg reaccionan con \( 1,60 \) g de O (proporción estequiométrica \( \frac{1,60}{2,40} = \frac{2}{3} \), que corresponde a la relación molar 1:1 en MgO). La masa de MgO es \( 2,40 + 1,60 = 4,00 \) g. Se cumple la ley.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Cálculo de masa de un reactivo a partir de productos</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> En la descomposición térmica de 10,0 g de carbonato de calcio (CaCO₃) se obtienen 4,40 g de dióxido de carbono (CO₂) y óxido de calcio (CaO).</p>
+                        <ul>
+                            <li>a) Escribir la ecuación ajustada.</li>
+                            <li>b) ¿Qué masa de CaO se ha formado? Aplicar la ley de conservación de la masa.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li><strong>Apartado a)</strong> \( \text{CaCO}_3 \rightarrow \text{CaO} + \text{CO}_2 \).</li>
+                            <li><strong>Apartado b)</strong> La masa inicial es 10,0 g. La masa de CO₂ obtenida es 4,40 g. Por conservación de la masa, la masa de CaO debe ser \( 10,0 - 4,40 = 5,60 \) g. Comprobación: \( 4,40 + 5,60 = 10,0 \) g, se cumple.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Sistema abierto vs. cerrado (aparente pérdida de masa)</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Se colocan 5,00 g de bicarbonato de sodio (NaHCO₃) en un vaso de precipitados abierto y se añade ácido acético en exceso. Se observa que la masa final del vaso y su contenido es inferior a la inicial. Si en la reacción se produce CO₂ que escapa, y la masa de CO₂ perdida es 1,30 g:</p>
+                        <ul>
+                            <li>a) Calcular la masa final aparente.</li>
+                            <li>b) Explicar qué ocurriría si la reacción se hiciera en un recipiente cerrado.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li><strong>Apartado a)</strong> Masa inicial: 5,00 g de NaHCO₃ + masa de ácido (exceso, no se considera). Si el CO₂ escapa, la masa final aparente es \( 5,00 - 1,30 = 3,70 \) g (más la masa de los otros productos, pero el ácido no se cuenta).</li>
+                            <li><strong>Apartado b)</strong> En un recipiente cerrado, el CO₂ quedaría atrapado, y la masa total (incluyendo el gas) no variaría. La ley se cumple estrictamente solo en sistema cerrado.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Verificación de la conservación de masa mediante ecuación ajustada</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> La combustión del propano (C₃H₈) produce CO₂ y H₂O. La ecuación ajustada es: \( \text{C}_3\text{H}_8 + 5\text{O}_2 \rightarrow 3\text{CO}_2 + 4\text{H}_2\text{O} \).</p>
+                        <ul>
+                            <li>a) Calcular la masa total de reactivos (en gramos) para 1 mol de propano.</li>
+                            <li>b) Calcular la masa total de productos y verificar la conservación.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Masas molares: \( M(\text{C}_3\text{H}_8) = 44 \), \( M(\text{O}_2) = 32 \), \( M(\text{CO}_2) = 44 \), \( M(\text{H}_2\text{O}) = 18 \).</li>
+                            <li><strong>Apartado a)</strong> Reactivos: \( 1 \cdot 44 + 5 \cdot 32 = 44 + 160 = 204 \) g.</li>
+                            <li><strong>Apartado b)</strong> Productos: \( 3 \cdot 44 + 4 \cdot 18 = 132 + 72 = 204 \) g. Se cumple la ley.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Aplicación a un proceso de oxidación</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Un trozo de hierro de 5,00 g se oxida completamente en un recipiente cerrado con oxígeno. Al final se obtienen 7,15 g de óxido de hierro (Fe₂O₃).</p>
+                        <ul>
+                            <li>a) Calcular la masa de oxígeno que reaccionó.</li>
+                            <li>b> Verificar la conservación de la masa.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li><strong>Apartado a)</strong> Masa de óxido = 7,15 g; masa de Fe = 5,00 g. La masa de oxígeno combinada es \( 7,15 - 5,00 = 2,15 \) g.</li>
+                            <li><strong>Apartado b)</strong> Masa inicial: 5,00 g Fe + 2,15 g O₂ = 7,15 g. Masa final: 7,15 g. Se cumple la ley.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="didactic-footer">
+                <strong>🧠 Observaciones claves:</strong> La Ley de Conservación de la Masa es la base de toda la estequiometría. El error más común es <strong>no considerar los sistemas abiertos</strong>: si un gas escapa, la masa aparente disminuye, pero la ley sigue cumpliéndose si se contabiliza todo el sistema. Esta ley, junto con las de Proust y Dalton, permite entender que las reacciones químicas son meras reorganizaciones atómicas en las que la masa se conserva, lo que permite hacer cálculos precisos en química.
+            </div>
+
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

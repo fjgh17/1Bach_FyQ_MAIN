@@ -1,0 +1,750 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T04.08 - Cálculo de la entalpía de reacción</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            background: rgba(255,255,255,0.2);
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .formula-box-highlight {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        .note-prof {
+            background: #f0fff4;
+            border: 1px dashed #48bb78;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #22543d;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 25px;
+            margin-bottom: 12px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #feebc8 0%, #feebc8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+        }
+        .method-box {
+            background: #edf2f7;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #cbd5e0;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        /* ========== ESTILOS PARA EL DESPLEGABLE ========== */
+        details {
+            margin: 2.5rem 1.5rem 1.5rem 1.5rem;
+            background: #f2f6fd;
+            border-radius: 20px;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            border: 1px solid #cdddec;
+            transition: background 0.2s;
+        }
+        details[open] {
+            background: #e8f0fe;
+            padding-bottom: 1.5rem;
+        }
+        summary {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            cursor: pointer;
+            padding: 0.8rem 0.5rem 0.8rem 0.2rem;
+            list-style: none;
+            outline: none;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i.fa-chevron-circle-down {
+            font-size: 1.5rem;
+            color: #2a7de1;
+            transition: transform 0.25s ease;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        summary .badge-pulsa {
+            background: #2a7de1;
+            color: #fff;
+            padding: 0.15rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .ejercicios-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            margin-top: 1.2rem;
+            padding-right: 0.5rem;
+        }
+        .ejercicio-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #d5e0ec;
+        }
+        .ejercicio-card .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e6edf5;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .ejercicio-card .encabezado .num {
+            font-weight: 700;
+            color: #1e4a6f;
+            background: #e0ebf9;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+        .ejercicio-card .encabezado .titulo {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #0b3b5c;
+        }
+        .ejercicio-card .enunciado {
+            font-size: 0.98rem;
+            margin-bottom: 0.8rem;
+        }
+        .ejercicio-card .enunciado ul {
+            padding-left: 1.2rem;
+            margin: 0.3rem 0;
+        }
+        .ejercicio-card .solucion {
+            background: #f4f8ff;
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            border-left: 4px solid #2a7de1;
+            font-size: 0.95rem;
+            margin-top: 0.8rem;
+        }
+        .ejercicio-card .solucion .paso {
+            margin: 0.5rem 0;
+        }
+        .ejercicio-card .solucion .math {
+            display: inline-block;
+            background: #eef2f7;
+            padding: 0.1rem 0.6rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        .pie-clave {
+            margin-top: 1.5rem;
+            background: #dfe9f5;
+            border-radius: 14px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            color: #0b3b5c;
+            border-left: 6px solid #1e4a6f;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+            color: #1e4a6f;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            .section {
+                padding: 20px 18px;
+                margin: 12px;
+            }
+            details {
+                margin: 1.5rem 0.5rem;
+                padding: 0.3rem;
+            }
+            summary {
+                font-size: 1.1rem;
+            }
+            .comparison-table th,
+            .comparison-table td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T04.08.- </span>
+                <span class="texto">Cálculo de la entalpía de reacción</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la <strong>Ley de Hess</strong> (demostrada en la Demostración 7) y de las <strong>definiciones de entalpía de formación estándar</strong> (\(\Delta H_f^\circ\)) y <strong>entalpía de enlace</strong> (\(\Delta H_{\text{enlace}}\)), demostrar las dos formulaciones generales para calcular la entalpía de una reacción química:</p>
+        
+        <div class="formula-box-highlight">
+            <strong>Método 1 — A partir de entalpías de formación:</strong>
+            \[\Delta H_r^\circ = \sum_{i} \nu_i \, \Delta H_f^\circ(\text{productos}_i) - \sum_{j} \nu_j \, \Delta H_f^\circ(\text{reactivos}_j)\]
+            
+            <strong>Método 2 — A partir de entalpías de enlace:</strong>
+            \[\Delta H_r^\circ = \sum_{\text{enlaces rotos}} \Delta H_{\text{rotos}} - \sum_{\text{enlaces formados}} \Delta H_{\text{formados}}\]
+        </div>
+        
+        <p style="margin-top: 15px;">Es decir, demostrar que la entalpía de reacción puede calcularse por <span class="highlight">dos caminos conceptualmente diferentes</span>: uno basado en estados de referencia (formación desde elementos) y otro basado en la energía de las interacciones químicas (enlaces rotos y formados).</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U04c08 - Cálculo de la entalpía de reacción.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>El objetivo es obtener <strong>dos métodos generales e independientes</strong> para el cálculo de entalpías de reacción, demostrando que:</p>
+        <ul>
+            <li>El <strong>método de entalpías de formación</strong> es exacto y se basa en la Ley de Hess aplicada a un ciclo que pasa por los elementos constituyentes.</li>
+            <li>El <strong>método de entalpías de enlace</strong> es aproximado (porque las entalpías de enlace son valores promedio) y se basa en el balance energético de las interacciones químicas.</li>
+        </ul>
+        <p>Esta dualidad de métodos refuerza la comprensión de la naturaleza energética de las reacciones químicas y proporciona herramientas de cálculo para distintas situaciones.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔬 Procedimiento</h2>
+        
+        <div class="method-box">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📘 MÉTODO 1: Entalpías de formación estándar</h3>
+            
+            <div class="step">
+                <span class="step-num">1</span> <strong>Definición de entalpía de formación estándar</strong>
+                <p>La <strong>entalpía de formación estándar</strong> \(\Delta H_f^\circ\) de un compuesto es la variación de entalpía que acompaña a la formación de <strong>1 mol</strong> del compuesto a partir de sus <strong>elementos constituyentes</strong> en su estado de referencia (forma más estable a 1 bar y temperatura especificada, generalmente 298 K).</p>
+                <div class="formula-box">
+                    \[\text{Elementos (estado de referencia)} \xrightarrow{\Delta H_f^\circ} \text{Compuesto}\]
+                </div>
+                <p>Por convención: \(\Delta H_f^\circ(\text{elemento en estado de referencia}) = 0\).</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">2</span> <strong>Construcción del ciclo termodinámico</strong>
+                <p>Para una reacción genérica:</p>
+                <div class="formula-box">
+                    \[\nu_A A + \nu_B B \longrightarrow \nu_C C + \nu_D D\]
+                </div>
+                <p>Construimos el ciclo:</p>
+                <div class="formula-box">
+                    \[\begin{array}{ccc}
+                    \nu_A A + \nu_B B & \xrightarrow{\Delta H_r^\circ} & \nu_C C + \nu_D D \\
+                    \downarrow{\scriptstyle \sum -\Delta H_f^\circ(\text{react})} & & \uparrow{\scriptstyle +\sum \Delta H_f^\circ(\text{prod})} \\
+                    \text{Elementos} & \xrightarrow{0} & \text{Elementos}
+                    \end{array}\]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">3</span> <strong>Aplicación de la Ley de Hess</strong>
+                <p>Como la suma de entalpías en el ciclo cerrado es cero:</p>
+                <div class="formula-box">
+                    \[\Delta H_r^\circ - \sum \nu_i \, \Delta H_f^\circ(\text{productos}) + \sum \nu_j \, \Delta H_f^\circ(\text{reactivos}) = 0\]
+                </div>
+                <p>Despejando \(\Delta H_r^\circ\):</p>
+                <div class="formula-box-highlight">
+                    \[\Delta H_r^\circ = \sum_{i} \nu_i \, \Delta H_f^\circ(\text{productos}_i) - \sum_{j} \nu_j \, \Delta H_f^\circ(\text{reactivos}_j)\]
+                </div>
+            </div>
+        </div>
+        
+        <div class="method-box">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📗 MÉTODO 2: Entalpías de enlace</h3>
+            
+            <div class="step">
+                <span class="step-num">4</span> <strong>Definición de entalpía de enlace</strong>
+                <p>La <strong>entalpía de enlace</strong> (o energía de disociación de enlace) es la energía necesaria para romper <strong>1 mol de enlaces</strong> de un tipo específico en fase gaseosa, separando los átomos a distancia infinita.</p>
+                <div class="formula-box">
+                    \[A-B(g) \longrightarrow A(g) + B(g) \quad \Delta H > 0 \text{ (endotérmico)}\]
+                </div>
+                <p>La formación de un enlace libera la misma cantidad de energía: \(\Delta H_{\text{formación}} = -\Delta H_{\text{rotura}}\).</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">5</span> <strong>Modelo del proceso reactivo a nivel de enlaces</strong>
+                <p>Cualquier reacción química puede visualizarse en dos etapas hipotéticas:</p>
+                <ul>
+                    <li><strong>Etapa 1 (endotérmica):</strong> Ruptura de todos los enlaces en los reactivos para obtener átomos gaseosos aislados.</li>
+                    <li><strong>Etapa 2 (exotérmica):</strong> Formación de todos los enlaces en los productos a partir de los átomos aislados.</li>
+                </ul>
+                <div class="formula-box">
+                    \[\text{Reactivos} \xrightarrow{\sum \Delta H_{\text{rotos}}} \text{Átomos aislados} \xrightarrow{-\sum \Delta H_{\text{formados}}} \text{Productos}\]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">6</span> <strong>Aplicación de la Ley de Hess al modelo de enlaces</strong>
+                <p>La entalpía total de la reacción es la suma de las entalpías de ambas etapas:</p>
+                <div class="formula-box">
+                    \[\Delta H_r = \Delta H_{\text{etapa 1}} + \Delta H_{\text{etapa 2}} = \sum \Delta H_{\text{rotos}} + \left(-\sum \Delta H_{\text{formados}}\right)\]
+                </div>
+                <div class="formula-box-highlight">
+                    \[\Delta H_r = \sum_{\text{enlaces rotos}} \Delta H_{\text{enlace}} - \sum_{\text{enlaces formados}} \Delta H_{\text{enlace}}\]
+                </div>
+                <p>Es decir: la entalpía de reacción es la <strong>diferencia entre la energía necesaria para romper los enlaces de los reactivos</strong> y la <strong>energía liberada al formar los enlaces de los productos</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">7</span> <strong>Comparación de ambos métodos</strong>
+            <table class="comparison-table">
+                <tr>
+                    <th>Característica</th>
+                    <th>Método de formación</th>
+                    <th>Método de enlaces</th>
+                </tr>
+                <tr>
+                    <td>Exactitud</td>
+                    <td>Exacto (datos experimentales precisos)</td>
+                    <td>Aproximado (valores promedio)</td>
+                </tr>
+                <tr>
+                    <td>Aplicabilidad</td>
+                    <td>Cualquier compuesto con \(\Delta H_f^\circ\) conocida</td>
+                    <td>Compuestos gaseosos o con estructura clara</td>
+                </tr>
+                <tr>
+                    <td>Base teórica</td>
+                    <td>Ley de Hess + estados de referencia</td>
+                    <td>Balance energético de interacciones</td>
+                </tr>
+                <tr>
+                    <td>Signo del resultado</td>
+                    <td>Negativo = exotérmico (productos más estables)</td>
+                    <td>Si rotos > formados: endotérmico; si rotos < formados: exotérmico</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se han demostrado <strong>dos métodos independientes</strong> para calcular la entalpía de reacción, ambos basados en la Ley de Hess pero con fundamentos conceptuales distintos.</p>
+        
+        <div class="formula-box-highlight">
+            <strong>Resultados fundamentales:</strong><br><br>
+            
+            <strong>Método 1 — Entalpías de formación (exacto):</strong>
+            \[\Delta H_r^\circ = \sum_{i} \nu_i \, \Delta H_f^\circ(\text{productos}_i) - \sum_{j} \nu_j \, \Delta H_f^\circ(\text{reactivos}_j)\]
+            
+            <strong>Método 2 — Entalpías de enlace (aproximado):</strong>
+            \[\Delta H_r = \sum_{\text{enlaces rotos}} \Delta H_{\text{enlace}} - \sum_{\text{enlaces formados}} \Delta H_{\text{enlace}}\]
+        </div>
+        
+        <p style="margin-top: 15px;">Interpretación física:</p>
+        <ul>
+            <li>Si \(\Delta H_r < 0\): la reacción es <strong>exotérmica</strong> (libera energía). Los productos son más estables que los reactivos.</li>
+            <li>Si \(\Delta H_r > 0\): la reacción es <strong>endotérmica</strong> (absorbe energía). Los reactivos son más estables que los productos.</li>
+            <li>Si \(\Delta H_r = 0\): no hay cambio neto de energía (caso límite teórico).</li>
+        </ul>
+        
+        <div class="note-prof">
+            <strong>💡 Observaciones sobre el alumnado:</strong><br>
+            Es crucial que los estudiantes comprendan que el método de entalpías de formación es <strong>exacto</strong> porque los datos \(\Delta H_f^\circ\) corresponden a condiciones específicas y bien definidas, mientras que el método de enlaces es <strong>aproximado</strong> porque las entalpías de enlace son promedios sobre muchas moléculas diferentes. Por ejemplo, el enlace C-H en metano no tiene exactamente la misma energía que en etano. Recomendar el uso del método de formación cuando se dispone de datos, y reservar el método de enlaces para estimaciones rápidas o cuando no hay datos de formación disponibles. Un error frecuente es confundir el orden de resta en el método de enlaces: siempre "rotos menos formados", ya que la formación de enlaces libera energía (signo negativo en el balance).
+        </div>
+    </div>
+
+    <!-- ============ BLOQUE DESPLEGABLE (TAREA 1) ============ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO el cálculo de entalpías</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+
+        <div class="ejercicios-grid">
+
+            <!-- EJERCICIO 1: Método de formación -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo">Combustión del metanol (formación)</span>
+                </div>
+                <div class="enunciado">
+                    <p>Calcula la entalpía estándar de combustión del metanol líquido:</p>
+                    <div class="formula-box" style="background:#eef2f7; padding:0.4rem; margin:0.2rem 0;">2 CH₃OH(l) + 3 O₂(g) → 2 CO₂(g) + 4 H₂O(l)</div>
+                    <p>Datos: \(\Delta H_f^\circ\) (CH₃OH) = –238,6 kJ/mol; CO₂ = –393,5 kJ/mol; H₂O(l) = –285,8 kJ/mol; O₂(g) = 0.</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución (método de formación):</strong></p>
+                    <div class="paso">Aplicamos \(\Delta H_r^\circ = \sum \nu \Delta H_f^\circ(\text{prod}) - \sum \nu \Delta H_f^\circ(\text{react})\).</div>
+                    <div class="paso">Productos: \(2 \times (-393,5) + 4 \times (-285,8) = -787,0 - 1143,2 = -1930,2 \, \text{kJ}\).</div>
+                    <div class="paso">Reactivos: \(2 \times (-238,6) + 3 \times 0 = -477,2 \, \text{kJ}\).</div>
+                    <div class="paso">\(\Delta H_r^\circ = -1930,2 - (-477,2) = -1453,0 \, \text{kJ}\).</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H_r^\circ = -1453,0 \, \text{kJ}\) (por cada 2 moles de metanol).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Método de formación (otra reacción) -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo">Formación del amoniaco (formación)</span>
+                </div>
+                <div class="enunciado">
+                    <p>Calcula la entalpía estándar de la reacción de síntesis del amoniaco:</p>
+                    <div class="formula-box" style="background:#eef2f7; padding:0.4rem; margin:0.2rem 0;">N₂(g) + 3 H₂(g) → 2 NH₃(g)</div>
+                    <p>Dato: \(\Delta H_f^\circ\) (NH₃) = –46,1 kJ/mol. Los elementos en estado de referencia tienen \(\Delta H_f^\circ = 0\).</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Productos: \(2 \times (-46,1) = -92,2 \, \text{kJ}\).</div>
+                    <div class="paso">Reactivos: \(1 \times 0 + 3 \times 0 = 0\).</div>
+                    <div class="paso">\(\Delta H_r^\circ = -92,2 - 0 = -92,2 \, \text{kJ}\).</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H_r^\circ = -92,2 \, \text{kJ}\) (reacción exotérmica).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Método de enlaces -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo">Hidrogenación del eteno (enlaces)</span>
+                </div>
+                <div class="enunciado">
+                    <p>Calcula la entalpía de la reacción de hidrogenación del eteno a etano:</p>
+                    <div class="formula-box" style="background:#eef2f7; padding:0.4rem; margin:0.2rem 0;">C₂H₄(g) + H₂(g) → C₂H₆(g)</div>
+                    <p>Datos de entalpías de enlace (kJ/mol): C=C = 613; H–H = 436; C–H = 414; C–C = 347.</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución (método de enlaces):</strong></p>
+                    <div class="paso">Enlaces rotos en reactivos: 1 C=C (613) + 1 H–H (436) = 1049 kJ.</div>
+                    <div class="paso">Enlaces formados en productos: 1 C–C (347) + 4 C–H (4 × 414 = 1656) = 2003 kJ.</div>
+                    <div class="paso">\(\Delta H_r = \sum \text{rotos} - \sum \text{formados} = 1049 - 2003 = -954 \, \text{kJ}\).</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H_r \approx -954 \, \text{kJ/mol}\) (exotérmica, valor aproximado).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Método de enlaces (otra reacción) -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo">Cloración del metano (enlaces)</span>
+                </div>
+                <div class="enunciado">
+                    <p>Calcula la entalpía de la reacción de sustitución:</p>
+                    <div class="formula-box" style="background:#eef2f7; padding:0.4rem; margin:0.2rem 0;">CH₄(g) + Cl₂(g) → CH₃Cl(g) + HCl(g)</div>
+                    <p>Datos de enlaces (kJ/mol): C–H = 414; Cl–Cl = 243; C–Cl = 339; H–Cl = 432.</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Enlaces rotos: 1 C–H (414) + 1 Cl–Cl (243) = 657 kJ.</div>
+                    <div class="paso">Enlaces formados: 1 C–Cl (339) + 1 H–Cl (432) = 771 kJ.</div>
+                    <div class="paso">\(\Delta H_r = 657 - 771 = -114 \, \text{kJ}\).</div>
+                    <p><strong>Respuesta:</strong> \(\Delta H_r \approx -114 \, \text{kJ/mol}\) (exotérmica).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Comparación de ambos métodos -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo">Comparación de métodos para la formación del HCl</span>
+                </div>
+                <div class="enunciado">
+                    <p>Calcula la entalpía de la reacción H₂(g) + Cl₂(g) → 2 HCl(g) usando:</p>
+                    <ul>
+                        <li><strong>a)</strong> Método de entalpías de formación (dato: \(\Delta H_f^\circ\)(HCl) = –92,3 kJ/mol).</li>
+                        <li><strong>b)</strong> Método de enlaces (datos: H–H = 436; Cl–Cl = 243; H–Cl = 432).</li>
+                        <li><strong>c)</strong> Compara los resultados y explica la diferencia.</li>
+                    </ul>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso"><strong>a) Formación:</strong> Productos: \(2 \times (-92,3) = -184,6\) kJ; reactivos: 0. \(\Delta H_r = -184,6\) kJ.</div>
+                    <div class="paso"><strong>b) Enlaces:</strong> Rotos: H–H (436) + Cl–Cl (243) = 679 kJ. Formados: 2 H–Cl (2 × 432 = 864) kJ. \(\Delta H_r = 679 - 864 = -185\) kJ.</div>
+                    <div class="paso"><strong>c) Comparación:</strong> Ambos métodos dan valores muy próximos (–184,6 vs –185,0). La pequeña diferencia se debe a que la entalpía de enlace H–Cl es un promedio; el método de formación es exacto.</div>
+                    <p><strong>Respuesta:</strong> a) –184,6 kJ ; b) –185,0 kJ ; c) coincidencia casi exacta, el método de formación es más preciso.</p>
+                </div>
+            </div>
+
+        </div> <!-- fin ejercicios-grid -->
+
+        <div class="pie-clave">
+            <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> 
+            La entalpía de reacción se puede calcular de dos formas complementarias. 
+            El <strong>método de formación</strong> es exacto y se basa en datos tabulados, mientras que el <strong>método de enlaces</strong> es aproximado pero muy útil para estimar energías de reacciones cuando no se dispone de datos de formación. 
+            El error típico es olvidar que las entalpías de enlace son valores promedio y que el método de enlaces solo es fiable para compuestos gaseosos.
+        </div>
+
+    </details>
+    <!-- ============ FIN BLOQUE DESPLEGABLE ============ -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

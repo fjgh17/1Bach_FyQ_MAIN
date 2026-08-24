@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T01.01 - Error Relativo</title>
+    <!-- MathJax para fórmulas -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (DETAILS)
+           ============================================ */
+        details.desmitificando {
+            margin: 30px 20px 20px 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        details.desmitificando > summary {
+            list-style: none;          /* oculta el triángulo nativo en Firefox/Chrome */
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            background: #edf2f7;
+            border-radius: 14px 14px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details.desmitificando > summary::-webkit-details-marker {
+            display: none;            /* oculta el triángulo en Chrome/Safari */
+        }
+        details.desmitificando > summary:hover {
+            background: #e2e8f0;
+        }
+        /* Icono FontAwesome que rota al abrir */
+        details.desmitificando > summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.3em;
+            color: #4a5568;
+        }
+        details.desmitificando[open] > summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        /* Contenido interno del desplegable */
+        details.desmitificando .contenido {
+            padding: 20px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 14px 14px;
+        }
+        /* Tarjetas de ejercicios */
+        .ejercicio-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #ebf4ff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #bee3f8;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ejercicio-card .card-header .num {
+            font-weight: 700;
+            color: #2b6cb0;
+            font-size: 1.1em;
+        }
+        .ejercicio-card .card-header .titulo {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.05em;
+        }
+        .ejercicio-card .card-body {
+            padding: 16px 20px 8px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+        .ejercicio-card .card-body .enunciado-ej li {
+            margin-bottom: 4px;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #3182ce;
+            padding: 16px 20px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .paso {
+            margin-bottom: 8px;
+        }
+        .resolucion .paso strong {
+            color: #2b6cb0;
+        }
+        .pie-didactico {
+            background: #fefcbf;
+            border: 1px solid #f6e05e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            color: #744210;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+        /* Ajustes responsivos */
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            details.desmitificando > summary { font-size: 1em; padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA (igual que el original) -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T01.01.- </span>
+                    <span class="texto">Deducción de la Fórmula del Error Relativo</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de <strong>error absoluto</strong> como la diferencia entre el valor medido (o aproximado) y el valor real (o de referencia) de una magnitud, demostrar que el <strong>error relativo</strong> se expresa como el cociente entre el error absoluto y el valor real, multiplicado por 100 para expresarlo en porcentaje.</p>
+            
+            <div class="formula-box">
+                \[
+                \varepsilon_{a} = |v_{\text{aprox}} - v_{\text{real}}|
+                \quad \Longrightarrow \quad
+                \varepsilon_{r} = \frac{\varepsilon_{a}}{v_{\text{real}}} \times 100\,\%
+                \]
+            </div>
+			
+			
+			
+			
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U01c01 - Deducción de la fórmula del error relativo.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+			
+			
+        </div>
+        
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Obtener una expresión que permita <strong>comparar la calidad de medidas de magnitudes muy diferentes</strong>. El error absoluto no basta para valorar la bondad de una medida: un error de \( 1\,\text{cm} \) al medir una mesa es grave, pero el mismo error al medir la distancia Tierra–Sol es despreciable. El error relativo proporciona una medida <strong>adimensional y normalizada</strong> del error, independiente de la escala de la magnitud medida.</p>
+        </div>
+        
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definición del error absoluto</strong>
+                <p>Se define el <strong>error absoluto</strong> \( \varepsilon_{a} \) como la diferencia entre el valor aproximado (medido) y el valor real (exacto) de una magnitud:</p>
+                <div class="formula-box">
+                    \[
+                    \varepsilon_{a} = v_{\text{aprox}} - v_{\text{real}}
+                    \]
+                </div>
+                <p>En valor absoluto, para que el error sea siempre positivo:</p>
+                <div class="formula-box">
+                    \[
+                    \varepsilon_{a} = |v_{\text{aprox}} - v_{\text{real}}|
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Limitación del error absoluto</strong>
+                <p>El error absoluto tiene las <strong>mismas unidades</strong> que la magnitud medida. Por tanto, no permite comparar directamente la calidad de dos medidas de magnitudes distintas. Se necesita una magnitud adimensional que indique <em>qué fracción del valor real representa el error</em>.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Definición del error relativo</strong>
+                <p>Se define el <strong>error relativo</strong> \( \varepsilon_{r} \) como el cociente entre el error absoluto y el valor real de la magnitud. De esta forma se eliminan las unidades y se obtiene una magnitud adimensional:</p>
+                <div class="formula-box">
+                    \[
+                    \varepsilon_{r} = \frac{\varepsilon_{a}}{v_{\text{real}}}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Sustitución del error absoluto</strong>
+                <p>Sustituyendo la definición de error absoluto en la expresión anterior:</p>
+                <div class="formula-box">
+                    \[
+                    \varepsilon_{r} = \frac{v_{\text{aprox}} - v_{\text{real}}}{v_{\text{real}}}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Expresión en porcentaje</strong>
+                <p>Para expresar el error relativo en forma de <strong>porcentaje</strong>, se multiplica por 100. Esto facilita su interpretación inmediata:</p>
+                <div class="formula-box">
+                    \[
+                    \varepsilon_{r} (\%) = \frac{\varepsilon_{a}}{v_{\text{real}}} \times 100\,\%
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Verificación dimensional</strong>
+                <p><strong>Verificación dimensional:</strong> las unidades de \( \varepsilon_{a} \) y \( v_{\text{real}} \) son idénticas, por lo que en el cociente se cancelan. El error relativo es, efectivamente, una magnitud <strong>adimensional</strong>:</p>
+                <div class="formula-box">
+                    \[
+                    [\varepsilon_{r}] = \frac{[\varepsilon_{a}]}{[v_{\text{real}}]} = \frac{\text{unidad de la magnitud}}{\text{unidad de la magnitud}} = 1 \quad \text{(adimensional)}
+                    \]
+                </div>
+            </div>
+        </div>
+        
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>La fórmula del <strong>error relativo</strong>, expresado en porcentaje, queda demostrada como:</p>
+            
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\varepsilon_{r} = \frac{|v_{\text{aprox}} - v_{\text{real}}|}{v_{\text{real}}} \times 100\,\%}
+                \]
+            </div>
+            
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong><br>
+                Es importante destacar que el error relativo permite comparar la calidad de medidas de magnitudes distintas. Por ejemplo, un error de \( 2\,\text{cm} \) al medir una mesa de \( 100\,\text{cm} \) supone un \( \varepsilon_{r} = 2\,\% \), mientras que el mismo error de \( 2\,\text{cm} \) al medir un viaducto de \( 236\,\text{m} \) supone solo un \( \varepsilon_{r} \approx 0{,}008\,\% \). 
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- BLOQUE DESPLEGABLE: "🧪 DESMITIFICANDO EL ERROR RELATIVO" -->
+        <!-- ======================================================== -->
+        <details class="desmitificando">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🖱️ Pulsame — 🧪 DESMITIFICANDO EL ERROR RELATIVO</span>
+            </summary>
+            <div class="contenido">
+
+
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 1</span>
+                        <span class="titulo">Comparación de errores en medidas de longitud</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se mide la longitud de un lápiz y se obtiene \( 18{,}2\,\text{cm} \), siendo su valor real \( 18{,}0\,\text{cm} \). Paralelamente, se mide la altura de un edificio y se obtiene \( 45{,}8\,\text{m} \), siendo su valor real \( 46{,}0\,\text{m} \).</p>
+                            <ul>
+                                <li>Calcula el error absoluto y el error relativo (en %) para cada medida.</li>
+                                <li>¿Cuál de las dos medidas es de mejor calidad (tiene menor error relativo)?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 – Error absoluto del lápiz:</strong>
+                                \[
+                                \varepsilon_{a,\text{lápiz}} = |18{,}2 - 18{,}0| = 0{,}2\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 – Error relativo del lápiz:</strong>
+                                \[
+                                \varepsilon_{r,\text{lápiz}} = \frac{0{,}2}{18{,}0} \times 100 = 1{,}11\,\%
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 – Error absoluto del edificio:</strong>
+                                \[
+                                \varepsilon_{a,\text{edificio}} = |45{,}8 - 46{,}0| = 0{,}2\,\text{m}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 4 – Error relativo del edificio:</strong>
+                                \[
+                                \varepsilon_{r,\text{edificio}} = \frac{0{,}2}{46{,}0} \times 100 = 0{,}435\,\%
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong> Aunque el error absoluto es el mismo (\(0{,}2\) unidades), el error relativo del edificio (\(0{,}435\%\)) es <strong>menor</strong> que el del lápiz (\(1{,}11\%\)). Por tanto, la medida del edificio tiene <strong>más calidad</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 2</span>
+                        <span class="titulo">Cálculo de error relativo en una pesada</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Una balanza digital da una lectura de \( 245{,}3\,\text{g} \) para una muestra que realmente pesa \( 250{,}0\,\text{g} \).</p>
+                            <ul>
+                                <li>Determina el error absoluto y el error relativo (en %) de esta medición.</li>
+                                <li>Si el fabricante afirma que la balanza tiene un error máximo del \( 0{,}5\% \), ¿es aceptable esta medida?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 – Error absoluto:</strong>
+                                \[
+                                \varepsilon_{a} = |245{,}3 - 250{,}0| = 4{,}7\,\text{g}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 – Error relativo:</strong>
+                                \[
+                                \varepsilon_{r} = \frac{4{,}7}{250{,}0} \times 100 = 1{,}88\,\%
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 – Comparación con el límite del fabricante:</strong>
+                                El error obtenido (\(1{,}88\%\)) es <strong>mayor</strong> que el máximo permitido (\(0{,}5\%\)). Por tanto, la medida <strong>no es aceptable</strong> según las especificaciones.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 3</span>
+                        <span class="titulo">Determinación del error absoluto a partir del error relativo</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> En un experimento de laboratorio se requiere que el error relativo en la medida de una resistencia eléctrica no supere el \( 2\% \). El valor real de la resistencia es \( 150\,\Omega \).</p>
+                            <ul>
+                                <li>¿Cuál es el error absoluto máximo admisible?</li>
+                                <li>Si el voltímetro da una lectura de \( 153\,\Omega \), ¿cumple con la condición?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 – Despejar el error absoluto máximo:</strong>
+                                \[
+                                \varepsilon_{r,\max} = 2\% = 0{,}02
+                                \quad \Rightarrow \quad
+                                \varepsilon_{a,\max} = \varepsilon_{r,\max} \times v_{\text{real}} = 0{,}02 \times 150 = 3\,\Omega
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 – Calcular el error de la lectura:</strong>
+                                \[
+                                \varepsilon_{a} = |153 - 150| = 3\,\Omega
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 – Comparar:</strong>
+                                El error absoluto es exactamente \( 3\,\Omega \), que es el máximo permitido. Por tanto, la medida <strong>cumple</strong> con la condición (está en el límite).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 4</span>
+                        <span class="titulo">Comparación de instrumentos (termómetros)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Dos termómetros miden la temperatura de un baño que realmente está a \( 37{,}0\,^\circ\text{C} \).</p>
+                            <ul>
+                                <li>Termómetro A: indica \( 36{,}7\,^\circ\text{C} \).</li>
+                                <li>Termómetro B: indica \( 37{,}5\,^\circ\text{C} \).</li>
+                                <li>Calcula el error relativo de cada uno y determina cuál es más preciso (menor error relativo).</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Termómetro A:</strong>
+                                \[
+                                \varepsilon_{a,A} = |36{,}7 - 37{,}0| = 0{,}3\,^\circ\text{C}
+                                \quad \Rightarrow \quad
+                                \varepsilon_{r,A} = \frac{0{,}3}{37{,}0} \times 100 = 0{,}81\%
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Termómetro B:</strong>
+                                \[
+                                \varepsilon_{a,B} = |37{,}5 - 37{,}0| = 0{,}5\,^\circ\text{C}
+                                \quad \Rightarrow \quad
+                                \varepsilon_{r,B} = \frac{0{,}5}{37{,}0} \times 100 = 1{,}35\%
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong> El termómetro A tiene un error relativo (\(0{,}81\%\)) <strong>menor</strong> que el B (\(1{,}35\%\)), por lo que es <strong>más preciso</strong> (da una medida de mejor calidad).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 5</span>
+                        <span class="titulo">Aplicación en una constante física (aceleración de la gravedad)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> En un laboratorio se mide la aceleración de la gravedad y se obtiene \( g = 9{,}78\,\text{m/s}^2 \). El valor aceptado es \( g = 9{,}81\,\text{m/s}^2 \).</p>
+                            <ul>
+                                <li>Calcula el error relativo (en %) de esta medición.</li>
+                                <li>Si otro grupo obtiene \( 9{,}92\,\text{m/s}^2 \), ¿cuál de los dos grupos ha realizado una medida de mejor calidad?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Grupo 1:</strong>
+                                \[
+                                \varepsilon_{a,1} = |9{,}78 - 9{,}81| = 0{,}03
+                                \quad \Rightarrow \quad
+                                \varepsilon_{r,1} = \frac{0{,}03}{9{,}81} \times 100 = 0{,}306\%
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Grupo 2:</strong>
+                                \[
+                                \varepsilon_{a,2} = |9{,}92 - 9{,}81| = 0{,}11
+                                \quad \Rightarrow \quad
+                                \varepsilon_{r,2} = \frac{0{,}11}{9{,}81} \times 100 = 1{,}12\%
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong> El grupo 1 tiene un error relativo mucho menor (\(0{,}306\%\)) que el grupo 2 (\(1{,}12\%\)). Por tanto, la medida del <strong>grupo 1 es de mejor calidad</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DIDÁCTICO -->
+                <div class="pie-didactico">
+                    <i class="fas fa-brain"></i>
+                    <strong>Observaciones claves:</strong> El error relativo “normaliza” el error absoluto dividiéndolo por el valor real. 
+                    Esto permite <strong>comparar medidas de órdenes de magnitud muy distintos</strong> (por ejemplo, micrómetros frente a kilómetros). 
+                    La “trampa” mental que resuelve es que un error absoluto grande no siempre es malo si la magnitud medida es también grande; 
+                    lo importante es la <strong>proporción</strong> que representa.
+                </div>
+
+            </div> <!-- fin .contenido -->
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+    </div> <!-- fin .container -->
+
+
+</body>
+</html>

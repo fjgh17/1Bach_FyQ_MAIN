@@ -1,0 +1,605 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T02.11. Determinación de la covalencia y la regla del octeto</title>
+    <!-- FontAwesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;      /* <--- ESTA ES LA CLAVE */
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajuste para el subtítulo de la cabecera */
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;  /* mismo padding que las secciones */
+            border: 2px solid #cbd5e0;
+            border-radius: 20px;
+            background: #f8fafc;
+            padding: 0.2rem 0.6rem 0.6rem 0.6rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        details[open] {
+            border-color: #667eea;
+            background: #f4f7ff;
+        }
+
+        details summary {
+            list-style: none;           /* oculta el triángulo por defecto en Firefox/Chrome */
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 0.4rem 0.8rem 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            border-radius: 16px;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;              /* oculta el triángulo en WebKit */
+        }
+
+        details summary i.fa-chevron-circle-down {
+            font-size: 2rem;
+            color: #667eea;
+            transition: transform 0.35s ease;
+        }
+
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+            color: #764ba2;
+        }
+
+        details summary .titulo-desplegable {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.3rem 0.8rem;
+        }
+
+        details summary .titulo-desplegable .pulsame {
+            font-size: 1rem;
+            font-weight: 400;
+            background: #e9edf4;
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            color: #2d3748;
+            letter-spacing: 0.3px;
+        }
+
+        .contenido-desplegable {
+            padding: 0.2rem 0.8rem 1.2rem 0.8rem;
+        }
+
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .ejercicio-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #dde6ef;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .ejercicio-card .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .ejercicio-card .ej-header .num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.1rem 0.9rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .ejercicio-card .ej-header .tit {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #2d3748;
+        }
+
+        .ejercicio-card .enunciado {
+            margin: 0.6rem 0 1rem 0;
+            padding-left: 0.6rem;
+            border-left: 3px solid #b3cbe0;
+        }
+
+        .ejercicio-card .enunciado ul {
+            list-style: disc;
+            padding-left: 1.6rem;
+            margin: 0.4rem 0;
+        }
+
+        .ejercicio-card .enunciado ul li {
+            margin-bottom: 0.2rem;
+        }
+
+        .resolucion {
+            background: #f2f7fd;
+            border-radius: 16px;
+            padding: 1rem 1.6rem;
+            border: 1px solid #d4e2f0;
+            margin-top: 0.8rem;
+        }
+
+        .resolucion p {
+            margin-bottom: 0.4rem;
+        }
+
+        .clave-didactica {
+            margin-top: 1.2rem;
+            padding: 0.8rem 1.6rem;
+            background: #e5eff9;
+            border-radius: 40px;
+            color: #1a3c5e;
+            font-weight: 500;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T02.10.- </span>
+                    <span class="texto">Determinación de la covalencia y la regla del octeto</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIÓN ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la configuración electrónica de valencia de dos átomos de no metales y de la regla del octeto, demostrar que el número de pares electrónicos compartidos (covalencia) necesario para que ambos átomos alcancen la estabilidad de gas noble viene dado por:</p>
+            <div class="formula-box">
+                \[ \text{Covalencia} = 8 - e^-_{\text{valencia}} \quad (\text{para cada átomo, con excepción del H}) \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U02c10 - Determinación de la covalencia y la regla del octeto.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- SECCIÓN OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Justificar matemáticamente por qué los átomos de no metales comparten electrones en lugar de transferirlos, y establecer una regla general para predecir cuántos enlaces covalentes formará un elemento a partir de su número de electrones de valencia.</p>
+        </div>
+
+        <!-- SECCIÓN PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔧 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Enunciar la regla del octeto para enlaces covalentes:</strong> cuando dos átomos de no metales se unen, ninguno cede electrones con facilidad (ambos tienen alta afinidad electrónica). En su lugar, comparten pares de electrones para que cada uno simule rodearse de 8 electrones.
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Analizar el flúor (\(Z=9\), configuración \(1s^2 2s^2 2p^5\)):</strong> posee 7 electrones de valencia. Para completar el octeto le falta 1 electrón. Al compartir 1 par con otro átomo de flúor, cada uno "cuenta" con 8 electrones:
+                <div class="formula-box">
+                    \[ \text{Covalencia del F} = 8 - 7 = 1 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Analizar el oxígeno (\(Z=8\), configuración \(1s^2 2s^2 2p^4\)):</strong> posee 6 electrones de valencia. Para completar el octeto le faltan 2 electrones. Debe compartir 2 pares (doble enlace) o 2 pares simples con 2 átomos distintos:
+                <div class="formula-box">
+                    \[ \text{Covalencia del O} = 8 - 6 = 2 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Analizar el nitrógeno (\(Z=7\), configuración \(1s^2 2s^2 2p^3\)):</strong> posee 5 electrones de valencia. Para completar el octeto le faltan 3 electrones. Debe compartir 3 pares (triple enlace o 3 enlaces simples):
+                <div class="formula-box">
+                    \[ \text{Covalencia del N} = 8 - 5 = 3 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Analizar el carbono (\(Z=6\), configuración \(1s^2 2s^2 2p^2\)):</strong> posee 4 electrones de valencia. Para completar el octeto le faltan 4 electrones. Debe compartir 4 pares:
+                <div class="formula-box">
+                    \[ \text{Covalencia del C} = 8 - 4 = 4 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Tratamiento especial del hidrógeno (\(Z=1\)):</strong> el hidrógeno solo tiene 1 electrón y su capa \(K\) se satisface con 2 electrones. Por tanto, su covalencia es siempre 1:
+                <div class="formula-box">
+                    \[ \text{Covalencia del H} = 2 - 1 = 1 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Generalizar la regla:</strong> para cualquier elemento representativo (excepto H y He), el número de enlaces covalentes que forma es igual al número de electrones que le faltan para completar el octeto:
+                <div class="formula-box">
+                    \[ \text{Covalencia} = 8 - e^-_{\text{valencia}} \]
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ \text{Covalencia} = 8 - e^-_{\text{valencia}} \quad (\text{elementos representativos, excluyendo H}) \]
+                \[ \text{Covalencia del H} = 1 \]
+            </div>
+            <div class="note">
+                <strong>Observaciones sobre el alumnado:</strong> Esta regla permite predecir la fórmula de compuestos covalentes sin memorizar. Por ejemplo, en el CO\(_2\), el carbono (covalencia 4) comparte 2 dobles enlaces con 2 oxígenos (covalencia 2 cada uno), de modo que \(4 = 2 \times 2\). En el NH\(_3\), el nitrógeno (covalencia 3) comparte 3 pares con 3 hidrógenos (covalencia 1 cada uno), verificando \(3 = 3 \times 1\). Es útil insistir en que la covalencia es el número de pares compartidos, no de electrones aislados.
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- BLOQUE DESPLEGABLE CON EJERCICIOS TIPO        -->
+        <!-- ============================================ -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo-desplegable">
+                    <span>🧪 DESMITIFICANDO Determinación de la covalencia y la regla del octeto</span>
+                    <span class="pulsame"><i class="fas fa-hand-pointer" style="margin-right: 6px;"></i>Púlsame</span>
+                </span>
+            </summary>
+            <div class="contenido-desplegable">
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">1</span>
+                        <span class="tit">Cálculo de la covalencia a partir de la configuración</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Determina la covalencia de los siguientes elementos a partir de su configuración electrónica de valencia:</p>
+                        <ul>
+                            <li><strong>a)</strong> Azufre (S): \(3s^2 3p^4\)</li>
+                            <li><strong>b)</strong> Fósforo (P): \(3s^2 3p^3\)</li>
+                            <li><strong>c)</strong> Cloro (Cl): \(3s^2 3p^5\)</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Azufre: 6 electrones de valencia. Covalencia = \(8 - 6 = 2\). Forma 2 enlaces (ej: H\(_2\)S).</p>
+                        <p><strong>b)</strong> Fósforo: 5 electrones de valencia. Covalencia = \(8 - 5 = 3\). Forma 3 enlaces (ej: PH\(_3\)).</p>
+                        <p><strong>c)</strong> Cloro: 7 electrones de valencia. Covalencia = \(8 - 7 = 1\). Forma 1 enlace (ej: HCl).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">2</span>
+                        <span class="tit">Determinación de la fórmula de un compuesto covalente</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El silicio (Si) tiene configuración de valencia \(3s^2 3p^2\) y el oxígeno (O) tiene \(2s^2 2p^4\).</p>
+                        <ul>
+                            <li><strong>a)</strong> Calcula la covalencia de cada elemento.</li>
+                            <li><strong>b)</strong> Escribe la fórmula del compuesto covalente que forman (el silicio forma el mismo tipo de enlaces que el carbono).</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Si: 4 electrones de valencia → covalencia = \(8-4=4\). O: 6 electrones de valencia → covalencia = \(8-6=2\).</p>
+                        <p><strong>b)</strong> El Si necesita compartir 4 pares, y cada O puede compartir 2 pares. Por tanto, se necesitan 2 átomos de O por cada Si. La fórmula es <strong>SiO\(_2\)</strong> (dióxido de silicio, estructura similar al CO\(_2\)).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">3</span>
+                        <span class="tit">Compuestos con enlaces múltiples</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El carbono (C) y el nitrógeno (N) forman varios compuestos covalentes.</p>
+                        <ul>
+                            <li><strong>a)</strong> Calcula la covalencia de C y N.</li>
+                            <li><strong>b)</strong> ¿Qué fórmula tendrá el compuesto más estable en el que C y N comparten el máximo número de pares posibles entre ellos? (Haz la estructura de Lewis)</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> C: 4 e⁻ valencia → covalencia 4. N: 5 e⁻ valencia → covalencia 3.</p>
+                        <p><strong>b)</strong> Para que ambos completen el octeto, C necesita 4 pares y N necesita 3 pares. Si comparten 3 pares (triple enlace), el N ya tiene 3 pares compartidos y 2 electrones no compartidos (par solitario) → octeto completo. El C, al compartir 3 pares con N, necesita 1 par más, que puede compartir con otro átomo (por ejemplo, H). El compuesto más simple es el <strong>HCN</strong> (cianuro de hidrógeno), donde C forma triple enlace con N y un enlace simple con H. La estructura de Lewis muestra el triple enlace C≡N.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">4</span>
+                        <span class="tit">Covalencia del hidrógeno y compuestos con él</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El hidrógeno (H) tiene covalencia 1. El telurio (Te) tiene configuración de valencia \(5s^2 5p^4\).</p>
+                        <ul>
+                            <li><strong>a)</strong> Calcula la covalencia del Te.</li>
+                            <li><strong>b)</strong> Escribe la fórmula del compuesto que forman H y Te.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Te tiene 6 electrones de valencia → covalencia = \(8-6=2\).</p>
+                        <p><strong>b)</strong> El Te necesita 2 pares compartidos, y cada H puede aportar 1 par. Por tanto, se necesitan 2 átomos de H por cada Te. La fórmula es <strong>H\(_2\)Te</strong> (telururo de hidrógeno, análogo al agua).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">5</span>
+                        <span class="tit">Aplicación a un compuesto orgánico sencillo</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El eteno (C\(_2\)H\(_4\)) es un compuesto covalente donde cada carbono tiene covalencia 4 y cada hidrógeno covalencia 1.</p>
+                        <ul>
+                            <li><strong>a)</strong> ¿Cuántos enlaces sencillos, dobles o triples se forman entre los carbonos en el eteno para que se cumpla la regla del octeto?</li>
+                            <li><strong>b)</strong> Escribe la estructura de Lewis del eteno.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> Cada C tiene 4 electrones de valencia y forma 4 enlaces. En el eteno, cada C se une a 2 átomos de H (2 enlaces simples) y al otro C. Para completar los 4 enlaces de cada C, el enlace C=C debe ser doble. Así, cada C comparte 2 pares con el otro C (doble enlace) y 1 par con cada H. Cumple el octeto: cada C tiene 4 pares compartidos (2 con H y 2 con el otro C).</p>
+                        <p><strong>b)</strong> Estructura de Lewis: H\(_2\)C=CH\(_2\). Cada C tiene un doble enlace con el otro C y dos enlaces simples con dos H. Todos los átomos tienen el octeto completo (el H con 2 electrones).</p>
+                    </div>
+                </div>
+
+                <!-- Observaciones claves -->
+                <div class="clave-didactica">
+                    💡 <strong>Observaciones claves:</strong> La covalencia se deduce fácilmente contando los electrones que le faltan al átomo para alcanzar el octeto (o el dueto para el H). Esta regla predice el número de enlaces que formará, pero recuerda que en algunos compuestos (como el SO\(_2\) o el PCl\(_5\)) se producen excepciones por expansión del octeto en elementos del tercer periodo en adelante.
+                </div>
+
+            </div> <!-- fin contenido-desplegable -->
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

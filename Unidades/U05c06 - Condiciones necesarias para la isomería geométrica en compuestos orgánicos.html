@@ -1,0 +1,615 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.07 - Demostración: Condiciones para la isomería geométrica (cis-trans)</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .comparison-box {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .comparison-box .title {
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 20px 30px 30px 30px;
+            background: #fefefe;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+        }
+        details summary {
+            padding: 16px 24px;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1e293b;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #f1f5f9;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 0 24px 24px 24px;
+        }
+        .ejercicio-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #edf2f7;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #2d3748;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ejercicio-card .card-header .badge {
+            background: #4a5568;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8em;
+        }
+        .ejercicio-card .card-body {
+            padding: 18px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .ejercicio-card .card-body .resolucion {
+            background: #f0fff4;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .ejercicio-card .card-body .resolucion .paso {
+            margin: 8px 0;
+        }
+        .pie-didactico {
+            background: #fef9e7;
+            border-left: 6px solid #f59e0b;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: #78350f;
+        }
+        .pie-didactico strong {
+            color: #92400e;
+        }
+
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            .comparison { grid-template-columns: 1fr; }
+            details { margin: 10px; }
+            .details-content { padding: 0 16px 16px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.06.- </span>
+                <span class="texto">Demostración: Condiciones para la isomería geométrica (cis-trans)</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la rigidez estructural impuesta por un doble enlace carbono-carbono (o por un anillo carbocíclico) que impide la rotación libre, demostrar que la isomería geométrica <em>cis-trans</em> solo es posible cuando cada uno de los dos átomos de carbono implicados en la restricción rotacional está unido a <strong>dos sustituyentes diferentes</strong>.</p>
+        <div class="formula-box">
+            Isomería geométrica \( \Longleftrightarrow \) Rigidez + Sustituyentes distintos en cada carbono
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c06 - Condiciones necesarias para la isomería geométrica en compuestos orgánicos.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Comprender las condiciones estructurales necesarias y suficientes para la existencia de isómeros geométricos. El estudiante debe ser capaz de:</p>
+        <ul>
+            <li>Predecir si un compuesto con doble enlace (o anillo) presentará isomería cis-trans.</li>
+            <li>Distinguir entre configuración <em>cis</em> (sustituyentes de mayor prioridad del mismo lado) y <em>trans</em> (lados opuestos).</li>
+            <li>Extender el criterio a anillos pequeños donde la rigidez también impide la rotación.</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Establecer la condición de rigidez.</strong> Un doble enlace C=C está formado por un enlace \( \sigma \) (solapamiento frontal, fuerte) y un enlace \( \pi \) (solapamiento lateral, débil). La rotación alrededor del doble enlace rompería el solapamiento lateral del enlace \( \pi \), lo cual requiere una energía prohibitiva (~260 kJ/mol). Por tanto, los sustituyentes quedan <strong>fijos en el espacio</strong>. En anillos pequeños, la tensión angular impide igualmente la rotación.
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Condición necesaria sobre los sustituyentes.</strong> Consideremos un doble enlace genérico \( C_1=C_2 \). Sean \( a \) y \( b \) los sustituyentes de \( C_1 \), y \( c \) y \( d \) los de \( C_2 \). Para que existan dos configuraciones espacialmente distintas (cis y trans), los grupos de cada carbono deben ser intercambiables en el espacio de forma que las dos disposiciones no sean superponibles por rotación.
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Análisis de casos:</strong>
+            <ul>
+                <li><strong>Caso A (sí existe isomería):</strong> But-2-eno \( CH_3-CH=CH-CH_3 \). En \( C_2 \): sustituyentes \( H \) y \( CH_3 \) (distintos). En \( C_3 \): sustituyentes \( H \) y \( CH_3 \) (distintos). Se pueden formar dos isómeros no superponibles: <em>cis</em> (metilos del mismo lado) y <em>trans</em> (metilos en lados opuestos).</li>
+                <li><strong>Caso B (no existe isomería):</strong> 2-metilbut-2-eno \( CH_3-C(CH_3)=CH-CH_3 \). En el carbono \( C_2 \), los dos sustituyentes son \( CH_3 \) y \( CH_3 \) (iguales). Al intercambiar los dos metilos no se genera una nueva configuración, por lo que no existe isomería geométrica.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Extensión a anillos carbocíclicos.</strong> En anillos pequeños (ciclopropano, ciclobutano), la rigidez del anillo equivale a la del doble enlace. Por ejemplo, el 1,2-dimetilciclopropano presenta isómeros <em>cis</em> y <em>trans</em> porque los dos sustituyentes (metilos) pueden estar del mismo lado o de lados opuestos del plano del anillo.
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Regla general:</strong> La isomería geométrica cis-trans requiere simultáneamente:
+            <div class="formula-box" style="text-align: left;">
+                (i) Un elemento de rigidez: doble enlace C=C, C=N, N=N, o anillo pequeño.<br>
+                (ii) Cada átomo implicado en la rigidez debe tener <strong>dos sustituyentes diferentes</strong>.
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Es importante aclarar que la nomenclatura IUPAC moderna utiliza el sistema <em>E/Z</em> basado en las reglas de Cahn-Ingold-Prelog (prioridad de secuencia), que generaliza y sustituye al sistema <em>cis/trans</em> cuando los sustituyentes son muy diferentes. Sin embargo, para 1.º de Bachillerato, el sistema <em>cis/trans</em> es suficiente y más intuitivo, siempre que se aplique a compuestos simétricos del tipo \( RCH=CHR' \). Se recomienda usar modelos moleculares para que los estudiantes visualicen la no superponibilidad de los isómeros.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Condición para la isomería geométrica cis-trans</strong>
+            <p style="font-size: 1.05em; margin: 10px 0 0 0;">
+                \[ \boxed{\text{Rigidez estructural} \;+\; \text{dos sustituyentes distintos en cada carbono del doble enlace}} \]
+            </p>
+        </div>
+        <div class="comparison">
+            <div class="comparison-box" style="border-color: #48bb78;">
+                <div class="title" style="color: #276749;">Sí presenta cis-trans</div>
+                <p>But-2-eno</p>
+                <p>1,2-dicloroeteno</p>
+                <p>1,2-dimetilciclopropano</p>
+            </div>
+            <div class="comparison-box" style="border-color: #fc8181;">
+                <div class="title" style="color: #c53030;">No presenta cis-trans</div>
+                <p>2-metilbut-2-eno</p>
+                <p>ClCH=CCl₂</p>
+                <p>1,1-dimetilciclopropano</p>
+            </div>
+        </div>
+        <p>La demostración realizada mediante el análisis de la rigidez estructural y la diferenciación de sustituyentes confirma que la isomería geométrica solo es posible cuando se cumplen ambas condiciones simultáneamente. Este criterio es fundamental para predecir la existencia de isómeros cis-trans en compuestos orgánicos.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> La isomería geométrica es una consecuencia directa de la rigidez estructural (doble enlace o anillo) y la desigualdad de los sustituyentes, lo que genera configuraciones espaciales no superponibles con propiedades físicas y químicas diferentes.</p>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS
+         ================================================== -->
+    <details id="ejerciciosDesplegable">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO Condiciones para la isomería geométrica (cis-trans)</span>
+            <span style="margin-left: auto; font-size: 0.8em; color: #64748b; font-weight: 400;">
+                <i class="fas fa-hand-pointer"></i> Pulsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 1</span>
+                    Predicción de isomería en alquenos sencillos
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Indica si los siguientes compuestos presentan isomería cis-trans y, en caso afirmativo, dibuja ambos isómeros (usando esqueletos simplificados).  
+                        a) \( CH_3-CH=CH-CH_2-CH_3 \) (pent-2-eno)  
+                        b) \( CH_3-C(CH_3)=CH-CH_3 \) (2-metilbut-2-eno)
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. <strong>Pent-2-eno:</strong> el doble enlace está en C2-C3. En C2: H y CH₃ (distintos). En C3: H y CH₂CH₃ (distintos). → Cumple la condición → <strong>Sí presenta cis-trans</strong>. Los isómeros se llaman <em>cis</em>-pent-2-eno y <em>trans</em>-pent-2-eno.</div>
+                        <div class="paso">2. <strong>2-metilbut-2-eno:</strong> el doble enlace está en C2-C3. En C2: CH₃ y CH₃ (iguales) → <strong>No presenta cis-trans</strong> porque los dos sustituyentes de C2 son idénticos.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ a) Sí, b) No.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 2</span>
+                    Isomería en cicloalcanos
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> El 1,3-dimetilciclobutano ¿presenta isomería cis-trans? Razona la respuesta.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. El ciclobutano es un anillo de 4 carbonos, que es rígido (no permite rotación libre).</div>
+                        <div class="paso">2. En el 1,3-dimetilciclobutano, los dos metilos están en carbonos diferentes (C1 y C3).</div>
+                        <div class="paso">3. Cada uno de esos carbonos tiene dos sustituyentes: en C1, H y CH₃ (distintos); en C3, H y CH₃ (distintos).</div>
+                        <div class="paso">4. Por tanto, los metilos pueden estar del mismo lado del plano del anillo (<em>cis</em>) o en lados opuestos (<em>trans</em>). → <strong>Sí presenta isomería cis-trans</strong>.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Sí, porque cada carbono del anillo con metilo tiene dos sustituyentes distintos (H y CH₃).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 3</span>
+                    Identificación de isómeros geométricos en compuestos halogenados
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> El 1,2-dicloroeteno (\( ClCH=CHCl \)) presenta dos isómeros geométricos. Escríbelos y nómbralos.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. El doble enlace C=C es rígido.</div>
+                        <div class="paso">2. En cada carbono del doble enlace hay dos sustituyentes: H y Cl (distintos en cada carbono). → Sí hay isomería.</div>
+                        <div class="paso">3. <em>cis</em>-1,2-dicloroeteno: los dos átomos de cloro están en el mismo lado del doble enlace.</div>
+                        <div class="paso">4. <em>trans</em>-1,2-dicloroeteno: los cloros están en lados opuestos.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Isómeros: <em>cis</em>-1,2-dicloroeteno y <em>trans</em>-1,2-dicloroeteno.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 4</span>
+                    Aplicación a compuestos con diferente sustitución
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Razona si el 2-clorobut-2-eno (\( CH_3-C(Cl)=CH-CH_3 \)) presenta isomería geométrica. ¿Y el 1,1-dicloroeteno (\( Cl_2C=CH_2 \))?
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. <strong>2-clorobut-2-eno:</strong> doble enlace en C2-C3. En C2: sustituyentes CH₃ y Cl (distintos). En C3: H y CH₃ (distintos). → Ambos carbonos tienen dos sustituyentes distintos → <strong>Sí presenta cis-trans</strong>.</div>
+                        <div class="paso">2. <strong>1,1-dicloroeteno:</strong> C1 tiene dos cloros (iguales) → No cumple la condición → <strong>No presenta isomería</strong>.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ 2-clorobut-2-eno: sí. 1,1-dicloroeteno: no.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 5</span>
+                    Comparación de propiedades físicas (contexto real)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> El ácido oleico (\( C_{18}H_{34}O_2 \)) y el ácido elaídico son isómeros geométricos. El ácido oleico es líquido a temperatura ambiente, mientras que el elaídico es sólido. ¿Cuál es <em>cis</em> y cuál <em>trans</em>? Justifica tu respuesta basándote en la estructura.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. Ambos son ácidos grasos de 18 carbonos con un doble enlace en la posición 9 (ácido octadec-9-enoico).</div>
+                        <div class="paso">2. La configuración <em>cis</em> introduce un quiebro (kink) en la cadena que impide el empaquetamiento compacto, disminuyendo el punto de fusión.</div>
+                        <div class="paso">3. La configuración <em>trans</em> permite que las cadenas se alineen más rectas, favoreciendo el empaquetamiento y elevando el punto de fusión.</div>
+                        <div class="paso">4. Como el ácido oleico es líquido, tiene menor punto de fusión → es el isómero <em>cis</em>. El elaídico, sólido, es el <em>trans</em>.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Oleico = <em>cis</em> (líquido), Elaídico = <em>trans</em> (sólido). La geometría afecta al empaquetamiento y al punto de fusión.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-didactico">
+                <strong>🧠 Observaciones claves:</strong> La isomería geométrica es un caso particular de estereoisomería. La condición esencial es que <em>cada carbono del doble enlace (o del anillo rígido) tenga dos sustituyentes distintos</em>. Si en alguno de ellos los dos sustituyentes son iguales, no puede existir la isomería cis-trans. Este criterio es fácil de aplicar y se puede extender a compuestos con heteroátomos (C=N, N=N) y a sistemas cíclicos. Es importante recordar que los isómeros <em>cis</em> y <em>trans</em> tienen propiedades físicas diferentes (puntos de fusión, ebullición, polaridad) y también diferente reactividad.
+            </div>
+
+        </div><!-- fin details-content -->
+    </details>
+
+</div><!-- fin container -->
+
+<script>
+    // Forzar la re-renderización de MathJax cuando se abre el desplegable
+    document.addEventListener('DOMContentLoaded', function() {
+        const details = document.getElementById('ejerciciosDesplegable');
+        if (details) {
+            details.addEventListener('toggle', function() {
+                if (this.open && window.MathJax && window.MathJax.typesetPromise) {
+                    MathJax.typesetPromise();
+                }
+            });
+        }
+    });
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

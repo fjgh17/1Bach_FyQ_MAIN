@@ -1,0 +1,641 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 15: Presión Osmótica</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul, ol { padding-left: 1.5rem; }
+        li { margin-bottom: 6px; }
+
+        .analogy-box {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .analogy-box table {
+            margin: 0 auto;
+            text-align: left;
+        }
+        .analogy-box td {
+            padding: 4px 12px;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 12px 20px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary:hover {
+            background: #e6edff;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+
+        .ejercicio-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .ejercicio-card .card-header {
+            background: #f7fafc;
+            padding: 12px 20px;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 600;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ejercicio-card .card-header .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 50px;
+            padding: 2px 12px;
+            font-size: 0.8em;
+        }
+        .ejercicio-card .card-body {
+            padding: 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            background: #f9f9fc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+            margin-bottom: 15px;
+        }
+        .ejercicio-card .card-body .resolucion {
+            background: #f0fff4;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #c6f6d5;
+            margin-top: 10px;
+        }
+        .ejercicio-card .card-body .resolucion p {
+            margin: 8px 0;
+        }
+        .pie-clave {
+            background: #edf2f7;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            font-style: italic;
+            border-left: 6px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T03.15.- </span>
+                <span class="texto">Presión Osmótica (Ley de Van 't Hoff)</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES ORIGINALES ===== -->
+    <!-- Enunciado -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo del modelo de que las <strong>moléculas de soluto en una disolución diluida se comportan de manera análoga a las moléculas de un gas ideal</strong> (movimiento aleatorio, colisiones elásticas, ocupación de volumen), y del concepto de <strong>membrana semipermeable</strong> (que permite el paso del disolvente pero no del soluto), demostrar que la presión osmótica ejercida por una disolución diluida sigue una ecuación de estado análoga a la de los gases ideales.</p>
+        <div class="formula-box">
+            \[ \pi \cdot V = n \cdot R \cdot T \]
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U03c15 - Presión osmótica.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- Objetivo -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta demostración permite:</p>
+        <ul>
+            <li>Comprender el fenómeno de la <strong>ósmosis</strong> como resultado del movimiento aleatorio de partículas.</li>
+            <li>Justificar por qué la presión osmótica es una <strong>propiedad coligativa</strong> de gran magnitud (más que el descenso crioscópico o la elevación del punto de ebullición).</li>
+            <li>Determinar <strong>masas molares de macromoléculas</strong> (proteínas, polímeros) mediante osmometría.</li>
+            <li>Conectar con aplicaciones biológicas y tecnológicas: <strong>células biológicas</strong>, <strong>diálisis</strong>, <strong>ósmosis inversa</strong> para desalinización.</li>
+        </ul>
+    </div>
+
+    <!-- Procedimiento -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Describimos el sistema osmótico</strong>. Un recipiente dividido por una membrana semipermeable contiene:
+            <ul>
+                <li><strong>Lado A</strong>: Disolvente puro (ej. agua).</li>
+                <li><strong>Lado B</strong>: Disolución con soluto no volátil (ej. agua + glucosa).</li>
+            </ul>
+            <p>La membrana permite el paso de moléculas de disolvente pero bloquea las de soluto.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Analizamos el flujo neto de disolvente</strong>. Las moléculas de disolvente se mueven aleatoriamente en ambos sentidos a través de la membrana. Sin embargo:
+            <ul>
+                <li>En el lado A (puro), la concentración de disolvente es máxima.</li>
+                <li>En el lado B (disolución), la concentración de disolvente es menor debido a la presencia del soluto.</li>
+            </ul>
+            <p>Hay un <strong>flujo neto de disolvente del lado A al lado B</strong> (de mayor a menor concentración de disolvente).</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Definimos la presión osmótica</strong>. Es la <strong>presión externa que debe aplicarse sobre la disolución</strong> (lado B) para detener el flujo neto de disolvente y restablecer el equilibrio. Alternativamente, es la presión hidrostática que se desarrolla espontáneamente si el sistema puede cambiar de volumen.
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Establecemos la analogía con los gases ideales</strong>. Van 't Hoff postuló que las moléculas de soluto en una disolución diluida ejercen una "presión" contra la membrana de manera análoga a como las moléculas de gas ejercen presión contra las paredes de un recipiente. Las condiciones de la analogía son:
+            <ul>
+                <li>El soluto está <strong>diluido</strong> (interacciones despreciables).</li>
+                <li>El volumen disponible para el soluto es aproximadamente el <strong>volumen total de la disolución</strong>.</li>
+                <li>La temperatura es la <strong>temperatura absoluta</strong> del sistema.</li>
+            </ul>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Aplicamos la ecuación de estado por analogía</strong>. Sustituyendo la presión del gas \( p \) por la presión osmótica \( \pi \):
+            <div class="formula-box">
+                \[ \pi \cdot V = n_{\text{soluto}} \cdot R \cdot T \]
+            </div>
+            <p>Donde:</p>
+            <ul>
+                <li>\( \pi \): presión osmótica (Pa, atm)</li>
+                <li>\( V \): volumen de la disolución (m³, L)</li>
+                <li>\( n_{\text{soluto}} \): moles de soluto (mol)</li>
+                <li>\( R \): constante universal de los gases</li>
+                <li>\( T \): temperatura absoluta (K)</li>
+            </ul>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Expresamos en términos de concentración molar</strong>. Como \( c = \frac{n}{V} \):
+            <div class="formula-box">
+                \[ \pi = c \cdot R \cdot T \]
+            </div>
+            <p>Esta forma es especialmente útil porque relaciona la presión osmótica directamente con la concentración.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Verificamos el carácter coligativo</strong>. La presión osmótica depende únicamente de la <strong>concentración de partículas de soluto</strong>, no de su naturaleza química. Para electrolitos, hay que incluir el <strong>factor de Van 't Hoff \( i \)</strong>:
+            <div class="formula-box">
+                \[ \pi = i \cdot c \cdot R \cdot T \]
+            </div>
+            <p>donde \( i \) es el número de iones en los que se disocia el soluto (ej. \( i = 2 \) para NaCl, \( i = 3 \) para CaCl₂).</p>
+        </div>
+        <div class="step">
+            <span class="step-num">8</span>
+            <strong>Comparamos magnitudes con otras propiedades coligativas</strong>. A igual concentración, la presión osmótica es mucho más grande que el descenso crioscópico o el ascenso ebulloscópico, lo que la hace ideal para determinar masas molares de macromoléculas:
+            <div class="analogy-box">
+                <strong>Ejemplo a 25 °C para c = 0,01 M:</strong><br>
+                \( \pi = 0,01 \cdot 0,082 \cdot 298 = 0,244 \text{ atm} \approx 186 \text{ mmHg} \)<br>
+                \( \Delta T_f = 1,86 \cdot 0,01 = 0,0186 \text{ °C} \)<br><br>
+                La presión osmótica es <strong>miles de veces más grande</strong> y más fácil de medir.
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultado -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado la <strong>Ley de Van 't Hoff</strong> para la presión osmótica:</p>
+        <div class="formula-box">
+            \[ \pi \cdot V = n \cdot R \cdot T \quad \text{o equivalentemente} \quad \pi = c \cdot R \cdot T \]
+        </div>
+        <div class="analogy-box">
+            <strong>Analogía gas ideal ↔ disolución diluida:</strong><br><br>
+            <table>
+                <tr><td><strong>Gas ideal</strong></td><td style="padding-left: 20px;"><strong>Disolución diluida</strong></td></tr>
+                <tr><td>\( p \cdot V = nRT \)</td><td style="padding-left: 20px;">\( \pi \cdot V = nRT \)</td></tr>
+                <tr><td>Presión del gas</td><td style="padding-left: 20px;">Presión osmótica</td></tr>
+                <tr><td>Moléculas de gas</td><td style="padding-left: 20px;">Moléculas de soluto</td></tr>
+                <tr><td>Paredes del recipiente</td><td style="padding-left: 20px;">Membrana semipermeable</td></tr>
+            </table>
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">La presión osmótica de una disolución diluida se comporta como una ecuación de estado análoga a la de los gases ideales.</p>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  La Ley de Van 't Hoff es una de las más elegantes de la química física por su simplicidad y analogía con los gases. Es fundamental que no se confunda "presión osmótica" con "presión de vapor". La primera es una propiedad mecánica (fuerza por unidad de área ejercida por el flujo de disolvente), mientras que la segunda es una propiedad de equilibrio de fases. La presión osmótica es especialmente útil para macromoléculas porque, al ser inversamente proporcional a la masa molar (\( \pi = \frac{m}{M \cdot V} RT \)), una medida precisa de \( \pi \) permite calcular \( M \) de proteínas o polímeros que no se pueden vaporizar. El ejemplo de la ósmosis inversa (aplicar presión superior a \( \pi \) para obtener agua dulce del agua de mar) conecta perfectamente con tecnología actual y conciencia medioambiental.
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- BLOQUE DESPLEGABLE: EJERCICIOS RESUELTOS (NUEVOS)        -->
+    <!-- ========================================================= -->
+    <details style="margin: 20px 30px 30px 30px;">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="font-weight: 600;">🖱️ Pulsame — 🧪 DESMITIFICANDO Presión Osmótica (Ley de Van 't Hoff)</span>
+        </summary>
+
+        <div style="padding: 5px 0;">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 1</span>
+                    Cálculo de la presión osmótica de una disolución de sacarosa
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Se disuelven 10,0 g de sacarosa (C<sub>12</sub>H<sub>22</sub>O<sub>11</sub>, M = 342 g/mol) en agua hasta completar 500 mL de disolución a 27 °C. Calcula la presión osmótica en atm y en mmHg.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 – Moles de sacarosa:</strong></p>
+                        <p>\( n = \dfrac{10,0}{342} = 0,02924 \ \text{mol} \)</p>
+                        <p><strong>Paso 2 – Concentración molar:</strong></p>
+                        <p>\( c = \dfrac{n}{V} = \dfrac{0,02924}{0,500} = 0,05848 \ \text{mol/L} \)</p>
+                        <p><strong>Paso 3 – Temperatura absoluta:</strong></p>
+                        <p>\( T = 27 + 273 = 300 \ \text{K} \)</p>
+                        <p><strong>Paso 4 – Presión osmótica (Ley de Van 't Hoff):</strong></p>
+                        <p>\( \pi = c \cdot R \cdot T = 0,05848 \times 0,082 \times 300 = 1,44 \ \text{atm} \)</p>
+                        <p>\( \pi = 1,44 \times 760 = 1094 \ \text{mmHg} \)</p>
+                        <p>La presión osmótica es <strong>1,44 atm</strong> (≈ 1094 mmHg).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 2</span>
+                    Determinación de la masa molar de una proteína por osmometría
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Una disolución contiene 0,250 g de una proteína en 100 mL de agua. A 25 °C, la presión osmótica medida es de 0,450 atm. Calcula la masa molar de la proteína.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 – Concentración a partir de \( \pi \):</strong></p>
+                        <p>\( \pi = c \cdot R \cdot T \Rightarrow c = \dfrac{\pi}{R \cdot T} = \dfrac{0,450}{0,082 \times 298} = 0,01842 \ \text{mol/L} \)</p>
+                        <p><strong>Paso 2 – Moles de proteína en 0,100 L:</strong></p>
+                        <p>\( n = c \cdot V = 0,01842 \times 0,100 = 0,001842 \ \text{mol} \)</p>
+                        <p><strong>Paso 3 – Masa molar:</strong></p>
+                        <p>\( M = \dfrac{m}{n} = \dfrac{0,250}{0,001842} = 135,7 \ \text{g/mol} \)</p>
+                        <p>La masa molar de la proteína es aproximadamente <strong>136 g/mol</strong>.</p>
+                        <p><em>Nota:</em> Este valor es bajo para una proteína; se ha utilizado para ilustrar el método. En la práctica, las proteínas tienen masas molares mucho mayores (decenas de miles).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 3</span>
+                    Efecto del factor de Van 't Hoff en electrolitos
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> A 20 °C, se preparan dos disoluciones acuosas de igual concentración 0,050 M: una de glucosa (no electrolito) y otra de KCl (electrolito fuerte, \( i = 2 \)). Calcula la presión osmótica de cada una y explica la diferencia.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 – Datos comunes:</strong></p>
+                        <p>\( T = 293 \ \text{K} \), \( R = 0,082 \ \text{atm·L·mol⁻¹·K⁻¹} \), \( c = 0,050 \ \text{M} \)</p>
+                        <p><strong>Paso 2 – Glucosa (no electrolito):</strong></p>
+                        <p>\( \pi = c \cdot R \cdot T = 0,050 \times 0,082 \times 293 = 1,20 \ \text{atm} \)</p>
+                        <p><strong>Paso 3 – KCl (electrolito):</strong></p>
+                        <p>\( \pi = i \cdot c \cdot R \cdot T = 2 \times 0,050 \times 0,082 \times 293 = 2,40 \ \text{atm} \)</p>
+                        <p><strong>Conclusión:</strong> El KCl produce el doble de presión osmótica porque se disocia en dos iones (K⁺ y Cl⁻), duplicando el número de partículas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 4</span>
+                    Aplicación a la ósmosis inversa para desalinización
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> El agua de mar contiene aproximadamente 3,5 % en masa de NaCl (M = 58,5 g/mol) y tiene una densidad de 1,03 g/mL. Calcula la presión osmótica del agua de mar a 25 °C y determina la presión mínima que debe aplicarse en una planta de ósmosis inversa para obtener agua dulce. Suponer disociación completa (\( i = 2 \)).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 – Masa de NaCl por litro de agua de mar:</strong></p>
+                        <p>1 L de agua de mar tiene 1030 g (densidad 1,03 g/mL). El 3,5 % es NaCl:</p>
+                        <p>\( m_{\text{NaCl}} = 1030 \times 0,035 = 36,05 \ \text{g/L} \)</p>
+                        <p><strong>Paso 2 – Moles de NaCl por litro:</strong></p>
+                        <p>\( n = \dfrac{36,05}{58,5} = 0,616 \ \text{mol/L} \)</p>
+                        <p><strong>Paso 3 – Concentración efectiva de partículas (factor \( i = 2 \)):</strong></p>
+                        <p>\( c_{\text{efectiva}} = i \cdot c = 2 \times 0,616 = 1,232 \ \text{mol/L} \)</p>
+                        <p><strong>Paso 4 – Presión osmótica:</strong></p>
+                        <p>\( \pi = c_{\text{efectiva}} \cdot R \cdot T = 1,232 \times 0,082 \times 298 = 30,1 \ \text{atm} \)</p>
+                        <p><strong>Paso 5 – Presión mínima para ósmosis inversa:</strong></p>
+                        <p>La presión aplicada debe ser <strong>superior a 30 atm</strong> (≈ 3,05 MPa). En la práctica se usan presiones de 50-80 atm para obtener un flujo razonable.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 5</span>
+                    Mezcla de solutos y presión osmótica total
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Se disuelven 5,0 g de glucosa (M = 180) y 5,0 g de fructosa (M = 180) en agua hasta completar 250 mL de disolución a 30 °C. Calcula la presión osmótica total de la mezcla.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 – Moles de cada soluto:</strong></p>
+                        <p>\( n_{\text{glucosa}} = \dfrac{5,0}{180} = 0,02778 \ \text{mol} \)</p>
+                        <p>\( n_{\text{fructosa}} = \dfrac{5,0}{180} = 0,02778 \ \text{mol} \)</p>
+                        <p><strong>Paso 2 – Moles totales de soluto:</strong></p>
+                        <p>\( n_{\text{total}} = 0,05556 \ \text{mol} \)</p>
+                        <p><strong>Paso 3 – Concentración total:</strong></p>
+                        <p>\( c = \dfrac{0,05556}{0,250} = 0,2222 \ \text{mol/L} \)</p>
+                        <p><strong>Paso 4 – Temperatura absoluta:</strong></p>
+                        <p>\( T = 303 \ \text{K} \)</p>
+                        <p><strong>Paso 5 – Presión osmótica:</strong></p>
+                        <p>\( \pi = c \cdot R \cdot T = 0,2222 \times 0,082 \times 303 = 5,53 \ \text{atm} \)</p>
+                        <p>La presión osmótica de la mezcla es <strong>5,53 atm</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                🧠 <strong>Observaciones claves:</strong> La presión osmótica es la propiedad coligativa más sensible a la concentración. Su fórmula \( \pi = cRT \) es análoga a la de los gases ideales, lo que facilita su comprensión. Es crucial recordar que el soluto debe ser <strong>no volátil</strong> y que la membrana es <strong>semipermeable</strong> (solo deja pasar el disolvente). Para electrolitos, el factor \( i \) multiplica el número de partículas. Un error común es confundir la presión osmótica con la presión de vapor; la primera es una presión <strong>mecánica</strong> (fuerza por área), la segunda es una propiedad <strong>termodinámica de equilibrio</strong>. La ósmosis inversa es una aplicación tecnológica clave para la desalinización y requiere aplicar una presión externa mayor que \( \pi \).
+            </div>
+
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- Fin del contenedor principal -->
+</body>
+</html>

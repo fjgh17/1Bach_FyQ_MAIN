@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 9: Fórmula Empírica y Molecular</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        .method-box {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL DESPLEGABLE INTERACTIVO
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: 1.15em;
+            color: #2d3748;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #4a5568;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 20px 25px;
+            background: white;
+        }
+        .exercise-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .exercise-header {
+            background: #4a5568;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .exercise-header .badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.85em;
+        }
+        .exercise-body {
+            padding: 18px 20px;
+        }
+        .exercise-body .statement {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .exercise-body .resolution {
+            background: #f0fff4;
+            padding: 15px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .exercise-body .resolution .math {
+            margin: 8px 0;
+        }
+        .didactic-footer {
+            background: #ebf4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-left: 5px solid #3182ce;
+            font-style: italic;
+        }
+        .didactic-footer strong {
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">                <span class="codigo">#T03.09.- </span>
+                <span class="texto">Fórmula Empírica y Molecular</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES TRANSFORMADAS ===== -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la <strong>composición centesimal</strong> de un compuesto (porcentajes en masa de cada elemento) y, cuando sea posible, de su <strong>masa molar experimental</strong>, demostrar el método general para:</p>
+        <ol>
+            <li>Obtener la <strong>fórmula empírica</strong> (proporción mínima de átomos).</li>
+            <li>Obtener la <strong>fórmula molecular</strong> (fórmula real del compuesto) a partir de la empírica y la masa molar.</li>
+        </ol>
+        <div class="formula-box">
+            Fórmula empírica: \( (\text{A}_x\text{B}_y\text{C}_z)_n \) donde \( x, y, z \) son enteros primos entre sí<br>
+            Fórmula molecular: \( \text{A}_{nx}\text{B}_{ny}\text{C}_{nz} \) donde \( n = \frac{M_{\text{molecular}}}{M_{\text{empírica}}} \)
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U03c09 - Fórmula empírica y molecular.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta demostración permite:</p>
+        <ul>
+            <li><strong>Identificar compuestos desconocidos</strong> a partir de datos experimentales de análisis elemental.</li>
+            <li>Distinguir entre <strong>fórmula empírica</strong> (información mínima) y <strong>fórmula molecular</strong> (información completa).</li>
+            <li>Comprender que compuestos distintos pueden compartir la misma fórmula empírica (ej. \( \text{CH}_2\text{O} \): formaldehído y glucosa).</li>
+            <li>Conectar el análisis químico clásico con la determinación estructural moderna.</li>
+        </ul>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="method-box">
+            <strong>PARTE A: OBTENCIÓN DE LA FÓRMULA EMPÍRICA</strong>
+        </div>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Supongamos la composición centesimal</strong>: \( \%(\text{A}), \%(\text{B}), \%(\text{C}) \) conocidos. Tomamos una base de cálculo de <strong>100 g de compuesto</strong>, por lo que las masas de cada elemento son numéricamente iguales a sus porcentajes.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Convertimos masas a moles</strong> dividiendo por las masas atómicas relativas:
+            <div class="formula-box">
+                \[ n_{\text{A}} = \frac{\%(\text{A})}{A_r(\text{A})} \quad ; \quad n_{\text{B}} = \frac{\%(\text{B})}{A_r(\text{B})} \quad ; \quad n_{\text{C}} = \frac{\%(\text{C})}{A_r(\text{C})} \]
+            </div>
+            <p>Obtenemos así la relación <strong>molar</strong> (en moles de átomos) entre los elementos.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Encontramos la relación en números enteros</strong> dividiendo todos los valores de moles entre el menor de ellos:
+            <div class="formula-box">
+                \[ x = \frac{n_{\text{A}}}{n_{\text{mínimo}}} \quad ; \quad y = \frac{n_{\text{B}}}{n_{\text{mínimo}}} \quad ; \quad z = \frac{n_{\text{C}}}{n_{\text{mínimo}}} \]
+            </div>
+            <p>Si los resultados no son enteros (dentro de un margen razonable de error experimental), multiplicamos por el factor necesario (2, 3, 4...) hasta obtener números enteros.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Escribimos la fórmula empírica</strong> con estos subíndices enteros:
+            <div class="formula-box">
+                \[ \text{Fórmula empírica} = \text{A}_x\text{B}_y\text{C}_z \]
+            </div>
+            <p>Esta fórmula representa la <strong>proporción mínima</strong> de átomos en el compuesto.</p>
+        </div>
+        <div class="method-box">
+            <strong>PARTE B: OBTENCIÓN DE LA FÓRMULA MOLECULAR</strong>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Calculamos la masa molar de la fórmula empírica</strong>:
+            <div class="formula-box">
+                \[ M_{\text{empírica}} = x \cdot A_r(\text{A}) + y \cdot A_r(\text{B}) + z \cdot A_r(\text{C}) \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Determinamos el factor de multiplicación</strong> \( n \) comparando la masa molar experimental (obtenida por métodos físicos: densidad de vapor, presión osmótica, crioscopía) con la masa molar empírica:
+            <div class="formula-box">
+                \[ n = \frac{M_{\text{molecular experimental}}}{M_{\text{empírica}}} \]
+            </div>
+            <p>Este valor \( n \) debe ser un <strong>número entero</strong> (o muy cercano a un entero, dentro del error experimental).</p>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Multiplicamos los subíndices empíricos por \( n \)</strong> para obtener la fórmula molecular:
+            <div class="formula-box">
+                \[ \text{Fórmula molecular} = \text{A}_{nx}\text{B}_{ny}\text{C}_{nz} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">8</span>
+            <strong>Verificación de coherencia</strong>. La fórmula molecular debe cumplir:
+            <ul>
+                <li>La composición centesimal calculada a partir de ella coincide con la experimental.</li>
+                <li>La masa molar calculada coincide con la experimental.</li>
+                <li>Los subíndices son números enteros (sin fracciones).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado el método completo para obtener ambas fórmulas:</p>
+        <div class="formula-box">
+            <strong>Fórmula Empírica:</strong><br>
+            \[ \text{A}_x\text{B}_y\text{C}_z \quad \text{donde} \quad x:y:z = \frac{\%(\text{A})}{A_r(\text{A})} : \frac{\%(\text{B})}{A_r(\text{B})} : \frac{\%(\text{C})}{A_r(\text{C})} \]
+            <br><br>
+            <strong>Fórmula Molecular:</strong><br>
+            \[ (\text{A}_x\text{B}_y\text{C}_z)_n \quad \text{donde} \quad n = \frac{M_{\text{molecular}}}{M_{\text{empírica}}} \in \mathbb{Z}^+ \]
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">La fórmula empírica da la proporción atómica mínima; la fórmula molecular da la estructura real del compuesto.</p>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  Esta demostración articula todo el conocimiento previo: composición centesimal, moles, masas molares y ecuación de estado de gases (para determinar \( M_{\text{molecular}} \)). Es esencial que se comprenda que la fórmula empírica siempre se puede obtener de la composición centesimal, pero la fórmula molecular requiere un dato adicional: la masa molar experimental. Sin este dato, no podemos distinguir entre \( \text{CH}_2\text{O} \) (formaldehído, \( M = 30 \)), \( \text{C}_2\text{H}_4\text{O}_2 \) (ácido acético, \( M = 60 \)) o \( \text{C}_6\text{H}_{12}\text{O}_6 \) (glucosa, \( M = 180 \)), que comparten la misma fórmula empírica. Recomiendo practicar con compuestos donde \( n = 1, 2, 3 \) para consolidar el concepto, y luego con casos más complejos donde los valores de moles no dan enteros directamente (ej. 1,5 → multiplicar por 2).
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="flex: 1;">🧪 DESMITIFICANDO Fórmula Empírica y Molecular</span>
+            <span style="font-size: 0.9em; color: #4a5568; background: #e2e8f0; padding: 2px 12px; border-radius: 20px;">
+                <i class="fas fa-hand-pointer"></i> Púlsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Obtención de la fórmula empírica a partir de porcentajes</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Un compuesto orgánico contiene 40,0% de carbono, 6,7% de hidrógeno y 53,3% de oxígeno. Determinar su fórmula empírica. (Masas atómicas: C=12, H=1, O=16).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Base 100 g → 40,0 g C, 6,7 g H, 53,3 g O.</li>
+                            <li>Moles: \( n_C = \frac{40,0}{12} = 3,33 \); \( n_H = \frac{6,7}{1} = 6,7 \); \( n_O = \frac{53,3}{16} = 3,33 \).</li>
+                            <li>Dividir por el menor (3,33): C = 1, H = 2, O = 1.</li>
+                            <li>Fórmula empírica: \( \text{CH}_2\text{O} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Determinación de la fórmula molecular a partir de la empírica y la masa molar</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Un compuesto tiene fórmula empírica \( \text{CH}_2\text{O} \) y su masa molar experimental es 90 g/mol. Calcular su fórmula molecular.</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Masa molar empírica: \( 12 + 2\cdot1 + 16 = 30 \, \text{g/mol} \).</li>
+                            <li>Factor \( n = \frac{90}{30} = 3 \).</li>
+                            <li>Fórmula molecular: \( (\text{CH}_2\text{O})_3 = \text{C}_3\text{H}_6\text{O}_3 \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Fórmula empírica a partir de datos de combustión</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> En la combustión de 2,00 g de un hidrocarburo se obtienen 6,29 g de CO₂ y 2,57 g de H₂O. Determinar la fórmula empírica del hidrocarburo. (Masas: C=12, H=1, O=16).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Masa de C: \( 6,29 \times \frac{12}{44} = 1,716 \, \text{g} \) de C.</li>
+                            <li>Masa de H: \( 2,57 \times \frac{2}{18} = 0,286 \, \text{g} \) de H.</li>
+                            <li>Moles: \( n_C = \frac{1,716}{12} = 0,143 \); \( n_H = \frac{0,286}{1} = 0,286 \).</li>
+                            <li>Dividir por el menor (0,143): C=1, H=2 → fórmula empírica \( \text{CH}_2 \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Fórmula molecular a partir de la empírica y datos de gas</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Un compuesto gaseoso tiene la siguiente composición: 85,7% C y 14,3% H. Si 0,50 L de este gas, medido a 1 atm y 25 °C, tiene una masa de 1,05 g, determinar su fórmula molecular. (R=0,082 atm·L/(mol·K), masas atómicas: C=12, H=1).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Fórmula empírica: base 100 g → 85,7 g C y 14,3 g H. Moles: \( n_C = 85,7/12 = 7,14 \); \( n_H = 14,3/1 = 14,3 \). Dividir entre 7,14 → C=1, H=2 → \( \text{CH}_2 \).</li>
+                            <li>Masa molar experimental: \( pV = nRT \Rightarrow n = \frac{1 \times 0,50}{0,082 \times 298} \approx 0,0205 \, \text{mol} \). \( M = \frac{1,05}{0,0205} \approx 51,2 \, \text{g/mol} \).</li>
+                            <li>Masa empírica: \( 12 + 2 = 14 \). Factor \( n = 51,2 / 14 \approx 3,66 \approx 4 \) (redondeando).</li>
+                            <li>Fórmula molecular: \( (\text{CH}_2)_4 = \text{C}_4\text{H}_8 \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Fórmula empírica y molecular de una sal hidratada</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Una sal hidratada tiene la composición: 21,8% Mg, 28,6% S, 49,6% O, y además contiene agua de cristalización. Si la masa molar de la sal anhidra (sin agua) es 120 g/mol, y la masa molar del hidrato es 246 g/mol, determinar la fórmula del hidrato.</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Base 100 g → 21,8 g Mg, 28,6 g S, 49,6 g O. Moles: Mg=21,8/24=0,908; S=28,6/32=0,894; O=49,6/16=3,10.</li>
+                            <li>Dividir por el menor (0,894): Mg≈1, S≈1, O≈3,47 → multiplicar por 3 para obtener enteros: Mg₃S₃O₁₀? Mejor tomamos aproximación: 0,908/0,894 ≈ 1,02; 3,10/0,894 ≈ 3,47; multiplicando por 3 → Mg=3, S=3, O=10,4. Ajuste: podría ser MgSO₄ (120 g/mol) con O=4, luego el hidrato sería MgSO₄·xH₂O.</li>
+                            <li>Masa de agua en el hidrato: 246 - 120 = 126 g. Moles de agua: 126/18 = 7. Fórmula: MgSO₄·7H₂O.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="didactic-footer">
+                <strong>🧠 Observaciones claves:</strong> La determinación de fórmulas es la <strong>aplicación práctica</strong> de todo lo aprendido sobre moles, masas molares y composición centesimal. El error más común es <strong>no multiplicar correctamente</strong> los subíndices al pasar de la fórmula empírica a la molecular, o <strong>redondear mal</strong> los valores de la relación molar (especialmente cuando aparecen 1,5 o 2,5 que requieren multiplicar por 2). También se olvida incluir el agua de cristalización en hidratos, o se confunde la masa molar de la sal anhidra con la del hidrato. Recomiendo siempre verificar que la masa molar calculada a partir de la fórmula molecular coincida con la experimental.
+            </div>
+
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

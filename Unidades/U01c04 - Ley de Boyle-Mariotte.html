@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T01.04 - Ley de Boyle-Mariotte</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>        
+        
+        
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+        
+        
+        
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+        .table-wrap {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 10px 14px;
+            text-align: center;
+        }
+        th {
+            background: #edf2f7;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        td { color: #2d3748; }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (DETAILS)
+           ============================================ */
+        details.desmitificando {
+            margin: 30px 20px 20px 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        details.desmitificando > summary {
+            list-style: none;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            background: #edf2f7;
+            border-radius: 14px 14px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details.desmitificando > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.desmitificando > summary:hover {
+            background: #e2e8f0;
+        }
+        details.desmitificando > summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.3em;
+            color: #4a5568;
+        }
+        details.desmitificando[open] > summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.desmitificando .contenido {
+            padding: 20px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 14px 14px;
+        }
+        .ejercicio-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #ebf4ff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #bee3f8;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ejercicio-card .card-header .num {
+            font-weight: 700;
+            color: #2b6cb0;
+            font-size: 1.1em;
+        }
+        .ejercicio-card .card-header .titulo {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.05em;
+        }
+        .ejercicio-card .card-body {
+            padding: 16px 20px 8px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+        .ejercicio-card .card-body .enunciado-ej li {
+            margin-bottom: 4px;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #3182ce;
+            padding: 16px 20px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .paso {
+            margin-bottom: 8px;
+        }
+        .resolucion .paso strong {
+            color: #2b6cb0;
+        }
+        .pie-didactico {
+            background: #fefcbf;
+            border: 1px solid #f6e05e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            color: #744210;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            details.desmitificando > summary { font-size: 1em; padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T01.04.- </span>
+                    <span class="texto">Demostración de la Ley de Boyle-Mariotte</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de los datos experimentales de presión \( p \) y volumen \( V \) de una cantidad fija de gas mantenida a <strong>temperatura constante</strong> \( T = 289\,\text{K} \), demostrar que el <strong>producto de la presión por el volumen es constante</strong>, lo que constituye la ley de Boyle-Mariotte:</p>
+            <div class="formula-box">
+                \[
+                p \cdot V = \text{constante} \quad \text{(a } T \text{ constante)}
+                \]
+            </div>
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U01c04 - Ley de Boyle-Mariotte.png" alt="Imagen" width="800">
+
+            <!-- -----FIN-------- -->
+
+        </div>
+        
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar que, a temperatura constante, la presión y el volumen de un gas ideal guardan una <strong>relación de proporcionalidad inversa</strong>. Este resultado es uno de los pilares de la teoría cinética de gases y permite deducir la ecuación de estado de los gases ideales \( pV = nRT \). Además, introduce el concepto de <strong>hipérbola isoterma</strong> como representación gráfica de una ley física.</p>
+        </div>
+        
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Tabla de datos y producto p·V</strong>
+                <p>Se disponen los datos experimentales del libro de texto en una tabla y se calcula el producto \( p \cdot V \) para cada par de valores:</p>
+                <div class="table-wrap">
+                    <table>
+                        <tr>
+                            <th>\( p \) (MPa)</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                        </tr>
+                        <tr>
+                            <th>\( V \) (L)</th>
+                            <td>24</td>
+                            <td>12</td>
+                            <td>8</td>
+                            <td>6</td>
+                            <td>4,8</td>
+                        </tr>
+                        <tr>
+                            <th>\( p \cdot V \) (MPa·L)</th>
+                            <td>24</td>
+                            <td>24</td>
+                            <td>24</td>
+                            <td>24</td>
+                            <td>24</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Constancia del producto</strong>
+                <p>Se observa que el producto \( p \cdot V \) es <strong>constantemente igual a 24 MPa·L</strong> para todos los pares de datos. Esto sugiere una relación funcional del tipo:</p>
+                <div class="formula-box">
+                    \[
+                    p \cdot V = C \quad \text{donde } C \text{ es una constante}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Relación inversa</strong>
+                <p>Despejando la presión en función del volumen:</p>
+                <div class="formula-box">
+                    \[
+                    p = \frac{C}{V}
+                    \]
+                </div>
+                <p>Esta es la ecuación de una <strong>hipérbola equilátera</strong> en el primer cuadrante del plano \( (V, p) \).</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Representación gráfica</strong>
+                <p>Se representan gráficamente los puntos \( (V, p) \). La curva resultante es una <strong>hipérbola isoterma</strong> (curva a temperatura constante), descendente y asintótica a ambos ejes.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Cálculo del número de moles</strong>
+                <p>Se deduce el número de moles \( n \) a partir de la ecuación de los gases ideales \( pV = nRT \). Sustituyendo \( pV = 24\,\text{MPa·L} \), \( R = 8{,}31\,\text{J/(mol·K)} \) y \( T = 289\,\text{K} \). Primero convertimos unidades:</p>
+                <div class="formula-box">
+                    \[
+                    24\,\text{MPa·L} = 24 \times 10^{6}\,\text{Pa} \times 10^{-3}\,\text{m}^{3} = 24 \times 10^{3}\,\text{Pa·m}^{3} = 24 \times 10^{3}\,\text{J}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Resultado numérico</strong>
+                <p>Despejando \( n \):</p>
+                <div class="formula-box">
+                    \[
+                    n = \frac{pV}{RT} = \frac{24 \times 10^{3}\,\text{J}}{8{,}31\,\frac{\text{J}}{\text{mol·K}} \times 289\,\text{K}} = \frac{24 \times 10^{3}}{2401{,}59} \approx 9{,}99\,\text{mol} \approx 10\,\text{mol}
+                    \]
+                </div>
+            </div>
+        </div>
+        
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>Queda demostrada la <strong>Ley de Boyle-Mariotte</strong>: a temperatura constante, el producto de la presión por el volumen de un gas es constante:</p>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{p \cdot V = \text{cte} \quad \text{(a } T \text{ constante)}}
+                \]
+            </div>
+            <p>Y, como caso particular de la ecuación de estado, se verifica que:</p>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{pV = nRT \quad \text{con} \quad n \approx 10\,\text{mol}}
+                \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong><br>
+                Es fundamental que el alumnado distinga entre la <strong>ley empírica</strong> de Boyle-Mariotte (producto constante) y la <strong>ecuación de estado</strong> de los gases ideales (que incluye temperatura y cantidad de sustancia). La hipérbola isoterma es una representación gráfica típica en termodinámica; insistir en que cada curva corresponde a una temperatura diferente.&nbsp;</div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- BLOQUE DESPLEGABLE: "🧪 DESMITIFICANDO LA LEY DE BOYLE-MARIOTTE" -->
+        <!-- ======================================================== -->
+        <details class="desmitificando">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🖱️ Pulsame 👉 🧪 DESMITIFICANDO LA LEY DE BOYLE-MARIOTTE</span>
+            </summary>
+            <div class="contenido">
+
+                <p style="font-size:1.05em; margin-bottom: 18px;">
+                    <i class="fas fa-flask" style="color:#d69e2e;"></i>
+                    La Ley de Boyle-Mariotte nos dice que, a temperatura constante, <strong>presión y volumen son inversamente proporcionales</strong>. 
+                    Es la base de muchos fenómenos cotidianos: desde respirar hasta el funcionamiento de una jeringa. 
+                    Practica con estos <strong>5 ejercicios</strong> para dominar su aplicación.
+                </p>
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 1</span>
+                        <span class="titulo">Cálculo de la presión al variar el volumen</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un gas ocupa un volumen de \( 3{,}0\,\text{L} \) a una presión de \( 2{,}0\,\text{atm} \). Si la temperatura se mantiene constante y se comprime hasta \( 1{,}2\,\text{L} \), ¿cuál será la nueva presión?</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Escribir los datos:</strong>
+                                \( V_1 = 3{,}0\,\text{L}, \quad p_1 = 2{,}0\,\text{atm}, \quad V_2 = 1{,}2\,\text{L} \)
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Aplicar la ley de Boyle:</strong>
+                                \[
+                                p_1 \cdot V_1 = p_2 \cdot V_2 \quad \Longrightarrow \quad p_2 = \frac{p_1 \cdot V_1}{V_2}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Sustituir valores:</strong>
+                                \[
+                                p_2 = \frac{2{,}0 \times 3{,}0}{1{,}2} = \frac{6{,}0}{1{,}2} = 5{,}0\,\text{atm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Resultado:</strong>
+                                \[
+                                \boxed{p_2 = 5{,}0\,\text{atm}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 2</span>
+                        <span class="titulo">Cálculo del volumen al variar la presión</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un gas está encerrado en un cilindro a una presión de \( 150\,\text{kPa} \) y ocupa \( 0{,}80\,\text{m}^3 \). Si la presión aumenta a \( 240\,\text{kPa} \) a temperatura constante, ¿qué volumen ocupará?</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Datos:</strong>
+                                \( p_1 = 150\,\text{kPa}, \quad V_1 = 0{,}80\,\text{m}^3, \quad p_2 = 240\,\text{kPa} \)
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Despejar \( V_2 \):</strong>
+                                \[
+                                V_2 = \frac{p_1 \cdot V_1}{p_2}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Sustituir:</strong>
+                                \[
+                                V_2 = \frac{150 \times 0{,}80}{240} = \frac{120}{240} = 0{,}50\,\text{m}^3
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Resultado:</strong>
+                                \[
+                                \boxed{V_2 = 0{,}50\,\text{m}^3}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 3</span>
+                        <span class="titulo">Determinación de la constante y representación gráfica</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se han medido los siguientes pares de presión y volumen para un gas a temperatura constante:</p>
+                            <div class="table-wrap">
+                                <table style="width:60%; margin:0 auto;">
+                                    <tr><th>\( p \) (atm)</th><td>1,0</td><td>2,0</td><td>4,0</td><td>5,0</td></tr>
+                                    <tr><th>\( V \) (L)</th><td>12,0</td><td>6,0</td><td>3,0</td><td>2,4</td></tr>
+                                </table>
+                            </div>
+                            <ul>
+                                <li>Calcula la constante \( p \cdot V \) y escribe la ecuación que relaciona \( p \) y \( V \).</li>
+                                <li>¿Qué tipo de gráfica se obtiene al representar \( p \) frente a \( V \)?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Calcular \( p \cdot V \) para cada par:</strong>
+                                \[
+                                1{,}0 \times 12{,}0 = 12, \quad 2{,}0 \times 6{,}0 = 12, \quad 4{,}0 \times 3{,}0 = 12, \quad 5{,}0 \times 2{,}4 = 12
+                                \]
+                                La constante es \( C = 12\,\text{atm·L} \).
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Ecuación:</strong>
+                                \[
+                                p \cdot V = 12 \quad \Longrightarrow \quad p = \frac{12}{V}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Tipo de gráfica:</strong>
+                                Al representar \( p \) frente a \( V \) se obtiene una <strong>hipérbola</strong> (curva isoterma), que decrece y se aproxima a los ejes sin tocarlos.
+                            </div>
+                            <div class="paso">
+                                <strong>Resultados:</strong>
+                                \[
+                                \boxed{C = 12\,\text{atm·L}, \quad p = \frac{12}{V}, \quad \text{Gráfica: hipérbola}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 4</span>
+                        <span class="titulo">Comparación de dos estados de un gas</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un gas ideal se encuentra inicialmente a \( 3{,}0\,\text{atm} \) y \( 4{,}0\,\text{L} \). Se expande isotérmicamente hasta que su volumen es \( 10{,}0\,\text{L} \).</p>
+                            <ul>
+                                <li>¿Cuál será la presión final?</li>
+                                <li>Si después se comprime hasta \( 5{,}0\,\text{L} \) manteniendo la misma temperatura, ¿cuál será la nueva presión?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Estado inicial:</strong>
+                                \( p_1 = 3{,}0\,\text{atm}, \quad V_1 = 4{,}0\,\text{L} \)
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Presión después de la expansión a \( 10{,}0\,\text{L} \):</strong>
+                                \[
+                                p_2 = \frac{p_1 \cdot V_1}{V_2} = \frac{3{,}0 \times 4{,}0}{10{,}0} = \frac{12}{10} = 1{,}2\,\text{atm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Compresión hasta \( 5{,}0\,\text{L} \):</strong>
+                                Ahora el nuevo estado inicial es \( p_2 = 1{,}2\,\text{atm}, V_2 = 10{,}0\,\text{L} \) y queremos \( V_3 = 5{,}0\,\text{L} \):
+                                \[
+                                p_3 = \frac{p_2 \cdot V_2}{V_3} = \frac{1{,}2 \times 10{,}0}{5{,}0} = \frac{12}{5} = 2{,}4\,\text{atm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Resultados:</strong>
+                                \[
+                                \boxed{p_2 = 1{,}2\,\text{atm}, \quad p_3 = 2{,}4\,\text{atm}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 5</span>
+                        <span class="titulo">Contexto real: jeringa y presión atmosférica</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Una jeringa contiene \( 20\,\text{cm}^3 \) de aire a presión atmosférica (\( 1{,}0\,\text{atm} \)). Si se tapa la salida y se empuja el émbolo hasta reducir el volumen a \( 5\,\text{cm}^3 \) a temperatura constante, ¿qué presión alcanzará el aire en su interior?</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Datos:</strong>
+                                \( V_1 = 20\,\text{cm}^3, \quad p_1 = 1{,}0\,\text{atm}, \quad V_2 = 5\,\text{cm}^3 \)
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Aplicar Boyle:</strong>
+                                \[
+                                p_2 = \frac{p_1 \cdot V_1}{V_2} = \frac{1{,}0 \times 20}{5} = 4{,}0\,\text{atm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Interpretación:</strong>
+                                La presión en el interior de la jeringa será de \( 4{,}0 \) veces la presión atmosférica, es decir, \( 4\,\text{atm} \).
+                            </div>
+                            <div class="paso">
+                                <strong>Resultado:</strong>
+                                \[
+                                \boxed{p_2 = 4{,}0\,\text{atm}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DIDÁCTICO -->
+                <div class="pie-didactico">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Observaciones claves:</strong> La "trampa" mental que resuelve esta ley es entender que <strong>la presión y el volumen son magnitudes que "se compensan"</strong> cuando la temperatura no cambia. 
+                    Si el volumen disminuye, las moléculas chocan más frecuentemente con las paredes (aumenta la presión), y viceversa. 
+                    La representación gráfica en forma de hipérbola ayuda a visualizar esta relación inversa: <strong>nunca se tocan los ejes</strong>, porque ni la presión ni el volumen pueden ser cero en un gas real.
+                </div>
+
+            </div> <!-- fin .contenido -->
+        </details>
+
+        <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+    </div> <!-- fin .container -->
+</body>
+</html>

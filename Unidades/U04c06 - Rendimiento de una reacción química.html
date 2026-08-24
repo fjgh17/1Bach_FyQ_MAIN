@@ -1,0 +1,661 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T04.06 - Rendimiento de una reacción química</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            background: rgba(255,255,255,0.2);
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .formula-box-highlight {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        .note-prof {
+            background: #f0fff4;
+            border: 1px dashed #48bb78;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #22543d;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 25px;
+            margin-bottom: 12px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #feebc8 0%, #feebc8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+        }
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            .section {
+                padding: 20px 18px;
+                margin: 12px;
+            }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 20px 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            border-radius: 12px;
+            background: #edf2f7;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #667eea;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 10px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 12px 12px;
+        }
+        .details-content .ejercicio-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .details-content .ejercicio-card:last-child {
+            margin-bottom: 0;
+        }
+        .ejercicio-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .ejercicio-header .badge {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.85em;
+        }
+        .ejercicio-header h3 {
+            margin: 0;
+            font-size: 1.15em;
+            color: #2d3748;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #48bb78;
+            padding: 12px 16px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .math {
+            display: block;
+            text-align: center;
+            margin: 6px 0;
+        }
+        .pie-didactico {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-top: 20px;
+            color: #2a4365;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T04.06.- </span>
+                <span class="texto">Rendimiento de una reacción química</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la <strong>definición de cantidad teórica de producto</strong> como la máxima cantidad que se podría obtener según la estequiometría de la ecuación ajustada (asumiendo conversión completa del reactivo limitante), y de la <strong>cantidad real de producto</strong> obtenida experimentalmente en un proceso químico, demostrar que:</p>
+        
+        <div class="formula-box-highlight">
+            El <strong>rendimiento porcentual</strong> (\(\eta\)) de una reacción química se define como el cociente entre la cantidad real de producto obtenida y la cantidad teórica máxima posible, expresado en porcentaje:
+            \[\eta = \frac{n_{\text{real}}}{n_{\text{teórico}}} \times 100\% = \frac{m_{\text{real}}}{m_{\text{teórico}}} \times 100\%\]
+        </div>
+        
+        <p style="margin-top: 15px;">Es decir, demostrar que el rendimiento es una <span class="highlight">medida adimensional de la eficiencia del proceso</span>, independiente de la naturaleza del producto y de las unidades utilizadas (siempre que sean consistentes).</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U04c06 - Rendimiento de una reacción química.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>El objetivo es establecer una <strong>definición rigurosa del rendimiento</strong> como herramienta de evaluación de procesos químicos, demostrando que:</p>
+        <ul>
+            <li>El rendimiento es siempre \(\eta \leq 100\%\), ya que \(n_{\text{real}} \leq n_{\text{teórico}}\) por conservación de la masa.</li>
+            <li>El rendimiento puede expresarse indistintamente en moles, masa o (para gases en iguales condiciones) volumen, siempre que se comparen las mismas magnitudes.</li>
+            <li>La pérdida de rendimiento se debe a <strong>factores cinéticos y procesales</strong> (reacciones paralelas, equilibrio, pérdidas mecánicas, impurezas) que escapan al balance estequiométrico ideal.</li>
+        </ul>
+        <p>Esta demostración es fundamental para interpretar resultados experimentales y para el diseño de procesos industriales.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔬 Procedimiento</h2>
+        
+        <div class="step">
+            <span class="step-num">1</span> <strong>Definición de cantidad teórica de producto</strong>
+            <p>Consideremos una reacción química ajustada con reactivo limitante \(L\):</p>
+            <div class="formula-box">
+                \[\nu_L\,L + \nu_R\,R \longrightarrow \nu_P\,P\]
+            </div>
+            <p>La <strong>cantidad teórica de producto \(P\)</strong> es la máxima cantidad que se puede formar si todo el reactivo limitante \(L\) se consume completamente según la estequiometría:</p>
+            <div class="formula-box">
+                \[n_P^{\text{teórico}} = n_L^0 \times \frac{\nu_P}{\nu_L}\]
+            </div>
+            <p>donde \(n_L^0\) es la cantidad inicial del reactivo limitante. Esta cantidad representa el <strong>límite termodinámico superior</strong> impuesto por la conservación de la materia.</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">2</span> <strong>Definición de cantidad real de producto</strong>
+            <p>En la práctica, debido a múltiples factores (reacciones secundarias, pérdidas durante la manipulación, equilibrio químico no desplazado completamente, cinética lenta, etc.), la cantidad de producto efectivamente aislada es:</p>
+            <div class="formula-box">
+                \[n_P^{\text{real}} \leq n_P^{\text{teórico}}\]
+            </div>
+            <p>La desigualdad es estricta (\(<\)) en la mayoría de los procesos reales. Solo en casos ideales (conversión completa, rendimiento cuantitativo) se alcanza la igualdad.</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">3</span> <strong>Definición formal del rendimiento</strong>
+            <p>Se define el <strong>rendimiento (yield)</strong> de la reacción respecto al producto \(P\) como el cociente:</p>
+            <div class="formula-box">
+                \[\eta_P = \frac{n_P^{\text{real}}}{n_P^{\text{teórico}}}\]
+            </div>
+            <p>Como \(n_P^{\text{real}} \leq n_P^{\text{teórico}}\) y ambas cantidades son positivas:</p>
+            <div class="formula-box">
+                \[0 \leq \eta_P \leq 1\]
+            </div>
+            <p>Expresado en porcentaje:</p>
+            <div class="formula-box-highlight">
+                \[\eta_P (\%) = \frac{n_P^{\text{real}}}{n_P^{\text{teórico}}} \times 100\%\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">4</span> <strong>Equivalencia entre expresiones en moles, masa y volumen</strong>
+            <p>Dado que \(m = n \cdot M\) (masa = moles × masa molar), si expressamos el rendimiento en masa:</p>
+            <div class="formula-box">
+                \[\eta_P (\%) = \frac{m_P^{\text{real}}}{m_P^{\text{teórico}}} \times 100\% = \frac{n_P^{\text{real}} \cdot M_P}{n_P^{\text{teórico}} \cdot M_P} \times 100\% = \frac{n_P^{\text{real}}}{n_P^{\text{teórico}}} \times 100\%\]
+            </div>
+            <p>La masa molar \(M_P\) se cancela, demostrando que el rendimiento es <strong>idéntico</strong> expresado en moles o en masa.</p>
+            <p>Análogamente, para gases en iguales condiciones de \(p\) y \(T\), como \(V = n \cdot \frac{RT}{p}\):</p>
+            <div class="formula-box">
+                \[\eta_P (\%) = \frac{V_P^{\text{real}}}{V_P^{\text{teórico}}} \times 100\% = \frac{n_P^{\text{real}} \cdot (RT/p)}{n_P^{\text{teórico}} \cdot (RT/p)} \times 100\% = \frac{n_P^{\text{real}}}{n_P^{\text{teórico}}} \times 100\%\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">5</span> <strong>Relación inversa: cálculo de cantidad real a partir del rendimiento</strong>
+            <p>Despejando de la definición de rendimiento:</p>
+            <div class="formula-box-highlight">
+                \[n_P^{\text{real}} = n_P^{\text{teórico}} \times \frac{\eta_P}{100}\]
+            </div>
+            <p>Esta expresión es útil cuando se conoce el rendimiento típico de un proceso y se desea calcular la cantidad de reactivos necesarios para obtener una cantidad objetivo de producto.</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">6</span> <strong>Cálculo de reactivo necesario con rendimiento</strong>
+            <p>Si se requiere obtener una cantidad real \(n_P^{\text{real}}\) de producto y el proceso tiene un rendimiento \(\eta\), la cantidad de reactivo limitante necesaria es:</p>
+            <div class="formula-box">
+                \[n_L^{\text{necesario}} = \frac{n_P^{\text{real}}}{\eta/100} \times \frac{\nu_L}{\nu_P} = n_P^{\text{real}} \times \frac{100}{\eta} \times \frac{\nu_L}{\nu_P}\]
+            </div>
+            <p>El factor \(\frac{100}{\eta} > 1\) representa el <strong>sobreconsumo de reactivo</strong> necesario para compensar las pérdidas del proceso.</p>
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que el <strong>rendimiento porcentual</strong> es una medida adimensional de la eficiencia de un proceso químico, definida como el cociente entre la cantidad real y la teórica de producto.</p>
+        
+        <div class="formula-box-highlight">
+            <strong>Resultados fundamentales:</strong><br><br>
+            
+            <strong>1. Definición de rendimiento:</strong>
+            \[\eta (\%) = \frac{n_{\text{real}}}{n_{\text{teórico}}} \times 100\% = \frac{m_{\text{real}}}{m_{\text{teórico}}} \times 100\% = \frac{V_{\text{real}}}{V_{\text{teórico}}} \times 100\%\]
+            
+            <strong>2. Cálculo de cantidad real:</strong>
+            \[n_{\text{real}} = n_{\text{teórico}} \times \frac{\eta}{100}\]
+            
+            <strong>3. Cálculo de reactivo necesario:</strong>
+            \[n_{\text{reactivo}} = n_{\text{producto deseado}} \times \frac{100}{\eta} \times \frac{\nu_{\text{reactivo}}}{\nu_{\text{producto}}}\]
+        </div>
+        
+        <p style="margin-top: 15px;">Estas fórmulas permiten:</p>
+        <ul>
+            <li>Evaluar la <strong>eficiencia</strong> de un proceso químico experimental o industrial.</li>
+            <li>Calcular las <strong>cantidades necesarias de reactivos</strong> cuando el rendimiento es inferior al 100%.</li>
+            <li>Comparar procesos alternativos en términos de su <strong>rentabilidad material</strong>.</li>
+        </ul>
+        
+        <div class="note-prof">
+            <strong>💡 Observaciones sobre el alumnado:</strong><br>
+            Es importante distinguir claramente el <strong>rendimiento</strong> (relación real/teórico del producto deseado) de la <strong>conversión</strong> (fracción de reactivo limitante que ha reaccionado) y de la <strong>selectividad</strong> (fracción de reactivo convertido que va al producto deseado frente a productos secundarios). En 1.º de Bachillerato, el concepto de rendimiento suele aglutinar todas estas ideas, pero conviene mencionar que en procesos industriales complejos se analizan por separado. Un error frecuente de los estudiantes es aplicar el rendimiento sobre los reactivos en lugar de sobre el producto teórico.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame — 🧪 DESMITIFICANDO el rendimiento de una reacción química</span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <h3>Cálculo del rendimiento a partir de datos experimentales</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>La reacción de descomposición térmica del clorato de potasio es: \(\mathrm{2\,KClO_3 \rightarrow 2\,KCl + 3\,O_2}\).</li>
+                    <li>Se calientan 25,0 g de KClO₃ y se obtienen 8,50 g de O₂.</li>
+                    <li>Calcula el rendimiento de la reacción.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución paso a paso:</strong></p>
+                    <p>Masa molar: KClO₃ = 122,5 g/mol; O₂ = 32,0 g/mol.</p>
+                    <p>Moles de KClO₃ iniciales: \(25,0 / 122,5 = 0,204\,\mathrm{mol}\).</p>
+                    <p>Estequiometría: 2 mol KClO₃ → 3 mol O₂, luego \(n_{\mathrm{O_2}}^{\text{teórico}} = 0,204 \times \frac{3}{2} = 0,306\,\mathrm{mol}\).</p>
+                    <p>Masa teórica de O₂: \(0,306 \times 32,0 = 9,79\,\mathrm{g}\).</p>
+                    <p>Masa real de O₂: 8,50 g.</p>
+                    <p>Rendimiento: \(\eta = \frac{8,50}{9,79} \times 100 = \mathbf{86,8\%}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <h3>Masa de reactivo necesaria con un rendimiento dado</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>Se quiere obtener 50,0 g de cloruro de plata (\(\mathrm{AgCl}\)) a partir de la reacción: \(\mathrm{AgNO_3 + NaCl \rightarrow AgCl + NaNO_3}\).</li>
+                    <li>El proceso tiene un rendimiento del 75%.</li>
+                    <li>¿Qué masa de \(\mathrm{AgNO_3}\) se necesita (en exceso de NaCl)?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Masa molar: AgCl = 143,3 g/mol; AgNO₃ = 169,9 g/mol.</p>
+                    <p>Moles de AgCl deseados (reales): \(50,0 / 143,3 = 0,349\,\mathrm{mol}\).</p>
+                    <p>Estequiometría 1:1, luego los moles teóricos de AgNO₃ necesarios son 0,349 mol.</p>
+                    <p>Pero con rendimiento 75%, necesitamos más: \(n_{\mathrm{AgNO_3}}^{\text{real necesario}} = \frac{0,349}{0,75} = 0,465\,\mathrm{mol}\).</p>
+                    <p>Masa de AgNO₃: \(0,465 \times 169,9 = \mathbf{79,0\,g}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <h3>Rendimiento con reactivo limitante y exceso</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>La reacción \(\mathrm{2\,Al + 3\,Cl_2 \rightarrow 2\,AlCl_3}\) se lleva a cabo con 10,0 g de Al y 15,0 g de Cl₂.</li>
+                    <li>Se obtienen experimentalmente 18,0 g de AlCl₃.</li>
+                    <li>a) Determina el reactivo limitante.</li>
+                    <li>b) Calcula el rendimiento de la reacción.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Masas molares: Al = 27,0; Cl₂ = 71,0; AlCl₃ = 133,5 g/mol.</p>
+                    <p>Moles: Al = \(10,0/27,0 = 0,370\); Cl₂ = \(15,0/71,0 = 0,211\).</p>
+                    <p>Coeficientes: \(\nu_{\mathrm{Al}}=2\), \(\nu_{\mathrm{Cl_2}}=3\).</p>
+                    <p>Cocientes: \(q_{\mathrm{Al}} = 0,370/2 = 0,185\); \(q_{\mathrm{Cl_2}} = 0,211/3 = 0,0703\).</p>
+                    <p>El menor es \(q_{\mathrm{Cl_2}}\), luego el Cl₂ es el limitante.</p>
+                    <p>Avance real: \(\xi = 0,0703\,\mathrm{mol}\).</p>
+                    <p>Moles teóricos de AlCl₃: \(2 \times 0,0703 = 0,1406\,\mathrm{mol}\).</p>
+                    <p>Masa teórica: \(0,1406 \times 133,5 = 18,8\,\mathrm{g}\).</p>
+                    <p>Rendimiento: \(\eta = \frac{18,0}{18,8} \times 100 = \mathbf{95,7\%}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <h3>Rendimiento en una reacción con gases (volúmenes)</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>La combustión del metano: \(\mathrm{CH_4 + 2\,O_2 \rightarrow CO_2 + 2\,H_2O}\).</li>
+                    <li>Se queman 5,00 L de CH₄ (medidos a 1 atm y 25 °C) y se recogen 4,20 L de CO₂ (en las mismas condiciones).</li>
+                    <li>Calcula el rendimiento de la reacción.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Relación volumétrica (mismas \(p, T\)): 1 L de CH₄ produce 1 L de CO₂.</p>
+                    <p>Volumen teórico de CO₂: \(5,00 \times 1/1 = 5,00\,\mathrm{L}\).</p>
+                    <p>Volumen real obtenido: 4,20 L.</p>
+                    <p>Rendimiento: \(\eta = \frac{4,20}{5,00} \times 100 = \mathbf{84,0\%}\).</p>
+                    <p><em>Nota:</em> Al ser gases en iguales condiciones, podemos usar volúmenes directamente.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <h3>Producto real a partir de rendimiento y reactivo limitante</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>La reacción de síntesis del amoniaco: \(\mathrm{N_2 + 3\,H_2 \rightarrow 2\,NH_3}\).</li>
+                    <li>Se hacen reaccionar 14,0 g de N₂ con 6,00 g de H₂. El rendimiento es del 70%.</li>
+                    <li>a) ¿Cuál es el reactivo limitante?</li>
+                    <li>b) ¿Qué masa real de NH₃ se obtiene?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Masas molares: N₂ = 28,0; H₂ = 2,0; NH₃ = 17,0 g/mol.</p>
+                    <p>Moles: N₂ = \(14,0/28,0 = 0,500\); H₂ = \(6,00/2,0 = 3,00\).</p>
+                    <p>Coeficientes: \(\nu_{\mathrm{N_2}}=1\), \(\nu_{\mathrm{H_2}}=3\).</p>
+                    <p>Cocientes: \(q_{\mathrm{N_2}} = 0,500/1 = 0,500\); \(q_{\mathrm{H_2}} = 3,00/3 = 1,00\).</p>
+                    <p>El menor es \(q_{\mathrm{N_2}}\), luego el N₂ es el limitante.</p>
+                    <p>Avance real (teórico máximo): \(\xi = 0,500\,\mathrm{mol}\).</p>
+                    <p>Moles teóricos de NH₃: \(2 \times 0,500 = 1,00\,\mathrm{mol}\).</p>
+                    <p>Masa teórica de NH₃: \(1,00 \times 17,0 = 17,0\,\mathrm{g}\).</p>
+                    <p>Con rendimiento 70%: masa real = \(17,0 \times 0,70 = \mathbf{11,9\,g}\).</p>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-didactico">
+                <i class="fas fa-lightbulb" style="color: #2b6cb0;"></i>
+                <strong>Observaciones claves:</strong> El rendimiento es un cociente entre lo que realmente se obtiene y lo que se podría obtener teóricamente. Siempre se calcula sobre el producto deseado y teniendo en cuenta el reactivo limitante. Cuando se necesita una cantidad final de producto, hay que "sobredimensionar" la cantidad de reactivo dividiendo por el rendimiento en tanto por uno. El rendimiento no puede superar el 100% en procesos sin acumulación de material (salvo errores experimentales). Es una herramienta fundamental para diseñar procesos industriales y evaluar su viabilidad económica.
+            </div>
+        </div>
+    </details>
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

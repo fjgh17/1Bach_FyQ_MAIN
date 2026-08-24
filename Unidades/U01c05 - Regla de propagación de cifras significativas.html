@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T01.05 - Cifras Significativas</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>    
+        
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+        
+        
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+        .cs { color: #e53e3e; font-weight: bold; text-decoration: underline; }
+        .dec { color: #3182ce; font-weight: bold; text-decoration: underline; }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (DETAILS)
+           ============================================ */
+        details.desmitificando {
+            margin: 30px 20px 20px 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        details.desmitificando > summary {
+            list-style: none;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            background: #edf2f7;
+            border-radius: 14px 14px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details.desmitificando > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.desmitificando > summary:hover {
+            background: #e2e8f0;
+        }
+        details.desmitificando > summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.3em;
+            color: #4a5568;
+        }
+        details.desmitificando[open] > summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.desmitificando .contenido {
+            padding: 20px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 14px 14px;
+        }
+        .ejercicio-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #ebf4ff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #bee3f8;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ejercicio-card .card-header .num {
+            font-weight: 700;
+            color: #2b6cb0;
+            font-size: 1.1em;
+        }
+        .ejercicio-card .card-header .titulo {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.05em;
+        }
+        .ejercicio-card .card-body {
+            padding: 16px 20px 8px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+        .ejercicio-card .card-body .enunciado-ej li {
+            margin-bottom: 4px;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #3182ce;
+            padding: 16px 20px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .paso {
+            margin-bottom: 8px;
+        }
+        .resolucion .paso strong {
+            color: #2b6cb0;
+        }
+        .pie-didactico {
+            background: #fefcbf;
+            border: 1px solid #f6e05e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            color: #744210;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            details.desmitificando > summary { font-size: 1em; padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T01.05.- </span>
+                    <span class="texto">Regla de Propagación de Cifras Significativas</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de <strong>cifra significativa</strong> como cada uno de los dígitos conocidos con certeza en una medida más el primer dígito estimado, demostrar que:</p>
+            <div class="formula-box">
+                \[
+                \text{En multiplicación/división: el resultado tiene tantas CS como el factor con menos CS}
+                \]
+                \[
+                \text{En suma/resta: el resultado tiene tantos decimales como el término con menos decimales}
+                \]
+            </div>
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U01c05 - Regla de propagación de cifras significativas.png" alt="Imagen" width="800">
+
+            <!-- -----FIN-------- -->
+
+        </div>
+        
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Establecer las <strong>reglas de propagación del error</strong> en operaciones aritméticas. Estas reglas garantizan que el resultado final no presente una precisión ficticia (mayor que la de los datos originales) ni pierda información útil innecesariamente. Son fundamentales para el tratamiento correcto de datos experimentales.</p>
+        </div>
+        
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Caso A: Multiplicación y división</strong>
+                <p>Consideremos el producto de dos cantidades con diferente número de cifras significativas. Tomemos el ejemplo \( 2{,}5 \times 3{,}42 \):</p>
+                <div class="formula-box">
+                    \[
+                    2{,}\underline{5} \times 3{,}4\underline{2} = 8{,}5\underline{5} \quad \text{pero debe redondearse a } 8{,}6
+                    \]
+                </div>
+                <p>El factor \( 2{,}5 \) tiene <span class="cs">2 CS</span>; el factor \( 3{,}42 \) tiene <span class="cs">3 CS</span>. El resultado exacto sería 8,55, pero solo debe conservarse <span class="cs">2 CS</span> (las del factor menos preciso), dando <strong>8,6</strong>.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Justificación conceptual (multiplicación/división)</strong>
+                <p><strong>Justificación conceptual:</strong> la incertidumbre relativa del producto es aproximadamente la suma de las incertidumbres relativas de los factores. El factor con menos cifras significativas tiene mayor incertidumbre relativa y, por tanto, limita la precisión del resultado:</p>
+                <div class="formula-box">
+                    \[
+                    \frac{\Delta (A \cdot B)}{|A \cdot B|} \approx \frac{\Delta A}{|A|} + \frac{\Delta B}{|B|}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Caso B: Suma y resta</strong>
+                <p>Consideremos la suma \( 12{,}34 + 1{,}2 \):</p>
+                <div class="formula-box">
+                    \[
+                    12{,}3\underline{4} + 1{,}\underline{2} = 13{,}5\underline{4} \quad \text{pero debe redondearse a } 13{,}5
+                    \]
+                </div>
+                <p>El término \( 12{,}34 \) tiene <span class="dec">2 decimales</span>; el término \( 1{,}2 \) tiene <span class="dec">1 decimal</span>. El resultado debe conservar <span class="dec">1 decimal</span> (el del término menos preciso en cuanto a posición decimal), dando <strong>13,5</strong>.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Justificación conceptual (suma/resta)</strong>
+                <p><strong>Justificación conceptual:</strong> en la suma, las incertidumbres absolutas se suman. La incertidumbre absoluta está relacionada con el último decimal significativo. Por tanto, el resultado no puede ser más preciso (en términos de decimales) que el término menos preciso:</p>
+                <div class="formula-box">
+                    \[
+                    \Delta (A + B) = \Delta A + \Delta B
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Regla general de redondeo</strong>
+                <p><strong>Regla general de redondeo:</strong> cuando el dígito siguiente al último que se conserva es 5 o mayor, se incrementa en una unidad el último dígito conservado. Si es menor que 5, se deja igual:</p>
+                <div class="formula-box">
+                    \[
+                    8{,}55 \rightarrow 8{,}6 \quad (\text{el 5 siguiente al 5 redondea hacia arriba})
+                    \]
+                    \[
+                    13{,}54 \rightarrow 13{,}5 \quad (\text{el 4 siguiente al 5 no redondea})
+                    \]
+                </div>
+            </div>
+        </div>
+        
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>Quedan demostradas las <strong>reglas de propagación de cifras significativas</strong>:</p>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\text{Multiplicación/División: } n_{\text{CS}}(\text{resultado}) = \min\left\{n_{\text{CS}}(A),\, n_{\text{CS}}(B)\right\}}
+                \]
+            </div>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\text{Suma/Resta: } n_{\text{dec}}(\text{resultado}) = \min\left\{n_{\text{dec}}(A),\, n_{\text{dec}}(B)\right\}}
+                \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong><br>
+                Es común que se confunda ambas reglas. Recomendar memorizar: <em>"En multiplicación, cuento cifras; en suma, cuento decimales"</em>. Insistir en que estas reglas son <strong>conservadoras</strong>: nunca aumentan la precisión de los datos originales.
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- BLOQUE DESPLEGABLE: "🧪 DESMITIFICANDO LAS CIFRAS SIGNIFICATIVAS" -->
+        <!-- ======================================================== -->
+        <details class="desmitificando">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🖱️ Pulsame 👉 🧪 DESMITIFICANDO LAS CIFRAS SIGNIFICATIVAS</span>
+            </summary>
+            <div class="contenido">
+
+                <p style="font-size:1.05em; margin-bottom: 18px;">
+                    <i class="fas fa-calculator" style="color:#d69e2e;"></i>
+                    Las cifras significativas son la forma en que la ciencia expresa la <strong>precisión real</strong> de una medida. 
+                    No se trata de matemáticas exactas, sino de <strong>honestidad experimental</strong>. 
+                    Practica con estos <strong>5 ejercicios</strong> para dominar las reglas de redondeo y propagación.
+                </p>
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 1</span>
+                        <span class="titulo">Identificación del número de cifras significativas</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Indica cuántas cifras significativas tienen las siguientes cantidades:</p>
+                            <ul>
+                                <li>\( 0{,}00450 \, \text{m} \)</li>
+                                <li>\( 1{,}30 \times 10^{3} \, \text{kg} \)</li>
+                                <li>\( 5000 \, \text{L} \) (sin coma decimal)</li>
+                                <li>\( 3{,}0400 \, \text{s} \)</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Para \( 0{,}00450 \):</strong> Los ceros a la izquierda no son significativos. Los dígitos 4, 5 y el último 0 (a la derecha del 5 y después del punto decimal) sí lo son.
+                                \[
+                                \boxed{0{,}00450 \rightarrow \text{3 CS (4, 5, 0)}}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Para \( 1{,}30 \times 10^{3} \):</strong> La notación científica explicita todos los dígitos de la mantisa.
+                                \[
+                                \boxed{1{,}30 \times 10^{3} \rightarrow \text{3 CS (1, 3, 0)}}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Para \( 5000 \):</strong> Sin punto decimal, los ceros a la derecha son ambiguos (pueden ser o no medidas). Normalmente se considera que tienen precisión indeterminada, pero por convención, si no hay punto, los ceros finales <strong>no</strong> se cuentan.
+                                \[
+                                \boxed{5000 \rightarrow \text{1 CS (el 5)}} \quad \text{(o ambiguo, mejor usar \( 5{,}00 \times 10^{3} \) para 3 CS)}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Para \( 3{,}0400 \):</strong> Todos los dígitos son significativos, incluidos los ceros entre medias y los finales.
+                                \[
+                                \boxed{3{,}0400 \rightarrow \text{5 CS (3, 0, 4, 0, 0)}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 2</span>
+                        <span class="titulo">Aplicación de la regla de multiplicación</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Calcula el área de un rectángulo cuyos lados miden \( 12{,}4 \, \text{cm} \) y \( 3{,}2 \, \text{cm} \). Expresa el resultado con el número correcto de cifras significativas.</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Identificar CS de cada factor:</strong>
+                                \( 12{,}4 \) tiene <span class="cs">3 CS</span>; \( 3{,}2 \) tiene <span class="cs">2 CS</span>.
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Realizar la multiplicación exacta:</strong>
+                                \[
+                                A = 12{,}4 \times 3{,}2 = 39{,}68 \, \text{cm}^2
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Redondear a 2 CS (el mínimo):</strong>
+                                El resultado \( 39{,}68 \) debe tener 2 CS. El primer dígito es 3, el segundo es 9, el tercero es 6 (que es ≥5), por lo que redondeamos el 9 hacia arriba (cuidado con el acarreo: 39,68 → 40).
+                                \[
+                                \boxed{A = 40 \, \text{cm}^2}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 3</span>
+                        <span class="titulo">Aplicación de la regla de suma</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Suma las siguientes masas: \( 15{,}23 \, \text{g} \), \( 0{,}6 \, \text{g} \) y \( 2{,}145 \, \text{g} \). Expresa el resultado con las cifras significativas adecuadas.</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Identificar el número de decimales:</strong>
+                                \( 15{,}23 \) tiene <span class="dec">2 decimales</span>; \( 0{,}6 \) tiene <span class="dec">1 decimal</span>; \( 2{,}145 \) tiene <span class="dec">3 decimales</span>.
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Realizar la suma exacta:</strong>
+                                \[
+                                S = 15{,}23 + 0{,}6 + 2{,}145 = 17{,}975 \, \text{g}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Redondear a 1 decimal (el mínimo):</strong>
+                                El resultado \( 17{,}975 \) debe tener 1 decimal. Miramos la segunda cifra decimal (7, que es ≥5), por lo que el 9 sube a 10, generando un acarreo: \( 17{,}975 \rightarrow 18{,}0 \).
+                                \[
+                                \boxed{S = 18{,}0 \, \text{g}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 4</span>
+                        <span class="titulo">Operaciones combinadas (suma y división)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Calcula el siguiente cociente: \( \frac{4{,}56 + 3{,}2}{1{,}50} \). Redondea el resultado final correctamente.</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Suma (regla de decimales):</strong>
+                                \( 4{,}56 \) (2 dec.) + \( 3{,}2 \) (1 dec.) = \( 7{,}76 \). Como el mínimo es 1 decimal, redondeamos a \( 7{,}8 \) (el segundo decimal es 6 ≥5).
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → División (regla de CS):</strong>
+                                Ahora dividimos \( 7{,}8 \) (tiene 2 CS) entre \( 1{,}50 \) (tiene 3 CS). El resultado exacto es \( 7{,}8 / 1{,}50 = 5{,}2 \). 
+                                Como el mínimo de CS entre \( 7{,}8 \) y \( 1{,}50 \) es 2, el resultado debe tener 2 CS.
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Resultado final:</strong>
+                                \( 5{,}2 \) ya tiene 2 CS.
+                                \[
+                                \boxed{\text{Resultado} = 5{,}2}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 5</span>
+                        <span class="titulo">Contexto real: velocidad media de un atleta</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un atleta corre una distancia de \( 100{,}0 \, \text{m} \) en un tiempo de \( 9{,}82 \, \text{s} \). Calcula su velocidad media en \( \text{m/s} \) expresada con las cifras significativas adecuadas.</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Fórmula:</strong>
+                                \[
+                                v = \frac{d}{t}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Identificar CS:</strong>
+                                \( 100{,}0 \) tiene 4 CS (el cero final cuenta por el punto decimal). \( 9{,}82 \) tiene 3 CS.
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Cálculo exacto:</strong>
+                                \[
+                                v = \frac{100{,}0}{9{,}82} = 10{,}1833\ldots \, \text{m/s}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 4 → Redondear a 3 CS (el mínimo):</strong>
+                                \( 10{,}1833 \) redondeado a 3 CS es \( 10{,}2 \) (el 4º dígito es 8 ≥5, sube el 1 a 2).
+                                \[
+                                \boxed{v = 10{,}2 \, \text{m/s}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DIDÁCTICO -->
+                <div class="pie-didactico">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Observaciones claves:</strong> La "trampa" mental que resuelven las cifras significativas es entender que <strong>una calculadora no entiende de errores</strong>; siempre da 12 decimales, pero la física real no los tiene. 
+                    La regla de multiplicación/división (<em>"cuento cifras"</em>) y la de suma/resta (<em>"cuento decimales"</em>) son un <strong>filtro de honestidad</strong>: 
+                    si multiplicas un número de 2 CS por uno de 5 CS, el resultado no puede tener de repente 5 CS. 
+                    El eslabón más débil de la cadena (la medida menos precisa) determina la fuerza de toda la cadena.
+                </div>
+
+            </div> <!-- fin .contenido -->
+        </details>
+
+        <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+    </div> <!-- fin .container -->
+</body>
+</html>

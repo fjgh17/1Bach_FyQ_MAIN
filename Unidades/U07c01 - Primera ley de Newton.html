@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.01. Primera Ley de Newton</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul, ol { padding-left: 25px; line-height: 1.7; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th { background: #edf2f7; }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.01.- </span>
+                <span class="texto">Primera Ley de Newton</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de fuerza como la magnitud responsable de modificar el estado de movimiento de un cuerpo, y del concepto de sistema de referencia inercial como aquel en el que no actúan fuerzas externas no equilibradas, demostrar que un cuerpo permanece en su estado de reposo o de movimiento rectilíneo uniforme si la fuerza neta que actúa sobre él es nula.</p>
+        <div class="formula-box">
+            \[ \sum \vec{F} = \vec{0} \quad \Rightarrow \quad \vec{v} = \text{constante} \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c01 - Primera ley de Newton.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Obtener la formulación matemática de la condición de inercia, estableciendo que la ausencia de fuerza neta implica aceleración nula y, por tanto, velocidad constante. Esta demostración es fundamental porque define el marco teórico de los sistemas de referencia inerciales, sobre los que se construyen el resto de las leyes de Newton.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definición de fuerza neta:</strong> Consideremos un cuerpo puntual de masa \( m \) sobre el que actúan \( n \) fuerzas exteriores \( \vec{F}_1, \vec{F}_2, \dots, \vec{F}_n \). Definimos la fuerza neta o resultante como la suma vectorial de todas ellas:
+            <div class="formula-box">
+                \[ \vec{F}_{\text{neta}} = \sum_{i=1}^{n} \vec{F}_i \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Condición de ausencia de interacción:</strong> Supongamos que el cuerpo se encuentra aislado, es decir, no interactúa con ningún otro objeto del universo. En este caso, no existen fuerzas aplicadas sobre él, por lo que:
+            <div class="formula-box">
+                \[ \vec{F}_{\text{neta}} = \vec{0} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Relación con la cantidad de movimiento:</strong> La cantidad de movimiento (momento lineal) del cuerpo se define como \( \vec{p} = m\vec{v} \). Experimentalmente se observa que, en ausencia de fuerzas externas, el valor de \( \vec{p} \) no varía con el tiempo. Por tanto:
+            <div class="formula-box">
+                \[ \frac{\mathrm{d}\vec{p}}{\mathrm{d}t} = \vec{0} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Deducción de la aceleración:</strong> Si la masa del cuerpo es constante, podemos escribir \( \vec{p} = m\vec{v} \). Derivando respecto al tiempo:
+            <div class="formula-box">
+                \[ \frac{\mathrm{d}\vec{p}}{\mathrm{d}t} = m\frac{\mathrm{d}\vec{v}}{\mathrm{d}t} = m\vec{a} \]
+            </div>
+            Como hemos establecido que \( \frac{\mathrm{d}\vec{p}}{\mathrm{d}t} = \vec{0} \), obtenemos:
+            <div class="formula-box">
+                \[ m\vec{a} = \vec{0} \quad \Rightarrow \quad \vec{a} = \vec{0} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Integración para obtener la velocidad:</strong> Si la aceleración es nula en todo instante, la velocidad no cambia. Integrando \( \vec{a} = \frac{\mathrm{d}\vec{v}}{\mathrm{d}t} = \vec{0} \):
+            <div class="formula-box">
+                \[ \vec{v}(t) = \vec{v}_0 = \text{constante} \]
+            </div>
+            donde \( \vec{v}_0 \) es la velocidad inicial del cuerpo en el instante \( t = 0 \).
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Interpretación cinemática:</strong> Si \( \vec{v}_0 = \vec{0} \), el cuerpo permanece en reposo. Si \( \vec{v}_0 \neq \vec{0} \), como la velocidad es constante en módulo, dirección y sentido, el movimiento es rectilíneo y uniforme (MRU).
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que, si la fuerza neta sobre un cuerpo es nula, su aceleración es nula y, consecuentemente, su velocidad permanece constante:</p>
+        <div class="formula-box">
+            \[ \boxed{\sum \vec{F} = \vec{0} \; \Rightarrow \; \vec{a} = \vec{0} \; \Rightarrow \; \vec{v} = \text{cte}} \]
+        </div>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Es importante destacar a los estudiantes que esta ley no es evidente en la vida cotidiana debido al rozamiento. La idealización de "superficie lisa" o "ausencia de fuerzas" es un modelo teórico. Galileo fue pionero al inferir este principio mediante experimentos mentales de planos inclinados cada vez más suaves, sentando las bases del método científico moderno.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Primera Ley de Newton"    -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Primera Ley de Newton</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1 -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Aplicación directa: MRU y fuerza neta</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un coche de juguete de masa \(m = 0,500\,\text{kg}\) se mueve en línea recta sobre una mesa horizontal sin rozamiento con una velocidad constante de \(2,0\,\text{m/s}\).</p>
+                    <ul>
+                        <li>a) ¿Cuál es la fuerza neta que actúa sobre el coche?</li>
+                        <li>b) Si en un instante se le aplica una fuerza neta de \(0,5\,\text{N}\) en la dirección del movimiento durante \(3,0\,\text{s}\), ¿qué velocidad tendrá al final de ese intervalo? (Supón que la fuerza neta es constante).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Como la velocidad es constante, la aceleración es nula (\(a = 0\)). Según la primera ley, la fuerza neta debe ser cero: \(\sum \vec{F} = 0\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Ahora la fuerza neta no es nula. Aplicamos la segunda ley (aunque el enunciado pide usar la primera ley, la situación cambia). Calculamos la aceleración: \(a = F/m = 0,5 / 0,5 = 1,0\,\text{m/s}^2\). Usamos cinemática: \(v = v_0 + a t = 2,0 + 1,0 \cdot 3,0 = 5,0\,\text{m/s}\).
+                    </div>
+                    <div class="paso" style="margin-top:8px; background:#f0f4ff; padding:8px; border-radius:6px;">
+                        <strong>📌 Reflexión:</strong> Mientras la fuerza neta es nula, el coche mantiene su velocidad (primera ley). Al aplicar una fuerza, se acelera (segunda ley). La primera ley es el caso particular de fuerza neta cero.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Equilibrio de fuerzas en reposo</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(12\,\text{kg}\) está en reposo sobre una superficie horizontal rugosa. Se le aplican dos fuerzas horizontales: una de \(40\,\text{N}\) hacia la derecha y otra de \(40\,\text{N}\) hacia la izquierda. El coeficiente de rozamiento estático entre el bloque y la superficie es \(\mu_e = 0,60\).</p>
+                    <ul>
+                        <li>a) ¿Se moverá el bloque? Justifica tu respuesta.</li>
+                        <li>b) ¿Cuál es el valor de la fuerza de rozamiento que actúa sobre el bloque?</li>
+                        <li>c) Si se aumenta la fuerza hacia la derecha hasta \(60\,\text{N}\), ¿qué ocurrirá? (La fuerza de rozamiento estático máxima es \(\mu_e \cdot N\)).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Las dos fuerzas horizontales son iguales y opuestas, por lo que su suma vectorial es cero: \(F_{\text{neta}} = 40 - 40 = 0\,\text{N}\). Según la primera ley, si el bloque está en reposo y la fuerza neta es nula, permanece en reposo. No se moverá.
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La fuerza de rozamiento se ajusta para equilibrar la resultante de las otras fuerzas horizontales. Como las fuerzas aplicadas se anulan, la fuerza de rozamiento también debe ser nula para que la suma total sea cero. \(F_r = 0\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>c)</strong> Ahora la fuerza neta horizontal es \(60 - 40 = 20\,\text{N}\) hacia la derecha. Calculamos la fuerza de rozamiento estático máxima: \(F_{r,\text{máx}} = \mu_e \cdot N = 0,60 \cdot (12 \cdot 9,8) \approx 70,6\,\text{N}\). Como la fuerza neta aplicada (20 N) es menor que la máxima, el rozamiento estático puede contrarrestarla, y el bloque sigue en reposo. La fuerza de rozamiento real será de 20 N hacia la izquierda (equilibrando la neta).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Identificación de sistemas inerciales</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Indica si los siguientes sistemas de referencia son inerciales o no inerciales, justificando tu respuesta:</p>
+                    <ul>
+                        <li>a) Un tren que se mueve con velocidad constante de \(90\,\text{km/h}\) en línea recta sobre vías rectas.</li>
+                        <li>b) Un coche que acelera uniformemente desde el reposo hasta \(30\,\text{m/s}\) en \(6\,\text{s}\).</li>
+                        <li>c) Una plataforma giratoria que da una vuelta cada \(10\,\text{s}\) con velocidad angular constante.</li>
+                        <li>d) Un ascensor que sube con velocidad constante de \(2\,\text{m/s}\).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Inercial. El tren se mueve con velocidad constante (MRU), sin aceleración. Un observador en el tren no detecta fuerzas ficticias.
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> No inercial. Acelera (\(a = \Delta v / \Delta t = 30/6 = 5\,\text{m/s}^2\)), por lo que es un sistema acelerado. Aparecen fuerzas ficticias (como la sensación de ser empujado hacia atrás).
+                    </div>
+                    <div class="paso">
+                        <strong>c)</strong> No inercial. Aunque la rapidez angular sea constante, la dirección de la velocidad cambia, por lo que hay aceleración centrípeta. Es un sistema acelerado.
+                    </div>
+                    <div class="paso">
+                        <strong>d)</strong> Inercial. El ascensor sube con velocidad constante (MRU), por lo que su aceleración es nula. Es un sistema inercial.
+                    </div>
+                    <div class="paso" style="margin-top:8px; background:#f0f4ff; padding:8px; border-radius:6px;">
+                        <strong>📌 Clave:</strong> Un sistema es inercial si está en reposo o MRU respecto a otro inercial. Cualquier movimiento con aceleración (incluido el circular uniforme) es no inercial.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Experimento mental de Galileo</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Galileo imaginó un plano inclinado liso por el que se deja caer una bola desde una altura \(h\). La bola desciende y luego asciende por otro plano inclinado del mismo material, pero con menor pendiente.</p>
+                    <ul>
+                        <li>a) ¿Hasta qué altura llegará la bola en el segundo plano si no hay rozamiento?</li>
+                        <li>b) ¿Qué predice la primera ley de Newton sobre el movimiento de la bola si el segundo plano fuera horizontal y sin rozamiento?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> En ausencia de rozamiento, la energía mecánica se conserva. La bola alcanzará la misma altura \(h\) en el segundo plano (independientemente de la pendiente), porque la energía potencial inicial se transforma en cinética y de nuevo en potencial.
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Si el segundo plano es horizontal y liso, al llegar a la base, la bola tiene una velocidad horizontal. Al no haber fuerzas horizontales (rozamiento ni otras), la fuerza neta sobre la bola en horizontal es nula. Según la primera ley, la bola mantendrá su velocidad constante y se moverá indefinidamente en línea recta con MRU (nunca se detendría). Este fue el razonamiento clave de Galileo para deducir la inercia.
+                    </div>
+                    <div class="paso" style="margin-top:8px; background:#f0f4ff; padding:8px; border-radius:6px;">
+                        <strong>🧠 Idea fundamental:</strong> La tendencia natural de un cuerpo es mantener su estado de movimiento; la fuerza no es necesaria para mantener el movimiento, sino para cambiarlo.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Equilibrio en plano inclinado</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(8,0\,\text{kg}\) se coloca sobre un plano inclinado \(25^\circ\) respecto a la horizontal. El coeficiente de rozamiento estático entre el bloque y el plano es \(\mu_e = 0,45\).</p>
+                    <ul>
+                        <li>a) ¿Descenderá el bloque por el plano? Justifícalo numéricamente.</li>
+                        <li>b) ¿Cuál es el ángulo mínimo para que el bloque comience a deslizarse?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Calculamos la componente del peso paralela al plano: \(P_x = m g \sin\alpha = 8,0 \cdot 9,8 \cdot \sin 25^\circ \approx 8,0 \cdot 9,8 \cdot 0,4226 \approx 33,1\,\text{N}\).
+                        La fuerza de rozamiento estático máxima es: \(F_{r,\text{máx}} = \mu_e \cdot N = \mu_e \cdot m g \cos\alpha = 0,45 \cdot 8,0 \cdot 9,8 \cdot \cos 25^\circ \approx 0,45 \cdot 8,0 \cdot 9,8 \cdot 0,9063 \approx 31,9\,\text{N}\).
+                        Como \(P_x = 33,1\,\text{N} > 31,9\,\text{N}\), la componente del peso supera la máxima fuerza de rozamiento, por lo que el bloque sí descenderá.
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> El ángulo mínimo se da cuando \(P_x = F_{r,\text{máx}}\): \(m g \sin\alpha = \mu_e m g \cos\alpha \Rightarrow \tan\alpha = \mu_e \Rightarrow \alpha = \arctan(0,45) \approx 24,2^\circ\). Por tanto, para ángulos mayores de \(24,2^\circ\), el bloque se desliza; para menores, permanece en reposo (primera ley, ya que la fuerza neta es nula).
+                    </div>
+                    <div class="paso" style="margin-top:8px; background:#f0f4ff; padding:8px; border-radius:6px;">
+                        <strong>🔍 Observación:</strong> En el umbral del deslizamiento, el bloque está a punto de moverse; la fuerza neta es cero y se mantiene en reposo (primera ley). Al superar ese ángulo, la fuerza neta no es nula y acelera.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> La primera ley de Newton establece que la inercia es una propiedad fundamental de la materia. Para aplicar correctamente esta ley, siempre hay que identificar si la <em>fuerza neta</em> es nula. En situaciones con rozamiento, el equilibrio se alcanza cuando las fuerzas se compensan, pero el rozamiento no es una fuerza "especial", es una fuerza más que debe incluirse en la suma.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

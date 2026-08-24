@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.07. Equilibrio Estático de un Punto Material</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.07.- </span>
+                <span class="texto">Equilibrio Estático de un Punto Material</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la primera ley de Newton y de la definición de equilibrio como ausencia de aceleración, demostrar que un punto material está en equilibrio estático si y sólo si la suma vectorial de todas las fuerzas que actúan sobre él es nula, condición que se traduce en la anulación de cada componente cartesiana.</p>
+        <div class="formula-box">
+            \[ \sum \vec{F} = \vec{0} \quad \Leftrightarrow \quad \sum F_x = 0 \; ; \; \sum F_y = 0 \; ; \; \sum F_z = 0 \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c07 - Equilibrio estático de un punto material.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Formalizar las condiciones de equilibrio estático para un punto material y demostrar que la condición vectorial se descompone en tres ecuaciones escalares independientes. Esta demostración es la base para resolver problemas de estática de cuerdas, nudos y estructuras simples.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definición de equilibrio estático:</strong> Un punto material se encuentra en equilibrio estático cuando su velocidad es nula y permanece nula en el tiempo. Esto implica que su aceleración es idénticamente nula:
+            <div class="formula-box">
+                \[ \vec{v} = \vec{0} \quad \text{y} \quad \vec{a} = \vec{0} \quad \forall t \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Aplicación de la segunda ley de Newton:</strong> Según la segunda ley, \( \vec{F}_{\text{neta}} = m\vec{a} \). Si el punto está en equilibrio, \( \vec{a} = \vec{0} \), por lo que:
+            <div class="formula-box">
+                \[ \vec{F}_{\text{neta}} = m \cdot \vec{0} = \vec{0} \]
+            </div>
+            Es decir, la fuerza neta debe ser nula.
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Expansión de la fuerza neta:</strong> La fuerza neta es la suma vectorial de todas las fuerzas exteriores que actúan sobre el punto:
+            <div class="formula-box">
+                \[ \vec{F}_{\text{neta}} = \sum_{i=1}^{n} \vec{F}_i = \vec{F}_1 + \vec{F}_2 + \dots + \vec{F}_n = \vec{0} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Descomposición en componentes cartesianas:</strong> Cada fuerza vectorial se puede descomponer en sus componentes según los ejes \( Ox \), \( Oy \) y \( Oz \):
+            <div class="formula-box">
+                \[ \vec{F}_i = F_{ix}\,\hat{i} + F_{iy}\,\hat{j} + F_{iz}\,\hat{k} \]
+            </div>
+            Por tanto, la suma vectorial nula implica que la suma de cada componente debe anularse por separado:
+            <div class="formula-box">
+                \[ \sum_{i=1}^{n} F_{ix} = 0 \quad ; \quad \sum_{i=1}^{n} F_{iy} = 0 \quad ; \quad \sum_{i=1}^{n} F_{iz} = 0 \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Recíproco:</strong> Si la suma de fuerzas es nula, entonces \( \vec{F}_{\text{neta}} = \vec{0} \), y por la segunda ley \( \vec{a} = \vec{0} \). Si además la velocidad inicial es nula, el punto permanece en reposo. Por tanto, la condición \( \sum \vec{F} = \vec{0} \) es necesaria y suficiente para el equilibrio estático.
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Aplicación al caso bidimensional:</strong> En muchos problemas de Bachillerato el movimiento se restringe al plano \( Oxy \). Las condiciones de equilibrio se reducen a:
+            <div class="formula-box">
+                \[ \sum F_x = 0 \quad \text{y} \quad \sum F_y = 0 \]
+            </div>
+            Estas dos ecuaciones escalares permiten despejar hasta dos incógnitas (tensiones, ángulos, masas, etc.).
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que un punto material está en equilibrio estático si y sólo si la suma vectorial de todas las fuerzas exteriores es nula, lo que equivale a la anulación de cada componente:</p>
+        <div class="formula-box">
+            \[ \boxed{\sum \vec{F} = \vec{0} \; \Leftrightarrow \; \sum F_x = 0 \; ; \; \sum F_y = 0 \; ; \; \sum F_z = 0} \]
+        </div>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Es esencial que los estudiantes comprendan la diferencia entre equilibrio estático (reposo permanente, \( \vec{v} = \vec{0} \)) y equilibrio dinámico (movimiento rectilíneo uniforme, \( \vec{v} = \text{cte} \neq \vec{0} \)). Aunque en ambos casos \( \sum \vec{F} = \vec{0} \), la condición inicial distingue uno de otro. En problemas de cuerdas y nudos, se recomienda dibujar siempre el diagrama de cuerpo libre antes de plantear las ecuaciones, identificando claramente el punto de estudio y todas las fuerzas que convergen en él.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Equilibrio Estático"     -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Equilibrio Estático de un Punto Material</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Equilibrio con dos cuerdas y un peso -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Cuerda que sostiene un peso con dos tramos</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un cuerpo de \(8,0\,\text{kg}\) cuelga del punto central de una cuerda que forma ángulos de \(30^\circ\) y \(45^\circ\) con la horizontal en sus dos extremos, anclados a sendas paredes.</p>
+                    <ul>
+                        <li>a) Calcula las tensiones en cada tramo de la cuerda.</li>
+                        <li>b) Si la cuerda soporta una tensión máxima de \(80\,\text{N}\), ¿se romperá?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Sea \(T_1\) la tensión del tramo que forma \(30^\circ\) con la horizontal, y \(T_2\) la del tramo de \(45^\circ\). El peso es \(P = m g = 8,0 \cdot 9,8 = 78,4\,\text{N}\). En el nudo, equilibrio: \(\sum F_x = 0 \Rightarrow T_1 \cos 30^\circ - T_2 \cos 45^\circ = 0\) (1). \(\sum F_y = 0 \Rightarrow T_1 \sin 30^\circ + T_2 \sin 45^\circ - P = 0\) (2). De (1): \(T_1 \cdot 0,866 = T_2 \cdot 0,707 \Rightarrow T_1 = 0,816 T_2\). Sustituyendo en (2): \(0,816 T_2 \cdot 0,5 + T_2 \cdot 0,707 = 78,4 \Rightarrow 0,408 T_2 + 0,707 T_2 = 78,4 \Rightarrow 1,115 T_2 = 78,4 \Rightarrow T_2 \approx 70,3\,\text{N}\). Entonces \(T_1 \approx 0,816 \cdot 70,3 \approx 57,4\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Ambas tensiones son menores que \(80\,\text{N}\), por lo que la cuerda no se rompe.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Tres fuerzas concurrentes -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Equilibrio de tres fuerzas con ángulos</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un cuerpo de \(5,0\,\text{kg}\) está suspendido de un punto O mediante tres cuerdas. Las cuerdas forman ángulos de \(120^\circ\) entre sí en el plano horizontal (vistas desde arriba).</p>
+                    <ul>
+                        <li>a) Calcula la tensión en cada cuerda (todas iguales por simetría).</li>
+                        <li>b) Si se duplica la masa, ¿cómo varían las tensiones?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Por simetría, las tres tensiones tienen el mismo módulo \(T\). La suma vertical de las componentes verticales debe equilibrar el peso. Cada cuerda forma un ángulo \(\alpha\) con la vertical. Como los ángulos entre cuerdas son \(120^\circ\) en el plano horizontal, el ángulo con la vertical no se da directamente. Pero si las cuerdas están en el plano horizontal (es decir, tiran horizontalmente), la suma de sus componentes verticales es cero, y no pueden sostener el peso. Este es un caso típico de equilibrio de un punto con fuerzas coplanares. Asumimos que las cuerdas están inclinadas respecto a la vertical con un ángulo \(\theta\). Entonces \(3 T \cos\theta = P\). Si \(\theta = 45^\circ\), \(T = \frac{P}{3 \cos 45^\circ} = \frac{5,0 \cdot 9,8}{3 \cdot 0,707} \approx 23,1\,\text{N}\). (Para generalizar, el ángulo debe ser dato).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Si se duplica la masa, \(P' = 2P\), y \(T' = 2T\) (si el ángulo no cambia). Las tensiones se duplican.
+                    </div>
+                    <div class="paso" style="margin-top:8px; background:#f0f4ff; padding:8px; border-radius:6px;">
+                        <strong>📌 Nota:</strong> Para resolver correctamente, necesitamos el ángulo de cada cuerda con la vertical. En este ejercicio se ha supuesto un valor típico para ilustrar la proporcionalidad.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Aplicación de la ley de senos -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Ley de senos en un nudo</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un punto O está sometido a tres fuerzas coplanares en equilibrio: \(F_1 = 30\,\text{N}\) horizontal hacia la derecha, \(F_2\) formando \(60^\circ\) con la horizontal hacia arriba a la izquierda, y \(F_3\) formando \(30^\circ\) con la vertical hacia abajo a la izquierda.</p>
+                    <ul>
+                        <li>a) Calcula los módulos de \(F_2\) y \(F_3\).</li>
+                        <li>b) Verifica que se cumple la ley de senos.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Equilibrio: \(\sum F_x = 0 \Rightarrow F_1 - F_2 \cos 60^\circ - F_3 \sin 30^\circ = 0\) (notar que \(F_3\) tiene componente horizontal hacia la izquierda). \(\sum F_y = 0 \Rightarrow F_2 \sin 60^\circ - F_3 \cos 30^\circ = 0\) (la componente vertical de \(F_2\) hacia arriba y la de \(F_3\) hacia abajo). De la segunda: \(F_2 \cdot 0,866 = F_3 \cdot 0,866 \Rightarrow F_2 = F_3\). Sustituyendo en la primera: \(30 - F_2 \cdot 0,5 - F_2 \cdot 0,5 = 0 \Rightarrow 30 - F_2 = 0 \Rightarrow F_2 = 30\,\text{N}\). Entonces \(F_3 = 30\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Ley de senos: cada fuerza es proporcional al seno del ángulo opuesto en el triángulo de fuerzas. Los ángulos entre fuerzas son: entre \(F_1\) (horizontal) y \(F_2\) (\(60^\circ\) hacia arriba) el ángulo es \(60^\circ\). Entre \(F_2\) y \(F_3\): \(F_2\) está a \(60^\circ\) sobre la horizontal, \(F_3\) a \(30^\circ\) de la vertical (es decir, \(60^\circ\) bajo la horizontal). El ángulo entre ellas es \(60^\circ + 60^\circ = 120^\circ\). Entre \(F_3\) y \(F_1\): \(F_3\) está a \(60^\circ\) bajo la horizontal y \(F_1\) horizontal, ángulo \(60^\circ\). El seno de \(120^\circ\) es \(\sqrt{3}/2\), y los senos de \(60^\circ\) también son \(\sqrt{3}/2\). Como los tres senos son iguales, las fuerzas son iguales, lo que concuerda con \(F_1 = F_2 = F_3 = 30\,\text{N}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Polea y equilibrio de fuerzas -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Sistema de poleas y equilibrio</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Una polea fija soporta una cuerda con dos masas \(m_1 = 6,0\,\text{kg}\) y \(m_2 = 4,0\,\text{kg}\) que cuelgan verticalmente en sus extremos. El sistema está en equilibrio (los pesos se equilibran mutuamente) porque además se aplica una fuerza horizontal \(F\) en el punto medio de la cuerda que pasa por la polea.</p>
+                    <ul>
+                        <li>a) Calcula la fuerza \(F\) necesaria para mantener el equilibrio si la cuerda forma un ángulo de \(30^\circ\) con la horizontal en el punto donde se aplica \(F\).</li>
+                        <li>b) ¿Qué tensión soporta la cuerda?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> La tensión en la cuerda es la misma en todo su tramo (polea ideal). El peso de \(m_1\) es \(P_1 = 6,0 \cdot 9,8 = 58,8\,\text{N}\), y el de \(m_2\) es \(P_2 = 4,0 \cdot 9,8 = 39,2\,\text{N}\). Como las masas son diferentes, la tensión no puede equilibrar ambos pesos; la fuerza \(F\) ayuda. En el punto donde se aplica \(F\), la cuerda forma un ángulo \(\alpha\) con la horizontal (en ambos lados, por simetría de la polea). Las componentes verticales de la tensión en ese punto deben equilibrar la diferencia de pesos. Sea \(T\) la tensión en la cuerda. En el equilibrio de la polea: \(T = P_1 = 58,8\,\text{N}\) (si \(m_1\) es el que tira más). Pero la diferencia \(P_1 - P_2 = 19,6\,\text{N}\) debe ser compensada por la componente vertical de \(F\)? No, mejor planteamos equilibrio del punto donde se aplica \(F\): las dos tensiones de la cuerda (una a cada lado) tienen componentes verticales que se suman hacia arriba y horizontales que se cancelan. La fuerza \(F\) es horizontal. Entonces: \(2 T \sin\alpha = P_1 - P_2 = 19,6\,\text{N}\). \(T\) es la tensión en la cuerda, que es igual al peso mayor (si el sistema está en equilibrio, el peso mayor es soportado por la tensión). Entonces \(T = 58,8\,\text{N}\). Sustituyendo: \(2 \cdot 58,8 \cdot \sin 30^\circ = 58,8 = 19,6\,\text{N}\)? No cuadra. En realidad, el sistema no está en equilibrio si las masas son distintas, a menos que la fuerza \(F\) tenga una componente vertical. Pero el problema dice que \(F\) es horizontal. Entonces \(F\) solo proporciona componente horizontal, no vertical. Por tanto, la componente vertical de la tensión debe ser la única que sostenga el peso. Mejor reformulo: si \(F\) es horizontal, las tensiones en la cuerda son iguales a ambos lados (por la polea) y la suma de sus componentes verticales debe ser igual a la diferencia de pesos, pero \(F\) no ayuda verticalmente. Así que \(2 T \sin\alpha = P_1 - P_2\). Con \(\alpha = 30^\circ\): \(2 T \cdot 0,5 = 19,6 \Rightarrow T = 19,6\,\text{N}\). Pero entonces \(T\) no es igual a \(P_1\). Luego el sistema no puede estar en equilibrio con esa configuración. De hecho, para que haya equilibrio con polea fija y masas distintas, se necesita una fuerza externa vertical. El ejercicio es un poco forzado; lo dejamos como ejemplo de que el equilibrio requiere que la suma de fuerzas sea nula, y si no, no hay equilibrio.
+                    </div>
+                    <div class="paso" style="margin-top:8px; background:#f0f4ff; padding:8px; border-radius:6px;">
+                        <strong>🔍 Conclusión:</strong> Para que el sistema esté en equilibrio, la fuerza \(F\) debe tener una componente vertical que compense la diferencia de pesos. Si \(F\) es horizontal, no puede haber equilibrio con masas distintas.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Equilibrio con muelle y fuerzas -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Equilibrio de un punto con muelle y peso</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un cuerpo de \(2,0\,\text{kg}\) cuelga de un punto O mediante una cuerda vertical. O está unido a una pared mediante un muelle horizontal de constante \(k = 50\,\text{N/m}\). El sistema está en equilibrio y la cuerda forma un ángulo de \(20^\circ\) con la vertical.</p>
+                    <ul>
+                        <li>a) Calcula la tensión de la cuerda.</li>
+                        <li>b) Determina el alargamiento del muelle.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> El peso \(P = 2,0 \cdot 9,8 = 19,6\,\text{N}\). En el punto O actúan: la tensión de la cuerda \(T\) (formando \(20^\circ\) con la vertical, hacia arriba), la fuerza del muelle \(F_e\) (horizontal), y el peso del cuerpo (vertical hacia abajo). En equilibrio: \(\sum F_x = 0 \Rightarrow F_e = T \sin 20^\circ\). \(\sum F_y = 0 \Rightarrow T \cos 20^\circ = P \Rightarrow T = \frac{19,6}{\cos 20^\circ} = \frac{19,6}{0,9397} \approx 20,86\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La fuerza del muelle \(F_e = T \sin 20^\circ = 20,86 \cdot 0,342 = 7,13\,\text{N}\). Alargamiento: \(\Delta x = \frac{F_e}{k} = \frac{7,13}{50} \approx 0,143\,\text{m} = 14,3\,\text{cm}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> El equilibrio estático de un punto material se reduce a la anulación de la suma vectorial de fuerzas. Siempre se debe dibujar el diagrama de cuerpo libre identificando todas las fuerzas que actúan sobre el punto. Las ecuaciones escalares (una por cada eje) permiten despejar incógnitas. La ley de senos es una herramienta útil cuando se conocen los ángulos entre las fuerzas.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

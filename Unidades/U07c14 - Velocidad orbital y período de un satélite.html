@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.14. Velocidad Orbital y Periodo de un Satélite</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.14.- </span>
+                <span class="texto">Velocidad Orbital y Periodo de un Satélite</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la ley de gravitación universal y de la condición de que la fuerza gravitatoria proporciona la fuerza centrípeta necesaria para mantener un satélite en órbita circular, demostrar las expresiones de la velocidad orbital y del periodo de revolución en función del radio de la órbita y de la masa del astro central.</p>
+        <div class="formula-box">
+            \[ v = \sqrt{\frac{G M_T}{r}} \quad ; \quad T = 2\pi \sqrt{\frac{r^3}{G M_T}} \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c14 - Velocidad orbital y período de un satélite.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Derivar las expresiones fundamentales de la mecánica orbital a partir del equilibrio dinámico entre atracción gravitatoria y fuerza centrípeta. Estas fórmulas permiten calcular las características de cualquier órbita circular, desde satélites artificiales hasta planetas alrededor del Sol.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Fuerza gravitatoria como fuerza centrípeta:</strong> Un satélite de masa \( m \) orbita alrededor de la Tierra (masa \( M_T \)) en una trayectoria circular de radio \( r = R_T + h \), donde \( h \) es la altura sobre la superficie. La única fuerza que actúa (idealmente) es la gravitatoria, que debe proporcionar la fuerza centrípeta:
+            <div class="formula-box">
+                \[ F_g = F_c \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Igualación de las expresiones:</strong> Sustituimos las fórmulas de ambas fuerzas:
+            <div class="formula-box">
+                \[ G \, \frac{M_T \, m}{r^2} = \frac{m \, v^2}{r} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Simplificación y despeje de la velocidad:</strong> La masa del satélite \( m \) se cancela (la velocidad orbital no depende de la masa del satélite). Simplificando \( r \):
+            <div class="formula-box">
+                \[ G \, \frac{M_T}{r} = v^2 \quad \Rightarrow \quad v = \sqrt{\frac{G M_T}{r}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Relación entre velocidad y periodo:</strong> En una órbita circular, la velocidad es la longitud de la circunferencia dividida por el periodo:
+            <div class="formula-box">
+                \[ v = \frac{2\pi r}{T} \]
+            </div>
+            Sustituyendo en la expresión de \( v \):
+            <div class="formula-box">
+                \[ \frac{2\pi r}{T} = \sqrt{\frac{G M_T}{r}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Despeje del periodo:</strong> Elevando al cuadrado y despejando \( T \):
+            <div class="formula-box">
+                \[ \frac{4\pi^2 r^2}{T^2} = \frac{G M_T}{r} \]
+            </div>
+            <div class="formula-box">
+                \[ T^2 = \frac{4\pi^2 r^3}{G M_T} \quad \Rightarrow \quad T = 2\pi \sqrt{\frac{r^3}{G M_T}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Relación con la tercera ley de Kepler:</strong> La expresión obtenida puede escribirse como:
+            <div class="formula-box">
+                \[ \frac{T^2}{r^3} = \frac{4\pi^2}{G M_T} = \text{cte} \]
+            </div>
+            Esto es exactamente la <strong>tercera ley de Kepler</strong>: el cuadrado del periodo es proporcional al cubo del radio orbital. La constante de proporcionalidad depende únicamente de la masa del astro central.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que para una órbita circular alrededor de la Tierra:</p>
+        <div class="formula-box">
+            \[ \boxed{v = \sqrt{\frac{G M_T}{r}} = \sqrt{\frac{G M_T}{R_T + h}}} \]
+        </div>
+        <div class="formula-box">
+            \[ \boxed{T = 2\pi \sqrt{\frac{r^3}{G M_T}} = 2\pi \sqrt{\frac{(R_T + h)^3}{G M_T}}} \]
+        </div>
+        <p>A mayor altura \( h \): menor velocidad orbital y mayor periodo de revolución.</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Es importante destacar que la velocidad orbital <strong>no depende de la masa del satélite</strong>: una estación espacial y un astronauta a su lado orbitan con la misma velocidad (por eso el astronauta parece "flotar" — está en caída libre continua). Un satélite geoestacionario tiene \( T = 24 \, \mathrm{h} \) y orbita a \( h \approx 35\,800 \, \mathrm{km} \). Se recomienda calcular estos valores numéricamente en clase para reforzar la comprensión.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Velocidad Orbital"       -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Velocidad Orbital y Periodo de un Satélite</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Aplicación directa -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Satélite a 300 km de altura</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un satélite orbita la Tierra a una altura \(h = 300\,\text{km}\). Datos: \(R_T = 6,38 \times 10^6\,\text{m}\), \(M_T = 5,98 \times 10^{24}\,\text{kg}\), \(G = 6,67 \times 10^{-11}\,\text{N·m}^2/\text{kg}^2\).</p>
+                    <ul>
+                        <li>a) Calcula su velocidad orbital.</li>
+                        <li>b) Calcula su periodo de revolución.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(r = R_T + h = 6,38 \times 10^6 + 3,00 \times 10^5 = 6,68 \times 10^6\,\text{m}\). 
+                        \(v = \sqrt{\frac{G M_T}{r}} = \sqrt{\frac{6,67 \times 10^{-11} \cdot 5,98 \times 10^{24}}{6,68 \times 10^6}} = \sqrt{\frac{3,988 \times 10^{14}}{6,68 \times 10^6}} = \sqrt{5,970 \times 10^7} \approx 7,73 \times 10^3\,\text{m/s}\) (aproximadamente 7,73 km/s).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(T = \frac{2\pi r}{v} = \frac{2\pi \cdot 6,68 \times 10^6}{7,73 \times 10^3} \approx \frac{4,197 \times 10^7}{7,73 \times 10^3} \approx 5,43 \times 10^3\,\text{s} \approx 90,5\,\text{min}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Altura de órbita geoestacionaria -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Altura de un satélite geoestacionario</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un satélite geoestacionario tiene un periodo orbital igual al de rotación de la Tierra: \(T = 24\,\text{h} = 86400\,\text{s}\).</p>
+                    <ul>
+                        <li>a) Calcula el radio orbital \(r\) (distancia al centro de la Tierra).</li>
+                        <li>b) Determina la altura sobre la superficie terrestre.</li>
+                    </ul>
+                    <p>Datos: \(G = 6,67 \times 10^{-11}\), \(M_T = 5,98 \times 10^{24}\,\text{kg}\), \(R_T = 6,38 \times 10^6\,\text{m}\).</p>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> De \(T = 2\pi \sqrt{\frac{r^3}{G M_T}}\), despejamos \(r\): \(r^3 = \frac{G M_T T^2}{4\pi^2}\). 
+                        Numerador: \(6,67 \times 10^{-11} \cdot 5,98 \times 10^{24} \cdot (86400)^2 \approx 3,988 \times 10^{14} \cdot 7,465 \times 10^9 \approx 2,977 \times 10^{24}\). 
+                        Dividiendo por \(4\pi^2 \approx 39,48\): \(r^3 \approx 7,543 \times 10^{22}\). 
+                        \(r \approx (7,543 \times 10^{22})^{1/3} \approx 4,23 \times 10^7\,\text{m}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Altura: \(h = r - R_T = 4,23 \times 10^7 - 6,38 \times 10^6 = 3,592 \times 10^7\,\text{m} \approx 35\,900\,\text{km}\) (valor típico ~35 800 km).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Comparación de velocidades orbitales -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Comparación de satélites en diferentes alturas</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Dos satélites orbitan la Tierra. El satélite A está a \(h_A = 200\,\text{km}\) y el satélite B a \(h_B = 800\,\text{km}\).</p>
+                    <ul>
+                        <li>a) Calcula la velocidad orbital de cada uno.</li>
+                        <li>b) ¿Cuál tiene mayor periodo? Justifica.</li>
+                    </ul>
+                    <p>Usa \(R_T = 6,38 \times 10^6\,\text{m}\), \(M_T = 5,98 \times 10^{24}\,\text{kg}\).</p>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(r_A = 6,38 \times 10^6 + 2,00 \times 10^5 = 6,58 \times 10^6\,\text{m}\). 
+                        \(v_A = \sqrt{\frac{G M_T}{r_A}} = \sqrt{\frac{3,988 \times 10^{14}}{6,58 \times 10^6}} = \sqrt{6,061 \times 10^7} \approx 7,79 \times 10^3\,\text{m/s}\).
+                        \(r_B = 6,38 \times 10^6 + 8,00 \times 10^5 = 7,18 \times 10^6\,\text{m}\).
+                        \(v_B = \sqrt{\frac{3,988 \times 10^{14}}{7,18 \times 10^6}} = \sqrt{5,555 \times 10^7} \approx 7,45 \times 10^3\,\text{m/s}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> El periodo es mayor para el satélite B, ya que \(T = 2\pi \sqrt{r^3/(G M_T)}\) y \(r_B > r_A\). Calculando: \(T_A \approx 2\pi \sqrt{(6,58 \times 10^6)^3 / (3,988 \times 10^{14})} \approx 5,30 \times 10^3\,\text{s}\) (88,3 min); \(T_B \approx 2\pi \sqrt{(7,18 \times 10^6)^3 / (3,988 \times 10^{14})} \approx 6,06 \times 10^3\,\text{s}\) (101 min).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Tercera ley de Kepler (relación T vs r) -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Relación entre periodo y radio (tercera ley de Kepler)</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un satélite orbita la Tierra con un periodo \(T_1 = 2,0\,\text{h}\) a un radio \(r_1\). Si se coloca en una órbita con radio \(r_2 = 2 r_1\):</p>
+                    <ul>
+                        <li>a) ¿Cuál será su nuevo periodo \(T_2\)?</li>
+                        <li>b) ¿Qué relación existe entre las velocidades orbitales?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Por la tercera ley de Kepler: \(T^2 \propto r^3\), es decir, \(\frac{T_2^2}{T_1^2} = \frac{r_2^3}{r_1^3} = 2^3 = 8\). Entonces \(T_2 = T_1 \sqrt{8} = 2,0 \cdot 2\sqrt{2} \approx 5,66\,\text{h}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La velocidad orbital \(v = \sqrt{G M_T / r}\) es inversamente proporcional a \(\sqrt{r}\). Entonces \(\frac{v_2}{v_1} = \sqrt{\frac{r_1}{r_2}} = \frac{1}{\sqrt{2}}\). La velocidad se reduce en un factor \(\sqrt{2}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Satélite alrededor de otro planeta (Marte) -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Órbita alrededor de Marte</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un satélite orbita Marte a una altura de \(h = 400\,\text{km}\) sobre su superficie. Datos: \(M_M = 6,42 \times 10^{23}\,\text{kg}\), \(R_M = 3,40 \times 10^6\,\text{m}\).</p>
+                    <ul>
+                        <li>a) Calcula la velocidad orbital.</li>
+                        <li>b) Calcula el periodo orbital.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(r = R_M + h = 3,40 \times 10^6 + 4,00 \times 10^5 = 3,80 \times 10^6\,\text{m}\). 
+                        \(v = \sqrt{\frac{G M_M}{r}} = \sqrt{\frac{6,67 \times 10^{-11} \cdot 6,42 \times 10^{23}}{3,80 \times 10^6}} = \sqrt{\frac{4,282 \times 10^{13}}{3,80 \times 10^6}} = \sqrt{1,127 \times 10^7} \approx 3,36 \times 10^3\,\text{m/s}\) (3,36 km/s).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(T = \frac{2\pi r}{v} = \frac{2\pi \cdot 3,80 \times 10^6}{3,36 \times 10^3} \approx \frac{2,388 \times 10^7}{3,36 \times 10^3} \approx 7,11 \times 10^3\,\text{s} \approx 118,5\,\text{min}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> La velocidad orbital depende solo del radio de la órbita y de la masa del cuerpo central, no de la masa del satélite. Esto es consecuencia de que la masa del satélite se cancela al igualar fuerza gravitatoria y centrípeta. El periodo orbital aumenta con el radio (tercera ley de Kepler). Un satélite en órbita baja (LEO) tiene alta velocidad y corto periodo; uno geoestacionario está mucho más lejos, tiene menor velocidad y periodo de 24 h.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.05. Fuerza de Rozamiento en Plano Inclinado</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.05.- </span>
+                <span class="texto">Fuerza de Rozamiento en Plano Inclinado</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la segunda ley de Newton aplicada a un cuerpo sobre un plano inclinado con rozamiento, y de la descomposición del peso en componentes paralela y perpendicular al plano, demostrar la expresión de la aceleración con que desciende un cuerpo por el plano inclinado en función del ángulo de inclinación y del coeficiente de rozamiento cinético.</p>
+        <div class="formula-box">
+            \[ a = g \left( \sin \alpha - \mu_c \cos \alpha \right) \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c05 - Fuerza de rozamiento en plano inclinado.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Obtener la expresión general de la aceleración de un cuerpo que desciende por un plano inclinado considerando el rozamiento cinético. Esta demostración combina la descomposición vectorial del peso, la segunda ley de Newton en direcciones paralela y perpendicular al plano, y la ley del rozamiento, constituyendo un modelo fundamental de resolución de problemas de dinámica.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Descomposición del peso:</strong> Consideremos un bloque de masa \( m \) sobre un plano inclinado un ángulo \( \alpha \) respecto a la horizontal. El peso \( \vec{P} = m\vec{g} \) es vertical y se descompone en dos componentes: una paralela al plano \( P_x \) y otra perpendicular \( P_y \):
+            <div class="formula-box">
+                \[ P_x = m g \sin \alpha \quad ; \quad P_y = m g \cos \alpha \]
+            </div>
+            La componente \( P_x \) tiende a hacer descender el cuerpo, mientras que \( P_y \) presiona el cuerpo contra el plano.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Equilibrio en la dirección perpendicular:</strong> En la dirección perpendicular al plano no hay aceleración, por lo que la normal \( N \) equilibra a \( P_y \):
+            <div class="formula-box">
+                \[ \sum F_\perp = N - P_y = 0 \quad \Rightarrow \quad N = m g \cos \alpha \]
+            </div>
+            Notar que la normal es menor que el peso total, a diferencia del plano horizontal.
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Fuerza de rozamiento:</strong> La fuerza de rozamiento cinético se opone al movimiento (hacia arriba por el plano) y es proporcional a la normal:
+            <div class="formula-box">
+                \[ F_r = \mu_c \, N = \mu_c \, m g \cos \alpha \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Aplicación de la segunda ley en la dirección paralela:</strong> En la dirección paralela al plano, la resultante de fuerzas produce la aceleración \( a \). Tomando como positivo el sentido de descenso:
+            <div class="formula-box">
+                \[ \sum F_\parallel = P_x - F_r = m a \]
+            </div>
+            Sustituyendo las expresiones anteriores:
+            <div class="formula-box">
+                \[ m g \sin \alpha - \mu_c \, m g \cos \alpha = m a \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Simplificación y despeje de la aceleración:</strong> Dividiendo toda la ecuación por \( m \) (la masa se cancela, lo que indica que la aceleración no depende de la masa):
+            <div class="formula-box">
+                \[ g \sin \alpha - \mu_c \, g \cos \alpha = a \]
+            </div>
+            Factorizando \( g \):
+            <div class="formula-box">
+                \[ a = g \left( \sin \alpha - \mu_c \cos \alpha \right) \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Condición de equilibrio estático y ángulo de reposo:</strong> Si el cuerpo está en reposo, la fuerza de rozamiento estática \( F_{r,e} \) compensa exactamente \( P_x \), siempre que \( P_x \leq \mu_e \, N \). La condición límite de equilibrio se da cuando:
+            <div class="formula-box">
+                \[ m g \sin \alpha = \mu_e \, m g \cos \alpha \quad \Rightarrow \quad \tan \alpha = \mu_e \]
+            </div>
+            El ángulo \( \alpha_0 = \arctan(\mu_e) \) se denomina <strong>ángulo de reposo</strong> o <strong>ángulo de rozamiento</strong>.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que la aceleración con que desciende un cuerpo por un plano inclinado con rozamiento cinético es:</p>
+        <div class="formula-box">
+            \[ \boxed{a = g \left( \sin \alpha - \mu_c \cos \alpha \right)} \]
+        </div>
+        <p>Para que el cuerpo descienda, debe cumplirse \( \tan \alpha > \mu_c \). El ángulo de reposo, a partir del cual se inicia el deslizamiento, viene dado por \( \tan \alpha_0 = \mu_e \).</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Esta demostración es un excelente ejemplo de cómo la elección adecuada del sistema de ejes (uno paralelo y otro perpendicular al plano) simplifica enormemente el problema. Es importante destacar que la masa del cuerpo se cancela, lo que significa que todos los cuerpos, independientemente de su masa, descienden con la misma aceleración (análogo al vacío de Galileo, pero ahora con rozamiento). El ángulo de reposo proporciona un método experimental sencillo para determinar \( \mu_e \) sin necesidad de medir fuerzas directamente.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Rozamiento en Plano Inclinado" -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Rozamiento en Plano Inclinado</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Aplicación directa de la fórmula -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Cálculo de la aceleración de descenso</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(4,0\,\text{kg}\) se desliza hacia abajo por un plano inclinado \(25^\circ\) con rozamiento (\(\mu_c = 0,30\)).</p>
+                    <ul>
+                        <li>a) Calcula la aceleración del bloque.</li>
+                        <li>b) Si parte del reposo, ¿qué velocidad tendrá al recorrer \(3,0\,\text{m}\)?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Usamos \(a = g(\sin\alpha - \mu_c \cos\alpha)\): \(a = 9,8(\sin 25^\circ - 0,30 \cos 25^\circ) = 9,8(0,4226 - 0,30 \cdot 0,9063) = 9,8(0,4226 - 0,2719) = 9,8 \cdot 0,1507 \approx 1,48\,\text{m/s}^2\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Con \(v_0 = 0\), \(v^2 = 2 a x\): \(v = \sqrt{2 \cdot 1,48 \cdot 3,0} = \sqrt{8,88} \approx 2,98\,\text{m/s}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Ángulo de reposo y comparación -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Ángulo de reposo y determinación del movimiento</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque se coloca sobre un plano inclinado cuyo ángulo se puede variar. El coeficiente de rozamiento estático entre el bloque y el plano es \(\mu_e = 0,55\).</p>
+                    <ul>
+                        <li>a) Calcula el ángulo a partir del cual el bloque comenzará a deslizar.</li>
+                        <li>b) Si se inclina el plano a \(35^\circ\), ¿deslizará el bloque? ¿Con qué aceleración (si \(\mu_c = 0,45\))?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(\alpha_0 = \arctan(\mu_e) = \arctan(0,55) \approx 28,8^\circ\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Como \(35^\circ > 28,8^\circ\), el bloque desliza. Usamos \(\mu_c\): \(a = 9,8(\sin 35^\circ - 0,45 \cos 35^\circ) = 9,8(0,5736 - 0,45 \cdot 0,8192) = 9,8(0,5736 - 0,3686) = 9,8 \cdot 0,2050 \approx 2,01\,\text{m/s}^2\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Subida por plano inclinado con rozamiento -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Subida con rozamiento y distancia de frenado</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(2,0\,\text{kg}\) se lanza hacia arriba por un plano inclinado \(30^\circ\) con velocidad inicial \(6,0\,\text{m/s}\). El coeficiente de rozamiento cinético es \(\mu_c = 0,25\).</p>
+                    <ul>
+                        <li>a) Calcula la aceleración durante la subida (en módulo y sentido).</li>
+                        <li>b) ¿Qué distancia recorre hasta detenerse?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Durante la subida, el rozamiento y la componente del peso se oponen al movimiento. Tomamos positivo hacia arriba: \(a = -g(\sin\alpha + \mu_c \cos\alpha)\) (negativa). \(a = -9,8(\sin 30^\circ + 0,25 \cos 30^\circ) = -9,8(0,5 + 0,25 \cdot 0,866) = -9,8(0,5 + 0,2165) = -9,8 \cdot 0,7165 \approx -7,02\,\text{m/s}^2\). El módulo es \(7,02\,\text{m/s}^2\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Usamos \(v_f^2 = v_0^2 + 2 a x\) con \(v_f = 0\): \(0 = (6,0)^2 + 2(-7,02)x \Rightarrow x = \frac{36}{14,04} \approx 2,56\,\text{m}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Sistema con polea y plano inclinado -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Plano inclinado con polea (dos masas)</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(m_1 = 5,0\,\text{kg}\) está sobre un plano inclinado \(37^\circ\) con rozamiento (\(\mu_c = 0,20\)). Está unido mediante una cuerda que pasa por una polea a un bloque \(m_2 = 3,0\,\text{kg}\) que cuelga verticalmente.</p>
+                    <ul>
+                        <li>a) ¿Hacia dónde se moverá el sistema? Justifica.</li>
+                        <li>b) Calcula la aceleración del sistema y la tensión de la cuerda.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Fuerza que tira de \(m_1\) hacia abajo por el plano: \(P_{1x} = m_1 g \sin 37^\circ = 5,0 \cdot 9,8 \cdot 0,6018 \approx 29,5\,\text{N}\). Fuerza de rozamiento: \(F_r = \mu_c m_1 g \cos 37^\circ = 0,20 \cdot 5,0 \cdot 9,8 \cdot 0,7986 \approx 7,82\,\text{N}\). La fuerza neta que tiraría de \(m_1\) hacia abajo es \(29,5 - 7,82 = 21,7\,\text{N}\). El peso de \(m_2\) es \(m_2 g = 3,0 \cdot 9,8 = 29,4\,\text{N}\), mayor, por lo que el sistema se moverá con \(m_2\) bajando y \(m_1\) subiendo por el plano.
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Ecuaciones: para \(m_2\) (baja): \(m_2 g - T = m_2 a\). Para \(m_1\) (sube): \(T - m_1 g \sin\alpha - \mu_c m_1 g \cos\alpha = m_1 a\). Sumamos: \(m_2 g - m_1 g(\sin\alpha + \mu_c \cos\alpha) = (m_1 + m_2)a\). \(a = \frac{29,4 - 5,0 \cdot 9,8(0,6018 + 0,20 \cdot 0,7986)}{8,0} = \frac{29,4 - 49,0(0,6018 + 0,1597)}{8,0} = \frac{29,4 - 49,0 \cdot 0,7615}{8,0} = \frac{29,4 - 37,31}{8,0} = \frac{-7,91}{8,0} \approx -0,989\,\text{m/s}^2\). El signo negativo indica que el sentido supuesto (m2 bajando) es correcto pero la aceleración es en ese sentido; tomamos módulo \(0,989\,\text{m/s}^2\). Tensión: \(T = m_2(g - a) = 3,0(9,8 - 0,989) = 3,0 \cdot 8,811 \approx 26,4\,\text{N}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Comparación de diferentes casos -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Comparación de aceleraciones según ángulo y rozamiento</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Se tienen dos planos inclinados: uno con \(\alpha = 20^\circ\) y \(\mu_c = 0,10\), y otro con \(\alpha = 40^\circ\) y \(\mu_c = 0,30\).</p>
+                    <ul>
+                        <li>a) Calcula la aceleración de descenso en cada caso.</li>
+                        <li>b) ¿En cuál de los dos casos el bloque desciende más rápido? Explica.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Caso 1: \(a_1 = 9,8(\sin 20^\circ - 0,10 \cos 20^\circ) = 9,8(0,3420 - 0,10 \cdot 0,9397) = 9,8(0,3420 - 0,0940) = 9,8 \cdot 0,2480 \approx 2,43\,\text{m/s}^2\). Caso 2: \(a_2 = 9,8(\sin 40^\circ - 0,30 \cos 40^\circ) = 9,8(0,6428 - 0,30 \cdot 0,7660) = 9,8(0,6428 - 0,2298) = 9,8 \cdot 0,4130 \approx 4,05\,\text{m/s}^2\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Aunque el segundo tiene mayor rozamiento, su inclinación es mucho mayor, lo que hace que la componente \(P_x\) crezca más que el rozamiento. La aceleración es mayor en el segundo caso (\(4,05 > 2,43\)). Esto muestra que el ángulo tiene un efecto dominante sobre el rozamiento cuando es significativo.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> La aceleración en un plano inclinado con rozamiento depende del ángulo y del coeficiente de rozamiento, pero <em>no</em> de la masa. El ángulo de reposo (\(\tan\alpha = \mu_e\)) es un concepto clave que permite entender cuándo un cuerpo empieza a deslizar. Para resolver problemas, siempre se debe descomponer el peso y aplicar la segunda ley en los ejes paralelo y perpendicular al plano.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

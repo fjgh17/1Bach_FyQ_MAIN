@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUBJ02. Subordinadas de Sujeto – Modos y tipos avanzados</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #f0f4f8; font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1a3a5c, #2d6a9f); color: white; padding: 25px 35px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .header-left h1 { font-size: 1.8rem; margin: 0; }
+        .header-left p { margin: 5px 0 0; opacity: 0.85; }
+        .header-sub { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
+        .header-sub .codigo { font-weight: 700; font-size: 1.1rem; background: rgba(255,255,255,0.15); padding: 2px 12px; border-radius: 20px; }
+        .header-sub .texto { font-size: 1.1rem; }
+        .section { padding: 25px 35px; margin: 15px 20px; border-radius: 12px; border-left: 6px solid; }
+        .indicativo { background: #f0f8ff; border-color: #4a90e2; }
+        .subjuntivo { background: #fef9e7; border-color: #f1c40f; }
+        .interrogativa { background: #e8f8f5; border-color: #1abc9c; }
+        .infinitivo { background: #f5f0ff; border-color: #8b5cf6; }
+        .nominalizacion { background: #fce4ec; border-color: #e53e3e; }
+        .resumen { background: #f8fafc; border-color: #64748b; }
+        .section h2 { font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: #1e293b; }
+        .section h2 i { color: #2d6a9f; }
+        .formula-box { background: #edf2f7; border: 2px solid #cbd5e0; border-radius: 10px; padding: 15px 20px; margin: 15px 0; font-size: 1.05rem; text-align: center; }
+        .ejemplo-box { background: white; border-left: 4px solid #2d6a9f; padding: 12px 18px; margin: 12px 0; border-radius: 0 8px 8px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+        .ejemplo-box .num { font-weight: 700; color: #2d6a9f; margin-right: 8px; }
+        .ejemplo-box .analisis { display: block; font-size: 0.9rem; color: #475569; margin-top: 6px; padding-left: 20px; border-left: 2px dashed #94a3b8; }
+        .ejemplo-box .subj { color: #dc2626; font-weight: 600; }
+        .ejemplo-box .verbo { color: #16a34a; font-weight: 600; }
+        .badge { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; }
+        .badge-ind { background: #dbeafe; color: #1e40af; }
+        .badge-subj { background: #fce4ec; color: #880e4f; }
+        .badge-inf { background: #fef3c7; color: #92400e; }
+        .badge-si { background: #d1fae5; color: #065f46; }
+        .badge-nom { background: #fce4ec; color: #880e4f; }
+        .note { background: #fffbeb; border: 1px solid #f6e05e; border-radius: 8px; padding: 12px 18px; margin: 15px 0; font-size: 0.95rem; color: #744210; }
+        .tabla-modos { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95rem; }
+        .tabla-modos th { background: #2d6a9f; color: white; padding: 10px 14px; text-align: left; }
+        .tabla-modos td { border: 1px solid #e2e8f0; padding: 10px 14px; }
+        .tabla-modos tr:nth-child(even) { background: #f8fafc; }
+        details { margin: 25px 20px 20px; background: #f8fafc; border-radius: 16px; border: 2px solid #dbeafe; padding: 0.5rem 0.5rem 0.5rem 1.5rem; transition: all 0.3s ease; }
+        details[open] { background: #ffffff; border-color: #3b82f6; box-shadow: 0 8px 20px rgba(59,130,246,0.12); }
+        summary { list-style: none; cursor: pointer; font-size: 1.4rem; font-weight: 600; color: #1e3a8a; padding: 0.8rem 0.5rem 0.8rem 0; display: flex; align-items: center; gap: 12px; user-select: none; }
+        summary::-webkit-details-marker { display: none; }
+        summary i { font-size: 1.8rem; color: #2563eb; transition: transform 0.3s ease; }
+        details[open] summary i { transform: rotate(180deg); }
+        summary .titulo-principal { flex: 1; }
+        summary .badge-pulsa { background: #dbeafe; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.9rem; color: #1e40af; display: inline-flex; align-items: center; gap: 6px; }
+        .contenido-desplegable { padding: 0.5rem 0.8rem 1.8rem 0.8rem; border-top: 1px solid #e2e8f0; margin-top: 0.5rem; }
+        .tarjeta-ejercicio { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 1.5rem 1.8rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .tarjeta-ejercicio .cabecera-ej { display: flex; align-items: baseline; gap: 10px; border-bottom: 2px dashed #bfdbfe; padding-bottom: 0.6rem; margin-bottom: 1rem; }
+        .cabecera-ej .num-ej { background: #2563eb; color: white; font-weight: 700; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.9rem; }
+        .cabecera-ej .titulo-ej { font-weight: 600; font-size: 1.2rem; color: #0b1e33; }
+        .enunciado-ej { margin-bottom: 1rem; background: #f9fafb; padding: 0.8rem 1.2rem; border-radius: 12px; border-left: 4px solid #94a3b8; }
+        .solucion-ej { background: #f1f5f9; padding: 1.2rem 1.8rem; border-radius: 16px; border: 1px solid #cbd5e1; font-size: 0.98rem; }
+        .solucion-ej .paso { margin: 0.6rem 0; }
+        .solucion-ej .paso strong { color: #1e40af; }
+        .pie-clave { margin-top: 1.8rem; padding: 1rem 1.8rem; background: #eef2ff; border-radius: 40px; border-left: 6px solid #3b82f6; font-weight: 500; color: #1e3a8a; display: flex; align-items: center; gap: 12px; }
+        .pie-clave i { font-size: 1.6rem; color: #2563eb; }
+        .btn-volver { display: inline-block; padding: 12px 24px; background: #0078D4; color: white; text-decoration: none; border-radius: 12px; font-weight: bold; }
+        .btn-volver:hover { background: #005a9e; }
+        .footer-box { padding: 25px 15px; text-align: center; background: white; margin: 20px; }
+        .footer-box .inner { max-width:100%; padding:15px; margin:10px auto; text-align:center; background:#f8fafc; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+        @media (max-width: 600px) { .section { padding: 15px 18px; margin: 10px 10px; } .header { padding: 15px 18px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <h1>📘 Subordinadas de Sujeto (II)</h1>
+            <div class="header-sub">
+                <span class="codigo">SUBJ02</span>
+                <span class="texto">Indicativo vs. Subjuntivo · Interrogativas · Infinitivo · Nominalización</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- INDICATIVO VS SUBJUNTIVO -->
+    <div class="section indicativo">
+        <h2><i class="fas fa-exchange-alt"></i> Indicativo vs. Subjuntivo en subordinadas de sujeto</h2>
+        <p>La elección del modo verbal en la subordinada de sujeto depende del <strong>significado del verbo principal</strong> y de si se presenta el contenido como <strong>hecho objetivo (indicativo)</strong> o como <strong>deseo, valoración o posibilidad (subjuntivo)</strong>.</p>
+
+        <table class="tabla-modos">
+            <thead>
+                <tr><th>Verbo introductor</th><th>Modo en la subordinada</th><th>Ejemplo</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Hechos objetivos</strong><br><small>es cierto, es verdad, es evidente, es obvio, está comprobado, se sabe, se afirma</small></td>
+                    <td><span class="badge badge-ind">INDICATIVO</span></td>
+                    <td><em>Es cierto <span style="color:#dc2626;">que el agua hierve a 100 °C</span>.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Valoraciones personales</strong><br><small>es importante, es necesario, es bueno, es malo, es justo, es injusto</small></td>
+                    <td><span class="badge badge-subj">SUBJUNTIVO</span></td>
+                    <td><em>Es importante <span style="color:#dc2626;">que estudies todos los días</span>.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Emociones y sentimientos</strong><br><small>alegra, preocupa, molesta, sorprende, asombra, entristece</small></td>
+                    <td><span class="badge badge-subj">SUBJUNTIVO</span></td>
+                    <td><em>Me alegra <span style="color:#dc2626;">que hayas aprobado</span>.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Verbos de comunicación</strong><br><small>se dice, se comenta, se cree, se piensa, se supone</small></td>
+                    <td><span class="badge badge-ind">INDICATIVO</span> (hecho) / <span class="badge badge-subj">SUBJUNTIVO</span> (duda)</td>
+                    <td><em>Se dice <span style="color:#16a34a;">que va a llover</span>.<br>No se dice <span style="color:#dc2626;">que haya llegado</span>.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Probabilidad / posibilidad</strong><br><small>es probable, es posible, es dudoso, es seguro (sentido de certeza)</small></td>
+                    <td><span class="badge badge-ind">INDICATIVO</span> (seguro) / <span class="badge badge-subj">SUBJUNTIVO</span> (dudoso)</td>
+                    <td><em>Es seguro <span style="color:#16a34a;">que vendrá</span>.<br>Es dudoso <span style="color:#dc2626;">que venga</span>.</em></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>💡 Regla de oro:</strong> Si el verbo principal expresa <strong>certeza o hecho objetivo</strong> → <span class="badge badge-ind">INDICATIVO</span>.<br>
+            Si expresa <strong>deseo, valoración, duda o emoción</strong> → <span class="badge badge-subj">SUBJUNTIVO</span>.
+        </div>
+    </div>
+
+    <!-- INTERROGATIVAS INDIRECTAS CON "SI" -->
+    <div class="section interrogativa">
+        <h2><i class="fas fa-question-circle"></i> Subordinadas de sujeto interrogativas indirectas con «si»</h2>
+        <p>Cuando la subordinada de sujeto es una <strong>interrogativa indirecta total</strong>, se introduce con la conjunción <strong>«si»</strong> y el verbo va en <strong>indicativo</strong> (porque la pregunta se presenta como un hecho dudoso pero real).</p>
+
+        <div class="ejemplo-box">
+            <span class="num">1.</span> <span class="subj">Si vendrás o no a la fiesta</span> <span class="verbo">es</span> lo que me preocupa.
+            <span class="analisis"><span class="badge badge-si">interrogativa indirecta</span> «Si vendrás o no a la fiesta» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">2.</span> <span class="subj">Si han aprobado todos los alumnos</span> <span class="verbo">es</span> la pregunta del día.
+            <span class="analisis"><span class="badge badge-si">interrogativa indirecta</span> «Si han aprobado todos los alumnos» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">3.</span> <span class="subj">Si el examen será difícil o no</span> <span class="verbo">preocupa</span> a todos.
+            <span class="analisis"><span class="badge badge-si">interrogativa indirecta</span> «Si el examen será difícil o no» → sujeto</span>
+        </div>
+    </div>
+
+    <!-- INFINITIVO COMO SUJETO -->
+    <div class="section infinitivo">
+        <h2><i class="fas fa-infinity"></i> El infinitivo como sujeto</h2>
+        <p>El <strong>infinitivo</strong> (con o sin preposición) puede funcionar como sujeto de la oración principal. Es una forma nominal que no lleva conjunción.</p>
+
+        <div class="ejemplo-box">
+            <span class="num">1.</span> <span class="subj">Estudiar todos los días</span> <span class="verbo">es</span> la clave del éxito.
+            <span class="analisis"><span class="badge badge-inf">infinitivo</span> «Estudiar todos los días» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">2.</span> <span class="subj">Comer fruta y verdura</span> <span class="verbo">es</span> fundamental para la salud.
+            <span class="analisis"><span class="badge badge-inf">infinitivo</span> «Comer fruta y verdura» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">3.</span> <span class="subj">Viajar por el mundo</span> <span class="verbo">es</span> mi mayor sueño.
+            <span class="analisis"><span class="badge badge-inf">infinitivo</span> «Viajar por el mundo» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">4.</span> <span class="subj">El haber llegado tarde</span> <span class="verbo">fue</span> un error.
+            <span class="analisis"><span class="badge badge-inf">infinitivo compuesto</span> «El haber llegado tarde» → sujeto (con artículo)</span>
+        </div>
+
+        <div class="note">
+            <strong>📌 Variantes del infinitivo como sujeto:</strong>
+            <ul style="margin-top:8px; line-height:1.8;">
+                <li><strong>Infinitivo simple:</strong> <em>Leer es importante.</em></li>
+                <li><strong>Infinitivo compuesto:</strong> <em>El haber estudiado tanto dio sus frutos.</em></li>
+                <li><strong>Infinitivo con artículo:</strong> <em>El decir la verdad siempre es lo mejor.</em></li>
+                <li><strong>Infinitivo con preposición:</strong> <em>El no saber nadar le impidió salvarse.</em></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- NOMINALIZACIÓN CON "EL HECHO DE QUE" -->
+    <div class="section nominalizacion">
+        <h2><i class="fas fa-file-alt"></i> Nominalización con «el hecho de que»</h2>
+        <p>Para enfatizar o nominalizar la subordinada de sujeto, se puede utilizar la estructura <strong>«el hecho de que» + subordinada</strong>, que refuerza la función sustantiva.</p>
+
+        <div class="ejemplo-box">
+            <span class="num">1.</span> <span class="subj">El hecho de que hayas llegado tarde</span> <span class="verbo">molestó</span> al profesor.
+            <span class="analisis"><span class="badge badge-nom">nominalización</span> «El hecho de que hayas llegado tarde» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">2.</span> <span class="subj">El hecho de que el equipo haya perdido</span> <span class="verbo">fue</span> una sorpresa.
+            <span class="analisis"><span class="badge badge-nom">nominalización</span> «El hecho de que el equipo haya perdido» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">3.</span> <span class="subj">El hecho de que no me hayas llamado</span> <span class="verbo">me dolió</span> mucho.
+            <span class="analisis"><span class="badge badge-nom">nominalización</span> «El hecho de que no me hayas llamado» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">4.</span> <span class="subj">El hecho de que exista vida en otros planetas</span> <span class="verbo">es</span> una posibilidad real.
+            <span class="analisis"><span class="badge badge-nom">nominalización</span> «El hecho de que exista vida en otros planetas» → sujeto</span>
+        </div>
+    </div>
+
+    <!-- TABLA RESUMEN -->
+    <div class="section resumen">
+        <h2><i class="fas fa-table"></i> Resumen de tipos de subordinadas de sujeto</h2>
+        <table class="tabla-modos">
+            <thead>
+                <tr><th>Tipo</th><th>Introducción</th><th>Modo verbal</th><th>Ejemplo</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Con «que»</strong></td>
+                    <td><em>que</em></td>
+                    <td>Indicativo / Subjuntivo</td>
+                    <td><em>Es cierto <span style="color:#dc2626;">que la Tierra es redonda</span>.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Interrogativa indirecta</strong></td>
+                    <td><em>si</em></td>
+                    <td>Indicativo</td>
+                    <td><em><span style="color:#dc2626;">Si vendrás</span> es la pregunta.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Infinitivo</strong></td>
+                    <td><em>infinitivo</em></td>
+                    <td>—</td>
+                    <td><em><span style="color:#dc2626;">Estudiar</span> es importante.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Nominalización</strong></td>
+                    <td><em>el hecho de que</em></td>
+                    <td>Subjuntivo</td>
+                    <td><em><span style="color:#dc2626;">El hecho de que hayas venido</span> me alegra.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Relativo sustantivado</strong></td>
+                    <td><em>lo que / quien / el que</em></td>
+                    <td>Indicativo / Subjuntivo</td>
+                    <td><em><span style="color:#dc2626;">Lo que dices</span> es cierto.</em></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- EJERCICIOS DESPLEGABLES -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">✏️ Ejercicios avanzados (pulsa para ver soluciones)</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Indicativo o subjuntivo</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Elige la forma verbal correcta (indicativo o subjuntivo):</p>
+                    <ol>
+                        <li>Es evidente que el cambio climático ________ (existir).</li>
+                        <li>Es necesario que todos ________ (colaborar) en la limpieza.</li>
+                        <li>Me sorprende que tú ________ (decir) eso.</li>
+                        <li>Se sabe que el Everest ________ (ser) la montaña más alta.</li>
+                        <li>Es dudoso que el tren ________ (llegar) a tiempo.</li>
+                    </ol>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Soluciones:</strong></p>
+                    <div class="paso"><strong>1.</strong> Es evidente que el cambio climático <span style="color:#16a34a;">existe</span>. (hecho objetivo → indicativo)</div>
+                    <div class="paso"><strong>2.</strong> Es necesario que todos <span style="color:#dc2626;">colaboren</span> en la limpieza. (necesidad → subjuntivo)</div>
+                    <div class="paso"><strong>3.</strong> Me sorprende que tú <span style="color:#dc2626;">digas</span> eso. (emoción → subjuntivo)</div>
+                    <div class="paso"><strong>4.</strong> Se sabe que el Everest <span style="color:#16a34a;">es</span> la montaña más alta. (hecho comprobado → indicativo)</div>
+                    <div class="paso"><strong>5.</strong> Es dudoso que el tren <span style="color:#dc2626;">llegue</span> a tiempo. (duda → subjuntivo)</div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Transforma a "el hecho de que"</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Reescribe las siguientes oraciones usando la estructura <strong>«el hecho de que»</strong>:</p>
+                    <ol>
+                        <li>Que no hayas estudiado suficiente se nota en el examen.</li>
+                        <li>Que el equipo haya perdido fue una sorpresa.</li>
+                        <li>Que llegues tarde todos los días es una falta de respeto.</li>
+                    </ol>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Soluciones:</strong></p>
+                    <div class="paso"><strong>1.</strong> <span style="color:#dc2626;">El hecho de que no hayas estudiado suficiente</span> se nota en el examen.</div>
+                    <div class="paso"><strong>2.</strong> <span style="color:#dc2626;">El hecho de que el equipo haya perdido</span> fue una sorpresa.</div>
+                    <div class="paso"><strong>3.</strong> <span style="color:#dc2626;">El hecho de que llegues tarde todos los días</span> es una falta de respeto.</div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Identifica el tipo de subordinada</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Clasifica cada subordinada de sujeto según su tipo (con «que», interrogativa, infinitivo, nominalización, relativo sustantivado):</p>
+                    <ol>
+                        <li>Si lloverá o no mañana es lo que me preocupa.</li>
+                        <li>Leer todos los días mejora la comprensión lectora.</li>
+                        <li>Que hayas venido a visitarme me alegra mucho.</li>
+                        <li>Lo que realmente importa es la honestidad.</li>
+                        <li>El hecho de que no me hayas llamado me dolió.</li>
+                    </ol>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Soluciones:</strong></p>
+                    <div class="paso"><strong>1.</strong> <span style="color:#dc2626;">Si lloverá o no mañana</span> → <span class="badge badge-si">interrogativa indirecta</span></div>
+                    <div class="paso"><strong>2.</strong> <span style="color:#dc2626;">Leer todos los días</span> → <span class="badge badge-inf">infinitivo</span></div>
+                    <div class="paso"><strong>3.</strong> <span style="color:#dc2626;">Que hayas venido a visitarme</span> → <span class="badge badge-subj">con «que» (subjuntivo)</span></div>
+                    <div class="paso"><strong>4.</strong> <span style="color:#dc2626;">Lo que realmente importa</span> → <span class="badge badge-ind">relativo sustantivado</span></div>
+                    <div class="paso"><strong>5.</strong> <span style="color:#dc2626;">El hecho de que no me hayas llamado</span> → <span class="badge badge-nom">nominalización</span></div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Completa con la forma verbal adecuada</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Completa las siguientes oraciones con la forma verbal correcta (indicativo o subjuntivo):</p>
+                    <ol>
+                        <li>Es probable que el concierto ________ (ser) cancelado.</li>
+                        <li>Es seguro que el presidente ________ (asistir) a la cumbre.</li>
+                        <li>Me molesta que tú ________ (hablar) tan alto.</li>
+                        <li>Se comenta que la empresa ________ (estar) en crisis.</li>
+                        <li>Es bueno que todos ________ (participar) en el proyecto.</li>
+                    </ol>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Soluciones:</strong></p>
+                    <div class="paso"><strong>1.</strong> Es probable que el concierto <span style="color:#dc2626;">sea</span> cancelado. (probabilidad → subjuntivo)</div>
+                    <div class="paso"><strong>2.</strong> Es seguro que el presidente <span style="color:#16a34a;">asistirá</span> a la cumbre. (certeza → indicativo)</div>
+                    <div class="paso"><strong>3.</strong> Me molesta que tú <span style="color:#dc2626;">hables</span> tan alto. (emoción → subjuntivo)</div>
+                    <div class="paso"><strong>4.</strong> Se comenta que la empresa <span style="color:#16a34a;">está</span> en crisis. (hecho que se comenta → indicativo)</div>
+                    <div class="paso"><strong>5.</strong> Es bueno que todos <span style="color:#dc2626;">participen</span> en el proyecto. (valoración → subjuntivo)</div>
+                </div>
+            </div>
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Clave:</strong> La elección entre indicativo y subjuntivo en las subordinadas de sujeto depende del grado de <strong>objetividad</strong> (indicativo) o <strong>subjetividad</strong> (subjuntivo) que expresa el verbo principal. Practica con estos ejercicios para internalizar la diferencia.</span>
+            </div>
+        </div>
+    </details>
+
+    <!-- FOOTER -->
+    <div class="footer-box">
+        <div class="inner">
+            <p style="font-size:clamp(0.95rem,2.5vw,1.1rem); color:#2d3748; margin:0 0 12px;">
+                📚 Con estos ejemplos y ejercicios dominarás todos los tipos de subordinadas de sujeto.<br>
+                En el siguiente HTML profundizaremos en <strong>las oraciones de relativo sustantivadas</strong> y en <strong>las subordinadas de sujeto con verbos de influencia</strong>.
+            </p>
+            <a href="#" class="btn-volver">Volver al inicio</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

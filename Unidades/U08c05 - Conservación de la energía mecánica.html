@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 5: Principio de Conservación de la Energía Mecánica</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.05.- </span>
+                    <span class="texto">Demostración 5: Principio de Conservación de la Energía Mecánica</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de las definiciones de energía cinética \( E_c = \frac{1}{2}mv^{2} \) y energía potencial gravitatoria \( E_p = mgh \), y considerando un sistema donde solo actúan fuerzas conservativas (sin rozamiento ni resistencias), demostrar que la energía mecánica total permanece constante:</p>
+            <div class="formula-box">
+                \[ E_m = E_c + E_p = \text{constante} \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c05 - Conservación de la energía mecánica.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Establecer uno de los principios fundamentales de la física: en ausencia de fuerzas disipativas, la suma de energía cinética y potencial de un sistema se conserva. Demostrar que la pérdida de una forma de energía se compensa exactamente con la ganancia de la otra, permitiendo resolver problemas de movimiento sin necesidad de analizar detalles cinemáticos intermedios.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Planteamiento del sistema y condiciones</strong>
+                <p>Consideramos un cuerpo de masa \( m \) que se mueve bajo la acción exclusiva de su peso (fuerza conservativa) en ausencia de rozamiento con el aire o superficies. El cuerpo pasa de una posición A (altura \( h_A \), velocidad \( v_A \)) a una posición B (altura \( h_B \), velocidad \( v_B \)).</p>
+                <div class="formula-box">
+                    \[ \text{Condición: } F_{\text{rozamiento}} = 0, \quad F_{\text{externas no conservativas}} = 0 \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Aplicación del teorema de la energía cinética</strong>
+                <p>El trabajo realizado por la fuerza neta (en este caso, el peso) entre A y B es igual a la variación de energía cinética:</p>
+                <div class="formula-box">
+                    \[ W_{g, A \to B} = \Delta E_c = E_{c,B} - E_{c,A} = \frac{1}{2} m v_B^{2} - \frac{1}{2} m v_A^{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Trabajo del peso como fuerza conservativa</strong>
+                <p>Como el peso es conservativo, su trabajo solo depende de las alturas inicial y final, no de la trayectoria:</p>
+                <div class="formula-box">
+                    \[ W_{g, A \to B} = -\Delta E_p = -(E_{p,B} - E_{p,A}) = mgh_A - mgh_B \]
+                </div>
+                <p>El signo negativo indica que cuando el cuerpo desciende (pierde altura), el peso realiza trabajo positivo y la energía potencial disminuye.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Igualación de las dos expresiones del trabajo</strong>
+                <p>Como ambas expresiones representan el mismo trabajo del peso, las igualamos:</p>
+                <div class="formula-box">
+                    \[ E_{c,B} - E_{c,A} = E_{p,A} - E_{p,B} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Reordenación de términos</strong>
+                <p>Llevamos todos los términos de la posición A a un lado y los de B al otro:</p>
+                <div class="formula-box">
+                    \[ E_{c,B} + E_{p,B} = E_{c,A} + E_{p,A} \]
+                </div>
+                <p>Esto significa que la suma de energía cinética y potencial en B es igual a la suma en A.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Definición de energía mecánica y generalización</strong>
+                <p>Definimos la energía mecánica total como:</p>
+                <div class="formula-box">
+                    \[ E_m = E_c + E_p \]
+                </div>
+                <p>Como A y B son puntos arbitrarios de la trayectoria, concluimos que para cualquier punto:</p>
+                <div class="formula-box">
+                    \[ E_m = E_c + E_p = \text{constante} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Expresión explícita y casos particulares</strong>
+                <p>La conservación de la energía mecánica se expresa como:</p>
+                <div class="formula-box">
+                    \[ \frac{1}{2} m v^{2} + mgh = \text{cte} \]
+                </div>
+                <p>Casos ilustrativos:</p>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li><strong>Caída libre desde el reposo:</strong> En la altura máxima \( E_c = 0 \), \( E_p = mgh_{\text{max}} \); en el suelo \( E_p = 0 \), \( E_c = \frac{1}{2}mv^{2}_{\text{max}} \). Por tanto: \( v_{\text{max}} = \sqrt{2gh_{\text{max}}} \)</li>
+                    <li><strong>Lanzamiento vertical:</strong> La velocidad en cualquier altura se obtiene sin necesidad de conocer el tiempo de vuelo.</li>
+                    <li><strong>Péndulo simple:</strong> En los extremos \( E_c = 0 \), \( E_p \) máxima; en el punto más bajo \( E_p \) mínima, \( E_c \) máxima.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ E_m = E_c + E_p = \frac{1}{2} m v^{2} + mgh = \text{constante} \]
+            </div>
+            <p>En ausencia de fuerzas disipativas (rozamiento, resistencia del aire), la energía mecánica total de un sistema se conserva. La energía cinética y potencial se transforman mutuamente, pero su suma permanece invariante. Este principio permite resolver problemas de manera elegante sin analizar detalles temporales del movimiento.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Este es uno de los principios más poderosos de la física de 1º de Bachillerato. Es fundamental que los estudiantes comprendan las condiciones de aplicación: <strong>solo fuerzas conservativas y ausencia de rozamiento</strong>. Un error frecuente es aplicar la conservación de la energía mecánica en situaciones donde existe rozamiento, sin contabilizar el trabajo de las fuerzas no conservativas. Se recomienda contrastar problemas con y sin rozamiento para que los estudiantes internalicen la diferencia. El péndulo simple es un excelente ejemplo experimental para verificar este principio en el laboratorio.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO el Principio de Conservación de la Energía Mecánica</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Caída libre -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Caída libre desde una altura</span>
+                </div>
+                <p><strong>Enunciado:</strong> Se deja caer un objeto de 1,2 kg desde una altura de 25 m. Despreciando el rozamiento, calcula:</p>
+                <ul>
+                    <li>a) Su velocidad al llegar al suelo.</li>
+                    <li>b) Su velocidad cuando se encuentra a 8,0 m del suelo.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) Conservación: \( m g h = \frac{1}{2} m v^2 \Rightarrow v = \sqrt{2 g h} = \sqrt{2 \cdot 9,8 \cdot 25} = \sqrt{490} \approx 22,1 \, \text{m/s} \).</p>
+                    <p>b) A 8,0 m del suelo, la altura recorrida es \( 25 - 8 = 17 \, \text{m} \). Por conservación: \( v = \sqrt{2 g \cdot 17} = \sqrt{333,2} \approx 18,3 \, \text{m/s} \).</p>
+                    <p>También se puede plantear: \( E_{p,\text{inicial}} = E_{p,\text{final}} + E_{c,\text{final}} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Lanzamiento vertical -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Lanzamiento vertical hacia arriba</span>
+                </div>
+                <p><strong>Enunciado:</strong> Se lanza verticalmente hacia arriba un cuerpo de 0,50 kg con una velocidad inicial de 18 m/s. Calcula:</p>
+                <ul>
+                    <li>a) La altura máxima que alcanza.</li>
+                    <li>b) La velocidad cuando se encuentra a 10 m de altura.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) En la altura máxima, \( v = 0 \), toda la energía cinética se convierte en potencial: \( \frac{1}{2} m v_0^2 = m g h_{\max} \Rightarrow h_{\max} = \frac{v_0^2}{2g} = \frac{18^2}{2 \cdot 9,8} = \frac{324}{19,6} \approx 16,5 \, \text{m} \).</p>
+                    <p>b) A 10 m de altura: \( \frac{1}{2} m v_0^2 = m g h + \frac{1}{2} m v^2 \Rightarrow v^2 = v_0^2 - 2 g h = 18^2 - 2 \cdot 9,8 \cdot 10 = 324 - 196 = 128 \Rightarrow v \approx 11,3 \, \text{m/s} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Péndulo simple -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Péndulo simple</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un péndulo de 1,5 m de longitud se separa 25° de la vertical y se suelta. Calcula la velocidad en el punto más bajo. (Desprecia el rozamiento).</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La pérdida de altura desde la posición inicial hasta el punto más bajo es: \( \Delta h = L (1 - \cos 25^\circ) = 1,5 \cdot (1 - 0,9063) = 1,5 \cdot 0,0937 \approx 0,1406 \, \text{m} \).</p>
+                    <p>Por conservación: \( v = \sqrt{2 g \Delta h} = \sqrt{2 \cdot 9,8 \cdot 0,1406} = \sqrt{2,756} \approx 1,66 \, \text{m/s} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Plano inclinado sin rozamiento -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Plano inclinado liso</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un bloque de 3,0 kg se desliza desde el reposo por un plano inclinado de 30° y 4,0 m de longitud (sin rozamiento). Calcula la velocidad al final del plano.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La altura vertical que desciende es \( h = L \sin 30^\circ = 4,0 \cdot 0,5 = 2,0 \, \text{m} \).</p>
+                    <p>Por conservación: \( v = \sqrt{2 g h} = \sqrt{2 \cdot 9,8 \cdot 2,0} = \sqrt{39,2} \approx 6,26 \, \text{m/s} \).</p>
+                    <p>La masa no influye, y la velocidad es la misma que si cayera en vertical desde 2,0 m de altura.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Montaña rusa (dos alturas) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Montaña rusa con dos cimas</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un coche de 200 kg (incluidos ocupantes) en una montaña rusa parte del reposo desde una altura de 30 m. Llega a una segunda cima de 12 m de altura. Despreciando rozamientos, calcula la velocidad en la segunda cima.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Conservación entre el punto inicial (A) y la segunda cima (B):</p>
+                    <p>\( E_{p,A} = E_{p,B} + E_{c,B} \) (ya que parte del reposo).</p>
+                    <p>\( m g h_A = m g h_B + \frac{1}{2} m v_B^2 \)</p>
+                    <p>Cancelamos \( m \): \( g h_A = g h_B + \frac{1}{2} v_B^2 \)</p>
+                    <p>\( v_B^2 = 2 g (h_A - h_B) = 2 \cdot 9,8 \cdot (30 - 12) = 2 \cdot 9,8 \cdot 18 = 352,8 \)</p>
+                    <p>\( v_B = \sqrt{352,8} \approx 18,8 \, \text{m/s} \).</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> El principio de conservación de la energía mecánica es una herramienta excepcionalmente poderosa porque <em>elimina la necesidad de conocer la aceleración o el tiempo</em>. Basta con conocer la posición (altura) y la velocidad en un punto para determinar la velocidad en otro. Es crucial que los estudiantes distingan claramente cuándo se puede aplicar (solo fuerzas conservativas) y cuándo no (con rozamiento, donde hay que incluir el trabajo de las fuerzas no conservativas). Un ejercicio muy útil es comparar el mismo problema con y sin rozamiento para apreciar la diferencia.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

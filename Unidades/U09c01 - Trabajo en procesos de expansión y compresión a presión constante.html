@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.01 - Demostración: Trabajo a presión constante</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.01.- </span>
+                    <span class="texto">Demostración: Trabajo a presión constante</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo de la definición de trabajo mecánico como producto de fuerza por desplazamiento, y de la definición de presión como fuerza por unidad de superficie, demostrar que el trabajo realizado por un gas en un proceso isobárico viene dado por:</p>
+            <div class="formula-box">
+                \[ W = -p \Delta V \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c01 - Trabajo en procesos de expansión y compresión a presión constante.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Obtener una expresión que permita calcular el trabajo de expansión o compresión de un gas cuando la presión exterior permanece constante durante todo el proceso. Esta fórmula es fundamental porque conecta las variables termodinámicas (presión y volumen) con el concepto mecánico de trabajo, y permite calcular la energía intercambiada en procesos como la combustión en un motor o la expansión de un gas en un cilindro.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definición de trabajo mecánico:</strong> El trabajo realizado por una fuerza constante \(\vec{F}\) que produce un desplazamiento \(\Delta x\) en su misma dirección se define como:
+                <div class="formula-box">
+                    \[ W = F \Delta x \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Relación entre presión y fuerza:</strong> La presión \(p\) ejercida por el gas sobre el émbolo de área \(S\) se define como la fuerza por unidad de superficie:
+                <div class="formula-box">
+                    \[ p = \frac{F}{S} \quad \Rightarrow \quad F = pS \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Variación de volumen:</strong> Cuando el émbolo se desplaza una distancia \(\Delta x\), el volumen del cilindro varía en:
+                <div class="formula-box">
+                    \[ \Delta V = S \Delta x \quad \Rightarrow \quad \Delta x = \frac{\Delta V}{S} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Sustitución:</strong> Sustituimos las expresiones de la fuerza y el desplazamiento en la definición de trabajo:
+                <div class="formula-box">
+                    \[ W = F \Delta x = (pS) \left( \frac{\Delta V}{S} \right) = p \Delta V \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Convención de signos termodinámica:</strong> En termodinámica se adopta la convención de que el trabajo realizado <em>por el sistema</em> (expansión, \(\Delta V > 0\)) es negativo, porque representa una pérdida de energía para el sistema. Por tanto:
+                <div class="formula-box">
+                    \[ W = -p \Delta V \]
+                </div>
+                Si el sistema se comprime (\(\Delta V < 0\)), el trabajo es positivo porque el entorno aporta energía al sistema.
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ W = -p \Delta V = -p (V_f - V_i) \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es importante enfatizar que el signo negativo proviene de la convención termodinámica (trabajo del sistema = negativo), no de la física mecánica. Muchos estudiantes confunden el trabajo realizado <em>por</em> el gas con el trabajo realizado <em>sobre</em> el gas. Se recomienda usar siempre la misma convención a lo largo de toda la unidad: \(W\) positivo cuando el entorno realiza trabajo sobre el sistema (compresión).
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO el trabajo a presión constante</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Expansión isobárica básica</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas contenido en un cilindro provisto de un émbolo se expande a presión constante de \(2.5\,\text{atm}\). El volumen inicial es de \(4.0\,\text{L}\) y el final de \(9.5\,\text{L}\). Calcula el trabajo realizado por el gas (en julios).</p>
+                        <p>Dato: \(1\,\text{atm·L} = 101.3\,\text{J}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Calcular la variación de volumen: \(\Delta V = V_f - V_i = 9.5 - 4.0 = 5.5\,\text{L}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Aplicar \(W = -p \Delta V = -2.5 \cdot 5.5 = -13.75\,\text{atm·L}\).</p>
+                        <p><span class="step-label">Paso 3:</span> Convertir a julios: \(-13.75 \times 101.3 \approx -1393\,\text{J}\).</p>
+                        <p><span class="step-label">Resultado:</span> El gas realiza un trabajo de aproximadamente \(1.39\,\text{kJ}\) (signo negativo en la convención termodinámica).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Compresión isobárica</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Se comprime un gas desde \(12.0\,\text{L}\) hasta \(4.0\,\text{L}\) manteniendo la presión exterior constante de \(150\,\text{kPa}\).</p>
+                        <ul>
+                            <li>a) Calcula el trabajo realizado <em>sobre</em> el gas (en kJ).</li>
+                            <li>b) Indica si el gas cede o absorbe energía en forma de trabajo.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(\Delta V = V_f - V_i = 4.0 - 12.0 = -8.0\,\text{L} = -8.0 \times 10^{-3}\,\text{m}^3\) (ya que \(1\,\text{L} = 10^{-3}\,\text{m}^3\)).</p>
+                        <p>\(W = -p \Delta V = -150\,000 \cdot (-8.0 \times 10^{-3}) = +1200\,\text{J} = 1.20\,\text{kJ}\).</p>
+                        <p><span class="step-label">b)</span> El signo positivo indica que el trabajo se realiza <em>sobre</em> el sistema (el entorno aporta energía), por lo tanto el gas recibe energía en forma de trabajo.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Cálculo del volumen final a partir del trabajo</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas se expande isobáricamente a \(2.0\,\text{atm}\) realizando un trabajo de \(-850\,\text{J}\) (según la convención termodinámica). El volumen inicial es de \(3.0\,\text{L}\). Determina el volumen final.</p>
+                        <p>Dato: \(1\,\text{atm·L} = 101.3\,\text{J}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Convertir el trabajo a \(\text{atm·L}\): \(-850\,\text{J} \times \frac{1\,\text{atm·L}}{101.3\,\text{J}} \approx -8.39\,\text{atm·L}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Despejar \(\Delta V\) de \(W = -p \Delta V\):</p>
+                        <p>\(\Delta V = -W / p = -(-8.39) / 2.0 = 4.195\,\text{L}\).</p>
+                        <p><span class="step-label">Paso 3:</span> \(V_f = V_i + \Delta V = 3.0 + 4.195 = 7.195\,\text{L}\).</p>
+                        <p><span class="step-label">Resultado:</span> El volumen final es aproximadamente \(7.2\,\text{L}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Trabajo en un diagrama p-V</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas experimenta una transformación isobárica a \(3.0\,\text{atm}\) desde \(V_i = 2.0\,\text{L}\) hasta \(V_f = 8.0\,\text{L}\). Representa el proceso en un diagrama \(p\)-\(V\) y calcula el área bajo la curva. ¿Qué relación tiene esa área con el trabajo?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Representación:</span> En un diagrama \(p\)-\(V\), una isóbara es una línea horizontal. El área bajo la curva (rectángulo) es \(p \cdot \Delta V\).</p>
+                        <p>\(\Delta V = 8.0 - 2.0 = 6.0\,\text{L}\).</p>
+                        <p>Área = \(3.0 \times 6.0 = 18.0\,\text{atm·L}\).</p>
+                        <p>Convertimos: \(18.0 \times 101.3 = 1823.4\,\text{J}\).</p>
+                        <p><span class="step-label">Relación:</span> El área bajo la curva en un proceso isobárico es igual al valor absoluto del trabajo. Con la convención termodinámica, \(W = -\text{área} = -1823.4\,\text{J}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Contexto real: motor de automóvil</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>En el cilindro de un motor, la combustión empuja el pistón. Durante la carrera de expansión, la presión se mantiene aproximadamente constante a \(8.0\,\text{atm}\) y el volumen aumenta de \(0.50\,\text{L}\) a \(2.50\,\text{L}\).</p>
+                        <ul>
+                            <li>a) Calcula el trabajo realizado por los gases (en kJ).</li>
+                            <li>b) Si el motor realiza 4 ciclos por segundo, ¿qué potencia (en kW) desarrolla únicamente en esta fase?</li>
+                        </ul>
+                        <p>Dato: \(1\,\text{atm·L} = 101.3\,\text{J}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(\Delta V = 2.50 - 0.50 = 2.00\,\text{L}\).</p>
+                        <p>\(W = -p \Delta V = -8.0 \cdot 2.00 = -16.0\,\text{atm·L}\).</p>
+                        <p>Convertimos: \(-16.0 \times 101.3 = -1620.8\,\text{J} \approx -1.62\,\text{kJ}\) (trabajo realizado por el gas).</p>
+                        <p><span class="step-label">b)</span> Cada ciclo el gas realiza \(1.62\,\text{kJ}\) de trabajo. En un segundo (4 ciclos): \(W_{\text{total}} = 4 \times 1.62 = 6.48\,\text{kJ}\).</p>
+                        <p>Potencia = \(W_{\text{total}} / t = 6.48\,\text{kJ} / 1\,\text{s} = 6.48\,\text{kW}\).</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> El trabajo a presión constante es el área de un rectángulo en el diagrama \(p\)-\(V\). El signo negativo solo indica la dirección de la transferencia de energía: si el volumen aumenta, el sistema pierde energía (expansión); si disminuye, el sistema gana energía (compresión). ¡No olvides convertir siempre las unidades!
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

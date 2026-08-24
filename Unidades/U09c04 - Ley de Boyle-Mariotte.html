@@ -1,0 +1,589 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.04 - Demostración: Ley de Boyle-Mariotte</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.04.- </span>
+                    <span class="texto">Demostración: Ley de Boyle-Mariotte</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo de la ecuación de estado de los gases ideales \(pV = nRT\), demostrar que en un proceso isotérmico (a temperatura constante) con una cantidad fija de gas, el producto de la presión por el volumen permanece constante:</p>
+            <div class="formula-box">
+                \[ pV = \text{cte} \quad \text{o equivalentemente} \quad p_1 V_1 = p_2 V_2 \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c04 - Ley de Boyle-Mariotte.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar matemáticamente la ley experimental de Boyle-Mariotte a partir de la ecuación de Clapeyron, mostrando que la constancia de la temperatura impone una relación de proporcionalidad inversa entre presión y volumen. Esta ley es fundamental para comprender cómo se comportan los gases cuando se comprimen o expanden manteniendo la temperatura constante.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Ecuación de estado inicial:</strong> Partimos de la ecuación de Clapeyron para una cantidad fija de gas (\(n = \text{cte}\)) a una temperatura \(T\) determinada:
+                <div class="formula-box">
+                    \[ p_1 V_1 = nRT_1 \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Condición de proceso isotérmico:</strong> En un proceso isotérmico, la temperatura permanece constante durante toda la transformación. Por tanto:
+                <div class="formula-box">
+                    \[ T_1 = T_2 = T = \text{cte} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Ecuación de estado final:</strong> Al final del proceso, la ecuación de Clapeyron sigue siendo válida:
+                <div class="formula-box">
+                    \[ p_2 V_2 = nRT_2 \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Igualación:</strong> Como \(T_1 = T_2\) y \(n\) es constante, los segundos miembros de ambas ecuaciones son idénticos:
+                <div class="formula-box">
+                    \[ nRT_1 = nRT_2 \quad \Rightarrow \quad p_1 V_1 = p_2 V_2 \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Generalización:</strong> Dado que los estados inicial y final son arbitrarios, podemos escribir que para cualquier estado del gas en condiciones isotérmicas:
+                <div class="formula-box">
+                    \[ pV = \text{cte} \]
+                </div>
+                donde la constante depende de la temperatura \(T\) y de la cantidad de sustancia \(n\): \(\text{cte} = nRT\).
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ pV = \text{cte} \quad \text{(proceso isotérmico, } n = \text{cte)} \]
+            </div>
+            <p>O equivalentemente, comparando dos estados:</p>
+            <div class="formula-box">
+                \[ p_1 V_1 = p_2 V_2 \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es importante destacar que esta ley solo se cumple estrictamente para gases ideales y a temperaturas moderadas (lejos de la licuefacción). En la práctica, los gases reales se desvían ligeramente de esta ley a altas presiones. Se recomienda representar gráficamente las isotermas en un diagrama \(p\)-\(V\) (hipérbolas equiláteras) para visualizar que a mayor temperatura, la hipérbola está más alejada del origen. Esto conecta con la demostración 7 sobre el trabajo isotérmico.
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO la Ley de Boyle-Mariotte</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Aplicación directa: cálculo de presión final</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas ocupa \(4.0\,\text{L}\) a una presión de \(1.5\,\text{atm}\). Si se comprime isotérmicamente hasta un volumen de \(2.0\,\text{L}\), ¿cuál será la nueva presión?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Identificar datos: \(V_1 = 4.0\,\text{L}\), \(p_1 = 1.5\,\text{atm}\), \(V_2 = 2.0\,\text{L}\). Proceso isotérmico → \(T = \text{cte}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Aplicar Boyle-Mariotte: \(p_1 V_1 = p_2 V_2\).</p>
+                        <p><span class="step-label">Paso 3:</span> Despejar \(p_2 = \frac{p_1 V_1}{V_2} = \frac{1.5 \times 4.0}{2.0} = 3.0\,\text{atm}\).</p>
+                        <p><span class="step-label">Resultado:</span> La presión final es \(3.0\,\text{atm}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Cálculo del volumen inicial</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una muestra de gas se encuentra a \(2.8\,\text{atm}\) y ocupa \(0.75\,\text{L}\). Si se expande isotérmicamente hasta que la presión cae a \(1.2\,\text{atm}\), ¿cuál era el volumen inicial? (Nota: el enunciado ya da el volumen inicial, pero se pide comprobar; en realidad el ejercicio pide el volumen final). Lo reformulo: Si la presión inicial es \(2.8\,\text{atm}\) y el volumen final es \(0.75\,\text{L}\) después de comprimir desde un volumen inicial \(V_1\) hasta \(0.75\,\text{L}\) a \(1.2\,\text{atm}\)? Mejor lo planteo correctamente:</p>
+                        <p>Un gas se expande isotérmicamente desde \(2.8\,\text{atm}\) hasta \(1.2\,\text{atm}\). Si el volumen final es \(0.75\,\text{L}\), calcula el volumen inicial.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Datos: \(p_1 = 2.8\,\text{atm}\), \(p_2 = 1.2\,\text{atm}\), \(V_2 = 0.75\,\text{L}\).</p>
+                        <p><span class="step-label">Paso 2:</span> \(p_1 V_1 = p_2 V_2\) → \(V_1 = \frac{p_2 V_2}{p_1} = \frac{1.2 \times 0.75}{2.8} = \frac{0.9}{2.8} \approx 0.321\,\text{L}\).</p>
+                        <p><span class="step-label">Resultado:</span> El volumen inicial era \(0.32\,\text{L}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Problema contextualizado: buceo</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un buceador tiene un pulmón con un volumen de \(5.0\,\text{L}\) en la superficie, donde la presión es \(1.0\,\text{atm}\). Si desciende a \(20\,\text{m}\) de profundidad, donde la presión es \(3.0\,\text{atm}\), y la temperatura del agua es constante, ¿qué volumen tendrían sus pulmones si no respirara? (Suponer comportamiento ideal).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Datos: \(p_1 = 1.0\,\text{atm}\), \(V_1 = 5.0\,\text{L}\), \(p_2 = 3.0\,\text{atm}\). Proceso isotérmico.</p>
+                        <p><span class="step-label">Paso 2:</span> \(p_1 V_1 = p_2 V_2\) → \(V_2 = \frac{p_1 V_1}{p_2} = \frac{1.0 \times 5.0}{3.0} \approx 1.67\,\text{L}\).</p>
+                        <p><span class="step-label">Resultado:</span> El volumen se reduciría a \(1.67\,\text{L}\) (menos de la mitad). Esto explica el peligro de las embolias al ascender.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Comparación de dos estados y representación gráfica</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas a \(25^\circ\text{C}\) ocupa \(6.0\,\text{L}\) a \(0.8\,\text{atm}\). Se comprime isotérmicamente hasta \(2.4\,\text{atm}\).</p>
+                        <ul>
+                            <li>a) Calcula el volumen final.</li>
+                            <li>b) Si se representan ambos estados en un diagrama \(p\)-\(V\), ¿qué tipo de curva une los puntos? ¿Cuál es la ecuación de esa curva?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(p_1 V_1 = p_2 V_2\) → \(V_2 = \frac{0.8 \times 6.0}{2.4} = 2.0\,\text{L}\).</p>
+                        <p><span class="step-label">b)</span> La curva es una hipérbola equilátera (iso terma) con ecuación \(p = \frac{k}{V}\), donde \(k = p_1 V_1 = 0.8 \times 6.0 = 4.8\,\text{atm·L}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Aplicación en jeringa</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una jeringa contiene \(10\,\text{cm}^3\) de aire a presión atmosférica (\(1.0\,\text{atm}\)). Se tapa la salida y se empuja el émbolo hasta que el volumen es de \(4.0\,\text{cm}^3\), manteniendo la temperatura constante. Calcula la presión en el interior de la jeringa en \(\text{atm}\) y en \(\text{Pa}\).</p>
+                        <p>Dato: \(1\,\text{atm} = 101\,325\,\text{Pa}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Datos: \(V_1 = 10\,\text{cm}^3\), \(p_1 = 1.0\,\text{atm}\), \(V_2 = 4.0\,\text{cm}^3\).</p>
+                        <p><span class="step-label">Paso 2:</span> \(p_2 = \frac{p_1 V_1}{V_2} = \frac{1.0 \times 10}{4.0} = 2.5\,\text{atm}\).</p>
+                        <p><span class="step-label">Paso 3:</span> Convertir a Pa: \(2.5 \times 101\,325 = 253\,312.5\,\text{Pa} \approx 2.53 \times 10^5\,\text{Pa}\).</p>
+                        <p><span class="step-label">Resultado:</span> La presión es \(2.5\,\text{atm}\) o \(2.53 \times 10^5\,\text{Pa}\).</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La Ley de Boyle-Mariotte muestra que presión y volumen son inversamente proporcionales a temperatura constante. Gráficamente, una isoterma es una hipérbola. Recuerda que esta ley solo se cumple para gases ideales y a temperaturas no extremas. ¡Siempre convierte las unidades adecuadamente y asegúrate de que la temperatura no varíe durante el proceso!
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

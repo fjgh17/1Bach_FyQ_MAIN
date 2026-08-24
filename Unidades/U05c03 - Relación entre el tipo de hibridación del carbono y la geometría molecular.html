@@ -1,0 +1,664 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.04 - Demostración: Hibridación del carbono y geometría molecular</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .geometry-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .geometry-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 14px 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .geometry-table td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .geometry-table tr:last-child td { border-bottom: none; }
+        .geometry-table tr:nth-child(even) { background: #f7fafc; }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 20px 30px 30px 30px;
+            background: #fefefe;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+        }
+        details summary {
+            padding: 16px 24px;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1e293b;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #f1f5f9;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 0 24px 24px 24px;
+        }
+        .ejercicio-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #edf2f7;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #2d3748;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ejercicio-card .card-header .badge {
+            background: #4a5568;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8em;
+        }
+        .ejercicio-card .card-body {
+            padding: 18px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .ejercicio-card .card-body .resolucion {
+            background: #f0fff4;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .ejercicio-card .card-body .resolucion .paso {
+            margin: 8px 0;
+        }
+        .pie-didactico {
+            background: #fef9e7;
+            border-left: 6px solid #f59e0b;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: #78350f;
+        }
+        .pie-didactico strong {
+            color: #92400e;
+        }
+
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            details { margin: 10px; }
+            .details-content { padding: 0 16px 16px 16px; }
+            .geometry-table { font-size: 0.85em; }
+            .geometry-table th, .geometry-table td { padding: 10px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.03.- </span>
+                <span class="texto">Demostración: Hibridación del carbono y geometría molecular</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la configuración electrónica del carbono (\( 1s^2\,2s^2\,2p^2 \)) y del concepto de hibridación de orbitales atómicos, demostrar que el tipo de hibridación del carbono determina la geometría molecular y los ángulos de enlace en los compuestos orgánicos, estableciendo la siguiente correspondencia:</p>
+        <div class="formula-box">
+            \( sp^3 \rightarrow \text{tetraédrica} \rightarrow 109{,}5^\circ \)
+            <br>
+            \( sp^2 \rightarrow \text{trigonal plana} \rightarrow 120^\circ \)
+            <br>
+            \( sp \rightarrow \text{lineal} \rightarrow 180^\circ \)
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c03 - Relación entre el tipo de hibridación del carbono y la geometría molecular.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Justificar geométricamente por qué las cadenas de alcanos presentan forma de zigzag, por qué los alquenos son planos, y por qué los alquinos son lineales. Esta comprensión es esencial para:</p>
+        <ul>
+            <li>Predecir la forma tridimensional de cualquier molécula orgánica.</li>
+            <li>Comprender la imposibilidad de rotación alrededor de un doble enlace (base de la isomería cis-trans).</li>
+            <li>Entender la formación de los orbitales \( \sigma \) y \( \pi \) en los enlaces múltiples.</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Configuración base del carbono.</strong> El carbono tiene 4 electrones de valencia (\( 2s^2\,2p^2 \)). Para formar 4 enlaces, promueve un electrón del orbital \( 2s \) al orbital \( 2p \) vacío, obteniendo \( 2s^1\,2p^3 \). Los orbitales híbridos se forman por combinación lineal de orbitales atómicos.
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Hibridación \( sp^3 \) (4 orbitales híbridos):</strong>
+            <ul>
+                <li>Se combinan 1 orbital \( s \) y 3 orbitales \( p \).</li>
+                <li>Se generan 4 orbitales híbridos equivalentes dirigidos hacia los vértices de un tetraedro regular.</li>
+                <li>La repulsión electrónica mínima se alcanza con ángulos de \( 109{,}5^\circ \).</li>
+                <li><strong>Ejemplo:</strong> Metano (\( CH_4 \)), etano (\( C_2H_6 \)). Todos los alcanos saturados.</li>
+            </ul>
+            <div class="formula-box">
+                \( \text{Ángulo } sp^3 = \arccos\left(-\frac{1}{3}\right) \approx 109{,}47^\circ \approx 109{,}5^\circ \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Hibridación \( sp^2 \) (3 orbitales híbridos + 1 orbital \( p \) puro):</strong>
+            <ul>
+                <li>Se combinan 1 orbital \( s \) y 2 orbitales \( p \).</li>
+                <li>Se generan 3 orbitales híbridos coplanarios dirigidos a los vértices de un triángulo equilátero.</li>
+                <li>El orbital \( p \) restante, no hibridado, forma el enlace \( \pi \) por solapamiento lateral.</li>
+                <li>La repulsión mínima en el plano da ángulos de \( 120^\circ \).</li>
+                <li><strong>Ejemplo:</strong> Eteno (\( C_2H_4 \)), benceno (\( C_6H_6 \)).</li>
+            </ul>
+            <div class="formula-box">
+                \( \text{Ángulo } sp^2 = 120^\circ \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Hibridación \( sp \) (2 orbitales híbridos + 2 orbitales \( p \) puros):</strong>
+            <ul>
+                <li>Se combinan 1 orbital \( s \) y 1 orbital \( p \).</li>
+                <li>Se generan 2 orbitales híbridos linealmente opuestos.</li>
+                <li>Los 2 orbitales \( p \) restantes forman dos enlaces \( \pi \) perpendiculares entre sí (enlaces \( \pi \) ortogonales).</li>
+                <li>La geometría es lineal con ángulo de \( 180^\circ \).</li>
+                <li><strong>Ejemplo:</strong> Etino (\( C_2H_2 \)), cianuro de hidrógeno (HCN).</li>
+            </ul>
+            <div class="formula-box">
+                \( \text{Ángulo } sp = 180^\circ \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Tabla resumen de correspondencias:</strong>
+            <table class="geometry-table">
+                <tr>
+                    <th>Hibridación</th>
+                    <th>Nº orbitales \( sp \)</th>
+                    <th>Geometría</th>
+                    <th>Ángulo de enlace</th>
+                    <th>Ejemplo típico</th>
+                </tr>
+                <tr>
+                    <td>\( sp^3 \)</td>
+                    <td>4</td>
+                    <td>Tetraédrica</td>
+                    <td>\( 109{,}5^\circ \)</td>
+                    <td>Metano</td>
+                </tr>
+                <tr>
+                    <td>\( sp^2 \)</td>
+                    <td>3</td>
+                    <td>Trigonal plana</td>
+                    <td>\( 120^\circ \)</td>
+                    <td>Eteno</td>
+                </tr>
+                <tr>
+                    <td>\( sp \)</td>
+                    <td>2</td>
+                    <td>Lineal</td>
+                    <td>\( 180^\circ \)</td>
+                    <td>Etino</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Es crucial que los estudiantes comprendan que la hibridación no es un proceso real que ocurre en la molécula, sino un <em>modelo teórico</em> que permite explicar la geometría observada experimentalmente. La imposibilidad de rotación libre en los alquenos (por la ruptura del enlace \( \pi \)) y la forma zigzag de los alcanos (por los ángulos tetraédricos) son consecuencias directas de este modelo. Se recomienda utilizar modelos moleculares de bolas y varillas para reforzar la comprensión espacial.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Resumen de la demostración</strong>
+            <p style="text-align: left; font-size: 0.95em; margin: 10px 0 0 0;">
+                <strong>\( sp^3 \):</strong> 4 enlaces \( \sigma \) &nbsp;&rarr;&nbsp; Tetraédrica &nbsp;&rarr;&nbsp; \( \boxed{109{,}5^\circ} \)<br><br>
+                <strong>\( sp^2 \):</strong> 3 enlaces \( \sigma \) + 1 enlace \( \pi \) &nbsp;&rarr;&nbsp; Trigonal plana &nbsp;&rarr;&nbsp; \( \boxed{120^\circ} \)<br><br>
+                <strong>\( sp \):</strong> 2 enlaces \( \sigma \) + 2 enlaces \( \pi \) &nbsp;&rarr;&nbsp; Lineal &nbsp;&rarr;&nbsp; \( \boxed{180^\circ} \)
+            </p>
+        </div>
+        <p>La demostración realizada mediante el análisis de la combinación de orbitales atómicos y la teoría de repulsión de pares electrónicos (TRPECV) confirma la correspondencia entre el tipo de hibridación y la geometría molecular. Esta relación es fundamental para comprender la estructura tridimensional de los compuestos orgánicos y sus propiedades físicas y químicas.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> La hibridación del carbono es un modelo predictivo que permite establecer la geometría molecular, los ángulos de enlace y la disposición espacial de los átomos en las moléculas orgánicas, siendo la base para entender la isomería y la reactividad química.</p>
+        </div>
+    </div>
+
+    <!-- ==================================================
+         BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS
+         ================================================== -->
+    <details id="ejerciciosDesplegable">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO Demostración: Hibridación del carbono y geometría molecular</span>
+            <span style="margin-left: auto; font-size: 0.8em; color: #64748b; font-weight: 400;">
+                <i class="fas fa-hand-pointer"></i> Pulsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 1</span>
+                    Identificación de hibridación en una molécula sencilla
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Indica el tipo de hibridación de cada átomo de carbono en el <strong>propan-1-ol</strong> (\( CH_3-CH_2-CH_2OH \)) y determina los ángulos de enlace aproximados alrededor de cada carbono.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. El propan-1-ol tiene 3 carbonos: C1 (\( CH_3 \)), C2 (\( CH_2 \)) y C3 (\( CH_2OH \)).</div>
+                        <div class="paso">2. Todos los carbonos forman exclusivamente <strong>enlaces sencillos</strong> (C—C y C—H, C—O). No hay enlaces múltiples.</div>
+                        <div class="paso">3. Por tanto, los tres carbonos presentan <strong>hibridación \( sp^3 \).</strong></div>
+                        <div class="paso">4. La geometría alrededor de cada carbono es <strong>tetraédrica</strong>, con ángulos de enlace aproximados de <strong>\( 109{,}5^\circ \).</strong></div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Todos los carbonos son \( sp^3 \). Ángulos: \( 109{,}5^\circ \).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 2</span>
+                    Hibridación mixta en un compuesto insaturado
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Determina la hibridación de cada carbono en el <strong>but-1-en-3-ino</strong> (\( CH_2=CH-C\equiv CH \)) y predice su geometría global.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. Numeramos los carbonos: C1 (\( CH_2= \)), C2 (\( =CH- \)), C3 (\( -C\equiv \)), C4 (\( \equiv CH \)).</div>
+                        <div class="paso">2. C1 y C2 están unidos por un doble enlace → hibridación \( sp^2 \). Geometría <strong>trigonal plana</strong> (\( 120^\circ \)).</div>
+                        <div class="paso">3. C3 y C4 están unidos por un triple enlace → hibridación \( sp \). Geometría <strong>lineal</strong> (\( 180^\circ \)).</div>
+                        <div class="paso">4. La molécula presenta una zona plana (los dos \( sp^2 \)) y una zona lineal (los dos \( sp \)).</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ C1, C2: \( sp^2 \) (plana, \( 120^\circ \)). C3, C4: \( sp \) (lineal, \( 180^\circ \)).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 3</span>
+                    Imposibilidad de rotación (isomería cis-trans)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Explica, utilizando el concepto de hibridación, por qué el <strong>but-2-eno</strong> (\( CH_3-CH=CH-CH_3 \)) presenta isomería cis-trans, mientras que el <strong>butano</strong> no.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. En el but-2-eno, los carbonos del doble enlace son \( sp^2 \). El enlace \( \pi \) se forma por solapamiento lateral de orbitales \( p \) puros.</div>
+                        <div class="paso">2. Para rotar alrededor del enlace C=C, el enlace \( \pi \) debe romperse, lo que requiere mucha energía. Por tanto, la molécula es <strong>rígida y plana</strong>.</div>
+                        <div class="paso">3. Esto permite que los sustituyentes (los grupos \( CH_3 \)) se sitúen del mismo lado (<em>cis</em>) o en lados opuestos (<em>trans</em>), dando lugar a isómeros.</div>
+                        <div class="paso">4. En el butano, todos los carbonos son \( sp^3 \). Solo hay enlaces \( \sigma \) sencillos, que permiten la rotación libre, por lo que no hay isomería cis-trans.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ La rigidez del enlace \( C=C \) (por el enlace \( \pi \)) impide la rotación y da lugar a la isomería geométrica.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 4</span>
+                    Conteo de enlaces \( \sigma \) y \( \pi \)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> Calcula el número de enlaces \( \sigma \) y \( \pi \) presentes en las moléculas de <strong>etano</strong>, <strong>eteno</strong> y <strong>etino</strong>. Relaciona el resultado con el tipo de hibridación de cada carbono.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. <strong>Etano (\( C_2H_6 \)):</strong> solo enlaces sencillos. \( sp^3 \). Enlaces: 1 C—C + 6 C—H = 7 enlaces \( \sigma \), 0 enlaces \( \pi \).</div>
+                        <div class="paso">2. <strong>Eteno (\( C_2H_4 \)):</strong> doble enlace C=C. \( sp^2 \). Enlaces: 1 C—C (\( \sigma \)) + 1 C—C (\( \pi \)) + 4 C—H (\( \sigma \)) = 5 enlaces \( \sigma \), 1 enlace \( \pi \).</div>
+                        <div class="paso">3. <strong>Etino (\( C_2H_2 \)):</strong> triple enlace C≡C. \( sp \). Enlaces: 1 C—C (\( \sigma \)) + 2 C—C (\( \pi \)) + 2 C—H (\( \sigma \)) = 3 enlaces \( \sigma \), 2 enlaces \( \pi \).</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ Etano: 7σ, 0π. Eteno: 5σ, 1π. Etino: 3σ, 2π. Coincide con el aumento de orbitales \( p \) no hibridados.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 5</span>
+                    Forma de las cadenas (zigzag vs. plana)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <strong>Enunciado:</strong> El ácido oleico (un ácido graso insaturado) tiene un doble enlace en su cadena. Explica por qué su cadena presenta un "quiebro" (kink) en lugar de la forma de zigzag típica de los ácidos grasos saturados.
+                    </div>
+                    <div class="resolucion">
+                        <strong>Resolución paso a paso:</strong>
+                        <div class="paso">1. En los ácidos grasos saturados, todos los carbonos son \( sp^3 \), con ángulos de \( 109{,}5^\circ \), lo que produce una <strong>estructura en zigzag</strong> en el espacio.</div>
+                        <div class="paso">2. En el ácido oleico, los dos carbonos del doble enlace son \( sp^2 \), con un ángulo de \( 120^\circ \).</div>
+                        <div class="paso">3. La geometría \( sp^2 \) es plana y fuerza un cambio brusco en la dirección de la cadena, creando un <strong>quiebro</strong> (kink) de aproximadamente \( 60^\circ \) con respecto a la dirección del zigzag.</div>
+                        <div class="paso">4. Este quiebro impide que las moléculas se empaqueten tan estrechamente como en las saturadas, por lo que los aceites insaturados son líquidos a temperatura ambiente.</div>
+                        <div class="paso" style="margin-top: 8px; font-weight: 500; color: #2b6cb0;">
+                            ✔ El \( sp^2 \) (plano, \( 120^\circ \)) introduce un quiebro en la cadena, alterando el zigzag \( sp^3 \) habitual.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-didactico">
+                <strong>🧠 Observaciones claves:</strong> La hibridación no es una realidad física, sino un <em>modelo matemático</em> que nos permite predecir la geometría observada. Entender que \( sp^3 \) da tetraedros (zigzag), \( sp^2 \) da planitud (imposibilidad de rotación y quiebros) y \( sp \) da linealidad es fundamental para explicar propiedades macroscópicas como puntos de fusión, solubilidad o reactividad, así como la existencia de isómeros geométricos.
+            </div>
+
+        </div><!-- fin details-content -->
+    </details>
+
+</div><!-- fin container -->
+
+<script>
+    // Forzar la re-renderización de MathJax cuando se abre el desplegable
+    document.addEventListener('DOMContentLoaded', function() {
+        const details = document.getElementById('ejerciciosDesplegable');
+        if (details) {
+            details.addEventListener('toggle', function() {
+                if (this.open && window.MathJax && window.MathJax.typesetPromise) {
+                    MathJax.typesetPromise();
+                }
+            });
+        }
+    });
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

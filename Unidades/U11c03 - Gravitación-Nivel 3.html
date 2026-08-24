@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUBJ03. Subordinadas de Sujeto – Casos avanzados y análisis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #f0f4f8; font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1a3a5c, #2d6a9f); color: white; padding: 25px 35px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .header-left h1 { font-size: 1.8rem; margin: 0; }
+        .header-left p { margin: 5px 0 0; opacity: 0.85; }
+        .header-sub { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
+        .header-sub .codigo { font-weight: 700; font-size: 1.1rem; background: rgba(255,255,255,0.15); padding: 2px 12px; border-radius: 20px; }
+        .header-sub .texto { font-size: 1.1rem; }
+        .section { padding: 25px 35px; margin: 15px 20px; border-radius: 12px; border-left: 6px solid; }
+        .relativo { background: #f0f8ff; border-color: #4a90e2; }
+        .influencia { background: #fef9e7; border-color: #f1c40f; }
+        .percepcion { background: #e8f8f5; border-color: #1abc9c; }
+        .concordancia { background: #f5f0ff; border-color: #8b5cf6; }
+        .analisis { background: #fce4ec; border-color: #e53e3e; }
+        .resumen { background: #f8fafc; border-color: #64748b; }
+        .section h2 { font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: #1e293b; }
+        .section h2 i { color: #2d6a9f; }
+        .formula-box { background: #edf2f7; border: 2px solid #cbd5e0; border-radius: 10px; padding: 15px 20px; margin: 15px 0; font-size: 1.05rem; text-align: center; }
+        .ejemplo-box { background: white; border-left: 4px solid #2d6a9f; padding: 12px 18px; margin: 12px 0; border-radius: 0 8px 8px 0; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+        .ejemplo-box .num { font-weight: 700; color: #2d6a9f; margin-right: 8px; }
+        .ejemplo-box .analisis { display: block; font-size: 0.9rem; color: #475569; margin-top: 6px; padding-left: 20px; border-left: 2px dashed #94a3b8; }
+        .ejemplo-box .subj { color: #dc2626; font-weight: 600; }
+        .ejemplo-box .verbo { color: #16a34a; font-weight: 600; }
+        .ejemplo-box .rel { color: #7c3aed; font-weight: 600; }
+        .badge { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; }
+        .badge-ind { background: #dbeafe; color: #1e40af; }
+        .badge-subj { background: #fce4ec; color: #880e4f; }
+        .badge-rel { background: #ede9fe; color: #5b21b6; }
+        .badge-infl { background: #fef3c7; color: #92400e; }
+        .badge-perc { background: #d1fae5; color: #065f46; }
+        .note { background: #fffbeb; border: 1px solid #f6e05e; border-radius: 8px; padding: 12px 18px; margin: 15px 0; font-size: 0.95rem; color: #744210; }
+        .tabla-concordancia { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95rem; }
+        .tabla-concordancia th { background: #2d6a9f; color: white; padding: 10px 14px; text-align: left; }
+        .tabla-concordancia td { border: 1px solid #e2e8f0; padding: 10px 14px; }
+        .tabla-concordancia tr:nth-child(even) { background: #f8fafc; }
+        details { margin: 25px 20px 20px; background: #f8fafc; border-radius: 16px; border: 2px solid #dbeafe; padding: 0.5rem 0.5rem 0.5rem 1.5rem; transition: all 0.3s ease; }
+        details[open] { background: #ffffff; border-color: #3b82f6; box-shadow: 0 8px 20px rgba(59,130,246,0.12); }
+        summary { list-style: none; cursor: pointer; font-size: 1.4rem; font-weight: 600; color: #1e3a8a; padding: 0.8rem 0.5rem 0.8rem 0; display: flex; align-items: center; gap: 12px; user-select: none; }
+        summary::-webkit-details-marker { display: none; }
+        summary i { font-size: 1.8rem; color: #2563eb; transition: transform 0.3s ease; }
+        details[open] summary i { transform: rotate(180deg); }
+        summary .titulo-principal { flex: 1; }
+        summary .badge-pulsa { background: #dbeafe; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.9rem; color: #1e40af; display: inline-flex; align-items: center; gap: 6px; }
+        .contenido-desplegable { padding: 0.5rem 0.8rem 1.8rem 0.8rem; border-top: 1px solid #e2e8f0; margin-top: 0.5rem; }
+        .tarjeta-ejercicio { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 1.5rem 1.8rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .tarjeta-ejercicio .cabecera-ej { display: flex; align-items: baseline; gap: 10px; border-bottom: 2px dashed #bfdbfe; padding-bottom: 0.6rem; margin-bottom: 1rem; }
+        .cabecera-ej .num-ej { background: #2563eb; color: white; font-weight: 700; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.9rem; }
+        .cabecera-ej .titulo-ej { font-weight: 600; font-size: 1.2rem; color: #0b1e33; }
+        .enunciado-ej { margin-bottom: 1rem; background: #f9fafb; padding: 0.8rem 1.2rem; border-radius: 12px; border-left: 4px solid #94a3b8; }
+        .solucion-ej { background: #f1f5f9; padding: 1.2rem 1.8rem; border-radius: 16px; border: 1px solid #cbd5e1; font-size: 0.98rem; }
+        .solucion-ej .paso { margin: 0.6rem 0; }
+        .solucion-ej .paso strong { color: #1e40af; }
+        .solucion-ej .paso .subj { color: #dc2626; font-weight: 600; }
+        .solucion-ej .paso .verbo { color: #16a34a; font-weight: 600; }
+        .pie-clave { margin-top: 1.8rem; padding: 1rem 1.8rem; background: #eef2ff; border-radius: 40px; border-left: 6px solid #3b82f6; font-weight: 500; color: #1e3a8a; display: flex; align-items: center; gap: 12px; }
+        .pie-clave i { font-size: 1.6rem; color: #2563eb; }
+        .btn-volver { display: inline-block; padding: 12px 24px; background: #0078D4; color: white; text-decoration: none; border-radius: 12px; font-weight: bold; }
+        .btn-volver:hover { background: #005a9e; }
+        .footer-box { padding: 25px 15px; text-align: center; background: white; margin: 20px; }
+        .footer-box .inner { max-width:100%; padding:15px; margin:10px auto; text-align:center; background:#f8fafc; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+        @media (max-width: 600px) { .section { padding: 15px 18px; margin: 10px 10px; } .header { padding: 15px 18px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <h1>📘 Subordinadas de Sujeto (III)</h1>
+            <div class="header-sub">
+                <span class="codigo">SUBJ03</span>
+                <span class="texto">Relativos sustantivados · Verbos de influencia · Percepción · Concordancia · Análisis</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RELATIVOS SUSTANTIVADOS -->
+    <div class="section relativo">
+        <h2><i class="fas fa-link"></i> Subordinadas de sujeto con relativos sustantivados</h2>
+        <p>Los <strong>relativos sustantivados</strong> (<em>lo que, quien, el que, la que, los que, las que</em>) introducen subordinadas que funcionan como sujeto. No tienen antecedente expreso; llevan el artículo (o <em>lo</em>) como sustantivador.</p>
+
+        <div class="ejemplo-box">
+            <span class="num">1.</span> <span class="subj"><span class="rel">Lo que</span> realmente importa</span> <span class="verbo">es</span> la honestidad.
+            <span class="analisis"><span class="badge badge-rel">relativo sustantivado</span> «Lo que realmente importa» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">2.</span> <span class="subj"><span class="rel">Quien</span> no estudia suficiente</span> <span class="verbo">tiene</span> más dificultades.
+            <span class="analisis"><span class="badge badge-rel">relativo sustantivado</span> «Quien no estudia suficiente» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">3.</span> <span class="subj"><span class="rel">El que</span> llegue primero</span> <span class="verbo">ganará</span> el premio.
+            <span class="analisis"><span class="badge badge-rel">relativo sustantivado</span> «El que llegue primero» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">4.</span> <span class="subj"><span class="rel">Lo que</span> dices</span> <span class="verbo">es</span> cierto.
+            <span class="analisis"><span class="badge badge-rel">relativo sustantivado</span> «Lo que dices» → sujeto</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">5.</span> <span class="subj"><span class="rel">Los que</span> hayan terminado el trabajo</span> <span class="verbo">pueden</span> irse.
+            <span class="analisis"><span class="badge badge-rel">relativo sustantivado</span> «Los que hayan terminado el trabajo» → sujeto</span>
+        </div>
+
+        <div class="note">
+            <strong>📌 Diferencia clave:</strong> Los relativos sustantivados <strong>no tienen antecedente</strong> expreso. La propia oración de relativo funciona como un <strong>sintagma nominal</strong> que ocupa la función de sujeto.
+        </div>
+    </div>
+
+    <!-- VERBOS DE INFLUENCIA -->
+    <div class="section influencia">
+        <h2><i class="fas fa-hand-paper"></i> Subordinadas de sujeto con verbos de influencia</h2>
+        <p>Los <strong>verbos de influencia</strong> (<em>hacer que, conseguir que, lograr que, evitar que, impedir que, etc.</em>) suelen tener una subordinada de sujeto que expresa <strong>la acción que se provoca o impide</strong>. El verbo subordinado va siempre en <strong>subjuntivo</strong>.</p>
+
+        <div class="ejemplo-box">
+            <span class="num">1.</span> <span class="subj">Que todos los alumnos aprueben</span> <span class="verbo">es</span> lo que <span style="color:#b45309;">hace</span> que el profesor se sienta orgulloso.
+            <span class="analisis"><span class="badge badge-infl">influencia</span> Subordinada de sujeto: «Que todos los alumnos aprueben»</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">2.</span> <span class="subj">Que el equipo gane el campeonato</span> <span class="verbo">consigue</span> que los aficionados celebren.
+            <span class="analisis"><span class="badge badge-infl">influencia</span> Subordinada de sujeto: «Que el equipo gane el campeonato»</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">3.</span> <span class="subj">Que no llueva durante la semana</span> <span class="verbo">evita</span> que se inunden las calles.
+            <span class="analisis"><span class="badge badge-infl">influencia</span> Subordinada de sujeto: «Que no llueva durante la semana»</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">4.</span> <span class="subj">Que los políticos lleguen a un acuerdo</span> <span class="verbo">permitirá</span> que el país avance.
+            <span class="analisis"><span class="badge badge-infl">influencia</span> Subordinada de sujeto: «Que los políticos lleguen a un acuerdo»</span>
+        </div>
+
+        <div class="note">
+            <strong>💡 Observación:</strong> En estos casos, el verbo principal (<em>hacer, conseguir, lograr, evitar, impedir</em>) rige <strong>subjuntivo</strong> en su complemento. La subordinada de sujeto también lleva subjuntivo porque expresa un <strong>hecho hipotético o deseado</strong>.
+        </div>
+    </div>
+
+    <!-- VERBOS DE PERCEPCIÓN -->
+    <div class="section percepcion">
+        <h2><i class="fas fa-eye"></i> Subordinadas de sujeto con verbos de percepción</h2>
+        <p>Los <strong>verbos de percepción</strong> (<em>ver, oír, notar, observar, sentir, etc.</em>) pueden tener una subordinada de sujeto cuando están en <strong>pasiva refleja</strong> (<em>se ve, se oye, se nota</em>). El verbo subordinado va en <strong>indicativo</strong> si es un hecho objetivo, o en <strong>subjuntivo</strong> si es una valoración.</p>
+
+        <div class="ejemplo-box">
+            <span class="num">1.</span> <span class="subj">Que los precios han subido mucho</span> <span class="verbo">se nota</span> en el supermercado.
+            <span class="analisis"><span class="badge badge-perc">percepción</span> Indicativo (hecho objetivo) → «Que los precios han subido mucho»</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">2.</span> <span class="subj">Que los alumnos estén contentos</span> <span class="verbo">se ve</span> en sus caras.
+            <span class="analisis"><span class="badge badge-perc">percepción</span> Subjuntivo (valoración subjetiva) → «Que los alumnos estén contentos»</span>
+        </div>
+
+        <div class="ejemplo-box">
+            <span class="num">3.</span> <span class="subj">Que el concierto será un éxito</span> <span class="verbo">se oye</span> por todas partes.
+            <span class="analisis"><span class="badge badge-perc">percepción</span> Indicativo (hecho que se comenta) → «Que el concierto será un éxito»</span>
+        </div>
+    </div>
+
+    <!-- CONCORDANCIA -->
+    <div class="section concordancia">
+        <h2><i class="fas fa-check-double"></i> Concordancia del verbo principal con la subordinada de sujeto</h2>
+        <p>Cuando la subordinada de sujeto es <strong>singular</strong>, el verbo principal va en <strong>singular</strong>. Cuando la subordinada tiene <strong>varios núcleos</strong> o es una <strong>enumeración</strong>, el verbo puede ir en plural si se considera que los sujetos son varios.</p>
+
+        <table class="tabla-concordancia">
+            <thead>
+                <tr><th>Tipo de subordinada</th><th>Verbo principal</th><th>Ejemplo</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Subordinada singular</strong></td>
+                    <td>Singular</td>
+                    <td><em><span style="color:#dc2626;">Que llegues tarde</span> <span style="color:#16a34a;">es</span> un problema.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Subordinada con varios núcleos</strong></td>
+                    <td>Plural (si se interpretan como varios sujetos)</td>
+                    <td><em><span style="color:#dc2626;">Que estudies y que trabajes</span> <span style="color:#16a34a;">son</span> cosas compatibles.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Subordinada con «el hecho de que»</strong></td>
+                    <td>Singular (porque el sujeto es «el hecho»)</td>
+                    <td><em><span style="color:#dc2626;">El hecho de que llegues tarde</span> <span style="color:#16a34a;">es</span> un problema.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Subordinada con «lo que»</strong></td>
+                    <td>Singular (porque «lo» es neutro)</td>
+                    <td><em><span style="color:#dc2626;">Lo que dices</span> <span style="color:#16a34a;">es</span> cierto.</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Subordinada con «quien» / «los que»</strong></td>
+                    <td>Singular / Plural según el referente</td>
+                    <td><em><span style="color:#dc2626;">Quien estudia</span> <span style="color:#16a34a;">aprueba</span>.<br><span style="color:#dc2626;">Los que estudian</span> <span style="color:#16a34a;">aprueban</span>.</em></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>📌 Regla de oro:</strong> El verbo principal concuerda en <strong>número</strong> con la <strong>idea</strong> que expresa la subordinada. Si se piensa en un solo hecho, singular; si se piensa en varios, plural.
+        </div>
+    </div>
+
+    <!-- ANÁLISIS SINTÁCTICO COMPLETO -->
+    <div class="section analisis">
+        <h2><i class="fas fa-search"></i> Análisis sintáctico completo de subordinadas de sujeto</h2>
+        <p>A continuación, mostramos el análisis sintáctico completo de varias oraciones con subordinadas de sujeto, identificando todos los constituyentes.</p>
+
+        <div class="ejemplo-box" style="border-left-color: #e53e3e;">
+            <span class="num">1.</span> <strong><span style="color:#dc2626;">Que el equipo haya ganado el campeonato</span> <span style="color:#16a34a;">fue</span> un gran logro para la ciudad.</strong>
+            <span class="analisis">
+                <strong>Oración principal:</strong> <span style="color:#16a34a;">fue</span> un gran logro para la ciudad.<br>
+                <strong>Sujeto (subordinada sustantiva):</strong> <span style="color:#dc2626;">Que el equipo haya ganado el campeonato</span> → sustituible por «eso»<br>
+                <strong>Atributo:</strong> un gran logro para la ciudad<br>
+                <strong>Verbo copulativo:</strong> fue (3ª persona singular)<br>
+                <strong>Modo:</strong> subjuntivo (hecho valorativo)
+            </span>
+        </div>
+
+        <div class="ejemplo-box" style="border-left-color: #e53e3e;">
+            <span class="num">2.</span> <strong><span style="color:#dc2626;">Lo que realmente importa</span> <span style="color:#16a34a;">es</span> la felicidad de las personas.</strong>
+            <span class="analisis">
+                <strong>Oración principal:</strong> <span style="color:#16a34a;">es</span> la felicidad de las personas.<br>
+                <strong>Sujeto (relativo sustantivado):</strong> <span style="color:#dc2626;">Lo que realmente importa</span> → «eso»<br>
+                <strong>Atributo:</strong> la felicidad de las personas<br>
+                <strong>Verbo copulativo:</strong> es (3ª persona singular)<br>
+                <strong>Modo:</strong> indicativo (hecho objetivo)
+            </span>
+        </div>
+
+        <div class="ejemplo-box" style="border-left-color: #e53e3e;">
+            <span class="num">3.</span> <strong><span style="color:#dc2626;">Si el examen será difícil o no</span> <span style="color:#16a34a;">preocupa</span> a todos los estudiantes.</strong>
+            <span class="analisis">
+                <strong>Oración principal:</strong> <span style="color:#16a34a;">preocupa</span> a todos los estudiantes.<br>
+                <strong>Sujeto (interrogativa indirecta):</strong> <span style="color:#dc2626;">Si el examen será difícil o no</span> → «eso»<br>
+                <strong>Complemento directo:</strong> a todos los estudiantes (CD de persona)<br>
+                <strong>Verbo:</strong> preocupa (3ª persona singular)<br>
+                <strong>Modo:</strong> indicativo (interrogativa indirecta)
+            </span>
+        </div>
+
+        <div class="ejemplo-box" style="border-left-color: #e53e3e;">
+            <span class="num">4.</span> <strong><span style="color:#dc2626;">El hecho de que no me hayas llamado</span> <span style="color:#16a34a;">me dolió</span> profundamente.</strong>
+            <span class="analisis">
+                <strong>Oración principal:</strong> <span style="color:#16a34a;">me dolió</span> profundamente.<br>
+                <strong>Sujeto (nominalización):</strong> <span style="color:#dc2626;">El hecho de que no me hayas llamado</span> → «eso»<br>
+                <strong>Complemento indirecto:</strong> me<br>
+                <strong>Verbo:</strong> dolió (3ª persona singular)<br>
+                <strong>Modo:</strong> subjuntivo (emoción)
+            </span>
+        </div>
+    </div>
+
+    <!-- TABLA RESUMEN FINAL -->
+    <div class="section resumen">
+        <h2><i class="fas fa-graduation-cap"></i> Resumen final: cómo identificar y analizar subordinadas de sujeto</h2>
+        <div class="formula-box" style="text-align:left;">
+            <strong>🔍 Pasos para identificar una subordinada de sujeto:</strong>
+            <ol style="line-height:1.8; margin-top:8px;">
+                <li><strong>Pregunta</strong> <em>«¿Qué es lo que + verbo principal?»</em> o <em>«¿Qué + verbo principal?»</em></li>
+                <li><strong>Sustituye</strong> la subordinada por el pronombre neutro <strong>«eso»</strong> o por <strong>«el hecho de que»</strong>.</li>
+                <li>Si la sustitución funciona, es una <strong>subordinada sustantiva de sujeto</strong>.</li>
+                <li><strong>Analiza el modo:</strong> indicativo (hecho objetivo) / subjuntivo (valoración, deseo, duda, emoción).</li>
+                <li><strong>Verifica la concordancia:</strong> el verbo principal debe concordar en número con la subordinada.</li>
+            </ol>
+        </div>
+        <div class="note">
+            <strong>💡 Recuerda:</strong> Una subordinada de sujeto <strong>siempre</strong> puede ser reemplazada por <strong>«eso»</strong>. Es la prueba definitiva.
+        </div>
+    </div>
+
+    <!-- EJERCICIOS DESPLEGABLES -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">✏️ Ejercicios avanzados (pulsa para ver soluciones)</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Relativos sustantivados</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Completa con <strong>«lo que»</strong>, <strong>«quien»</strong>, <strong>«el que»</strong>, <strong>«los que»</strong> según corresponda:</p>
+                    <ol>
+                        <li>________ realmente importa es la honestidad.</li>
+                        <li>________ no estudia suficiente tendrá más dificultades.</li>
+                        <li>________ llegue primero ganará el premio.</li>
+                        <li>________ hayan terminado el trabajo pueden irse.</li>
+                    </ol>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Soluciones:</strong></p>
+                    <div class="paso"><strong>1.</strong> <span style="color:#7c3aed;">Lo que</span> realmente importa es la honestidad.</div>
+                    <div class="paso"><strong>2.</strong> <span style="color:#7c3aed;">Quien</span> no estudia suficiente tendrá más dificultades.</div>
+                    <div class="paso"><strong>3.</strong> <span style="color:#7c3aed;">El que</span> llegue primero ganará el premio.</div>
+                    <div class="paso"><strong>4.</strong> <span style="color:#7c3aed;">Los que</span> hayan terminado el trabajo pueden irse.</div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Verbos de influencia</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Subraya la subordinada de sujeto en las siguientes oraciones con verbos de influencia:</p>
+                    <ol>
+                        <li>Que el gobierno tome medidas es lo que hace que la economía mejore.</li>
+                        <li>Que los alumnos participen en clase consigue que aprendan más.</li>
+                        <li>Que no haya suficiente agua evita que los cultivos crezcan.</li>
+                    </ol>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Soluciones:</strong></p>
+                    <div class="paso"><strong>1.</strong> <span style="color:#dc2626;">Que el gobierno tome medidas</span> es lo que hace que la economía mejore.</div>
+                    <div class="paso"><strong>2.</strong> <span style="color:#dc2626;">Que los alumnos participen en clase</span> consigue que aprendan más.</div>
+                    <div class="paso"><strong>3.</strong> <span style="color:#dc2626;">Que no haya suficiente agua</span> evita que los cultivos crezcan.</div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Concordancia del verbo principal</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Elige la forma verbal correcta (singular o plural):</p>
+                    <ol>
+                        <li>Que estudies y que trabajes ________ (es / son) compatible.</li>
+                        <li>El hecho de que llegues tarde ________ (es / son) un problema.</li>
+                        <li>Lo que dices ________ (es / son) cierto.</li>
+                        <li>Que los alumnos aprueben ________ (alegra / alegran) al profesor.</li>
+                    </ol>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Soluciones:</strong></p>
+                    <div class="paso"><strong>1.</strong> Que estudies y que trabajes <span style="color:#16a34a;">es</span> compatible. (se considera un solo hecho)</div>
+                    <div class="paso"><strong>2.</strong> El hecho de que llegues tarde <span style="color:#16a34a;">es</span> un problema. (sujeto «el hecho», singular)</div>
+                    <div class="paso"><strong>3.</strong> Lo que dices <span style="color:#16a34a;">es</span> cierto. («lo» es neutro, singular)</div>
+                    <div class="paso"><strong>4.</strong> Que los alumnos aprueben <span style="color:#16a34a;">alegra</span> al profesor. (subordinada singular)</div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Análisis sintáctico completo</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Analiza sintácticamente la siguiente oración, identificando la subordinada de sujeto y todos los constituyentes:</p>
+                    <p style="font-weight:bold; font-size:1.1rem;">«Que los estudiantes hayan participado activamente en el proyecto fue muy positivo para todos.»</p>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Análisis:</strong></p>
+                    <div class="paso"><strong>Oración principal:</strong> <span style="color:#16a34a;">fue</span> muy positivo para todos.</div>
+                    <div class="paso"><strong>Sujeto (subordinada sustantiva):</strong> <span style="color:#dc2626;">Que los estudiantes hayan participado activamente en el proyecto</span> → sustituible por «eso»</div>
+                    <div class="paso"><strong>Verbo copulativo:</strong> <span style="color:#16a34a;">fue</span> (3ª persona singular)</div>
+                    <div class="paso"><strong>Atributo:</strong> muy positivo para todos</div>
+                    <div class="paso"><strong>Modo:</strong> subjuntivo (hecho valorativo)</div>
+                    <div class="paso"><strong>Estructura de la subordinada:</strong> «Que» + <strong>sujeto:</strong> los estudiantes + <strong>núcleo verbal:</strong> hayan participado + <strong>CCM:</strong> activamente + <strong>CCL:</strong> en el proyecto</div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Transformación de subordinadas</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Transforma las siguientes oraciones reemplazando la subordinada de sujeto por <strong>«eso»</strong> o <strong>«el hecho de que»</strong>:</p>
+                    <ol>
+                        <li>Que el equipo haya perdido fue una sorpresa.</li>
+                        <li>Me preocupa que no hayas dormido bien.</li>
+                        <li>Lo que realmente importa es la honestidad.</li>
+                        <li>Si vendrás o no a la fiesta es lo que me preocupa.</li>
+                    </ol>
+                </div>
+                <div class="solucion-ej">
+                    <p><strong>Soluciones:</strong></p>
+                    <div class="paso"><strong>1.</strong> <span style="color:#dc2626;">Eso</span> fue una sorpresa. / <span style="color:#dc2626;">El hecho de que el equipo haya perdido</span> fue una sorpresa.</div>
+                    <div class="paso"><strong>2.</strong> Me preocupa <span style="color:#dc2626;">eso</span>. / Me preocupa <span style="color:#dc2626;">el hecho de que no hayas dormido bien</span>.</div>
+                    <div class="paso"><strong>3.</strong> <span style="color:#dc2626;">Eso</span> es lo que realmente importa. / <span style="color:#dc2626;">El hecho de que realmente importe</span> es la honestidad. (cambio de modo)</div>
+                    <div class="paso"><strong>4.</strong> <span style="color:#dc2626;">Eso</span> es lo que me preocupa. / <span style="color:#dc2626;">El hecho de que vengas o no a la fiesta</span> es lo que me preocupa.</div>
+                </div>
+            </div>
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Clave final:</strong> Las subordinadas de sujeto son <strong>sustituibles por «eso»</strong>. Dominar su identificación y análisis te permitirá comprender mejor la estructura de la oración compuesta y mejorar tu expresión escrita y oral.</span>
+            </div>
+        </div>
+    </details>
+
+    <!-- FOOTER -->
+    <div class="footer-box">
+        <div class="inner">
+            <p style="font-size:clamp(0.95rem,2.5vw,1.1rem); color:#2d3748; margin:0 0 12px;">
+                🎓 ¡Has completado la serie sobre <strong>subordinadas de sujeto</strong>!<br>
+                Con estos tres bloques has cubierto desde la definición básica hasta los casos más complejos.<br>
+                <strong>¡Sigue practicando con los ejercicios!</strong>
+            </p>
+            <a href="#" class="btn-volver">Volver al inicio</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

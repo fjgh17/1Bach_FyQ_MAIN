@@ -1,0 +1,539 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T06.02 - Segunda ecuación del MRUA</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+            color: #ffecb0;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 300;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 4px;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.8em;
+            line-height: 1.7;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* =========================================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (añadido)
+           ========================================================= */
+        details {
+            margin: 30px 15px 20px 15px;
+            background: #ffffff;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            padding: 0.2rem 0.2rem 0.5rem 0.2rem;
+            box-shadow: 0 6px 14px rgba(102, 126, 234, 0.2);
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            background: #f0f4ff;
+            border-radius: 18px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .fa-chevron-circle-down {
+            font-size: 1.6rem;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details summary .icon-pulsame {
+            background: #667eea;
+            color: white;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        details .details-content {
+            padding: 0.5rem 1.8rem 2rem 1.8rem;
+        }
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .exercise-card {
+            background: #f9fcff;
+            border: 1px solid #dce7f2;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem 1.8rem;
+            margin: 1.8rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .exercise-card .ex-title {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin-bottom: 0.4rem;
+        }
+        .exercise-card .ex-title .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 40px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.85rem;
+        }
+        .exercise-card .enunciado {
+            background: #f1f6fd;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            margin: 0.6rem 0 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        .exercise-card .solucion {
+            background: #eef3f9;
+            padding: 0.8rem 1.5rem;
+            border-radius: 14px;
+            border: 1px solid #d3e0ee;
+            margin-top: 0.8rem;
+        }
+        .exercise-card .solucion .paso {
+            margin: 0.5rem 0;
+        }
+        .exercise-card .solucion .paso strong {
+            color: #2b3a67;
+        }
+        .clave-didactica {
+            background: #e6f0fa;
+            padding: 1rem 1.8rem;
+            border-radius: 40px;
+            margin-top: 1.8rem;
+            font-weight: 500;
+            color: #1a365d;
+            border-left: 6px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T06.02.- </span>
+                <span class="texto">Segunda ecuación del MRUA</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- SECCIÓN ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la primera ecuación del movimiento \( v = v_0 + at \) y del hecho de que el área bajo la curva de un gráfico velocidad-tiempo representa el desplazamiento, demostrar que la posición en el MRUA se expresa como:</p>
+        <div class="formula-box">\[ x = x_0 + v_0 t + \frac{1}{2} a t^2 \]</div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U06c02 - Segunda ecuación del MRUA.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- SECCIÓN OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Deducir la ecuación de la posición en función del tiempo mediante el método gráfico, interpretando el área del trapecio formado bajo la recta del diagrama \( v-t \). Este resultado permite calcular la posición de un móvil en cualquier instante sin necesidad de conocer su velocidad final.</p>
+    </div>
+
+    <!-- SECCIÓN PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Interpretación gráfica</strong>
+            <p>En un gráfico velocidad-tiempo con aceleración constante, la figura geométrica bajo la recta entre \( t = 0 \) y \( t = t \) es un trapecio rectángulo.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Área del trapecio</strong>
+            <p>Las bases del trapecio son la velocidad inicial \( v_0 \) y la velocidad final \( v \); la altura es el intervalo de tiempo \( t \). El área se calcula como:</p>
+            <div class="formula-box">\[ \text{Área} = \frac{1}{2} (v_0 + v) \cdot t \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Relación con el desplazamiento</strong>
+            <p>Como el área bajo la curva \( v-t \) representa el desplazamiento \( \Delta x \), y sustituyendo la primera ecuación del movimiento \( v = v_0 + at \):</p>
+            <div class="formula-box">\[ \Delta x = \frac{1}{2} \bigl( v_0 + v_0 + at \bigr) \cdot t \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Simplificación algebraica</strong>
+            <p>Simplificando la expresión algebraica:</p>
+            <div class="formula-box">\[ \Delta x = \frac{1}{2} \bigl( 2v_0 + at \bigr) \cdot t = v_0 t + \frac{1}{2} a t^2 \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Incluyendo la posición inicial</strong>
+            <p>Si la posición inicial es \( x_0 \), entonces \( x - x_0 = \Delta x \), obteniendo finalmente:</p>
+            <div class="formula-box">\[ x = x_0 + v_0 t + \frac{1}{2} a t^2 \]</div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN RESULTADO -->
+    <div class="section resultado">
+        <h2>📊 Resultado</h2>
+        <div class="formula-box" style="border-color: #38b2ac; border-width: 3px; background: #e6fffa;">\[ x = x_0 + v_0 t + \frac{1}{2} a t^2 \]</div>
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> El término \( \frac{1}{2}at^2 \) corresponde al área del triángulo formado por el incremento de velocidad debido a la aceleración, representando el desplazamiento adicional respecto al movimiento uniforme.
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- BLOQUE DESPLEGABLE (añadido según la TAREA 1)             -->
+    <!-- ========================================================= -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO Segunda ecuación del MRUA</span>
+            <span class="icon-pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Cálculo de posición con aceleración positiva</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un coche parte del reposo desde un punto de referencia \( x_0 = 0 \) y acelera a \( 2.5 \, \text{m/s}^2 \) durante \( 6.0 \, \text{s} \). Calcula su posición al cabo de ese tiempo.</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( x_0 = 0 \), \( v_0 = 0 \), \( a = 2.5 \, \text{m/s}^2 \), \( t = 6.0 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Aplicamos la ecuación: \( x = 0 + 0 \cdot 6.0 + \frac{1}{2} \cdot 2.5 \cdot (6.0)^2 = 0.5 \cdot 2.5 \cdot 36 = 45 \, \text{m} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( x = 45 \, \text{m} \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Despeje del tiempo (ecuación de segundo grado)</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un ciclista que lleva una velocidad inicial de \( 4.0 \, \text{m/s} \) acelera uniformemente a \( 1.2 \, \text{m/s}^2 \). ¿Cuánto tiempo tarda en recorrer \( 50 \, \text{m} \) desde su posición inicial \( x_0 = 0 \)?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( x_0 = 0 \), \( x = 50 \), \( v_0 = 4.0 \, \text{m/s} \), \( a = 1.2 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Sustituimos en la ecuación: \( 50 = 4.0 t + 0.5 \cdot 1.2 \cdot t^2 \) → \( 50 = 4t + 0.6 t^2 \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> Reordenamos: \( 0.6 t^2 + 4t - 50 = 0 \). Resolvemos con la fórmula general: \( t = \frac{-4 \pm \sqrt{16 + 4 \cdot 0.6 \cdot 50}}{2 \cdot 0.6} = \frac{-4 \pm \sqrt{16 + 120}}{1.2} = \frac{-4 \pm \sqrt{136}}{1.2} \approx \frac{-4 \pm 11.66}{1.2} \).</div>
+                    <div class="paso"><strong>Paso 4:</strong> Tomamos la solución positiva: \( t \approx \frac{7.66}{1.2} \approx 6.38 \, \text{s} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( t \approx 6.38 \, \text{s} \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Despeje de la aceleración a partir de la posición</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un tren que viaja a \( 72 \, \text{km/h} \) (\( 20 \, \text{m/s} \)) recorre \( 180 \, \text{m} \) en \( 6.0 \, \text{s} \) con aceleración constante. Calcula la aceleración.</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( x_0 = 0 \), \( x = 180 \), \( v_0 = 20 \, \text{m/s} \), \( t = 6.0 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Usamos \( x = v_0 t + \frac{1}{2} a t^2 \) (con \( x_0 = 0 \)): \( 180 = 20 \cdot 6.0 + 0.5 \cdot a \cdot (6.0)^2 \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> \( 180 = 120 + 18 a \) → \( 60 = 18 a \) → \( a = \frac{60}{18} \approx 3.33 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( a \approx 3.33 \, \text{m/s}^2 \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Comparación de posiciones con diferentes aceleraciones</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Dos automóviles parten del reposo desde el mismo punto (\( x_0 = 0 \)). El coche A acelera a \( 2.0 \, \text{m/s}^2 \) y el coche B a \( 3.0 \, \text{m/s}^2 \). ¿Qué distancia los separa después de \( 5.0 \, \text{s} \)?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Para A: \( x_A = 0 + 0 + 0.5 \cdot 2.0 \cdot (5.0)^2 = 0.5 \cdot 2.0 \cdot 25 = 25 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Para B: \( x_B = 0.5 \cdot 3.0 \cdot 25 = 37.5 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> Distancia que los separa: \( x_B - x_A = 37.5 - 25 = 12.5 \, \text{m} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( 12.5 \, \text{m} \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Frenado: distancia de parada</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un coche circula a \( 30 \, \text{m/s} \) y frena con una deceleración constante de \( -4.0 \, \text{m/s}^2 \) hasta detenerse. ¿Qué distancia recorre desde que empieza a frenar hasta que se para?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( v_0 = 30 \, \text{m/s} \), \( v = 0 \) (final), \( a = -4.0 \, \text{m/s}^2 \). Necesitamos el tiempo de frenado: \( v = v_0 + at \) → \( 0 = 30 - 4t \) → \( t = 7.5 \, \text{s} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Aplicamos la ecuación de posición (con \( x_0 = 0 \)): \( x = 30 \cdot 7.5 + 0.5 \cdot (-4.0) \cdot (7.5)^2 = 225 - 2 \cdot 56.25 = 225 - 112.5 = 112.5 \, \text{m} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( x = 112.5 \, \text{m} \).</div>
+                </div>
+            </div>
+
+            <!-- Pie didáctico -->
+            <div class="clave-didactica">
+                <i class="fas fa-lightbulb" style="margin-right: 0.6rem; color: #f1c40f;"></i>
+                <strong>Observaciones claves:</strong> La ecuación \( x = x_0 + v_0 t + \frac{1}{2} a t^2 \) incluye un término cuadrático que proviene de la aceleración. La "trampa" mental es olvidar que el tiempo puede aparecer al cuadrado y que al despejar \( t \) se obtiene una ecuación de segundo grado con dos soluciones (solo una física). Estos ejercicios muestran cómo manejar esa ecuación en distintos contextos y cómo interpretar los resultados.
+            </div>
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

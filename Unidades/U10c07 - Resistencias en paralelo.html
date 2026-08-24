@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#T10.07 · Resistencias en Paralelo</title>
+<!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome (versión 6) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ============================================
+   ESTILOS EXISTENTES (no modificados)
+   ============================================ */
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.header-left h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+.header-left p {
+    margin: 6px 0 0 0;
+    font-size: 1em;
+}
+.header-right img {
+    max-height: 70px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+}
+.section {
+    padding: 25px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border-left: 5px solid;
+}
+.enunciado { background: #f7fafc; border-color: #a0aec0; }
+.objetivo  { background: #fffaf0; border-color: #ed8936; }
+.procedimiento { background: #f0fff4; border-color: #48bb78; }
+.resultado { background: #ebf8ff; border-color: #4299e1; }
+.section h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.enunciado h2 { color: #4a5568; }
+.objetivo h2  { color: #c05621; }
+.procedimiento h2 { color: #276749; }
+.resultado h2 { color: #2b6cb0; }
+.formula-box {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+}
+.step {
+    background: white;
+    border-left: 4px solid #a0aec0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.step-num {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #744210;
+}
+p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.header-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.header-sub img {
+    height: 28px;
+    width: auto;
+    display: block;
+    border-radius: 4px;
+}
+.header-sub .codigo {
+    font-weight: 700;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+    color: #f0e6ff;
+}
+.header-sub .texto {
+    font-size: 1em;
+    color: #f0e6ff;
+    font-weight: 500;
+}
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+/* ============================================
+   NUEVOS ESTILOS PARA EL BLOQUE DESPLEGABLE
+   ============================================ */
+details.desmitificando {
+    margin: 30px 15px 20px 15px;
+    border: 2px solid #38a169;
+    border-radius: 12px;
+    background: #f0fff4;
+    padding: 0.5rem 1rem 1rem 1rem;
+    transition: all 0.2s;
+}
+details.desmitificando summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.5rem 0;
+    user-select: none;
+}
+details.desmitificando summary::-webkit-details-marker {
+    display: none;
+}
+details.desmitificando summary i.fa-chevron-circle-down {
+    transition: transform 0.3s ease;
+    color: #38a169;
+    font-size: 1.6rem;
+}
+details.desmitificando[open] summary i.fa-chevron-circle-down {
+    transform: rotate(180deg);
+}
+details.desmitificando summary .pulsame {
+    font-size: 0.8rem;
+    color: #276749;
+    background: #c6f6d5;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+details.desmitificando .contenido-ejercicios {
+    margin-top: 0.5rem;
+    border-top: 1px solid #9ae6b4;
+    padding-top: 1rem;
+}
+
+.ejercicio-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    border: 1px solid #9ae6b4;
+}
+.ejercicio-header {
+    background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ejercicio-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.ejercicio-body {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+}
+.ejercicio-body .enunciado-ej {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.ejercicio-body ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+.resolucion {
+    background: #f0fff4;
+    border-left: 4px solid #38a169;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 0.5rem 0;
+    font-size: 0.98rem;
+}
+.resolucion .paso {
+    margin-bottom: 0.6rem;
+}
+.resolucion .paso strong {
+    color: #276749;
+}
+.pie-clave {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: #744210;
+}
+.pie-clave i {
+    margin-right: 8px;
+    color: #d69e2e;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== CABECERA OBLIGATORIA ===== -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T10.07.- </span>
+                <span class="texto">Resistencias en Paralelo</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES EXISTENTES ===== -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la Ley de Ohm y de la conservación de la carga eléctrica (la intensidad total se divide entre las ramas), demostrar que para \( n \) resistencias \( R_1, R_2, \ldots, R_n \) conectadas en paralelo, la inversa de la resistencia equivalente \( R_{\text{eq}} \) viene dada por:</p>
+        <div class="formula-box">
+            \[ \frac{1}{R_{\text{eq}}} = \frac{1}{R_1} + \frac{1}{R_2} + \cdots + \frac{1}{R_n} = \sum_{i=1}^{n} \frac{1}{R_i} \]
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U10c07 - Resistencias en paralelo.png" alt="Imagen" width="800">
+            <!-- -----FIN-------- -->
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Fundamentar matemáticamente por qué las resistencias en paralelo siguen una regla de suma de inversos. Esta demostración conecta la Ley de Ohm con la conservación de la carga en nodos y la equipotencialidad de los puntos comunes. Es fundamental para el análisis de circuitos domésticos, sistemas de distribución eléctrica y diseño de redes eléctricas.</p>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Característica fundamental del paralelo.</strong> En una asociación en paralelo, todas las resistencias comparten los mismos dos nodos. Por tanto, la diferencia de potencial \( V \) es la <strong>misma</strong> en todas las resistencias:
+            <div class="formula-box">
+                \[ V = V_1 = V_2 = \cdots = V_n \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Intensidades en cada rama.</strong> Aplicando la Ley de Ohm a cada resistencia individualmente, la intensidad que circula por cada rama es:
+            <div class="formula-box">
+                \[ I_1 = \frac{V}{R_1} \quad ; \quad I_2 = \frac{V}{R_2} \quad ; \quad \cdots \quad ; \quad I_n = \frac{V}{R_n} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Conservación de la carga en el nodo.</strong> La intensidad total \( I_{\text{total}} \) que entra al nodo de división es igual a la suma de las intensidades de cada rama (primera regla de Kirchhoff):
+            <div class="formula-box">
+                \[ I_{\text{total}} = I_1 + I_2 + \cdots + I_n \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Sustitución de las intensidades.</strong> Sustituimos cada intensidad por su expresión según la Ley de Ohm:
+            <div class="formula-box">
+                \[ I_{\text{total}} = \frac{V}{R_1} + \frac{V}{R_2} + \cdots + \frac{V}{R_n} \]
+            </div>
+            <p>Factorizando la diferencia de potencial común \( V \):</p>
+            <div class="formula-box">
+                \[ I_{\text{total}} = V \cdot \left( \frac{1}{R_1} + \frac{1}{R_2} + \cdots + \frac{1}{R_n} \right) \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Definición de resistencia equivalente.</strong> Definimos la resistencia equivalente \( R_{\text{eq}} \) como aquella resistencia única que, sometida a la misma diferencia de potencial \( V \), deja pasar la misma intensidad total \( I_{\text{total}} \). Por la Ley de Ohm:
+            <div class="formula-box">
+                \[ I_{\text{total}} = \frac{V}{R_{\text{eq}}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Igualación y conclusión.</strong> Igualamos las dos expresiones de \( I_{\text{total}} \):
+            <div class="formula-box">
+                \[ \frac{V}{R_{\text{eq}}} = V \cdot \left( \frac{1}{R_1} + \frac{1}{R_2} + \cdots + \frac{1}{R_n} \right) \]
+            </div>
+            <p>Dividiendo ambos miembros por \( V \) (que es no nula):</p>
+            <div class="formula-box">
+                \[ \frac{1}{R_{\text{eq}}} = \frac{1}{R_1} + \frac{1}{R_2} + \cdots + \frac{1}{R_n} = \sum_{i=1}^{n} \frac{1}{R_i} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Caso particular de dos resistencias.</strong> Para el caso frecuente de dos resistencias en paralelo, la fórmula se simplifica a:
+            <div class="formula-box">
+                \[ \frac{1}{R_{\text{eq}}} = \frac{1}{R_1} + \frac{1}{R_2} = \frac{R_1 + R_2}{R_1 \cdot R_2} \]
+            </div>
+            <p>Invirtiendo:</p>
+            <div class="formula-box">
+                \[ R_{\text{eq}} = \frac{R_1 \cdot R_2}{R_1 + R_2} \]
+            </div>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong> La resistencia equivalente en paralelo es <strong>siempre menor</strong> que la menor de las resistencias individuales. Esto se debe a que al añadir ramas paralelas se aumenta la sección transversal efectiva del conductor, facilitando el paso de la corriente. En la analogía hidráulica, resistencias en paralelo equivalen a tuberías adicionales en derivación, donde el flujo total aumenta. Es importante destacar que en instalaciones domésticas todos los aparatos se conectan en paralelo para que todos reciban la misma tensión (220 V) y funcionen independientemente.
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            \[ \frac{1}{R_{\text{eq}}} = \sum_{i=1}^{n} \frac{1}{R_i} \quad \text{(Resistencias en paralelo)} \]
+        </div>
+        <p>La resistencia equivalente de una asociación en paralelo se obtiene sumando los inversos de las resistencias individuales. Su valor es siempre menor que la menor de las resistencias del conjunto.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- BLOQUE DESPLEGABLE AÑADIDO (TAREA 1)      -->
+    <!-- ======================================== -->
+    <details class="desmitificando">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO las Resistencias en Paralelo</span>
+            <span class="pulsame">🖱️ Pulsame</span>
+        </summary>
+        <div class="contenido-ejercicios">
+
+            <!-- EJERCICIO 1: Cálculo de Req para dos resistencias -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">1</span>
+                    <span>Cálculo de la resistencia equivalente en paralelo (dos resistencias)</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Se conectan en paralelo dos resistencias de \( 30\,\Omega \) y \( 60\,\Omega \). Calcula la resistencia equivalente del conjunto.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Para dos resistencias en paralelo, usamos la fórmula simplificada:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ R_{\text{eq}} = \frac{R_1 \cdot R_2}{R_1 + R_2} \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( R_{\text{eq}} = \frac{30 \cdot 60}{30 + 60} = \frac{1800}{90} = 20\,\Omega \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La resistencia equivalente es \( 20\,\Omega \), que es menor que la menor de las dos (\( 30\,\Omega \)).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Req para tres resistencias y comparación -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">2</span>
+                    <span>Req de tres resistencias y verificación de que es menor que la menor</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Tres resistencias de \( 12\,\Omega \), \( 18\,\Omega \) y \( 36\,\Omega \) se conectan en paralelo. Calcula \( R_{\text{eq}} \) y comprueba que es menor que \( 12\,\Omega \).</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Usamos la fórmula general: \( \frac{1}{R_{\text{eq}}} = \frac{1}{R_1} + \frac{1}{R_2} + \frac{1}{R_3} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( \frac{1}{R_{\text{eq}}} = \frac{1}{12} + \frac{1}{18} + \frac{1}{36} \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Calculamos el mcm de los denominadores (36): \( \frac{3}{36} + \frac{2}{36} + \frac{1}{36} = \frac{6}{36} = \frac{1}{6} \).</div>
+                        <div class="paso"><strong>Paso 4:</strong> Por tanto, \( R_{\text{eq}} = 6\,\Omega \).</div>
+                        <div class="paso"><strong>Verificación:</strong> \( 6\,\Omega < 12\,\Omega \), se cumple la propiedad.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: División de corriente en un paralelo -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">3</span>
+                    <span>División de la corriente en un paralelo de dos ramas</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos resistencias \( R_1 = 10\,\Omega \) y \( R_2 = 40\,\Omega \) se conectan en paralelo a una batería de \( 24\,\text{V} \). Calcula la intensidad total y la corriente que circula por cada rama.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Calculamos \( R_{\text{eq}} = \frac{10 \cdot 40}{10 + 40} = \frac{400}{50} = 8\,\Omega \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Intensidad total: \( I_{\text{total}} = \frac{V}{R_{\text{eq}}} = \frac{24}{8} = 3\,\text{A} \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Corriente en cada rama: \( I_1 = \frac{V}{R_1} = \frac{24}{10} = 2{,}4\,\text{A} \); \( I_2 = \frac{V}{R_2} = \frac{24}{40} = 0{,}6\,\text{A} \).</div>
+                        <div class="paso"><strong>Verificación:</strong> \( I_1 + I_2 = 2{,}4 + 0{,}6 = 3\,\text{A} \), coincide con \( I_{\text{total}} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Comparación entre serie y paralelo con los mismos valores -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">4</span>
+                    <span>Comparativa: misma pareja de resistencias en serie y en paralelo</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos resistencias de \( 100\,\Omega \) y \( 300\,\Omega \) se conectan primero en serie y luego en paralelo. Calcula la \( R_{\text{eq}} \) en ambos casos y compáralas.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> En serie: \( R_{\text{eq,serie}} = 100 + 300 = 400\,\Omega \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> En paralelo: \( R_{\text{eq,paralelo}} = \frac{100 \cdot 300}{100 + 300} = \frac{30000}{400} = 75\,\Omega \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La resistencia equivalente en serie es mucho mayor (\( 400\,\Omega \)) que en paralelo (\( 75\,\Omega \)). Esto confirma que la conexión en paralelo reduce la resistencia total.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Aplicación práctica — bombillas en paralelo -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">5</span>
+                    <span>Aplicación práctica: bombillas en paralelo en el hogar</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>En una vivienda, se conectan en paralelo a la red de \( 230\,\text{V} \) tres bombillas: una de \( 60\,\text{W} \), otra de \( 100\,\text{W} \) y otra de \( 150\,\text{W} \). Calcula la resistencia de cada bombilla, la resistencia equivalente del conjunto y la corriente total que circula por el circuito.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Resistencia de cada bombilla: \( R = \frac{V^2}{P} \).</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ R_{60} = \frac{230^2}{60} \approx 881{,}7\,\Omega \quad ; \quad R_{100} = \frac{230^2}{100} = 529\,\Omega \quad ; \quad R_{150} = \frac{230^2}{150} \approx 352{,}7\,\Omega \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> Resistencia equivalente en paralelo:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ \frac{1}{R_{\text{eq}}} = \frac{1}{881{,}7} + \frac{1}{529} + \frac{1}{352{,}7} \approx 0{,}001134 + 0{,}001890 + 0{,}002835 = 0{,}005859 \]
+                            \[ R_{\text{eq}} \approx \frac{1}{0{,}005859} \approx 170{,}7\,\Omega \]
+                        </div>
+                        <div class="paso"><strong>Paso 3:</strong> Corriente total: \( I_{\text{total}} = \frac{230}{170{,}7} \approx 1{,}35\,\text{A} \).</div>
+                        <div class="paso"><strong>Interpretación:</strong> Cada bombilla recibe la tensión nominal de \( 230\,\text{V} \) y funciona independientemente. La corriente total es la suma de las corrientes individuales.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE Observaciones claves -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La principal "trampa" en paralelo es olvidar que la <strong>tensión es la misma</strong> para todas las resistencias, pero la <strong>corriente se reparte</strong> inversamente proporcional a cada resistencia. Además, la resistencia equivalente siempre es menor que la menor de las individuales, lo que puede resultar contraintuitivo. La analogía hidráulica (tuberías en paralelo) ayuda a visualizar que añadir ramas facilita el flujo total.
+            </div>
+
+        </div> <!-- /contenido-ejercicios -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- /container -->
+</body>
+</html>

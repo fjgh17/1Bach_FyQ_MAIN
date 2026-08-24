@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T04.01 - Conservación de la masa y ajuste de ecuaciones químicas</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            background: rgba(255,255,255,0.2);
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .formula-box-highlight {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        .note-prof {
+            background: #f0fff4;
+            border: 1px dashed #48bb78;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #22543d;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 25px;
+            margin-bottom: 12px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #feebc8 0%, #feebc8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+        }
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            .section {
+                padding: 20px 18px;
+                margin: 12px;
+            }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        /* Ocultar el triángulo nativo del navegador */
+        details {
+            margin: 30px 15px 20px 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;              /* Firefox */
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            border-radius: 12px;
+            background: #edf2f7;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;                 /* Chrome/Safari */
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        /* Icono FontAwesome con rotación animada */
+        details summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #667eea;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        /* Contenido interno del desplegable */
+        .details-content {
+            padding: 10px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 12px 12px;
+        }
+        .details-content .ejercicio-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .details-content .ejercicio-card:last-child {
+            margin-bottom: 0;
+        }
+        .ejercicio-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .ejercicio-header .badge {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.85em;
+        }
+        .ejercicio-header h3 {
+            margin: 0;
+            font-size: 1.15em;
+            color: #2d3748;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #48bb78;
+            padding: 12px 16px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .math {
+            display: block;
+            text-align: center;
+            margin: 6px 0;
+        }
+        .pie-didactico {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-top: 20px;
+            color: #2a4365;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T04.01.- </span>
+                <span class="texto">Conservación de la masa y ajuste de ecuaciones químicas</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo del <strong>principio de conservación de la masa</strong> (ley de Lavoisier) y de la <strong>definición de ecuación química</strong> como representación simbólica de una reacción donde los reactivos se transforman en productos, demostrar que:</p>
+        
+        <div class="formula-box-highlight">
+            Los <strong>coeficientes estequiométricos</strong> en una ecuación química ajustada garantizan que el número de átomos de cada elemento sea idéntico en ambos miembros de la ecuación, satisfaciendo:
+            \[\sum_{i} \nu_i \, A_i = 0\]
+            donde \(\nu_i\) son los coeficientes estequiométricos (positivos para productos, negativos para reactivos) y \(A_i\) representa las especies químicas involucradas.
+        </div>
+        
+        <p style="margin-top: 15px;">Es decir, demostrar que una ecuación química ajustada es una <span class="highlight">ecuación de balance material</span> que respeta la conservación de los elementos químicos.</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U04c01 - Conservación de la masa y ajuste de ecuaciones químicas.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Se pretende obtener una <strong>justificación formal del proceso de ajuste</strong> de ecuaciones químicas, demostrando que no es una mera operación algebraica, sino la consecuencia directa de:</p>
+        <ul>
+            <li>La <strong>conservación del número de átomos</strong> de cada elemento (Ley de Lavoisier).</li>
+            <li>La <strong>conservación de la carga eléctrica neta</strong> en reacciones iónicas.</li>
+        </ul>
+        <p>Esta demostración es fundamental porque justifica <em>por qué</em> el ajuste es necesario y <em>por qué</em> los coeficientes representan relaciones molares exactas entre reactivos y productos.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔬 Procedimiento</h2>
+        
+        <div class="step">
+            <span class="step-num">1</span> <strong>Planteamiento de la ecuación química general</strong>
+            <p>Consideremos una reacción química genérica entre reactivos \(R_1, R_2, \ldots\) que dan lugar a productos \(P_1, P_2, \ldots\):</p>
+            <div class="formula-box">
+                \[a\,R_1 + b\,R_2 + \cdots \longrightarrow c\,P_1 + d\,P_2 + \cdots\]
+            </div>
+            <p>donde \(a, b, c, d, \ldots\) son los <strong>coeficientes estequiométricos</strong> que deben determinarse.</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">2</span> <strong>Aplicación del principio de conservación de la masa</strong>
+            <p>Según la ley de Lavoisier, la masa total de los reactivos debe igualar la masa total de los productos. A nivel atómico, esto implica que:</p>
+            <div class="formula-box">
+                \[\text{Número de átomos de cada elemento en reactivos} = \text{Número de átomos de cada elemento en productos}\]
+            </div>
+            <p>Formalmente, para cada elemento \(E\) presente en la reacción:</p>
+            <div class="formula-box">
+                \[\sum_{\text{reactivos}} \nu_i \cdot n_{i,E} = \sum_{\text{productos}} \nu_j \cdot n_{j,E}\]
+            </div>
+            <p>donde \(n_{i,E}\) representa el número de átomos del elemento \(E\) en la molécula \(i\).</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">3</span> <strong>Sistema de ecuaciones algebraicas</strong>
+            <p>La condición de conservación para cada elemento genera una <strong>ecuación algebraica lineal</strong>. Si la reacción involucra \(m\) elementos diferentes, se obtiene un sistema de \(m\) ecuaciones con \(n\) incógnitas (los coeficientes estequiométricos).</p>
+            <p>Por ejemplo, para la combustión del metano:</p>
+            <div class="formula-box">
+                \[\text{CH}_4 + \text{O}_2 \longrightarrow \text{CO}_2 + \text{H}_2\text{O}\]
+            </div>
+            <p>Planteamos las ecuaciones de conservación:</p>
+            <ul>
+                <li><strong>Carbono (C):</strong> \(1 \cdot a = 1 \cdot c\)</li>
+                <li><strong>Hidrógeno (H):</strong> \(4 \cdot a = 2 \cdot d\)</li>
+                <li><strong>Oxígeno (O):</strong> \(2 \cdot b = 2 \cdot c + 1 \cdot d\)</li>
+            </ul>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">4</span> <strong>Resolución y determinación de coeficientes</strong>
+            <p>Resolviendo el sistema (que tiene un grado de libertad, ya que los coeficientes están definidos salvo un factor de proporcionalidad):</p>
+            <div class="formula-box">
+                De C: \(a = c\)<br>
+                De H: \(4a = 2d \Rightarrow d = 2a\)<br>
+                De O: \(2b = 2c + d = 2a + 2a = 4a \Rightarrow b = 2a\)
+            </div>
+            <p>Tomando \(a = 1\) (elección arbitraria que fija la escala):</p>
+            <div class="formula-box-highlight">
+                \[\text{CH}_4 + 2\,\text{O}_2 \longrightarrow \text{CO}_2 + 2\,\text{H}_2\text{O}\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">5</span> <strong>Verificación de la conservación atómica</strong>
+            <p>Comprobamos que se cumple la conservación para cada elemento:</p>
+            <div class="formula-box">
+                \[\begin{array}{c|cc|c}
+                \text{Elemento} & \text{Reactivos} & \text{Productos} & \text{Balance} \\
+                \hline
+                \text{C} & 1 & 1 & \checkmark \\
+                \text{H} & 4 & 2 \times 2 = 4 & \checkmark \\
+                \text{O} & 2 \times 2 = 4 & 2 + (2 \times 1) = 4 & \checkmark
+                \end{array}\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">6</span> <strong>Generalización: la ecuación de balance material</strong>
+            <p>De forma general, para cualquier reacción química ajustada, se cumple:</p>
+            <div class="formula-box-highlight">
+                \[\sum_{i} \nu_i \cdot \mathbf{A}_i = \mathbf{0}\]
+            </div>
+            <p>donde \(\nu_i\) son los coeficientes estequiométricos (negativos para reactivos, positivos para productos) y \(\mathbf{A}_i\) son las fórmulas moleculares. Esta ecuación vectorial expresa que la <strong>combinación lineal de las composiciones atómicas</strong> de todas las especies es nula.</p>
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que el <strong>ajuste de una ecuación química</strong> no es más que la aplicación sistemática del principio de conservación de la masa, traducido a un <strong>sistema de ecuaciones lineales</strong> cuya solución proporciona los coeficientes estequiométricos.</p>
+        
+        <div class="formula-box-highlight">
+            <strong>Resultado fundamental:</strong><br><br>
+            En toda ecuación química ajustada:<br>
+            \[\sum_{\text{reactivos}} |\nu_i| \cdot \mathbf{A}_i = \sum_{\text{productos}} \nu_j \cdot \mathbf{A}_j\]
+            <br>o equivalentemente:<br>
+            \[\sum_{i} \nu_i \cdot \mathbf{A}_i = \mathbf{0}\]
+        </div>
+        
+        <p style="margin-top: 15px;">Esta igualdad garantiza que:</p>
+        <ul>
+            <li>El número de átomos de cada elemento se conserva.</li>
+            <li>La carga eléctrica total se conserva (en reacciones iónicas).</li>
+            <li>Los coeficientes representan <strong>proporciones molares exactas</strong> entre reactivos y productos.</li>
+        </ul>
+        
+        <div class="note-prof">
+            <strong>💡 Observaciones sobre el alumnado:</strong><br>
+            Es recomendable enfatizar a los estudiantes que los coeficientes estequiométricos no representan masas ni volúmenes directamente, sino <strong>relaciones molares</strong>. La conversión a masa requiere siempre el uso de las masas molares. Asimismo, el hecho de que el sistema tenga un grado de libertad (los coeficientes están definidos salvo un factor común) justifica por qué siempre podemos elegir el coeficiente más sencillo (generalmente el entero más pequeño).
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame — 🧪 DESMITIFICANDO la conservación de la masa y el ajuste de ecuaciones químicas</span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <h3>Combustión del etano: ajuste y cálculo de dióxido de carbono</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>El etano (\( \mathrm{C_2H_6} \)) se quema en presencia de oxígeno para dar dióxido de carbono y agua.</li>
+                    <li>a) Escribe y ajusta la ecuación de combustión.</li>
+                    <li>b) ¿Qué masa de \( \mathrm{CO_2} \) se produce al quemar 15,0 g de etano (suponiendo exceso de oxígeno)?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución paso a paso:</strong></p>
+                    <p>a) Planteamos la ecuación sin ajustar:</p>
+                    <div class="math">\(\mathrm{C_2H_6 + O_2 \longrightarrow CO_2 + H_2O}\)</div>
+                    <p>Conservación de átomos:</p>
+                    <ul>
+                        <li>C: \(2a = c\)</li>
+                        <li>H: \(6a = 2d \Rightarrow d = 3a\)</li>
+                        <li>O: \(2b = 2c + d = 2(2a) + 3a = 7a \Rightarrow b = 3,5a\)</li>
+                    </ul>
+                    <p>Tomando \(a=2\) para obtener coeficientes enteros: \(a=2, b=7, c=4, d=6\).</p>
+                    <div class="math">\(\mathbf{2\,C_2H_6 + 7\,O_2 \longrightarrow 4\,CO_2 + 6\,H_2O}\)</div>
+                    <p>b) Masa molar del etano: \(2\cdot12 + 6\cdot1 = 30 \,\mathrm{g/mol}\).</p>
+                    <p>Moles de etano: \(15,0\,\mathrm{g} / 30\,\mathrm{g/mol} = 0,500\,\mathrm{mol}\).</p>
+                    <p>Según la estequiometría: 2 mol de etano producen 4 mol de CO₂ → 1 mol etano → 2 mol CO₂.</p>
+                    <p>Moles CO₂ = \(0,500 \times 2 = 1,00\,\mathrm{mol}\).</p>
+                    <p>Masa CO₂ = \(1,00\,\mathrm{mol} \times 44\,\mathrm{g/mol} = \mathbf{44,0\,g}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <h3>Neutralización de ácido sulfúrico con hidróxido de sodio</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>El ácido sulfúrico reacciona con hidróxido de sodio para dar sulfato de sodio y agua.</li>
+                    <li>a) Ajusta la reacción.</li>
+                    <li>b) ¿Qué volumen de una disolución de NaOH 0,25 M se necesita para neutralizar completamente 50,0 mL de H₂SO₄ 0,15 M?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) Reacción sin ajustar: \(\mathrm{H_2SO_4 + NaOH \longrightarrow Na_2SO_4 + H_2O}\).</p>
+                    <p>Ajuste: \(\mathrm{H_2SO_4 + 2\,NaOH \longrightarrow Na_2SO_4 + 2\,H_2O}\).</p>
+                    <p>b) Calculamos moles de H₂SO₄: \(0,0500\,\mathrm{L} \times 0,15\,\mathrm{mol/L} = 7,50\times10^{-3}\,\mathrm{mol}\).</p>
+                    <p>La estequiometría indica que 1 mol de H₂SO₄ reacciona con 2 mol de NaOH, luego necesitamos \(2 \times 7,50\times10^{-3} = 0,0150\,\mathrm{mol}\) de NaOH.</p>
+                    <p>Volumen de NaOH = \(\frac{0,0150\,\mathrm{mol}}{0,25\,\mathrm{mol/L}} = 0,060\,\mathrm{L} = \mathbf{60,0\,mL}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <h3>Descomposición térmica del nitrato de plata</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>El nitrato de plata sólido se descompone por calentamiento en plata metálica, dióxido de nitrógeno y oxígeno.</li>
+                    <li>a) Escribe y ajusta la reacción.</li>
+                    <li>b) ¿Qué masa de plata se obtiene a partir de 25,0 g de nitrato de plata puro?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) Reacción: \(\mathrm{AgNO_3 \longrightarrow Ag + NO_2 + O_2}\).</p>
+                    <p>Ajuste: \(\mathrm{2\,AgNO_3 \longrightarrow 2\,Ag + 2\,NO_2 + O_2}\). (Comprobar: 2 Ag, 2 N, 6 O en reactivos; productos: 2 Ag, 2 N, 4 O del NO₂ + 2 O del O₂ = 6 O).</p>
+                    <p>b) Masa molar de AgNO₃: \(107,9 + 14 + 3\cdot16 = 169,9\,\mathrm{g/mol}\).</p>
+                    <p>Moles de AgNO₃: \(25,0 / 169,9 = 0,147\,\mathrm{mol}\).</p>
+                    <p>Estequiometría: 2 mol AgNO₃ → 2 mol Ag, luego 0,147 mol Ag.</p>
+                    <p>Masa Ag = \(0,147 \times 107,9 = \mathbf{15,9\,g}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <h3>Reactivo limitante en la obtención de amoníaco</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>El amoníaco se sintetiza a partir de nitrógeno e hidrógeno según: \(\mathrm{N_2 + H_2 \longrightarrow NH_3}\).</li>
+                    <li>Se hacen reaccionar 28,0 g de N₂ con 10,0 g de H₂.</li>
+                    <li>a) Ajusta la ecuación.</li>
+                    <li>b) Determina el reactivo limitante.</li>
+                    <li>c) ¿Qué masa de NH₃ se obtiene teóricamente?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) Ajuste: \(\mathrm{N_2 + 3\,H_2 \longrightarrow 2\,NH_3}\).</p>
+                    <p>b) Moles de N₂: \(28,0 / 28 = 1,00\,\mathrm{mol}\). Moles de H₂: \(10,0 / 2 = 5,00\,\mathrm{mol}\).</p>
+                    <p>Según estequiometría, 1 mol N₂ necesita 3 mol H₂. Con 1,00 mol N₂ se necesitarían 3,00 mol H₂. Tenemos 5,00 mol, así que el N₂ es el limitante y sobra H₂.</p>
+                    <p>c) Según la reacción, 1 mol N₂ produce 2 mol NH₃. Masa molar NH₃ = 17 g/mol. Masa = \(2 \times 17 = \mathbf{34,0\,g}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <h3>Precipitación de cloruro de plata y rendimiento</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>Se hace reaccionar una disolución de nitrato de plata con cloruro de sodio para precipitar cloruro de plata.</li>
+                    <li>\(\mathrm{AgNO_3 + NaCl \longrightarrow AgCl + NaNO_3}\).</li>
+                    <li>Partimos de 5,00 g de AgNO₃ y exceso de NaCl. Tras el experimento se recogen 3,80 g de AgCl seco.</li>
+                    <li>Calcula el rendimiento de la reacción.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Masa molar AgNO₃ = 169,9 g/mol; AgCl = 143,3 g/mol.</p>
+                    <p>Moles de AgNO₃ = \(5,00 / 169,9 = 0,0294\,\mathrm{mol}\).</p>
+                    <p>Según estequiometría 1:1, se deberían obtener 0,0294 mol de AgCl, equivalentes a \(0,0294 \times 143,3 = 4,21\,\mathrm{g}\) (rendimiento teórico).</p>
+                    <p>Rendimiento = \(\frac{3,80}{4,21} \times 100 = \mathbf{90,3\%}\).</p>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-didactico">
+                <i class="fas fa-lightbulb" style="color: #2b6cb0;"></i>
+                <strong>Observaciones claves:</strong> El ajuste de ecuaciones no es un fin en sí mismo, sino la herramienta que garantiza que los cálculos estequiométricos (masas, volúmenes, reactivo limitante) sean consistentes con la realidad física. Los ejercicios anteriores muestran que, una vez ajustada la ecuación, podemos predecir cantidades de reactivos y productos, y también evaluar la eficiencia de una reacción a través del rendimiento.
+            </div>
+        </div>
+    </details>
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

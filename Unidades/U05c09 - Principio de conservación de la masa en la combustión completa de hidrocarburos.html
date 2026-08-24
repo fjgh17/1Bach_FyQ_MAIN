@@ -1,0 +1,564 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.10 - Demostración: Principio de conservación de la masa en la combustión de hidrocarburos</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILOS ORIGINALES (se mantienen)
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .reaction-box {
+            background: #fff5f5;
+            border: 2px solid #fc8181;
+            border-radius: 12px;
+            padding: 20px 24px;
+            text-align: center;
+            margin: 16px 0;
+        }
+        .reaction-box .arrow {
+            font-size: 1.5em;
+            color: #c53030;
+            margin: 8px 0;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (TAREA 1)
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #eef4fa;
+            border-radius: 16px;
+            padding: 10px 20px 20px;
+            border: 1px solid #bdd6e8;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.6rem;
+            color: #2a7faa;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        .exercise-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #d3e2ed;
+        }
+        .exercise-card h3 {
+            margin-top: 0;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        .exercise-card h3 .badge {
+            background: #2a7faa;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+        }
+        .solution {
+            background: #f7fbfe;
+            border-left: 4px solid #2a7faa;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 0.98rem;
+        }
+        .solution .step {
+            background: transparent;
+            border-left: none;
+            padding: 6px 0;
+            margin: 6px 0;
+            box-shadow: none;
+        }
+        .solution .step strong {
+            color: #0b3b5c;
+        }
+        .didactic-footer {
+            background: #d7e7f3;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #144a66;
+        }
+        .didactic-footer i {
+            font-size: 1.8rem;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.09.- </span>
+                <span class="texto">Demostración: Principio de conservación de la masa en la combustión de hidrocarburos</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo del principio de conservación de la masa de Lavoisier y de la fórmula general de un hidrocarburo \( C_xH_y \), demostrar que en la combustión completa todo el carbono del hidrocarburo se transforma en dióxido de carbono (\( CO_2 \)) y todo el hidrógeno en agua (\( H_2O \)), estableciendo las relaciones estequiométricas cuantitativas correspondientes.</p>
+        <div class="formula-box">
+            \( C_xH_y + \left(x + \dfrac{y}{4}\right)O_2 \longrightarrow x\,CO_2 + \dfrac{y}{2}\,H_2O \)
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c09 - Principio de conservación de la masa en la combustión completa de hidrocarburos.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Comprender las relaciones cuantitativas fundamentales que permiten, a partir de datos experimentales de una combustión, determinar la fórmula molecular de un hidrocarburo desconocido. El estudiante debe ser capaz de:</p>
+        <ul>
+            <li>Balancear cualquier ecuación de combustión de hidrocarburos sin necesidad de tanteo.</li>
+            <li>Calcular la masa de \( CO_2 \) y \( H_2O \) esperadas a partir de una masa dada de hidrocarburo.</li>
+            <li>Determinar la fórmula empírica de un hidrocarburo a partir de las masas de \( CO_2 \) y \( H_2O \) obtenidas experimentalmente.</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Enunciar el principio de conservación.</strong> En toda reacción química, la masa total de los reactivos es igual a la masa total de los productos. Los átomos se reorganizan, pero no se crean ni se destruyen. Por tanto, todo el carbono del hidrocarburo debe aparecer en los productos carbonados, y todo el hidrógeno en los productos hidrogenados.
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Escritura de la ecuación sin coeficientes:</strong>
+            <div class="reaction-box">
+                \( C_xH_y + O_2 \longrightarrow CO_2 + H_2O \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Ajuste del carbono.</strong> Como hay \( x \) átomos de carbono en el reactivo, deben formarse \( x \) moléculas de \( CO_2 \):
+            <div class="formula-box">
+                \( C_xH_y + O_2 \longrightarrow x\,CO_2 + H_2O \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Ajuste del hidrógeno.</strong> Como hay \( y \) átomos de hidrógeno en el reactivo, y cada molécula de agua contiene 2 átomos de H, se forman \( \dfrac{y}{2} \) moléculas de \( H_2O \):
+            <div class="formula-box">
+                \( C_xH_y + O_2 \longrightarrow x\,CO_2 + \dfrac{y}{2}\,H_2O \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Ajuste del oxígeno.</strong> Contar los átomos de oxígeno en productos:
+            <ul>
+                <li>En \( x\,CO_2 \): \( 2x \) átomos de O.</li>
+                <li>En \( \dfrac{y}{2}\,H_2O \): \( \dfrac{y}{2} \) átomos de O.</li>
+                <li>Total de O en productos: \( 2x + \dfrac{y}{2} = \dfrac{4x + y}{2} \) átomos de O.</li>
+            </ul>
+            <p>Como cada molécula de \( O_2 \) aporta 2 átomos de O, el coeficiente del oxígeno molecular es:</p>
+            <div class="formula-box">
+                \( \dfrac{\dfrac{4x + y}{2}}{2} = \dfrac{4x + y}{4} = x + \dfrac{y}{4} \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Ecuación final balanceada:</strong>
+            <div class="reaction-box">
+                \( C_xH_y + \left(x + \dfrac{y}{4}\right)O_2 \longrightarrow x\,CO_2 + \dfrac{y}{2}\,H_2O \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Verificación con un ejemplo concreto (propano \( C_3H_8 \)):</strong>
+            <div class="formula-box">
+                <p>\( x = 3 \), \( y = 8 \)</p>
+                <p>Oxígeno: \( 3 + \dfrac{8}{4} = 5 \)</p>
+                <p>Agua: \( \dfrac{8}{2} = 4 \)</p>
+                <p style="margin-top: 10px;"><strong>\( C_3H_8 + 5\,O_2 \longrightarrow 3\,CO_2 + 4\,H_2O \)</strong></p>
+            </div>
+            <p>Verificación de átomos: C: 3=3 ✓ | H: 8=8 ✓ | O: 10=10 ✓</p>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Esta demostración es la base de los problemas de análisis elemental por combustión. Es crucial que los estudiantes comprendan que el carbono y el hidrógeno del hidrocarburo se conservan íntegramente en los productos. Un error común es olvidar que cada molécula de agua contiene <em>dos</em> átomos de hidrógeno, lo que lleva a errores en el cálculo de la fórmula empírica. Se recomienda resolver problemas numéricos paso a paso, verificando siempre la conservación de la masa total.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Ecuación general de combustión completa</strong>
+            \[ \boxed{C_xH_y + \left(x + \dfrac{y}{4}\right)O_2 \longrightarrow x\,CO_2 + \dfrac{y}{2}\,H_2O} \]
+        </div>
+        <div class="formula-box" style="margin-top: 12px;">
+            <strong>Relaciones cuantitativas fundamentales</strong>
+            <p style="text-align: left; font-size: 0.95em; margin: 10px 0 0 0;">
+                <strong>Conservación del carbono:</strong> \( n_C(\text{hidrocarburo}) = n_C(CO_2) \)<br><br>
+                <strong>Conservación del hidrógeno:</strong> \( n_H(\text{hidrocarburo}) = 2 \cdot n_H(H_2O) \)<br><br>
+                <strong>Masa de C en HC</strong> \( = m_{CO_2} \times \dfrac{12}{44} \)<br><br>
+                <strong>Masa de H en HC</strong> \( = m_{H_2O} \times \dfrac{2}{18} \)
+            </p>
+        </div>
+        <p>La demostración realizada mediante el balanceo estequiométrico basado en la conservación de átomos confirma la ecuación general de combustión y las relaciones cuantitativas que permiten determinar la composición de un hidrocarburo a partir de datos experimentales.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> La combustión completa de hidrocarburos es una reacción de gran importancia analítica que, mediante el principio de conservación de la masa, permite determinar la fórmula empírica y molecular de compuestos orgánicos desconocidos.</p>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- BLOQUE DESPLEGABLE (TAREA 1)                 -->
+    <!-- ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame — 🧪 DESMITIFICANDO la conservación de la masa en combustión de hidrocarburos</span>
+        </summary>
+
+        <!-- Ejercicio 1 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 1</span> Aplicación directa: combustión de butano</h3>
+            <p><strong>Enunciado:</strong> Se queman completamente 5,00 g de butano (\( C_4H_{10} \)). Calcula la masa de \( CO_2 \) y de \( H_2O \) que se produce.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Ecuación balanceada:</strong> \( C_4H_{10} + \frac{13}{2}O_2 \longrightarrow 4CO_2 + 5H_2O \) (o multiplicando por 2: \( 2C_4H_{10} + 13O_2 \rightarrow 8CO_2 + 10H_2O \)).</div>
+                <div class="step"><strong>2. Moles de butano:</strong> \( M(C_4H_{10}) = 4·12 + 10·1 = 58\ \text{g/mol} \). \( n = \frac{5,00}{58} = 0,08621\ \text{mol} \).</div>
+                <div class="step"><strong>3. Moles de \( CO_2 \):</strong> según la ecuación, 1 mol de butano → 4 mol de \( CO_2 \), luego \( n_{CO_2} = 0,08621·4 = 0,3448\ \text{mol} \).</div>
+                <div class="step"><strong>4. Masa de \( CO_2 \):</strong> \( M(CO_2) = 44\ \text{g/mol} \), \( m = 0,3448·44 = 15,17\ \text{g} \).</div>
+                <div class="step"><strong>5. Moles de \( H_2O \):</strong> 1 mol butano → 5 mol \( H_2O \), \( n_{H_2O} = 0,08621·5 = 0,4310\ \text{mol} \).</div>
+                <div class="step"><strong>6. Masa de \( H_2O \):</strong> \( M(H_2O) = 18\ \text{g/mol} \), \( m = 0,4310·18 = 7,76\ \text{g} \).</div>
+                <div class="step"><span class="highlight">Resultado:</span> Se producen 15,17 g de \( CO_2 \) y 7,76 g de \( H_2O \).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 2</span> Determinación de fórmula empírica a partir de productos</h3>
+            <p><strong>Enunciado:</strong> Al quemar 0,250 g de un hidrocarburo desconocido se obtienen 0,770 g de \( CO_2 \) y 0,315 g de \( H_2O \). Determina su fórmula empírica.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Masa de C:</strong> \( m_C = 0,770 \times \frac{12}{44} = 0,210\ \text{g} \).</div>
+                <div class="step"><strong>2. Masa de H:</strong> \( m_H = 0,315 \times \frac{2}{18} = 0,0350\ \text{g} \).</div>
+                <div class="step"><strong>3. Masa de O (si existiera):</strong> \( 0,250 - 0,210 - 0,0350 = 0,005\ \text{g} \) (muy pequeña, puede deberse a error experimental; en un hidrocarburo puro no hay oxígeno, pero lo consideraremos).</div>
+                <div class="step"><strong>4. Moles de cada elemento:</strong> \( n_C = \frac{0,210}{12} = 0,0175\ \text{mol} \), \( n_H = \frac{0,0350}{1} = 0,0350\ \text{mol} \), \( n_O = \frac{0,005}{16} = 0,0003125\ \text{mol} \).</div>
+                <div class="step"><strong>5. Dividir por el menor (O):</strong> C: \( \frac{0,0175}{0,0003125} \approx 56 \), H: \( \frac{0,0350}{0,0003125} \approx 112 \), O: 1. La relación es C₅₆H₁₁₂O, pero al ser un hidrocarburo (sin O) probablemente el O es error; si lo omitimos, la relación C:H es 0,0175:0,0350 = 1:2 → <span class="highlight">fórmula empírica CH₂</span>.</div>
+                <div class="step"><em>Nota:</em> Si el compuesto solo contiene C e H, la fórmula empírica es \( CH_2 \).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 3</span> Comparación de oxígeno necesario: metano vs. propano</h3>
+            <p><strong>Enunciado:</strong> Calcula el volumen de oxígeno (en condiciones normales) necesario para quemar 10 L de metano y 10 L de propano, ambos medidos en las mismas condiciones. ¿Cuál consume más oxígeno?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Ecuaciones:</strong> \( CH_4 + 2O_2 \rightarrow CO_2 + 2H_2O \) (coeficiente O₂ = 2). \( C_3H_8 + 5O_2 \rightarrow 3CO_2 + 4H_2O \) (coeficiente O₂ = 5).</div>
+                <div class="step"><strong>2. Volumen de O₂ para metano:</strong> por cada volumen de metano se necesitan 2 volúmenes de O₂ (en las mismas condiciones de presión y temperatura). \( V_{O_2} = 10 \times 2 = 20\ \text{L} \).</div>
+                <div class="step"><strong>3. Volumen de O₂ para propano:</strong> por cada volumen de propano se necesitan 5 volúmenes de O₂. \( V_{O_2} = 10 \times 5 = 50\ \text{L} \).</div>
+                <div class="step"><span class="highlight">Conclusión:</span> El propano consume 50 L frente a 20 L del metano, es decir, 2,5 veces más oxígeno para el mismo volumen de gas.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 4</span> Contexto real: emisión de \( CO_2 \) de un coche</h3>
+            <p><strong>Enunciado:</strong> Un coche consume 6,0 L de gasolina (densidad 0,74 g/mL) en un viaje. Suponiendo que la gasolina es octano (\( C_8H_{18} \)), calcula la masa de \( CO_2 \) emitida a la atmósfera.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Masa de gasolina:</strong> \( m = V \times \rho = 6,0\ \text{L} \times 1000\ \text{mL/L} \times 0,74\ \text{g/mL} = 4440\ \text{g} \).</div>
+                <div class="step"><strong>2. Moles de octano:</strong> \( M(C_8H_{18}) = 8·12 + 18·1 = 114\ \text{g/mol} \). \( n = \frac{4440}{114} = 38,95\ \text{mol} \).</div>
+                <div class="step"><strong>3. Ecuación balanceada:</strong> \( C_8H_{18} + \frac{25}{2}O_2 \rightarrow 8CO_2 + 9H_2O \). Por cada mol de octano se producen 8 mol de \( CO_2 \).</div>
+                <div class="step"><strong>4. Moles de \( CO_2 \):</strong> \( n_{CO_2} = 38,95 \times 8 = 311,6\ \text{mol} \).</div>
+                <div class="step"><strong>5. Masa de \( CO_2 \):</strong> \( m = 311,6 \times 44 = 13710\ \text{g} \approx 13,7\ \text{kg} \) de \( CO_2 \).</div>
+                <div class="step"><span class="highlight">Resultado:</span> Se emiten aproximadamente 13,7 kg de \( CO_2 \) en el viaje.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 5</span> Determinación de fórmula molecular con densidad</h3>
+            <p><strong>Enunciado:</strong> Un hidrocarburo gaseoso tiene una densidad de 1,96 g/L en condiciones normales. Al quemar 0,500 g se obtienen 1,54 g de \( CO_2 \) y 0,63 g de \( H_2O \). Determina su fórmula molecular.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Fórmula empírica (similar al ejercicio 2):</strong> \( m_C = 1,54 \times \frac{12}{44} = 0,420\ \text{g} \); \( m_H = 0,63 \times \frac{2}{18} = 0,070\ \text{g} \). \( n_C = \frac{0,420}{12} = 0,0350\ \text{mol} \); \( n_H = \frac{0,070}{1} = 0,070\ \text{mol} \). Relación 1:2 → \( CH_2 \) (empírica).</div>
+                <div class="step"><strong>2. Masa molar a partir de la densidad:</strong> en CN, 1 mol de gas ocupa 22,4 L y su masa es \( M = d \times 22,4 = 1,96 \times 22,4 = 43,9\ \text{g/mol} \).</div>
+                <div class="step"><strong>3. Comparar con la masa de la fórmula empírica:</strong> \( M(CH_2) = 14\ \text{g/mol} \). \( n = \frac{43,9}{14} \approx 3,14 \approx 3 \) (redondeando).</div>
+                <div class="step"><strong>4. Fórmula molecular:</strong> \( (CH_2)_3 = C_3H_6 \).</div>
+                <div class="step"><span class="highlight">Resultado:</span> la fórmula molecular es \( C_3H_6 \) (propeno o ciclopropano).</div>
+            </div>
+        </div>
+
+        <!-- Pie didáctico -->
+        <div class="didactic-footer">
+            <i class="fas fa-graduation-cap"></i>
+            <span><strong>Observaciones claves:</strong> La combustión es la herramienta analítica por excelencia para conocer la composición de sustancias orgánicas. La "trampa" habitual es olvidar que el hidrógeno del agua proviene del hidrocarburo y que el carbono del \( CO_2 \) también. Practicar con distintos hidrocarburos y con datos experimentales reales ayuda a consolidar el principio de conservación de la masa.</span>
+        </div>
+    </details>
+    <!-- FIN DEL BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

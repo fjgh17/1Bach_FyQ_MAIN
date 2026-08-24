@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.11. Teorema del Impulso y la Cantidad de Movimiento</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.11.- </span>
+                <span class="texto">Teorema del Impulso y la Cantidad de Movimiento</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la segunda ley de Newton en su forma general \( \vec{F} = \frac{\mathrm{d}\vec{p}}{\mathrm{d}t} \), demostrar que el impulso mecánico de una fuerza constante durante un intervalo de tiempo es igual a la variación de la cantidad de movimiento del cuerpo sobre el que actúa.</p>
+        <div class="formula-box">
+            \[ \vec{I} = \vec{F} \, \Delta t = \Delta \vec{p} = \vec{p}_f - \vec{p}_i \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c11 - Teorema del impulso y la cantidad de movimiento.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Derivar el teorema del impulso como consecuencia directa de la segunda ley de Newton, estableciendo la equivalencia entre el efecto acumulado de una fuerza durante un tiempo (impulso) y el cambio en el estado de movimiento del cuerpo (variación de momento). Este teorema es fundamental para el análisis de interacciones de corta duración como colisiones y golpes.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Segunda ley en forma de momento:</strong> La segunda ley de Newton establece que la fuerza neta es igual a la derivada temporal de la cantidad de movimiento:
+            <div class="formula-box">
+                \[ \vec{F} = \frac{\mathrm{d}\vec{p}}{\mathrm{d}t} \]
+            </div>
+            Esta forma es más general que \( \vec{F} = m\vec{a} \) porque es válida incluso cuando la masa varía.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Definición de impulso mecánico:</strong> El impulso de una fuerza durante un intervalo de tiempo \( [t_i, t_f] \) se define como la integral de la fuerza respecto al tiempo:
+            <div class="formula-box">
+                \[ \vec{I} = \int_{t_i}^{t_f} \vec{F}(t) \, \mathrm{d}t \]
+            </div>
+            Para una fuerza constante en el tiempo, esta integral se reduce a:
+            <div class="formula-box">
+                \[ \vec{I} = \vec{F} \, (t_f - t_i) = \vec{F} \, \Delta t \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Integración de la segunda ley:</strong> Sustituyendo \( \vec{F} = \frac{\mathrm{d}\vec{p}}{\mathrm{d}t} \) en la definición de impulso:
+            <div class="formula-box">
+                \[ \vec{I} = \int_{t_i}^{t_f} \frac{\mathrm{d}\vec{p}}{\mathrm{d}t} \, \mathrm{d}t = \int_{\vec{p}_i}^{\vec{p}_f} \mathrm{d}\vec{p} \]
+            </div>
+            donde \( \vec{p}_i = \vec{p}(t_i) \) y \( \vec{p}_f = \vec{p}(t_f) \).
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Evaluación de la integral:</strong> La integral de la diferencial de momento es simplemente la diferencia de momentos:
+            <div class="formula-box">
+                \[ \vec{I} = \vec{p}_f - \vec{p}_i = \Delta \vec{p} \]
+            </div>
+            Esto demuestra que el impulso de la fuerza neta es igual a la variación de la cantidad de movimiento del cuerpo.
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Forma escalar para fuerza constante:</strong> Si la fuerza es constante en magnitud y dirección durante el intervalo \( \Delta t \), podemos escribir:
+            <div class="formula-box">
+                \[ \vec{F} \, \Delta t = m\vec{v}_f - m\vec{v}_i \]
+            </div>
+            Despejando la fuerza media:
+            <div class="formula-box">
+                \[ \vec{F}_{\text{media}} = \frac{\Delta \vec{p}}{\Delta t} = \frac{m(\vec{v}_f - \vec{v}_i)}{\Delta t} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Interpretación física:</strong> El teorema del impulso establece que no es la fuerza individualmente, sino su acumulación temporal (impulso), la que determina el cambio en el movimiento. Esto explica por qué una fuerza pequeña aplicada durante mucho tiempo puede producir el mismo efecto que una fuerza grande aplicada durante un instante, siempre que el impulso sea el mismo. En colisiones, donde \( \Delta t \) es muy pequeño, las fuerzas de interacción son enormes (fuerzas impulsivas).
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que el impulso mecánico de una fuerza es igual a la variación de la cantidad de movimiento:</p>
+        <div class="formula-box">
+            \[ \boxed{\vec{I} = \vec{F} \, \Delta t = \Delta \vec{p} = m\vec{v}_f - m\vec{v}_i} \]
+        </div>
+        <p>Para fuerzas variables, el impulso se calcula como \( \vec{I} = \int_{t_i}^{t_f} \vec{F}(t) \, \mathrm{d}t \), y el teorema sigue siendo válido.</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Este teorema es especialmente útil cuando se desconocen los detalles de la fuerza durante una colisión, pero sí se conocen los estados inicial y final. Es el fundamento del análisis de colisiones en una dimensión. Se recomienda enfatizar la naturaleza vectorial del impulso: una fuerza perpendicular a la velocidad inicial cambia la dirección pero no el módulo del momento. En deportes como el tenis o el fútbol, el "efecto" de un golpe depende tanto de la fuerza como del tiempo de contacto.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Teorema del Impulso"     -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Teorema del Impulso y la Cantidad de Movimiento</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Fuerza constante y cálculo del impulso -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Aplicación directa: fuerza constante</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un cuerpo de \(2,0\,\text{kg}\) se mueve a \(3,0\,\text{m/s}\) en línea recta. Durante \(4,0\,\text{s}\) se le aplica una fuerza neta constante de \(5,0\,\text{N}\) en la misma dirección del movimiento.</p>
+                    <ul>
+                        <li>a) Calcula el impulso de la fuerza.</li>
+                        <li>b) Determina la velocidad final del cuerpo.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(I = F \Delta t = 5,0 \cdot 4,0 = 20\,\text{N·s}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Por el teorema del impulso: \(I = m(v_f - v_i) \Rightarrow 20 = 2,0(v_f - 3,0) \Rightarrow v_f - 3,0 = 10 \Rightarrow v_f = 13\,\text{m/s}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Fuerza media en un choque con rebote -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Fuerza media en un choque (rebote)</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Una pelota de \(0,20\,\text{kg}\) llega a una pared con velocidad \(15\,\text{m/s}\) y rebota con velocidad \(10\,\text{m/s}\) en sentido opuesto. El tiempo de contacto con la pared es de \(0,030\,\text{s}\).</p>
+                    <ul>
+                        <li>a) Calcula la variación de la cantidad de movimiento de la pelota.</li>
+                        <li>b) Determina la fuerza media ejercida por la pared sobre la pelota.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Tomamos como positivo el sentido inicial (hacia la pared). \(p_i = 0,20 \cdot 15 = 3,0\,\text{kg·m/s}\). \(p_f = 0,20 \cdot (-10) = -2,0\,\text{kg·m/s}\). \(\Delta p = p_f - p_i = -2,0 - 3,0 = -5,0\,\text{kg·m/s}\) (el signo indica que el cambio es en sentido contrario al inicial).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(F_{\text{media}} = \frac{\Delta p}{\Delta t} = \frac{-5,0}{0,030} \approx -166,7\,\text{N}\). La magnitud es \(1,67 \times 10^2\,\text{N}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Comparación de impulsos (mismo Δp, distintos tiempos) -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Comparación de impulsos y fuerzas medias</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un coche de \(1200\,\text{kg}\) reduce su velocidad de \(20\,\text{m/s}\) a \(5,0\,\text{m/s}\) en dos casos diferentes:</p>
+                    <ul>
+                        <li>Caso A: frenado suave durante \(4,0\,\text{s}\).</li>
+                        <li>Caso B: frenado brusco durante \(0,50\,\text{s}\).</li>
+                        <li>a) Calcula el impulso necesario en cada caso.</li>
+                        <li>b) Calcula la fuerza media en cada caso.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(\Delta p = m(v_f - v_i) = 1200(5,0 - 20) = 1200(-15) = -18000\,\text{kg·m/s}\). El impulso es el mismo en ambos casos (depende solo de Δp): \(I = -18000\,\text{N·s}\) (signo indica frenado).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Caso A: \(F_{\text{media}} = I/\Delta t = -18000/4,0 = -4500\,\text{N}\). Caso B: \(F_{\text{media}} = -18000/0,50 = -36000\,\text{N}\). La fuerza media es 8 veces mayor en el frenado brusco.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Fuerza variable (integral) -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Impulso de una fuerza variable</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Una fuerza que actúa sobre un objeto de \(0,50\,\text{kg}\) varía con el tiempo según \(F(t) = 6,0t^2\) (en newtons, con \(t\) en segundos), durante el intervalo \(0 \le t \le 2,0\,\text{s}\). El objeto parte del reposo.</p>
+                    <ul>
+                        <li>a) Calcula el impulso total sobre el objeto.</li>
+                        <li>b) Determina la velocidad del objeto al final del intervalo.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(I = \int_0^{2,0} 6,0t^2 \, dt = 6,0 \left[ \frac{t^3}{3} \right]_0^{2,0} = 6,0 \cdot \frac{8,0}{3} = 16\,\text{N·s}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Por el teorema del impulso: \(I = m(v_f - v_i)\) con \(v_i = 0\). \(16 = 0,50 \cdot v_f \Rightarrow v_f = 32\,\text{m/s}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Sistema de dos cuerpos (impulso en cada uno) -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Impulso en una colisión (dos cuerpos)</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Dos carros de masas \(m_1 = 1,0\,\text{kg}\) y \(m_2 = 2,0\,\text{kg}\) se mueven en sentidos opuestos sobre una vía sin rozamiento. \(m_1\) lleva velocidad \(4,0\,\text{m/s}\) hacia la derecha y \(m_2\) lleva \(3,0\,\text{m/s}\) hacia la izquierda. Chocan frontalmente y después del choque \(m_1\) se mueve a \(2,0\,\text{m/s}\) hacia la izquierda.</p>
+                    <ul>
+                        <li>a) Calcula la velocidad final de \(m_2\) usando conservación del momento.</li>
+                        <li>b) Determina el impulso que recibe \(m_1\) durante el choque.</li>
+                        <li>c) ¿Cuál es el impulso que recibe \(m_2\)? (relación con la tercera ley).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Tomamos positivo hacia la derecha. \(p_i = 1,0 \cdot 4,0 + 2,0 \cdot (-3,0) = 4,0 - 6,0 = -2,0\,\text{kg·m/s}\). Después, \(v_1' = -2,0\,\text{m/s}\). \(p_f = 1,0(-2,0) + 2,0 v_2' = -2,0 + 2,0 v_2'\). Igualando: \(-2,0 = -2,0 + 2,0 v_2' \Rightarrow v_2' = 0\,\text{m/s}\). El segundo carro queda en reposo.
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Impulso sobre \(m_1\): \(I_1 = m_1(v_1' - v_1) = 1,0(-2,0 - 4,0) = -6,0\,\text{N·s}\) (hacia la izquierda).
+                    </div>
+                    <div class="paso">
+                        <strong>c)</strong> Por la tercera ley, el impulso sobre \(m_2\) es igual y opuesto: \(I_2 = +6,0\,\text{N·s}\). Comprobamos: \(I_2 = m_2(v_2' - v_2) = 2,0(0 - (-3,0)) = 6,0\,\text{N·s}\). Correcto.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> El impulso mide la acumulación de fuerza en el tiempo y es igual al cambio en la cantidad de movimiento. Una misma variación de momento se puede lograr con fuerzas grandes en tiempos cortos o fuerzas pequeñas en tiempos largos. El teorema del impulso es especialmente útil para calcular fuerzas medias en colisiones, donde el tiempo de contacto es muy breve.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

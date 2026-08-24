@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T06.05 - Aceleración centrípeta en movimiento circular uniforme</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+            color: #ffecb0;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 300;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 4px;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.8em;
+            line-height: 1.7;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* =========================================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (añadido)
+           ========================================================= */
+        details {
+            margin: 30px 15px 20px 15px;
+            background: #ffffff;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            padding: 0.2rem 0.2rem 0.5rem 0.2rem;
+            box-shadow: 0 6px 14px rgba(102, 126, 234, 0.2);
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            background: #f0f4ff;
+            border-radius: 18px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .fa-chevron-circle-down {
+            font-size: 1.6rem;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details summary .icon-pulsame {
+            background: #667eea;
+            color: white;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        details .details-content {
+            padding: 0.5rem 1.8rem 2rem 1.8rem;
+        }
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .exercise-card {
+            background: #f9fcff;
+            border: 1px solid #dce7f2;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem 1.8rem;
+            margin: 1.8rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .exercise-card .ex-title {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin-bottom: 0.4rem;
+        }
+        .exercise-card .ex-title .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 40px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.85rem;
+        }
+        .exercise-card .enunciado {
+            background: #f1f6fd;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            margin: 0.6rem 0 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        .exercise-card .solucion {
+            background: #eef3f9;
+            padding: 0.8rem 1.5rem;
+            border-radius: 14px;
+            border: 1px solid #d3e0ee;
+            margin-top: 0.8rem;
+        }
+        .exercise-card .solucion .paso {
+            margin: 0.5rem 0;
+        }
+        .exercise-card .solucion .paso strong {
+            color: #2b3a67;
+        }
+        .clave-didactica {
+            background: #e6f0fa;
+            padding: 1rem 1.8rem;
+            border-radius: 40px;
+            margin-top: 1.8rem;
+            font-weight: 500;
+            color: #1a365d;
+            border-left: 6px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T06.05.- </span>
+                <span class="texto">Aceleración centrípeta en movimiento circular uniforme</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- SECCIÓN ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de velocidad tangencial constante en módulo y del análisis geométrico del cambio de dirección del vector velocidad en un movimiento circular, demostrar que la aceleración normal (centrípeta) viene dada por:</p>
+        <div class="formula-box">\[ a_c = \frac{v^2}{r} = \omega^2 r \]</div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U06c05 - Aceleración centrípeta en movimiento circular uniforme.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- SECCIÓN OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Deducir la expresión de la aceleración que aparece en todo movimiento curvilíneo debido exclusivamente al cambio de dirección de la velocidad, demostrando que en el caso circular uniforme su módulo depende del cuadrado de la velocidad tangencial e inversamente del radio.</p>
+    </div>
+
+    <!-- SECCIÓN PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Configuración del movimiento</strong>
+            <p>Consideremos una partícula que describe una circunferencia de radio \( r \) con velocidad tangencial de módulo constante \( v \). En dos instantes consecutivos, los vectores velocidad \( \vec{v}_1 \) y \( \vec{v}_2 \) son tangentes a la trayectoria y forman un ángulo \( \Delta\theta \).</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Análisis vectorial de la velocidad</strong>
+            <p>Trasladamos los vectores velocidad a un origen común. El vector diferencia \( \Delta\vec{v} = \vec{v}_2 - \vec{v}_1 \) apunta hacia el centro de la circunferencia. Para ángulos pequeños, el módulo de este vector se aproxima al arco de la circunferencia de radio \( v \):</p>
+            <div class="formula-box">\[ |\Delta\vec{v}| \approx v \cdot \Delta\theta \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Intervalo de tiempo</strong>
+            <p>El tiempo empleado en recorrer el arco de la trayectoria \( \Delta s = r\Delta\theta \) con velocidad constante \( v \) es:</p>
+            <div class="formula-box">\[ \Delta t = \frac{\Delta s}{v} = \frac{r\Delta\theta}{v} \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Aceleración radial</strong>
+            <p>La aceleración media en dirección radial se calcula como el cociente entre el cambio de velocidad y el tiempo transcurrido:</p>
+            <div class="formula-box">\[ a_c = \frac{|\Delta\vec{v}|}{\Delta t} = \frac{v\Delta\theta}{\frac{r\Delta\theta}{v}} \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Simplificación de la expresión</strong>
+            <p>Simplificando \( \Delta\theta \) y reordenando:</p>
+            <div class="formula-box">\[ a_c = \frac{v^2}{r} \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Relación con la velocidad angular</strong>
+            <p>Utilizando la relación entre velocidad lineal y angular \( v = \omega r \), sustituimos en la expresión anterior:</p>
+            <div class="formula-box">\[ a_c = \frac{(\omega r)^2}{r} = \omega^2 r \]</div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN RESULTADO -->
+    <div class="section resultado">
+        <h2>📊 Resultado</h2>
+        <div class="formula-box" style="border-color: #38b2ac; border-width: 3px; background: #e6fffa;">\[ a_c = \frac{v^2}{r} = \omega^2 r \]</div>
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Aunque el módulo de la velocidad no varía en el MCU, existe aceleración porque cambia la dirección del vector velocidad. La aceleración centrípeta siempre apunta hacia el centro de la curva y es perpendicular a la velocidad en cada instante.
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- BLOQUE DESPLEGABLE (añadido según la TAREA 1)             -->
+    <!-- ========================================================= -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO Aceleración centrípeta en movimiento circular uniforme</span>
+            <span class="icon-pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Cálculo directo a partir de la velocidad lineal y el radio</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un coche toma una curva de \( 80 \, \text{m} \) de radio con una rapidez constante de \( 72 \, \text{km/h} \). Calcula la aceleración centrípeta en \( \text{m/s}^2 \).</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Convertimos la velocidad a m/s: \( 72 \, \text{km/h} = 72/3.6 = 20 \, \text{m/s} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Datos: \( v = 20 \, \text{m/s} \), \( r = 80 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> Aplicamos la fórmula \( a_c = \frac{v^2}{r} = \frac{20^2}{80} = \frac{400}{80} = 5.0 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( a_c = 5.0 \, \text{m/s}^2 \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Uso de la velocidad angular y el radio</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Una piedra atada a una cuerda de \( 1.5 \, \text{m} \) gira con una velocidad angular constante de \( 4.0 \, \text{rad/s} \). Calcula la aceleración centrípeta.</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( \omega = 4.0 \, \text{rad/s} \), \( r = 1.5 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Usamos la forma \( a_c = \omega^2 r = (4.0)^2 \cdot 1.5 = 16 \cdot 1.5 = 24 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( a_c = 24 \, \text{m/s}^2 \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Despeje de la velocidad a partir de la aceleración centrípeta</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Una atracción de feria tiene una aceleración centrípeta máxima de \( 15 \, \text{m/s}^2 \) y un radio de \( 6.0 \, \text{m} \). ¿Cuál es la rapidez máxima a la que puede girar?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( a_c = 15 \, \text{m/s}^2 \), \( r = 6.0 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> De \( a_c = \frac{v^2}{r} \) despejamos \( v = \sqrt{a_c \cdot r} = \sqrt{15 \cdot 6.0} = \sqrt{90} \approx 9.49 \, \text{m/s} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( v \approx 9.5 \, \text{m/s} \) (unos \( 34 \, \text{km/h} \)).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Comparación de aceleraciones centrípetas para diferentes radios</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Dos coches toman curvas con la misma rapidez de \( 25 \, \text{m/s} \). El coche A toma una curva de \( 50 \, \text{m} \) de radio y el coche B una de \( 75 \, \text{m} \). ¿Cuál tiene mayor aceleración centrípeta y cuánto vale cada una?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Para A: \( a_{cA} = \frac{25^2}{50} = \frac{625}{50} = 12.5 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Para B: \( a_{cB} = \frac{25^2}{75} = \frac{625}{75} \approx 8.33 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> El coche A tiene mayor aceleración centrípeta ( \( 12.5 \, \text{m/s}^2 \) vs \( 8.33 \, \text{m/s}^2 \) ).</div>
+                    <div class="paso"><strong>Resultados:</strong> A: \( 12.5 \, \text{m/s}^2 \), B: \( 8.33 \, \text{m/s}^2 \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Despeje del radio a partir de la aceleración y la velocidad</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un objeto describe un MCU con una rapidez de \( 12 \, \text{m/s} \) y una aceleración centrípeta de \( 8.0 \, \text{m/s}^2 \). ¿Cuál es el radio de la trayectoria?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( v = 12 \, \text{m/s} \), \( a_c = 8.0 \, \text{m/s}^2 \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> De \( a_c = \frac{v^2}{r} \) despejamos \( r = \frac{v^2}{a_c} = \frac{12^2}{8.0} = \frac{144}{8.0} = 18 \, \text{m} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( r = 18 \, \text{m} \).</div>
+                </div>
+            </div>
+
+            <!-- Pie didáctico -->
+            <div class="clave-didactica">
+                <i class="fas fa-lightbulb" style="margin-right: 0.6rem; color: #f1c40f;"></i>
+                <strong>Observaciones claves:</strong> En el MCU, aunque la rapidez sea constante, existe aceleración porque la velocidad cambia de dirección. La aceleración centrípeta siempre apunta al centro de la circunferencia y su módulo es \( v^2/r \) o \( \omega^2 r \). La "trampa" mental es pensar que si la rapidez no cambia, no hay aceleración. Estos ejercicios muestran cómo calcular la aceleración centrípeta en diferentes situaciones y cómo despejar cualquiera de las variables involucradas.
+            </div>
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

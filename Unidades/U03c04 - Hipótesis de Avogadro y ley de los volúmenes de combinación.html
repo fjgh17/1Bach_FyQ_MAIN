@@ -1,0 +1,623 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 4: Hipótesis de Avogadro y Ley de los Volúmenes</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        .avogadro-principle {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL DESPLEGABLE INTERACTIVO
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: 1.15em;
+            color: #2d3748;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #4a5568;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 20px 25px;
+            background: white;
+        }
+        .exercise-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .exercise-header {
+            background: #4a5568;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .exercise-header .badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.85em;
+        }
+        .exercise-body {
+            padding: 18px 20px;
+        }
+        .exercise-body .statement {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .exercise-body .resolution {
+            background: #f0fff4;
+            padding: 15px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .exercise-body .resolution .math {
+            margin: 8px 0;
+        }
+        .didactic-footer {
+            background: #ebf4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-left: 5px solid #3182ce;
+            font-style: italic;
+        }
+        .didactic-footer strong {
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T03.04.- </span>
+                <span class="texto">Hipótesis de Avogadro y Ley de los Volúmenes</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES TRANSFORMADAS ===== -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la <strong>Ley de los Volúmenes de Combinación de Gay-Lussac</strong> (los volúmenes de los gases que reaccionan y se producen, medidos en las mismas condiciones de presión y temperatura, están en relación de números enteros sencillos) y de la naturaleza molecular de los gases, demostrar que <strong>volúmenes iguales de gases diferentes, en las mismas condiciones de presión y temperatura, contienen el mismo número de moléculas</strong>, y que por tanto la relación entre volúmenes gaseosos coincide con la relación entre coeficientes estequiométricos.</p>
+        <div class="formula-box">
+            Si \( V_1 = V_2 \) a la misma \( p \) y \( T \), entonces:
+            \[ N_1 = N_2 \quad \text{(mismo número de moléculas)} \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U03c04 - Hipótesis de Avogadro y ley de los volúmenes de combinación.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta demostración permite:</p>
+        <ul>
+            <li>Justificar por qué los <strong>coeficientes estequiométricos</strong> en una ecuación química representan simultáneamente <strong>proporciones molares y volumétricas</strong> para gases.</li>
+            <li>Comprender que la <strong>molécula diatómica</strong> de los elementos gaseosos (H₂, N₂, O₂, Cl₂, etc.) es necesaria para conciliar las proporciones volumétricas con las masas atómicas.</li>
+            <li>Establecer el <strong>concepto de mol</strong> como puente entre el mundo microscópico (moléculas) y el macroscópico (volúmenes medibles).</li>
+        </ul>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Partimos de la Ley de Gay-Lussac</strong>. Experimentalmente se observa que en reacciones con gases:
+            <div class="formula-box">
+                \[ \text{N}_2 + 3\text{H}_2 \rightarrow 2\text{NH}_3 \]
+                \[ 1 \text{ volumen} + 3 \text{ volúmenes} \rightarrow 2 \text{ volúmenes} \]
+            </div>
+            <p>La relación de volúmenes es <strong>1 : 3 : 2</strong>, números enteros sencillos.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Planteamos el problema de las partículas</strong>. Si suponemos (erróneamente, según Dalton) que los gases son monoatómicos, la reacción anterior implicaría:
+            <div class="formula-box">
+                \[ \text{N} + 3\text{H} \rightarrow 2\text{NH}_{\frac{3}{2}} \quad \text{(imposible)} \]
+            </div>
+            <p>Esto genera <strong>fórmulas fraccionarias</strong>, inaceptables. La solución: los gases elementales son <strong>diatómicos</strong>.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Postulamos la hipótesis de Avogadro</strong>. Supongamos que volúmenes iguales de gases, a igual presión y temperatura, contienen el mismo número de <strong>moléculas</strong> (no átomos). Esto implica que:
+            <div class="avogadro-principle">
+                <strong>Hipótesis de Avogadro:</strong><br>
+                \[ \frac{V_1}{N_1} = \frac{V_2}{N_2} = \text{cte.} \quad \text{(a } p, T \text{ constantes)} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Verificamos la consistencia con la reacción de amoníaco</strong>. Si los gases son diatómicos:
+            <div class="formula-box">
+                \[ \text{N}_2 + 3\text{H}_2 \rightarrow 2\text{NH}_3 \]
+                \[ 1 \text{ molécula} + 3 \text{ moléculas} \rightarrow 2 \text{ moléculas} \]
+            </div>
+            <p>Contando átomos: N (2 a cada lado), H (6 a cada lado). <strong>La ecuación está ajustada</strong> y las proporciones volumétricas coinciden con las moleculares.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Generalizamos a cualquier reacción gaseosa</strong>. Para una reacción genérica:
+            <div class="formula-box">
+                \[ a\text{A}_{(g)} + b\text{B}_{(g)} \rightarrow c\text{C}_{(g)} + d\text{D}_{(g)} \]
+            </div>
+            <p>Aplicando la hipótesis de Avogadro, si \( n \) moles de A ocupan un volumen \( V \), entonces:</p>
+            <div class="formula-box">
+                \[ \frac{V_{\text{A}}}{a} = \frac{V_{\text{B}}}{b} = \frac{V_{\text{C}}}{c} = \frac{V_{\text{D}}}{d} = V_m \]
+            </div>
+            <p>donde \( V_m \) es el <strong>volumen molar</strong> a esas condiciones de \( p \) y \( T \).</p>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Demostramos la equivalencia coeficientes-volúmenes</strong>. Como el número de moles es proporcional al número de moléculas ( \( n = \frac{N}{N_{\text{A}}} \) ), y por la hipótesis de Avogadro el número de moléculas es proporcional al volumen, se tiene:
+            <div class="formula-box">
+                \[ \frac{V_{\text{A}}}{V_{\text{B}}} = \frac{n_{\text{A}}}{n_{\text{B}}} = \frac{a}{b} \]
+            </div>
+            <p>Es decir, <strong>la relación de volúmenes es igual a la relación de coeficientes estequiométricos</strong>.</p>
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que, para gases en las mismas condiciones de presión y temperatura:</p>
+        <div class="formula-box">
+            \[ \frac{V_1}{n_1} = \frac{V_2}{n_2} = V_m = \text{constante} \]
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">Volúmenes iguales de gases distintos contienen el mismo número de moléculas y la relación de volúmenes en una reacción coincide con los coeficientes estequiométricos.</p>
+        <div class="formula-box">
+            \[ a\text{A}_{(g)} + b\text{B}_{(g)} \rightarrow c\text{C}_{(g)} \implies \frac{V_{\text{A}}}{a} = \frac{V_{\text{B}}}{b} = \frac{V_{\text{C}}}{c} \]
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  La hipótesis de Avogadro fue revolucionaria porque resolvió la paradoja de las proporciones volumétricas fraccionarias que surgían al aplicar la teoría atómica de Dalton (quien negaba la existencia de moléculas diatómicas de elementos). Es esencial enfatizar que esta hipótesis solo es válida para <strong>gases ideales</strong> y que el volumen molar en condiciones normales (0 °C, 1 atm) es aproximadamente 22,4 L/mol. Esta constante es el puente fundamental entre mediciones macroscópicas (volúmenes) y el concepto de mol.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="flex: 1;">🧪 DESMITIFICANDO Hipótesis de Avogadro y Ley de los Volúmenes</span>
+            <span style="font-size: 0.9em; color: #4a5568; background: #e2e8f0; padding: 2px 12px; border-radius: 20px;">
+                <i class="fas fa-hand-pointer"></i> Púlsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Aplicación de la ley de volúmenes en la síntesis de amoniaco</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> En la reacción \( \text{N}_2 + 3\text{H}_2 \rightarrow 2\text{NH}_3 \), se hacen reaccionar 8,0 L de nitrógeno con 25,0 L de hidrógeno, ambos medidos en las mismas condiciones de presión y temperatura.</p>
+                        <ul>
+                            <li>a) Determinar qué reactivo está en exceso y en qué cantidad (volumen).</li>
+                            <li>b) Calcular el volumen de amoniaco que se formará.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Según la estequiometría, 1 L de N₂ reacciona con 3 L de H₂. Por tanto, 8,0 L de N₂ necesitarían \( 8,0 \times 3 = 24,0 \) L de H₂. Como disponemos de 25,0 L, el hidrógeno está en exceso en 1,0 L.</li>
+                            <li>El reactivo limitante es el N₂. Con 8,0 L de N₂ se forman \( 8,0 \times 2 = 16,0 \) L de NH₃.</li>
+                            <li>Respuesta: sobra 1,0 L de H₂; se forman 16,0 L de NH₃.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Reacción de formación de agua y reactivo limitante</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> En la reacción \( 2\text{H}_2 + \text{O}_2 \rightarrow 2\text{H}_2\text{O} \), se introducen 12,0 L de hidrógeno y 8,0 L de oxígeno en las mismas condiciones.</p>
+                        <ul>
+                            <li>a) ¿Qué gas sobra y en qué volumen?</li>
+                            <li>b) ¿Qué volumen de vapor de agua se obtiene?</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Por la estequiometría, 2 L de H₂ reaccionan con 1 L de O₂. Con 12 L de H₂ se necesitan \( 12/2 = 6 \) L de O₂. Como hay 8 L, el oxígeno está en exceso en 2,0 L.</li>
+                            <li>El hidrógeno es el limitante. Con 12 L de H₂ se forman 12 L de H₂O (porque la relación H₂:H₂O es 2:2 = 1:1).</li>
+                            <li>Respuesta: sobran 2,0 L de O₂; se forman 12,0 L de H₂O.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Comparación de moléculas en volúmenes iguales</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Se tienen tres recipientes del mismo volumen (2,0 L) a la misma temperatura y presión, conteniendo respectivamente: He(g), N₂(g) y CO₂(g).</p>
+                        <ul>
+                            <li>a) ¿Contienen el mismo número de moléculas? Justificar.</li>
+                            <li>b) ¿Qué recipiente tiene mayor masa? (masas molares: He=4, N₂=28, CO₂=44 g/mol).</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>a) Según la hipótesis de Avogadro, volúmenes iguales a igual p y T contienen el mismo número de moléculas. Por tanto, los tres recipientes tienen el mismo número de moléculas.</li>
+                            <li>b) Como el número de moléculas es el mismo, la masa es proporcional a la masa molar. El CO₂ tiene la mayor masa molar (44), luego el recipiente de CO₂ tiene mayor masa.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Relación de volúmenes en una reacción de combustión</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> La combustión del eteno (C₂H₄) con oxígeno produce CO₂ y H₂O según: \( \text{C}_2\text{H}_4 + 3\text{O}_2 \rightarrow 2\text{CO}_2 + 2\text{H}_2\text{O} \).</p>
+                        <ul>
+                            <li>a) Si se queman 5,0 L de eteno (medidos a 1 atm y 25 °C), ¿qué volumen de oxígeno se consume en las mismas condiciones?</li>
+                            <li>b) ¿Qué volumen total de productos (CO₂ + H₂O) se obtiene?</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>a) Por la estequiometría, 1 L de C₂H₄ consume 3 L de O₂. Luego 5,0 L consumen \( 5,0 \times 3 = 15,0 \) L de O₂.</li>
+                            <li>b) Se producen 2 L de CO₂ y 2 L de H₂O por cada L de C₂H₄, es decir, 4 L de productos (gaseosos) por cada L de reactivo. Por tanto, con 5,0 L de eteno se obtienen \( 5,0 \times 4 = 20,0 \) L de productos (sumando CO₂ y H₂O).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Determinación de la fórmula de un hidrocarburo a partir de volúmenes</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Al reaccionar 10,0 mL de un hidrocarburo gaseoso (CₓHᵧ) con 50,0 mL de oxígeno (en exceso) se producen 30,0 mL de CO₂ y 40,0 mL de H₂O (todos los volúmenes medidos en las mismas condiciones).</p>
+                        <ul>
+                            <li>Determinar la fórmula molecular del hidrocarburo.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Por la ley de volúmenes, los coeficientes estequiométricos son proporcionales a los volúmenes (en las mismas condiciones).</li>
+                            <li>Para el C: cada mol de CO₂ contiene 1 mol de C. Volumen de CO₂ = 30 mL → x = 30/10 = 3 (por cada 10 mL de hidrocarburo).</li>
+                            <li>Para el H: cada mol de H₂O contiene 2 moles de H. Volumen de H₂O = 40 mL → y = (40/10) × 2 = 8.</li>
+                            <li>Fórmula: C₃H₈ (propano). Comprobación: \( \text{C}_3\text{H}_8 + 5\text{O}_2 \rightarrow 3\text{CO}_2 + 4\text{H}_2\text{O} \). Volúmenes: 1 : 5 : 3 : 4. Con 10 mL de C₃H₈ se necesitarían 50 mL de O₂ (coincide) y se producirían 30 mL de CO₂ y 40 mL de H₂O (coincide).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="didactic-footer">
+                <strong>🧠 Observaciones claves:</strong> La hipótesis de Avogadro nos permite <strong>leer las ecuaciones químicas en términos de volúmenes</strong> cuando todos los reactivos y productos son gases en las mismas condiciones. Esto simplifica enormemente los cálculos estequiométricos y conecta directamente la teoría atómica con las mediciones experimentales de laboratorio. El error común es olvidar que los gases elementales son diatómicos (H₂, N₂, O₂, etc.), lo que llevaría a relaciones fraccionarias imposibles.
+            </div>
+
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

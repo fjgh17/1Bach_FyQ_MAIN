@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 7: Potencia Media e Instantánea</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.07.- </span>
+                    <span class="texto">Demostración 7: Potencia Media e Instantánea</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de trabajo mecánico \( W = F \cdot \Delta x \cdot \cos\alpha \), demostrar que la potencia media desarrollada por una fuerza durante un intervalo de tiempo \( \Delta t \) es:</p>
+            <div class="formula-box">
+                \[ P_m = \frac{W}{\Delta t} \]
+            </div>
+            <p>Y que, cuando la fuerza es constante y paralela a la velocidad, la potencia instantánea se expresa como:</p>
+            <div class="formula-box">
+                \[ P = F \cdot v \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c07 - Potencia media e instantánea.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Comprender que la potencia cuantifica la rapidez con la que se realiza trabajo o se transfiere energía. Distinguir entre potencia media (valor promedio en un intervalo) e instantánea (valor en un instante determinado), y establecer la conexión práctica entre potencia, fuerza y velocidad en situaciones como vehículos, motores y máquinas.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definición conceptual de potencia</strong>
+                <p>La potencia es una magnitud escalar que indica la cantidad de trabajo realizado por unidad de tiempo. Dos máquinas pueden realizar el mismo trabajo, pero la más potente lo hace en menos tiempo.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Derivación de la potencia media</strong>
+                <p>Consideramos un trabajo total \( W \) realizado durante un intervalo de tiempo \( \Delta t = t_f - t_i \). La potencia media es el cociente:</p>
+                <div class="formula-box">
+                    \[ P_m = \frac{W}{\Delta t} \]
+                </div>
+                <p>Sustituyendo la expresión del trabajo para una fuerza constante y paralela al desplazamiento (\( \alpha = 0^{\circ} \)):</p>
+                <div class="formula-box">
+                    \[ P_m = \frac{F \cdot \Delta x}{\Delta t} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Relación con la velocidad media</strong>
+                <p>Recordando que la velocidad media es \( v_m = \frac{\Delta x}{\Delta t} \), sustituimos:</p>
+                <div class="formula-box">
+                    \[ P_m = F \cdot \frac{\Delta x}{\Delta t} = F \cdot v_m \]
+                </div>
+                <p>La potencia media es el producto de la fuerza por la velocidad media del cuerpo, siempre que ambas magnitudes sean paralelas.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Derivación de la potencia instantánea</strong>
+                <p>La potencia instantánea se obtiene tomando el límite cuando el intervalo de tiempo tiende a cero, es decir, derivando el trabajo con respecto al tiempo:</p>
+                <div class="formula-box">
+                    \[ P = \lim_{\Delta t \to 0} \frac{\Delta W}{\Delta t} = \frac{dW}{dt} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Expresión diferencial del trabajo</strong>
+                <p>Para un desplazamiento infinitesimal \( dx \) en un tiempo \( dt \), el trabajo elemental es:</p>
+                <div class="formula-box">
+                    \[ dW = F \cdot dx \cdot \cos\alpha \]
+                </div>
+                <p>Dividiendo por \( dt \):</p>
+                <div class="formula-box">
+                    \[ P = \frac{dW}{dt} = F \cdot \frac{dx}{dt} \cdot \cos\alpha = F \cdot v \cdot \cos\alpha \]
+                </div>
+                <p>donde \( v = \frac{dx}{dt} \) es la velocidad instantánea.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Caso particular: fuerza paralela a la velocidad</strong>
+                <p>Cuando la fuerza es paralela a la velocidad (\( \alpha = 0^{\circ} \), \( \cos 0^{\circ} = 1 \)), la expresión se simplifica a:</p>
+                <div class="formula-box">
+                    \[ P = F \cdot v \]
+                </div>
+                <p>Esta es la fórmula más utilizada en problemas de motores, vehículos y máquinas, donde la fuerza motriz actúa en la dirección del movimiento.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Interpretación física y unidades</strong>
+                <p>Analizamos las unidades en el SI:</p>
+                <div class="formula-box">
+                    \[ [P] = \frac{[W]}{[t]} = \frac{\text{J}}{\text{s}} = \text{W (watio)} \]
+                </div>
+                <p>Otras unidades de uso común:</p>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li><strong>1 CV (caballo de vapor):</strong> \( 1 \, \text{CV} = 735.5 \, \text{W} \) (unidad técnica, aún usada en automoción)</li>
+                    <li><strong>1 HP (horsepower):</strong> \( 1 \, \text{HP} = 746 \, \text{W} \) (unidad anglosajona)</li>
+                    <li><strong>1 kW:</strong> \( 1000 \, \text{W} \)</li>
+                </ul>
+            </div>
+
+            <div class="step">
+                <span class="step-num">8</span>
+                <strong>Aplicación práctica: potencia constante y velocidad variable</strong>
+                <p>Para un motor que desarrolla potencia constante \( P \), la fuerza que puede ejercer disminuye al aumentar la velocidad:</p>
+                <div class="formula-box">
+                    \[ F = \frac{P}{v} \]
+                </div>
+                <p>Esto explica por qué los vehículos necesitan cambiar de marcha: a bajas velocidades se requiere gran fuerza (arranque, subida de pendientes), mientras que a altas velocidades la fuerza necesaria es menor pero se requiere mantener la velocidad contra la resistencia del aire.</p>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ P_m = \frac{W}{\Delta t} = F \cdot v_m \]
+            </div>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ P = F \cdot v \quad (\text{fuerza paralela a la velocidad}) \]
+            </div>
+            <p>La potencia media es el trabajo realizado dividido por el tiempo empleado, equivalente al producto de fuerza por velocidad media. La potencia instantánea es la derivada temporal del trabajo, y cuando la fuerza actúa paralelamente a la velocidad, se expresa simplemente como el producto de fuerza por velocidad instantánea.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es fundamental que los estudiantes distingan entre trabajo (energía transferida, medida en julios) y potencia (rapidez de transferencia, medida en vatios). Un error común es confundir kW con kW·h: el primero es potencia, el segundo es energía (potencia × tiempo). El ejercicio 43 del libro de texto es excelente para detectar esta confusión: "60 kW·h" no es una potencia, sino una energía. Se recomienda usar ejemplos cotidianos (potencia de una bombilla, de un coche, de una central eléctrica) para fijar la escala de esta magnitud.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO la potencia media e instantánea</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Potencia media al subir un objeto -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Potencia media de una grúa</span>
+                </div>
+                <p><strong>Enunciado:</strong> Una grúa eleva un bloque de 800 kg desde el suelo hasta una altura de 15 m en 12 segundos. Calcula:</p>
+                <ul>
+                    <li>a) El trabajo realizado por la grúa.</li>
+                    <li>b) La potencia media desarrollada en vatios y en CV.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) \( W = m g h = 800 \cdot 9,8 \cdot 15 = 117\,600 \, \text{J} \).</p>
+                    <p>b) \( P_m = \frac{W}{\Delta t} = \frac{117\,600}{12} = 9\,800 \, \text{W} = 9,8 \, \text{kW} \).</p>
+                    <p>En CV: \( P_m = \frac{9\,800}{735,5} \approx 13,3 \, \text{CV} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Potencia instantánea de un coche -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Potencia instantánea de un automóvil</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un coche de 1400 kg acelera en un momento dado con una aceleración de 2,0 m/s² sobre una carretera horizontal. Si en ese instante su velocidad es de 25 m/s y la fuerza de rozamiento total es de 600 N, calcula la potencia instantánea desarrollada por el motor.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La fuerza motriz se obtiene de la segunda ley de Newton: \( F_{\text{motor}} - F_r = m a \).</p>
+                    <p>\( F_{\text{motor}} = m a + F_r = 1400 \cdot 2,0 + 600 = 2\,800 + 600 = 3\,400 \, \text{N} \).</p>
+                    <p>Potencia instantánea (paralela a la velocidad): \( P = F_{\text{motor}} \cdot v = 3\,400 \cdot 25 = 85\,000 \, \text{W} = 85 \, \text{kW} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Relación P = F·v para velocidad constante -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Potencia de una escalera mecánica</span>
+                </div>
+                <p><strong>Enunciado:</strong> Una escalera mecánica transporta personas con una masa total de 600 kg (incluida la propia estructura, pero en carga) subiendo verticalmente 5,0 m en 8,0 s con velocidad constante. Calcula la potencia del motor (despreciando rozamientos).</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La fuerza que debe ejercer el motor es igual al peso: \( F = m g = 600 \cdot 9,8 = 5\,880 \, \text{N} \).</p>
+                    <p>La velocidad de subida es constante: \( v = \frac{\Delta h}{\Delta t} = \frac{5,0}{8,0} = 0,625 \, \text{m/s} \).</p>
+                    <p>Potencia: \( P = F \cdot v = 5\,880 \cdot 0,625 = 3\,675 \, \text{W} = 3,675 \, \text{kW} \).</p>
+                    <p>(Alternativamente, \( P = \frac{W}{t} = \frac{m g h}{t} = \frac{600 \cdot 9,8 \cdot 5}{8} = 3\,675 \, \text{W} \)).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Comparación de potencias para el mismo trabajo -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Misma energía, distinto tiempo</span>
+                </div>
+                <p><strong>Enunciado:</strong> Una bombilla LED consume 60 J de energía cada segundo. Una lavadora realiza un trabajo de 720 kJ en 3 minutos. ¿Cuál de los dos dispositivos tiene mayor potencia?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Bombilla: \( P = \frac{60 \, \text{J}}{1 \, \text{s}} = 60 \, \text{W} \).</p>
+                    <p>Lavadora: \( W = 720\,000 \, \text{J} \), \( t = 3 \cdot 60 = 180 \, \text{s} \).</p>
+                    <p>\( P = \frac{720\,000}{180} = 4\,000 \, \text{W} = 4 \, \text{kW} \).</p>
+                    <p>La lavadora tiene mucha mayor potencia (4 kW frente a 60 W), aunque realiza el mismo tipo de trabajo (mecánico) pero en un tiempo mucho menor relativo.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Velocidad máxima con potencia limitada -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Velocidad máxima de un vehículo</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un coche de 1200 kg tiene un motor que desarrolla una potencia máxima de 60 kW. Cuando circula a velocidad constante por una carretera horizontal, la fuerza de rozamiento total (incluyendo resistencia aerodinámica) es de 750 N. Calcula la velocidad máxima teórica que puede alcanzar en estas condiciones.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>A velocidad constante, la fuerza del motor iguala a la fuerza de rozamiento: \( F_{\text{motor}} = F_r = 750 \, \text{N} \).</p>
+                    <p>Usando \( P = F \cdot v \), despejamos \( v = \frac{P}{F} = \frac{60\,000}{750} = 80 \, \text{m/s} \).</p>
+                    <p>En km/h: \( 80 \cdot 3,6 = 288 \, \text{km/h} \).</p>
+                    <p>(La velocidad real sería menor debido a que la resistencia aumenta con la velocidad).</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> La potencia es la "velocidad del trabajo". Distinguir entre \( P = W/t \) (media) y \( P = F v \) (instantánea) es fundamental, pero lo más importante es entender que <em>no es lo mismo energía que potencia</em>. Un error muy común es confundir kW·h (energía) con kW (potencia). El ejercicio 43 del libro es una trampa perfecta para detectar esto: "60 kW·h" es una cantidad de energía (equivalente a 216 MJ), ¡no una potencia! En la vida cotidiana, la potencia de los electrodomésticos (en W o kW) nos indica su consumo por unidad de tiempo, mientras que la energía consumida es la potencia multiplicada por el tiempo (en kW·h).
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

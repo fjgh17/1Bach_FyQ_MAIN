@@ -1,0 +1,651 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 2: Ley de las Proporciones Múltiples</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+        .comparison-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL DESPLEGABLE INTERACTIVO
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: 1.15em;
+            color: #2d3748;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #4a5568;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 20px 25px;
+            background: white;
+        }
+        .exercise-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .exercise-header {
+            background: #4a5568;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .exercise-header .badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.85em;
+        }
+        .exercise-body {
+            padding: 18px 20px;
+        }
+        .exercise-body .statement {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .exercise-body .resolution {
+            background: #f0fff4;
+            padding: 15px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .exercise-body .resolution .math {
+            margin: 8px 0;
+        }
+        .didactic-footer {
+            background: #ebf4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-left: 5px solid #3182ce;
+            font-style: italic;
+        }
+        .didactic-footer strong {
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+
+                <span class="codigo">#T03.02.- </span>
+                <span class="texto">Ley de las Proporciones Múltiples (Dalton)</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES TRANSFORMADAS ===== -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la existencia de múltiples compuestos formados por los mismos dos elementos, demostrar que <strong>cuando dos elementos forman más de un compuesto, las masas de uno de ellos que se combinan con una masa fija del otro están en relación de números enteros sencillos</strong>.</p>
+        <div class="formula-box">
+            Si los compuestos \( \text{A}_m\text{B}_n \) y \( \text{A}_p\text{B}_q \) contienen los mismos elementos A y B, entonces, fijada una masa de A:
+            \[ \frac{m_{\text{B en compuesto 1}}}{m_{\text{B en compuesto 2}}} = \frac{n}{q} \cdot \frac{m}{p}^{-1} = \text{números enteros sencillos} \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U03c02 - Ley de las proporciones múltiples.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta ley permite:</p>
+        <ul>
+            <li>Justificar la existencia de <strong>fórmulas múltiples</strong> para los mismos elementos (ej. CuO y Cu₂O; CO y CO₂).</li>
+            <li>Comprender que los átomos se combinan en <strong>proporciones discretas</strong>, no continuas, lo cual es evidencia de la naturaleza atómica de la materia.</li>
+            <li>Predecir la estequiometría de compuestos desconocidos a partir de datos experimentales.</li>
+        </ul>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Consideremos dos compuestos</strong> formados por los mismos elementos A y B, con fórmulas \( \text{A}_a\text{B}_b \) y \( \text{A}_c\text{B}_d \), donde \( a, b, c, d \) son números enteros.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Fijamos una cantidad de referencia</strong> del elemento A. Por comodidad, elegimos una masa tal que contenga el mismo número de átomos de A en ambos compuestos. El mínimo común múltiplo de \( a \) y \( c \) nos da esta referencia: \( \text{mcm}(a, c) \) átomos de A.
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Expresamos las masas de B</strong> que se combinan con esa cantidad fija de A en cada compuesto:
+            <div class="formula-box">
+                Para \( \text{A}_a\text{B}_b \): con \( \text{mcm}(a,c) \) átomos de A, hay \( \frac{\text{mcm}(a,c)}{a} \cdot b \) átomos de B
+                <br><br>
+                Para \( \text{A}_c\text{B}_d \): con \( \text{mcm}(a,c) \) átomos de A, hay \( \frac{\text{mcm}(a,c)}{c} \cdot d \) átomos de B
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Calculamos la relación de masas de B</strong>:
+            <div class="formula-box">
+                \[ \frac{m_{\text{B, compuesto 1}}}{m_{\text{B, compuesto 2}}} = \frac{\frac{\text{mcm}(a,c)}{a} \cdot b}{\frac{\text{mcm}(a,c)}{c} \cdot d} = \frac{b \cdot c}{a \cdot d} \]
+            </div>
+            <p>Como \( a, b, c, d \) son números enteros, el cociente \( \frac{b \cdot c}{a \cdot d} \) es una <strong>relación de números enteros</strong>, que puede simplificarse a números enteros sencillos.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Verificación con un ejemplo concreto</strong>: los óxidos de cobre CuO y Cu₂O.
+            <table class="comparison-table">
+                <tr>
+                    <th>Compuesto</th>
+                    <th>Fórmula</th>
+                    <th>Masa de Cu (g)</th>
+                    <th>Masa de O (g)</th>
+                </tr>
+                <tr>
+                    <td>Óxido de cobre(II)</td>
+                    <td>CuO</td>
+                    <td>63,5</td>
+                    <td>16,0</td>
+                </tr>
+                <tr>
+                    <td>Óxido de cobre(I)</td>
+                    <td>Cu₂O</td>
+                    <td>127,0</td>
+                    <td>16,0</td>
+                </tr>
+            </table>
+            <p>Fijando 16,0 g de oxígeno (masa fija), las masas de cobre son 63,5 g y 127,0 g. La relación es:</p>
+            <div class="formula-box">
+                \[ \frac{127,0}{63,5} = \frac{2}{1} \]
+            </div>
+            <p>que es una relación de <strong>números enteros sencillos (2:1)</strong>.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Generalización</strong>. El mismo razonamiento aplica a cualquier par de compuestos entre los mismos elementos. La clave es que los átomos son <strong>unidades indivisibles</strong> que se combinan en proporciones discretas, lo que obliga a que las masas estén en relación entera.
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que para dos compuestos \( \text{A}_a\text{B}_b \) y \( \text{A}_c\text{B}_d \) formados por los mismos elementos:</p>
+        <div class="formula-box">
+            \[ \frac{m_{\text{B en comp. 1 (A fija)}}}{m_{\text{B en comp. 2 (A fija)}}} = \frac{b \cdot c}{a \cdot d} = \text{relación de números enteros sencillos} \]
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">Las masas de un elemento que se combinan con una masa fija de otro elemento en diferentes compuestos están en relación de números enteros sencillos.</p>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  Es crucial diferenciar esta ley de la de Proust. Mientras la Ley de Proporciones Definidas se aplica a <strong>un solo compuesto</strong> (proporción fija), la Ley de Proporciones Múltiples compara <strong>varios compuestos</strong> entre los mismos elementos. El ejemplo clásico de los óxidos de cobre (CuO y Cu₂O) o los de carbono (CO y CO₂) ilustra perfectamente cómo la misma masa de oxígeno se combina con masas de cobre o carbono en proporción 1:2 o 1:2 respectivamente. Esta ley fue una de las evidencias experimentales más sólidas que llevó a Dalton a postular la teoría atómica.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="flex: 1;">🧪 DESMITIFICANDO Ley de las Proporciones Múltiples (Dalton)</span>
+            <span style="font-size: 0.9em; color: #4a5568; background: #e2e8f0; padding: 2px 12px; border-radius: 20px;">
+                <i class="fas fa-hand-pointer"></i> Púlsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Determinación de fórmulas a partir de relaciones de masa</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Dos óxidos de nitrógeno tienen las siguientes composiciones:</p>
+                        <ul>
+                            <li>Óxido A: 28,0 g de N y 32,0 g de O</li>
+                            <li>Óxido B: 14,0 g de N y 24,0 g de O</li>
+                        </ul>
+                        <p>Demostrar que cumplen la ley de proporciones múltiples y determinar sus fórmulas empíricas.</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Fijamos la masa de N en 14,0 g para ambos compuestos (dividiendo las cantidades entre 2 para el óxido A):</li>
+                            <li>Óxido A: 14,0 g de N se combinan con \(32,0 / 2 = 16,0\) g de O.</li>
+                            <li>Óxido B: 14,0 g de N se combinan con 24,0 g de O.</li>
+                            <li>Relación de masas de O: \(16,0 : 24,0 = 2 : 3\) (números enteros sencillos).</li>
+                            <li>Fórmulas: óxido A → N₂O (14×2 + 16 = 44, relación N:O = 28:16 = 14:8, pero con 14 g N → 16 g O → N:O átomos = \(14/14 : 16/16 = 1:1\) → NO (pero cuidado: en realidad N₂O tiene relación N:O = 2:1, no cuadra). Ajustamos: con 14 g N y 16 g O → relación atómica \(14/14 = 1\) mol N, \(16/16 = 1\) mol O → fórmula NO. Pero entonces el óxido B con 14 g N y 24 g O → relación \(14/14=1\) mol N, \(24/16=1,5\) mol O → multiplicamos por 2 → N₂O₃.</li>
+                            <li>Comprobamos: NO y N₂O₃. Con una masa fija de N (14 g), las masas de O están en relación 16:24 = 2:3, que son números enteros. Se cumple la ley.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Comparación de dos cloruros de carbono</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> El carbono forma con el cloro dos compuestos: en el primero, 2,40 g de C se combinan con 14,20 g de Cl; en el segundo, 1,20 g de C se combinan con 7,10 g de Cl.</p>
+                        <ul>
+                            <li>a) Comprobar si se cumple la ley de proporciones múltiples.</li>
+                            <li>b) Si las fórmulas son CCl₄ y C₂Cl₄ (o CCl₂), ¿cuál es cada compuesto?</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Fijamos la masa de C en 1,20 g (dividiendo los datos del primero entre 2):</li>
+                            <li>Compuesto 1: 1,20 g de C → \(14,20 / 2 = 7,10\) g de Cl.</li>
+                            <li>Compuesto 2: 1,20 g de C → 7,10 g de Cl.</li>
+                            <li>¡Ambos dan la misma masa de Cl para la misma masa de C! Esto indicaría que son el mismo compuesto, no dos diferentes. Sin embargo, el enunciado dice que son dos compuestos. Revisamos: el primer compuesto tiene 2,40 g C con 14,20 g Cl, y el segundo 1,20 g C con 7,10 g Cl. La relación es idéntica (1,20 g C → 7,10 g Cl). No se cumple la ley de proporciones múltiples porque la relación es la misma; se trataría del mismo compuesto (ley de Proust). Para que se cumpla la ley de múltiples, las masas de Cl deberían estar en relación entera (ej. 7,10 y 14,20). Aquí no, porque al fijar C obtenemos la misma masa de Cl. Por tanto, no se cumple la ley de múltiples; es un solo compuesto.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Identificación de óxidos de plomo</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> El plomo forma dos óxidos con los siguientes datos: en el óxido A, 10,00 g de Pb se combinan con 1,54 g de O; en el óxido B, 10,00 g de Pb se combinan con 2,31 g de O. Demostrar que cumplen la ley de proporciones múltiples y asignar las fórmulas PbO y PbO₂ si es posible.</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Fijamos la masa de Pb en 10,00 g (ya está fija en ambos).</li>
+                            <li>Masa de O en A: 1,54 g; en B: 2,31 g.</li>
+                            <li>Relación \(1,54 : 2,31\). Dividimos ambos entre 1,54: \(1 : 1,5\) → multiplicamos por 2 → \(2 : 3\).</li>
+                            <li>Esa relación 2:3 no es de números enteros sencillos? 2 y 3 sí lo son. Por tanto, se cumple la ley.</li>
+                            <li>Ahora, si asignamos PbO (Pb:O = 1:1 en átomos) y PbO₂ (1:2), las relaciones de masas de O para la misma cantidad de Pb deberían ser 1:2. Pero aquí tenemos 2:3, lo que sugiere que los compuestos podrían ser Pb₂O₃ y PbO? O más bien, si calculamos la relación atómica: para PbO, con 10 g Pb (0,0483 mol) se necesitarían 0,0483 mol O = 0,773 g O, no 1,54 g. Por tanto, no son PbO y PbO₂. La relación experimental 2:3 indica que las fórmulas podrían ser Pb₃O₄ y PbO? En realidad, el óxido A con 1,54 g O y 10 g Pb da una relación atómica Pb:O = (10/207,2):(1,54/16) ≈ 0,0483:0,0963 = 1:2 → PbO₂. El óxido B con 2,31 g O da 0,0483:0,1444 = 1:3 → PbO₃ (no común). Los números enteros son 2 y 3, luego se cumple la ley.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Compuestos de fósforo y oxígeno</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> El fósforo forma tres óxidos con las siguientes composiciones:</p>
+                        <ul>
+                            <li>Óxido 1: 6,20 g de P y 8,00 g de O</li>
+                            <li>Óxido 2: 6,20 g de P y 12,00 g de O</li>
+                            <li>Óxido 3: 6,20 g de P y 16,00 g de O</li>
+                        </ul>
+                        <p>Verificar si se cumple la ley de proporciones múltiples y determinar las relaciones de masas de oxígeno.</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Fijamos la masa de P en 6,20 g (constante en los tres).</li>
+                            <li>Masas de O: 8,00 ; 12,00 ; 16,00 g.</li>
+                            <li>Dividimos todas entre 4 (o entre 8): 8:12:16 = 2:3:4.</li>
+                            <li>Los números 2,3,4 son enteros sencillos, por lo que se cumple la ley de proporciones múltiples.</li>
+                            <li>Esto indica que los compuestos podrían ser P₂O₅ (si la relación 2:5? No, aquí es 2:3:4). En realidad, las fórmulas posibles son P₂O₃, P₂O₄? El fósforo forma P₄O₆ y P₄O₁₀, pero ajustando a la masa fija de P, las relaciones de O son 3:5, etc. Aquí el ejemplo es numérico, cumple la ley.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Contexto real: óxidos de nitrógeno en la atmósfera</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> El monóxido de nitrógeno (NO) y el dióxido de nitrógeno (NO₂) son contaminantes atmosféricos. Si 1,00 g de N se combina con 1,14 g de O en el NO, y con 2,28 g de O en el NO₂:</p>
+                        <ul>
+                            <li>a) Demostrar que cumplen la ley de proporciones múltiples.</li>
+                            <li>b) Calcular la masa de O que se combinaría con 1,00 g de N en un hipotético N₂O₅.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Apartado a) Fijamos 1,00 g de N. En NO: 1,14 g O; en NO₂: 2,28 g O. Relación 1,14 : 2,28 = 1 : 2 (enteros sencillos). Se cumple.</li>
+                            <li>Apartado b) Para N₂O₅, la relación atómica N:O = 2:5. Por tanto, por cada 2 átomos de N (28 g) hay 5 átomos de O (80 g). Para 1,00 g de N, la masa de O sería:
+                                \[
+                                m_{\text{O}} = 1,00 \times \frac{5 \cdot 16}{2 \cdot 14} = 1,00 \times \frac{80}{28} = 2,86 \text{ g}
+                                \]
+                            </li>
+                            <li>Así, las masas de O para 1,00 g de N en NO, NO₂ y N₂O₅ serían 1,14 ; 2,28 ; 2,86, que guardan relación 1:2:2,5 (no entera con 2,5, pero al multiplicar por 2 da 2:4:5).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="didactic-footer">
+                <strong>🧠 Observaciones claves:</strong> La Ley de las Proporciones Múltiples nos muestra que los átomos se combinan en <strong>proporciones discretas</strong> y no en cualquier cantidad. Esto es una evidencia fundamental de la naturaleza atómica de la materia. El error común es confundirla con la ley de Proust; mientras la primera compara <strong>distintos compuestos</strong> de los mismos elementos, la segunda se refiere a un <strong>único compuesto</strong> con proporción fija. La ley de Dalton permite predecir fórmulas a partir de datos experimentales y es la base para entender la estequiometría de múltiples compuestos.
+            </div>
+
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

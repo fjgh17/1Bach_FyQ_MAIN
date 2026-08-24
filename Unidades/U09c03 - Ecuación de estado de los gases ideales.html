@@ -1,0 +1,605 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.03 - Demostración: Ecuación de Clapeyron</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.03.- </span>
+                    <span class="texto">Demostración: Ecuación de Clapeyron</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo de las leyes empíricas de Boyle-Mariotte, Charles y Gay-Lussac, y de la definición de temperatura absoluta, demostrar que para un gas ideal se cumple la ecuación de estado:</p>
+            <div class="formula-box">
+                \[ pV = nRT \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c03 - Ecuación de estado de los gases ideales.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Unificar las tres leyes empíricas de los gases en una sola ecuación matemática que relacione las cuatro variables termodinámicas (presión, volumen, temperatura y cantidad de sustancia) mediante una constante universal \(R\). Esta ecuación es la herramienta de cálculo más importante de toda la unidad, ya que permite determinar cualquier variable si se conocen las otras tres.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Ley de Boyle-Mariotte (isoterma):</strong> A temperatura constante, el volumen de una cantidad fija de gas es inversamente proporcional a su presión:
+                <div class="formula-box">
+                    \[ pV = k_1 \quad \text{(con } T \text{ y } n \text{ constantes)} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Ley de Charles (isobárica):</strong> A presión constante, el volumen de una cantidad fija de gas es directamente proporcional a su temperatura absoluta:
+                <div class="formula-box">
+                    \[ \frac{V}{T} = k_2 \quad \text{(con } p \text{ y } n \text{ constantes)} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Ley de Gay-Lussac (isocórica):</strong> A volumen constante, la presión de una cantidad fija de gas es directamente proporcional a su temperatura absoluta:
+                <div class="formula-box">
+                    \[ \frac{p}{T} = k_3 \quad \text{(con } V \text{ y } n \text{ constantes)} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Combinación de leyes:</strong> Si consideramos un proceso en el que varían las tres magnitudes (desde un estado inicial \(p_1, V_1, T_1\) hasta un estado final \(p_2, V_2, T_2\)), podemos descomponerlo en dos etapas: una isoterma seguida de una isocórica (o isobárica). Aplicando sucesivamente las leyes anteriores se obtiene:
+                <div class="formula-box">
+                    \[ \frac{p_1 V_1}{T_1} = \frac{p_2 V_2}{T_2} = \text{cte} \]
+                </div>
+                Es decir, la magnitud \(\frac{pV}{T}\) es constante para una cantidad fija de gas.
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Dependencia con la cantidad de sustancia:</strong> Experimentalmente se comprueba que la constante anterior es directamente proporcional al número de moles \(n\) del gas. Por tanto, podemos escribir:
+                <div class="formula-box">
+                    \[ \frac{pV}{T} = nR \]
+                </div>
+                donde \(R\) es una constante universal (independiente del gas) que se denomina <em>constante universal de los gases ideales</em>.
+            </div>
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Despeje final:</strong> Reordenando la expresión anterior se obtiene la ecuación de Clapeyron:
+                <div class="formula-box">
+                    \[ pV = nRT \]
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ pV = nRT \]
+            </div>
+            <p>Donde:</p>
+            <ul style="margin-left: 20px;">
+                <li>\(p\): presión del gas (Pa)</li>
+                <li>\(V\): volumen que ocupa el gas (\(\text{m}^3\))</li>
+                <li>\(n\): cantidad de sustancia (mol)</li>
+                <li>\(R = 8{,}31 \text{ J mol}^{-1} \text{ K}^{-1}\): constante universal de los gases ideales</li>
+                <li>\(T\): temperatura absoluta (K)</li>
+            </ul>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Se recomienda insistir en que la temperatura debe expresarse SIEMPRE en kelvin (K) al usar esta ecuación. Un error muy común es usar grados Celsius. También es útil mostrar que esta ecuación se puede escribir como \(pV = Nk_BT\) (donde \(N\) es el número de partículas y \(k_B\) la constante de Boltzmann), conectando la escala macroscópica con la microscópica. Para cálculos prácticos, es conveniente que se memorice el valor de \(R\) y las unidades coherentes del SI.
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO la Ecuación de Clapeyron</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Cálculo directo del volumen</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un recipiente contiene \(2.5\,\text{mol}\) de gas helio a una presión de \(1.8\,\text{atm}\) y una temperatura de \(27^\circ\text{C}\). Calcula el volumen que ocupa el gas.</p>
+                        <p>Datos: \(R = 0.082\,\text{atm·L·mol}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Convertir temperatura a kelvin: \(T = 27 + 273 = 300\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Aplicar \(pV = nRT\) y despejar \(V\): \(V = \frac{nRT}{p}\).</p>
+                        <p>\(V = \frac{2.5 \times 0.082 \times 300}{1.8} = \frac{61.5}{1.8} \approx 34.17\,\text{L}\).</p>
+                        <p><span class="step-label">Resultado:</span> El volumen es \(34.2\,\text{L}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Cálculo del número de moles</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un globo de \(15\,\text{L}\) contiene oxígeno a una presión de \(2.0\,\text{atm}\) y \(20^\circ\text{C}\). ¿Cuántos gramos de oxígeno (\(M = 32\,\text{g/mol}\)) hay en el globo?</p>
+                        <p>Dato: \(R = 0.082\,\text{atm·L·mol}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Temperatura absoluta: \(T = 20 + 273 = 293\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Despejar \(n = \frac{pV}{RT} = \frac{2.0 \times 15}{0.082 \times 293} = \frac{30}{24.026} \approx 1.249\,\text{mol}\).</p>
+                        <p><span class="step-label">Paso 3:</span> Masa = \(n \times M = 1.249 \times 32 \approx 39.97\,\text{g}\).</p>
+                        <p><span class="step-label">Resultado:</span> Contiene aproximadamente \(40.0\,\text{g}\) de oxígeno.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Comparación de estados (ley combinada)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una muestra de gas ocupa \(6.0\,\text{L}\) a \(1.2\,\text{atm}\) y \(15^\circ\text{C}\). Si se comprime hasta \(2.5\,\text{L}\) y se calienta hasta \(75^\circ\text{C}\), ¿cuál será la nueva presión?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Convertir temperaturas a kelvin: \(T_1 = 15+273 = 288\,\text{K}\), \(T_2 = 75+273 = 348\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Usar la relación \(\frac{p_1 V_1}{T_1} = \frac{p_2 V_2}{T_2}\) y despejar \(p_2\):</p>
+                        <p>\(p_2 = p_1 \cdot \frac{V_1}{V_2} \cdot \frac{T_2}{T_1} = 1.2 \cdot \frac{6.0}{2.5} \cdot \frac{348}{288}\).</p>
+                        <p>\(p_2 = 1.2 \times 2.4 \times 1.2083 \approx 3.48\,\text{atm}\).</p>
+                        <p><span class="step-label">Resultado:</span> La presión final es \(3.48\,\text{atm}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Densidad de un gas a partir de Clapeyron</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>El gas dióxido de carbono (\(CO_2\), \(M = 44\,\text{g/mol}\)) se encuentra a \(2.5\,\text{atm}\) y \(50^\circ\text{C}\). Calcula su densidad en \(\text{g/L}\).</p>
+                        <p>Dato: \(R = 0.082\,\text{atm·L·mol}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Temperatura absoluta: \(T = 50+273 = 323\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 2:</span> De \(pV = nRT\) y \(n = m/M\), obtenemos \(pV = \frac{m}{M}RT\) → \(\frac{m}{V} = \frac{pM}{RT}\).</p>
+                        <p>Densidad \(\rho = \frac{pM}{RT} = \frac{2.5 \times 44}{0.082 \times 323} = \frac{110}{26.486} \approx 4.15\,\text{g/L}\).</p>
+                        <p><span class="step-label">Resultado:</span> La densidad es \(4.15\,\text{g/L}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Contexto real: neumático de coche</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un neumático de coche tiene un volumen de \(40\,\text{L}\) y contiene aire a \(2.8\,\text{atm}\) y \(22^\circ\text{C}\). Tras una marcha, la temperatura sube a \(55^\circ\text{C}\). Si el volumen apenas cambia, ¿cuál es la nueva presión?</p>
+                        <p>Después, si se libera algo de aire hasta que la presión vuelve a \(2.8\,\text{atm}\) a \(55^\circ\text{C}\), ¿qué fracción del aire inicial queda?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Parte 1:</span> Proceso isocórico: \(\frac{p_1}{T_1} = \frac{p_2}{T_2}\).</p>
+                        <p>\(T_1 = 22+273 = 295\,\text{K}\), \(T_2 = 55+273 = 328\,\text{K}\).</p>
+                        <p>\(p_2 = p_1 \cdot \frac{T_2}{T_1} = 2.8 \times \frac{328}{295} \approx 3.11\,\text{atm}\).</p>
+                        <p><span class="step-label">Parte 2:</span> Si se reduce la presión a \(2.8\,\text{atm}\) a \(328\,\text{K}\), la cantidad de moles disminuye. Usando \(n = \frac{pV}{RT}\), como \(V\) y \(T\) son constantes en la segunda situación, la fracción de moles que queda es \(\frac{n_f}{n_i} = \frac{p_f}{p_i} = \frac{2.8}{3.11} \approx 0.90\).</p>
+                        <p><span class="step-label">Resultado:</span> La nueva presión es \(3.11\,\text{atm}\) y queda el \(90\%\) del aire inicial.</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La ecuación de Clapeyron unifica las leyes de los gases en una sola. Recuerda siempre trabajar con temperatura absoluta (K) y ser cuidadoso con las unidades de presión y volumen. Si cambias las condiciones, usa la relación \(\frac{p_1 V_1}{T_1} = \frac{p_2 V_2}{T_2}\) (para \(n\) constante). ¡Dominar esta ecuación es la llave para resolver problemas de gases!
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

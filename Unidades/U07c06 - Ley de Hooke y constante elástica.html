@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.06. Ley de Hooke y Constante Elástica</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.06.- </span>
+                <span class="texto">Ley de Hooke y Constante Elástica</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la observación experimental de que, para deformaciones pequeñas, la fuerza deformadora aplicada a un muelle es proporcional a la deformación producida, demostrar la ley de Hooke y obtener la expresión de la constante elástica como medida de la rigidez del muelle.</p>
+        <div class="formula-box">
+            \[ F = k \, \Delta x \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c06 - Ley de Hooke y constante elástica.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Derivar la ley de Hooke a partir de datos experimentales de fuerza-deformación, definir la constante elástica \( k \) y establecer su significado físico como medida de la rigidez del muelle. Esta demostración permite comprender el funcionamiento de instrumentos de medida como el dinamómetro.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Observación experimental:</strong> Se suspenden sucesivas masas \( m \) de un muelle vertical y se mide el alargamiento \( \Delta x \) producido respecto a la longitud natural \( L_0 \). Los datos experimentales muestran que, para alargamientos moderados, la relación entre la fuerza deformadora (el peso \( P = m g \)) y el alargamiento es lineal.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Definición de deformación:</strong> La deformación o alargamiento del muelle se define como la variación de su longitud respecto a la longitud natural \( L_0 \):
+            <div class="formula-box">
+                \[ \Delta x = L - L_0 \]
+            </div>
+            donde \( L \) es la longitud del muelle deformado. El signo de \( \Delta x \) indica si el muelle se estira (positivo) o se comprime (negativo).
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Enunciado de la ley de Hooke:</strong> Experimentalmente se verifica que la fuerza recuperadora \( \vec{F}_e \) que ejerce el muelle es de sentido opuesto a la deformación y su módulo es proporcional al valor absoluto de la deformación:
+            <div class="formula-box">
+                \[ F_e = k \, |\Delta x| \]
+            </div>
+            La constante de proporcionalidad \( k \) se denomina <strong>constante elástica</strong> o <strong>constante recuperadora</strong> del muelle.
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Forma vectorial de la ley de Hooke:</strong> Expresando la ley en forma vectorial, la fuerza elástica apunta siempre hacia la posición de equilibrio (longitud natural), por lo que:
+            <div class="formula-box">
+                \[ \vec{F}_e = -k \, \Delta \vec{x} \]
+            </div>
+            El signo negativo indica que la fuerza elástica se opone a la deformación, tendiendo a restaurar la longitud natural del muelle.
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Condición de equilibrio estático:</strong> Cuando una masa \( m \) cuelga en equilibrio del muelle, la fuerza elástica equilibra exactamente al peso:
+            <div class="formula-box">
+                \[ F_e = P \quad \Rightarrow \quad k \, \Delta x = m g \]
+            </div>
+            Despejando la constante elástica:
+            <div class="formula-box">
+                \[ k = \frac{m g}{\Delta x} \]
+            </div>
+            Esta expresión permite determinar \( k \) experimentalmente midiendo \( m \) y \( \Delta x \).
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Unidades y significado físico de \( k \):</strong> Despejando las unidades de \( k \):
+            <div class="formula-box">
+                \[ [k] = \frac{[F]}{[\Delta x]} = \frac{\mathrm{N}}{\mathrm{m}} = \mathrm{N \cdot m^{-1}} \]
+            </div>
+            La constante \( k \) representa la fuerza necesaria para producir una deformación unitaria (1 metro). Un muelle con \( k \) grande es muy rígido (requiere mucha fuerza para deformarlo), mientras que uno con \( k \) pequeño es muy blando.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que, dentro del límite de validez de la ley de Hooke (deformaciones pequeñas), la fuerza elástica es proporcional a la deformación del muelle:</p>
+        <div class="formula-box">
+            \[ \boxed{F = k \, \Delta x} \]
+        </div>
+        <p>La constante elástica \( k \), medida en \( \mathrm{N \cdot m^{-1}} \), caracteriza la rigidez del muelle y se determina experimentalmente como \( k = \frac{m g}{\Delta x} \).</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Es fundamental enfatizar que la ley de Hooke es una ley empírica válida solo para deformaciones pequeñas (región elástica del material). Si se excede el límite elástico, el muelle sufre deformación permanente y la relación deja de ser lineal. El dinamómetro es una aplicación directa: un muelle calibrado cuyo alargamiento indica la fuerza deformadora sobre una escala graduada. Se recomienda realizar la práctica de laboratorio de determinación de \( k \) para distintos muelles y verificar la linealidad de la relación \( F \) vs \( \Delta x \).
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Ley de Hooke"            -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Ley de Hooke y Constante Elástica</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Aplicación directa de F = k Δx -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Cálculo de la fuerza deformadora</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un muelle tiene una constante elástica \(k = 250\,\text{N/m}\). Se estira \(5,0\,\text{cm}\) desde su longitud natural.</p>
+                    <ul>
+                        <li>a) Calcula la fuerza que ejerce el muelle en módulo y sentido.</li>
+                        <li>b) ¿Qué masa se necesitaría colgar para producir ese estiramiento? (considera \(g = 9,8\,\text{m/s}^2\)).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(\Delta x = 5,0\,\text{cm} = 0,050\,\text{m}\). \(F_e = k \Delta x = 250 \cdot 0,050 = 12,5\,\text{N}\). La fuerza recuperadora es de 12,5 N en sentido opuesto al estiramiento.
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> En equilibrio, \(P = F_e \Rightarrow m g = 12,5 \Rightarrow m = 12,5 / 9,8 \approx 1,28\,\text{kg}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Despeje de la constante elástica -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Determinación de \(k\) a partir de datos</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un muelle se alarga \(8,0\,\text{cm}\) al colgarle una masa de \(2,5\,\text{kg}\).</p>
+                    <ul>
+                        <li>a) Calcula su constante elástica.</li>
+                        <li>b) ¿Cuánto se alargará si se cuelga una masa de \(4,0\,\text{kg}\)?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(\Delta x = 8,0\,\text{cm} = 0,080\,\text{m}\). El peso es \(P = m g = 2,5 \cdot 9,8 = 24,5\,\text{N}\). \(k = \frac{P}{\Delta x} = \frac{24,5}{0,080} = 306,25\,\text{N/m} \approx 3,06 \times 10^2\,\text{N/m}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Con \(m = 4,0\,\text{kg}\), \(P = 4,0 \cdot 9,8 = 39,2\,\text{N}\). \(\Delta x = \frac{P}{k} = \frac{39,2}{306,25} \approx 0,128\,\text{m} = 12,8\,\text{cm}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Muelles en serie y en paralelo -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Asociación de muelles: serie y paralelo</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Se tienen dos muelles de constantes \(k_1 = 200\,\text{N/m}\) y \(k_2 = 300\,\text{N/m}\).</p>
+                    <ul>
+                        <li>a) Si se conectan en paralelo (misma deformación), ¿cuál es la constante equivalente?</li>
+                        <li>b) Si se conectan en serie (misma fuerza), ¿cuál es la constante equivalente?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> En paralelo: \(k_{\text{eq}} = k_1 + k_2 = 200 + 300 = 500\,\text{N/m}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> En serie: \(\frac{1}{k_{\text{eq}}} = \frac{1}{k_1} + \frac{1}{k_2} = \frac{1}{200} + \frac{1}{300} = \frac{3+2}{600} = \frac{5}{600} \Rightarrow k_{\text{eq}} = \frac{600}{5} = 120\,\text{N/m}\).
+                    </div>
+                    <div class="paso" style="margin-top:8px; background:#f0f4ff; padding:8px; border-radius:6px;">
+                        <strong>📌 Interpretación:</strong> En paralelo la rigidez aumenta (se suman), en serie disminuye (la constante equivalente es menor que la menor de las individuales).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Sistema dinámico con muelle y rozamiento -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Muelle comprimido y aceleración de un bloque</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(m = 2,0\,\text{kg}\) está sobre una superficie horizontal sin rozamiento, unido a un muelle de \(k = 150\,\text{N/m}\) fijo a la pared. Se comprime el muelle \(10\,\text{cm}\) desde su longitud natural y se suelta.</p>
+                    <ul>
+                        <li>a) Calcula la fuerza que ejerce el muelle sobre el bloque en el instante de soltarlo.</li>
+                        <li>b) Determina la aceleración inicial del bloque.</li>
+                        <li>c) ¿Qué velocidad tendrá al pasar por la posición de equilibrio (longitud natural)? (Sugerencia: usa conservación de energía o cinemática, pero aquí asumimos que la aceleración varía).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(\Delta x = 10\,\text{cm} = 0,10\,\text{m}\). \(F_e = k \Delta x = 150 \cdot 0,10 = 15\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Aplicando segunda ley: \(a = F_e/m = 15/2,0 = 7,5\,\text{m/s}^2\) (hacia la posición de equilibrio).
+                    </div>
+                    <div class="paso">
+                        <strong>c)</strong> Usamos conservación de energía elástica: \(\frac{1}{2} k (\Delta x)^2 = \frac{1}{2} m v^2 \Rightarrow v = \sqrt{\frac{k}{m}} \Delta x = \sqrt{\frac{150}{2,0}} \cdot 0,10 = \sqrt{75} \cdot 0,10 \approx 8,66 \cdot 0,10 \approx 0,866\,\text{m/s}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Comparación de rigideces y aplicación real -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Rigidez de muelles en un sistema de suspensión</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un coche de \(1200\,\text{kg}\) tiene una suspensión con 4 muelles idénticos, cada uno con \(k = 4,0 \times 10^4\,\text{N/m}\).</p>
+                    <ul>
+                        <li>a) Si el peso se reparte uniformemente, calcula la deformación de cada muelle.</li>
+                        <li>b) Si se añade una carga extra de \(400\,\text{kg}\), ¿cuánto se deforma adicionalmente cada muelle?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Peso total \(P = 1200 \cdot 9,8 = 11760\,\text{N}\). Cada muelle soporta \(F = 11760/4 = 2940\,\text{N}\). \(\Delta x = \frac{F}{k} = \frac{2940}{4,0 \times 10^4} = 0,0735\,\text{m} = 7,35\,\text{cm}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Peso extra \(P_{\text{extra}} = 400 \cdot 9,8 = 3920\,\text{N}\), repartido en 4: \(F_{\text{extra}} = 980\,\text{N}\) por muelle. Deformación adicional: \(\Delta x_{\text{extra}} = \frac{980}{4,0 \times 10^4} = 0,0245\,\text{m} = 2,45\,\text{cm}\). La deformación total sería \(7,35 + 2,45 = 9,80\,\text{cm}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> La ley de Hooke \(F = k \Delta x\) es lineal solo en la región elástica. La constante \(k\) mide la rigidez: a mayor \(k\), más fuerza se necesita para deformar el muelle. En asociaciones, en paralelo se suman las rigideces (mayor resistencia), mientras que en serie se reduce la rigidez equivalente (más deformación para la misma fuerza).</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

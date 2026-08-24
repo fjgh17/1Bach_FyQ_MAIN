@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 2: Fórmula de la Energía Cinética</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.02.- </span>
+                    <span class="texto">Demostración 2: Fórmula de la Energía Cinética</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de trabajo mecánico y de las ecuaciones del movimiento rectilíneo uniformemente acelerado, demostrar que la energía cinética de un cuerpo de masa \( m \) que se mueve con velocidad \( v \) viene dada por:</p>
+            <div class="formula-box">
+                \[ E_c = \frac{1}{2} m v^{2} \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c02 - Energía cinética.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar que el trabajo realizado por la fuerza neta sobre un cuerpo se traduce en una variación de una magnitud que depende exclusivamente de la masa y del cuadrado de la velocidad. Esta magnitud, que denominamos energía cinética, representa la capacidad del cuerpo para realizar trabajo debido a su movimiento.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Planteamiento del problema</strong>
+                <p>Consideramos un cuerpo de masa \( m \) que se mueve con velocidad inicial \( v_0 \) sobre una superficie horizontal sin rozamiento. Aplicamos una fuerza neta constante \( F \) en la dirección del movimiento durante un desplazamiento \( \Delta x \), adquiriendo una velocidad final \( v \).</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Trabajo realizado por la fuerza neta</strong>
+                <p>Como la fuerza es paralela al desplazamiento (\( \alpha = 0^{\circ} \)), el trabajo es:</p>
+                <div class="formula-box">
+                    \[ W = F \cdot \Delta x \]
+                </div>
+                <p>Aplicando la segunda ley de Newton, \( F = m \cdot a \), sustituimos:</p>
+                <div class="formula-box">
+                    \[ W = m \cdot a \cdot \Delta x \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Aplicación de la ecuación de Torricelli</strong>
+                <p>Para un movimiento rectilíneo uniformemente acelerado (MRUA), la ecuación de Torricelli relaciona velocidades, aceleración y desplazamiento sin necesidad de tiempo:</p>
+                <div class="formula-box">
+                    \[ v^{2} = v_0^{2} + 2 a \Delta x \]
+                </div>
+                <p>Despejamos el producto \( a \cdot \Delta x \):</p>
+                <div class="formula-box">
+                    \[ a \cdot \Delta x = \frac{v^{2} - v_0^{2}}{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Sustitución en la expresión del trabajo</strong>
+                <p>Sustituimos la expresión obtenida en el trabajo:</p>
+                <div class="formula-box">
+                    \[ W = m \cdot \frac{v^{2} - v_0^{2}}{2} = \frac{1}{2} m v^{2} - \frac{1}{2} m v_0^{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Definición de energía cinética</strong>
+                <p>Observamos que el trabajo de la fuerza neta produce una variación de una magnitud \( \frac{1}{2}mv^{2} \). Definimos la energía cinética como:</p>
+                <div class="formula-box">
+                    \[ E_c = \frac{1}{2} m v^{2} \]
+                </div>
+                <p>Por tanto, el trabajo de la fuerza neta es igual a la variación de energía cinética:</p>
+                <div class="formula-box">
+                    \[ W_{\text{neto}} = \Delta E_c = E_{c,f} - E_{c,i} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Verificación dimensional</strong>
+                <p>Comprobamos que las unidades son coherentes:</p>
+                <div class="formula-box">
+                    \[ [E_c] = [m] \cdot [v]^{2} = \text{kg} \cdot \left( \frac{\text{m}}{\text{s}} \right)^{2} = \text{kg} \cdot \frac{\text{m}^{2}}{\text{s}^{2}} = \text{J} \]
+                </div>
+                <p>La unidad resultante es el julio (J), unidad de energía y trabajo en el SI.</p>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ E_c = \frac{1}{2} m v^{2} \]
+            </div>
+            <p>La energía cinética de un cuerpo es directamente proporcional a su masa y al cuadrado de su velocidad. El trabajo de la fuerza neta sobre un cuerpo se transforma integramente en variación de su energía cinética (Teorema de la Energía Cinética o de las Fuerzas Vivas).</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Esta demostración es fundamental porque conecta la cinemática (MRUA) con la dinámica (trabajo y energía). Es importante destacar que la energía cinética nunca puede ser negativa, ya que depende del cuadrado de la velocidad y la masa es siempre positiva. El factor \( \frac{1}{2} \) surge naturalmente de la integración/derivación y no es arbitrario. Se recomienda contrastar con el caso de caída libre para reforzar la conexión conceptual.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO la energía cinética</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Cálculo directo de Ec -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Energía cinética de un vehículo</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un coche de 1,5 toneladas circula a 108 km/h. Calcula su energía cinética. ¿Qué energía tendría si su velocidad se redujera a la mitad?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>\( m = 1500 \, \text{kg} \), \( v = 108 \, \text{km/h} = 30 \, \text{m/s} \).</p>
+                    <p>\( E_c = \frac{1}{2} \cdot 1500 \cdot 30^2 = 675\,000 \, \text{J} = 6,75 \times 10^5 \, \text{J} \).</p>
+                    <p>Si \( v' = 15 \, \text{m/s} \), \( E_c' = \frac{1}{2} \cdot 1500 \cdot 15^2 = 168\,750 \, \text{J} \) (exactamente la cuarta parte, porque la velocidad se ha reducido a la mitad → \( (1/2)^2 = 1/4 \)).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Teorema trabajo-energía (aceleración) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Trabajo para aumentar la velocidad</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un patinador de 60 kg parte del reposo y acelera hasta alcanzar 8,0 m/s. ¿Qué trabajo neto se ha realizado sobre él? Si la fuerza aplicada fue constante y actuó durante 4,0 m, ¿cuál fue su módulo?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Por el teorema trabajo-energía: \( W_{\text{neto}} = \Delta E_c = \frac{1}{2} m v^2 - 0 = \frac{1}{2} \cdot 60 \cdot 8^2 = 1920 \, \text{J} \).</p>
+                    <p>Como \( W = F \cdot \Delta x \) (fuerza paralela), entonces \( F = \frac{W}{\Delta x} = \frac{1920}{4,0} = 480 \, \text{N} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Trabajo de frenado (fuerza resistente) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Frenado y trabajo resistente</span>
+                </div>
+                <p><strong>Enunciado:</strong> Una bala de 10 g viaja a 400 m/s y penetra 5,0 cm en una pared hasta detenerse. Calcula la fuerza media de resistencia que ejerce la pared (supuesta constante).</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>\( m = 0,010 \, \text{kg} \), \( v_i = 400 \, \text{m/s} \), \( v_f = 0 \), \( \Delta x = 0,050 \, \text{m} \).</p>
+                    <p>\( \Delta E_c = 0 - \frac{1}{2} \cdot 0,010 \cdot 400^2 = -800 \, \text{J} \).</p>
+                    <p>Este trabajo es realizado por la fuerza de resistencia: \( W = F \cdot \Delta x \cdot \cos 180^\circ = -F \cdot \Delta x \).</p>
+                    <p>Igualando: \( -F \cdot 0,050 = -800 \Rightarrow F = 16\,000 \, \text{N} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Relación entre Ec y cantidad de movimiento -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Comparación de energías cinéticas</span>
+                </div>
+                <p><strong>Enunciado:</strong> Dos cuerpos tienen la misma cantidad de movimiento (\( p = mv \)). El primero tiene masa \( m \) y velocidad \( v \); el segundo tiene masa \( 4m \). ¿Cuál es la relación entre sus energías cinéticas?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Para el segundo, como \( p \) es igual: \( 4m \cdot v_2 = m v \Rightarrow v_2 = \frac{v}{4} \).</p>
+                    <p>\( E_{c1} = \frac{1}{2} m v^2 \).</p>
+                    <p>\( E_{c2} = \frac{1}{2} (4m) \left( \frac{v}{4} \right)^2 = \frac{1}{2} \cdot 4m \cdot \frac{v^2}{16} = \frac{1}{2} m v^2 \cdot \frac{4}{16} = \frac{1}{2} m v^2 \cdot \frac{1}{4} = \frac{E_{c1}}{4} \).</p>
+                    <p>El cuerpo más masivo (con la misma cantidad de movimiento) tiene menor energía cinética.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Caída libre y teorema trabajo-energía -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Energía cinética en caída libre</span>
+                </div>
+                <p><strong>Enunciado:</strong> Se deja caer un objeto de 2,0 kg desde una altura de 20 m. Usando el teorema trabajo-energía, calcula su velocidad al llegar al suelo. (Desprecia el rozamiento).</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La única fuerza que actúa es el peso (constante). El trabajo del peso es \( W = m g h = 2,0 \cdot 9,8 \cdot 20 = 392 \, \text{J} \).</p>
+                    <p>Parte del reposo (\( E_{ci}=0 \)), por lo que \( W = \Delta E_c = \frac{1}{2} m v^2 \).</p>
+                    <p>\( 392 = \frac{1}{2} \cdot 2,0 \cdot v^2 \Rightarrow v^2 = 392 \Rightarrow v \approx 19,8 \, \text{m/s} \).</p>
+                    <p>(Coincide con \( \sqrt{2 g h} \)).</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> La energía cinética es una magnitud que cuantifica el movimiento. El teorema trabajo-energía cinética (\( W_{\text{neto}} = \Delta E_c \)) es una herramienta potentísima porque evita tener que conocer la aceleración o el tiempo; basta con conocer las velocidades y el trabajo realizado. Es fundamental que se identifiquen que el trabajo neto es la suma de los trabajos de todas las fuerzas, y que si el trabajo es positivo la energía cinética aumenta, y si es negativo disminuye.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

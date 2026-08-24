@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#T10.06 · Resistencias en Serie</title>
+<!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome (versión 6) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ============================================
+   ESTILOS EXISTENTES (no modificados)
+   ============================================ */
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.header-left h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+.header-left p {
+    margin: 6px 0 0 0;
+    font-size: 1em;
+}
+.header-right img {
+    max-height: 70px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+}
+.section {
+    padding: 25px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border-left: 5px solid;
+}
+.enunciado { background: #f7fafc; border-color: #a0aec0; }
+.objetivo  { background: #fffaf0; border-color: #ed8936; }
+.procedimiento { background: #f0fff4; border-color: #48bb78; }
+.resultado { background: #ebf8ff; border-color: #4299e1; }
+.section h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.enunciado h2 { color: #4a5568; }
+.objetivo h2  { color: #c05621; }
+.procedimiento h2 { color: #276749; }
+.resultado h2 { color: #2b6cb0; }
+.formula-box {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+}
+.step {
+    background: white;
+    border-left: 4px solid #a0aec0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.step-num {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #744210;
+}
+p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.header-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.header-sub img {
+    height: 28px;
+    width: auto;
+    display: block;
+    border-radius: 4px;
+}
+.header-sub .codigo {
+    font-weight: 700;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+    color: #f0e6ff;
+}
+.header-sub .texto {
+    font-size: 1em;
+    color: #f0e6ff;
+    font-weight: 500;
+}
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+/* ============================================
+   NUEVOS ESTILOS PARA EL BLOQUE DESPLEGABLE
+   ============================================ */
+details.desmitificando {
+    margin: 30px 15px 20px 15px;
+    border: 2px solid #e53e3e;
+    border-radius: 12px;
+    background: #fff5f5;
+    padding: 0.5rem 1rem 1rem 1rem;
+    transition: all 0.2s;
+}
+details.desmitificando summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.5rem 0;
+    user-select: none;
+}
+details.desmitificando summary::-webkit-details-marker {
+    display: none;
+}
+details.desmitificando summary i.fa-chevron-circle-down {
+    transition: transform 0.3s ease;
+    color: #e53e3e;
+    font-size: 1.6rem;
+}
+details.desmitificando[open] summary i.fa-chevron-circle-down {
+    transform: rotate(180deg);
+}
+details.desmitificando summary .pulsame {
+    font-size: 0.8rem;
+    color: #9b2c2c;
+    background: #fed7d7;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+details.desmitificando .contenido-ejercicios {
+    margin-top: 0.5rem;
+    border-top: 1px solid #feb2b2;
+    padding-top: 1rem;
+}
+
+.ejercicio-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    border: 1px solid #feb2b2;
+}
+.ejercicio-header {
+    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ejercicio-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.ejercicio-body {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+}
+.ejercicio-body .enunciado-ej {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.ejercicio-body ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+.resolucion {
+    background: #fff5f5;
+    border-left: 4px solid #e53e3e;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 0.5rem 0;
+    font-size: 0.98rem;
+}
+.resolucion .paso {
+    margin-bottom: 0.6rem;
+}
+.resolucion .paso strong {
+    color: #9b2c2c;
+}
+.pie-clave {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: #744210;
+}
+.pie-clave i {
+    margin-right: 8px;
+    color: #d69e2e;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== CABECERA OBLIGATORIA ===== -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T10.06.- </span>
+                <span class="texto">Resistencias en Serie</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES EXISTENTES ===== -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la Ley de Ohm y de la conservación de la carga eléctrica (misma intensidad en todos los elementos de una rama serie), demostrar que para \( n \) resistencias \( R_1, R_2, \ldots, R_n \) conectadas en serie, la resistencia equivalente \( R_{\text{eq}} \) viene dada por:</p>
+        <div class="formula-box">
+            \[ R_{\text{eq}} = R_1 + R_2 + \cdots + R_n = \sum_{i=1}^{n} R_i \]
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U10c06 - Resistencias en serie.png" alt="Imagen" width="800">
+            <!-- -----FIN-------- -->
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Fundamentar matemáticamente por qué las resistencias en serie se suman directamente. Esta demostración conecta la Ley de Ohm con la conservación de la carga y la aditividad de las diferencias de potencial. Es esencial para el diseño y análisis de circuitos eléctricos, divisores de tensión y protecciones eléctricas.</p>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Característica fundamental de la serie.</strong> En una asociación en serie, las resistencias se conectan una tras otra formando una única rama. Por conservación de la carga, la intensidad de corriente \( I \) que circula es la <strong>misma</strong> en todas las resistencias:
+            <div class="formula-box">
+                \[ I = I_1 = I_2 = \cdots = I_n \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Caídas de potencial individuales.</strong> Aplicando la Ley de Ohm a cada resistencia individualmente, la caída de potencial (diferencia de potencial) en cada una es:
+            <div class="formula-box">
+                \[ V_1 = I \cdot R_1 \quad ; \quad V_2 = I \cdot R_2 \quad ; \quad \cdots \quad ; \quad V_n = I \cdot R_n \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Aditividad de las diferencias de potencial.</strong> La diferencia de potencial total \( V_{\text{total}} \) entre los extremos del conjunto es igual a la suma de las caídas de potencial en cada resistencia (principio de conservación de la energía):
+            <div class="formula-box">
+                \[ V_{\text{total}} = V_1 + V_2 + \cdots + V_n \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Sustitución de las caídas individuales.</strong> Sustituimos cada caída por su expresión según la Ley de Ohm:
+            <div class="formula-box">
+                \[ V_{\text{total}} = I \cdot R_1 + I \cdot R_2 + \cdots + I \cdot R_n \]
+            </div>
+            <p>Factorizando la intensidad común \( I \):</p>
+            <div class="formula-box">
+                \[ V_{\text{total}} = I \cdot (R_1 + R_2 + \cdots + R_n) \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Definición de resistencia equivalente.</strong> Definimos la resistencia equivalente \( R_{\text{eq}} \) como aquella resistencia única que, sometida a la misma diferencia de potencial \( V_{\text{total}} \), deja pasar la misma intensidad \( I \). Por la Ley de Ohm:
+            <div class="formula-box">
+                \[ V_{\text{total}} = I \cdot R_{\text{eq}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Igualación y conclusión.</strong> Igualamos las dos expresiones de \( V_{\text{total}} \):
+            <div class="formula-box">
+                \[ I \cdot R_{\text{eq}} = I \cdot (R_1 + R_2 + \cdots + R_n) \]
+            </div>
+            <p>Dividiendo ambos miembros por \( I \) (que es no nula):</p>
+            <div class="formula-box">
+                \[ R_{\text{eq}} = R_1 + R_2 + \cdots + R_n = \sum_{i=1}^{n} R_i \]
+            </div>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong> La resistencia equivalente en serie es <strong>siempre mayor</strong> que cualquiera de las resistencias individuales. Esto se debe a que al sumar resistencias en serie se incrementa la longitud efectiva del conductor, aumentando las colisiones de los electrones. Es útil comparar este resultado con la analogía hidráulica: resistencias en serie equivalen a tuberías estrechas conectadas en línea, donde el flujo total se ve limitado por todas las obstrucciones. El divisor de tensión es una aplicación directa de este resultado.
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            \[ R_{\text{eq}} = \sum_{i=1}^{n} R_i \quad \text{(Resistencias en serie)} \]
+        </div>
+        <p>La resistencia equivalente de una asociación en serie es la suma aritmética de las resistencias individuales. Es siempre mayor que la mayor de las resistencias del conjunto.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- BLOQUE DESPLEGABLE AÑADIDO (TAREA 1)      -->
+    <!-- ======================================== -->
+    <details class="desmitificando">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO las Resistencias en Serie</span>
+            <span class="pulsame">🖱️ Pulsame</span>
+        </summary>
+        <div class="contenido-ejercicios">
+
+            <!-- EJERCICIO 1: Cálculo directo de Req -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">1</span>
+                    <span>Cálculo de la resistencia equivalente en serie</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Se conectan en serie tres resistencias de \( 15\,\Omega \), \( 22\,\Omega \) y \( 47\,\Omega \). Calcula la resistencia equivalente del conjunto.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Para resistencias en serie, \( R_{\text{eq}} = R_1 + R_2 + R_3 \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( R_{\text{eq}} = 15 + 22 + 47 = 84\,\Omega \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La resistencia equivalente es \( 84\,\Omega \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Caídas de tensión en cada resistencia -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">2</span>
+                    <span>Distribución de la tensión en una serie</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Las mismas resistencias del ejercicio anterior (\( 15\,\Omega \), \( 22\,\Omega \), \( 47\,\Omega \)) se conectan en serie a una batería de \( 12\,\text{V} \). Calcula la intensidad que circula y la caída de tensión en cada resistencia.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> La \( R_{\text{eq}} = 84\,\Omega \) (del ejercicio anterior).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Intensidad: \( I = \frac{V}{R_{\text{eq}}} = \frac{12}{84} \approx 0{,}143\,\text{A} \) (143 mA).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Caídas: \( V_1 = I \cdot R_1 = 0{,}143 \times 15 = 2{,}14\,\text{V} \); \( V_2 = 0{,}143 \times 22 = 3{,}14\,\text{V} \); \( V_3 = 0{,}143 \times 47 = 6{,}71\,\text{V} \).</div>
+                        <div class="paso"><strong>Verificación:</strong> \( 2{,}14 + 3{,}14 + 6{,}71 \approx 12\,\text{V} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Comparación con la resistencia mayor -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">3</span>
+                    <span>La Req en serie siempre es mayor que la mayor</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Se tienen tres resistencias de \( 100\,\Omega \), \( 220\,\Omega \) y \( 330\,\Omega \). ¿Es cierto que la resistencia equivalente en serie es mayor que \( 330\,\Omega \)? Compruébalo.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> \( R_{\text{eq}} = 100 + 220 + 330 = 650\,\Omega \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Efectivamente, \( 650 > 330 \). La afirmación es correcta.</div>
+                        <div class="paso"><strong>Conclusión:</strong> En una serie, la resistencia equivalente es mayor que cualquiera de las individuales.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Divisor de tensión con dos resistencias -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">4</span>
+                    <span>Aplicación: divisor de tensión</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos resistencias \( R_1 = 1{,}0\,\text{k}\Omega \) y \( R_2 = 2{,}2\,\text{k}\Omega \) se conectan en serie a una fuente de \( 5{,}0\,\text{V} \). Calcula la tensión en bornes de \( R_2 \).</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> \( R_{\text{eq}} = 1{,}0 + 2{,}2 = 3{,}2\,\text{k}\Omega \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Intensidad: \( I = \frac{5{,}0}{3{,}2\times10^3} = 1{,}5625\times10^{-3}\,\text{A} \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Tensión en \( R_2 \): \( V_2 = I \cdot R_2 = 1{,}5625\times10^{-3} \times 2{,}2\times10^3 = 3{,}44\,\text{V} \).</div>
+                        <div class="paso"><strong>Fórmula directa:</strong> \( V_2 = V_{\text{total}} \cdot \frac{R_2}{R_1+R_2} = 5{,}0 \cdot \frac{2{,}2}{3{,}2} \approx 3{,}44\,\text{V} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Contexto real (bombillas en serie) -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">5</span>
+                    <span>Aplicación práctica: bombillas en serie</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos bombillas de \( 60\,\text{W} \) y \( 40\,\text{W} \) (diseñadas para \( 230\,\text{V} \)) se conectan en serie a \( 230\,\text{V} \). Calcula la potencia real que disipa cada una y explica por qué una brillará más que la otra.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Calculamos las resistencias nominales: \( R = \frac{V^2}{P} \).</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ R_{60} = \frac{230^2}{60} \approx 881{,}7\,\Omega \quad ; \quad R_{40} = \frac{230^2}{40} \approx 1322{,}5\,\Omega \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> \( R_{\text{eq}} = 881{,}7 + 1322{,}5 = 2204{,}2\,\Omega \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Intensidad: \( I = \frac{230}{2204{,}2} \approx 0{,}1043\,\text{A} \).</div>
+                        <div class="paso"><strong>Paso 4:</strong> Potencia real: \( P_{60}' = I^2 \cdot R_{60} \approx (0{,}1043)^2 \times 881{,}7 \approx 9{,}6\,\text{W} \); \( P_{40}' \approx (0{,}1043)^2 \times 1322{,}5 \approx 14{,}4\,\text{W} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La bombilla de \( 40\,\text{W} \) (mayor resistencia) disipa más potencia en serie, por lo que brillará más. Esto es contrario a lo que ocurre en paralelo.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE Observaciones claves -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La principal "trampa" en serie es olvidar que la <strong>intensidad es la misma</strong> para todas las resistencias, pero la <strong>tensión se reparte</strong> proporcionalmente a cada resistencia. Además, la resistencia equivalente siempre es mayor que la mayor de las individuales, lo que puede resultar contraintuitivo. La analogía hidráulica (tuberías en serie) ayuda a visualizar que cada resistencia supone una "obstrucción" adicional al flujo de electrones.
+            </div>
+
+        </div> <!-- /contenido-ejercicios -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- /container -->
+</body>
+</html>

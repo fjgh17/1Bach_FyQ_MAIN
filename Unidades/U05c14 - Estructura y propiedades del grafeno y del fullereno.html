@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.15 - Demostración: Estructura y propiedades del grafeno y del fullereno</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILOS ORIGINALES (se mantienen)
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .structure-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 16px 0;
+        }
+        .structure-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .structure-card .title {
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 12px;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .structure-card.graphene {
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+        .structure-card.fullerene {
+            border-color: #ed8936;
+            background: #fffaf0;
+        }
+        .property-tag {
+            display: inline-block;
+            background: #edf2f7;
+            border-radius: 20px;
+            padding: 4px 12px;
+            margin: 4px 2px;
+            font-size: 0.85em;
+            color: #4a5568;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            .structure-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (TAREA 1)
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #eef4fa;
+            border-radius: 16px;
+            padding: 10px 20px 20px;
+            border: 1px solid #bdd6e8;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.6rem;
+            color: #2a7faa;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        .exercise-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #d3e2ed;
+        }
+        .exercise-card h3 {
+            margin-top: 0;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        .exercise-card h3 .badge {
+            background: #2a7faa;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+        }
+        .solution {
+            background: #f7fbfe;
+            border-left: 4px solid #2a7faa;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 0.98rem;
+        }
+        .solution .step {
+            background: transparent;
+            border-left: none;
+            padding: 6px 0;
+            margin: 6px 0;
+            box-shadow: none;
+        }
+        .solution .step strong {
+            color: #0b3b5c;
+        }
+        .didactic-footer {
+            background: #d7e7f3;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #144a66;
+        }
+        .didactic-footer i {
+            font-size: 1.8rem;
+        }
+        .highlight-sol {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.14.- </span>
+                <span class="texto">Demostración: Estructura y propiedades del grafeno y del fullereno</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la estructura del grafito como conjunto de capas de átomos de carbono con hibridación \( sp^2 \), demostrar que el <strong>grafeno</strong> (una sola capa aislada) y el <strong>fullereno</strong> (estructura esférica cerrada) son formas alotrópicas del carbono con propiedades excepcionales derivadas de su dimensionalidad y curvatura estructural.</p>
+        <div class="formula-box">
+            <strong>Grafeno:</strong> Lámina bidimensional de un solo átomo de espesor<br>
+            <strong>Fullereno (\( C_{60} \)):</strong> Estructura esférica cerrada de 60 átomos de carbono
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c14 - Estructura y propiedades del grafeno y del fullereno.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Comprender cómo la extracción de una sola capa de grafito o la curvatura de una lámina de grafeno generan materiales con propiedades sin precedentes. El estudiante debe ser capaz de:</p>
+        <ul>
+            <li>Explicar por qué el grafeno es el material bidimensional más resistente conocido.</li>
+            <li>Relacionar la estructura del fullereno con la del benceno y el grafito.</li>
+            <li>Identificar aplicaciones tecnológicas emergentes basadas en estas propiedades.</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Analizar la estructura del grafeno.</strong> El grafeno consiste en una única capa de átomos de carbono con hibridación \( sp^2 \), dispuestos en una red hexagonal (panal de abeja). Cada átomo está unido a tres vecinos con enlaces \( \sigma \) fuertes, mientras que el electrón \( p_z \) restante forma un orbital \( \pi \) deslocalizado sobre toda la lámina.
+            <div class="formula-box">
+                <strong>Espesor:</strong> \( 0{,}335 \, \text{nm} \) (diámetro de un átomo de C)<br>
+                <strong>Longitud C—C:</strong> \( 1{,}42 \, \text{\AA} \)<br>
+                <strong>Ángulo de enlace:</strong> \( 120^\circ \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Derivar las propiedades excepcionales del grafeno:</strong>
+            <ul>
+                <li><strong>Resistencia mecánica extrema:</strong> Los enlaces \( sp^2 \) en el plano son los más fuertes conocidos en una estructura bidimensional. La resistencia a la tracción supera la del acero en un factor de ~200.</li>
+                <li><strong>Conductividad eléctrica excepcional:</strong> Los electrones \( \pi \) deslocalizados se comportan como fermiones de Dirac sin masa, moviéndose a velocidades cercanas a la de la luz con resistencia nula en condiciones ideales.</li>
+                <li><strong>Conductividad térmica extraordinaria:</strong> Los fonones se propagan eficientemente a través de la red hexagonal rígida.</li>
+                <li><strong>Transparencia óptica:</strong> Absorbe solo el ~2,3% de la luz visible debido a su extrema delgadez.</li>
+                <li><strong>Flexibilidad:</strong> Puede deformarse hasta un 20% de su longitud sin romperse.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Analizar la estructura del fullereno \( C_{60} \).</strong> El fullereno se forma al curvar una lámina de grafeno hasta cerrar una estructura esférica. Para que una superficie poliédrica se cierre topológicamente, debe contener exactamente <strong>12 pentágonos</strong> (teorema de Euler para poliedros). El fullereno \( C_{60} \) contiene:
+            <div class="formula-box">
+                <strong>12 pentágonos</strong> (necesarios para la curvatura y cierre)<br>
+                <strong>20 hexágonos</strong> (similares a los del grafito)<br>
+                <strong>60 átomos de carbono</strong> en total<br>
+                <strong>Diámetro:</strong> ~0,7 nm
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Relacionar fullereno con estructuras conocidas:</strong>
+            <ul>
+                <li>Los hexágonos del fullereno son localmente idénticos a los del grafito y el grafeno (hibridación \( sp^2 \) aproximada).</li>
+                <li>Los pentágonos introducen curvatura positiva (convexidad) en la superficie.</li>
+                <li>La distribución de pentágonos y hexágonos sigue el patrón de un balón de fútbol (icosaedro truncado).</li>
+                <li>Los electrones \( \pi \) están parcialmente deslocalizados sobre toda la superficie esférica, pero la curvatura reduce la conjugación respecto al grafeno plano.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Comparar propiedades y aplicaciones:</strong>
+            <div class="structure-grid">
+                <div class="structure-card graphene">
+                    <div class="title">Grafeno</div>
+                    <p style="margin-bottom: 10px;"><strong>Dimensionalidad:</strong> 2D (lámina plana)</p>
+                    <p style="margin-bottom: 10px;"><strong>Propiedades clave:</strong></p>
+                    <span class="property-tag">Resistencia extrema</span>
+                    <span class="property-tag">Conductor perfecto</span>
+                    <span class="property-tag">Transparente</span>
+                    <span class="property-tag">Flexible</span>
+                    <p style="margin-top: 12px; font-size: 0.9em;"><strong>Aplicaciones:</strong> Electrónica flexible, transistores, sensores, materiales compuestos, baterías, paneles solares transparentes.</p>
+                </div>
+                <div class="structure-card fullerene">
+                    <div class="title">Fullereno \( C_{60} \)</div>
+                    <p style="margin-bottom: 10px;"><strong>Dimensionalidad:</strong> 0D (molécula esférica)</p>
+                    <p style="margin-bottom: 10px;"><strong>Propiedades clave:</strong></p>
+                    <span class="property-tag">Estructura cerrada</span>
+                    <span class="property-tag">Aceptor de electrones</span>
+                    <span class="property-tag">Biodisponible</span>
+                    <span class="property-tag">Superconductor (dopado)</span>
+                    <p style="margin-top: 12px; font-size: 0.9em;"><strong>Aplicaciones:</strong> Liberación controlada de fármacos, celdas solares orgánicas, catalizadores, lubricantes, nanomedicina.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> El descubrimiento del grafeno por Geim y Novoselov (Premio Nobel 2010) ilustra la <em>serendipia</em> en ciencia: aislaron grafeno usando cinta adhesiva sobre grafito de lápiz, un método sorprendentemente sencillo. Es importante destacar que el grafeno era teóricamente "imposible" en estado libre según argumentos termodinámicos previos; su aislamiento demostró que la estabilización cinética es suficiente en láminas bidimensionales. Se recomienda relacionar esta demostración con los ODS 9 (Industria, innovación e infraestructura) y 12 (Producción y consumo responsables).
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Principio estructural</strong>
+            <p style="font-size: 1.05em; margin: 10px 0 0 0;">
+                \[ \boxed{\text{Grafeno} = \text{1 capa de grafito} \quad ; \quad \text{Fullereno} = \text{grafeno curvado y cerrado}} \]
+            </p>
+        </div>
+        <div class="formula-box" style="margin-top: 12px;">
+            <strong>Resumen de propiedades derivadas de la estructura</strong>
+            <p style="text-align: left; font-size: 0.95em; margin: 10px 0 0 0;">
+                <strong>Grafeno (2D, plano):</strong> Electrones \( \pi \) perfectamente deslocalizados → conductividad cuántica excepcional, resistencia mecánica extrema por enlaces \( sp^2 \) en plano.<br><br>
+                <strong>Fullereno \( C_{60} \) (0D, esférico):</strong> Curvatura por pentágonos → molécula cerrada estable, capacidad de encapsulamiento, aceptación de electrones, aplicaciones biomédicas.
+            </p>
+        </div>
+        <p>La demostración realizada mediante el análisis estructural y la comparación de dimensionalidades confirma que el grafeno y el fullereno presentan propiedades excepcionales derivadas de su geometría y organización atómica, abriendo nuevas fronteras en la ciencia de materiales.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> El grafeno y el fullereno representan dos extremos de la nanoestructuración del carbono, demostrando que la dimensionalidad y la curvatura son factores clave para determinar las propiedades físicas y químicas de los materiales, con un enorme potencial tecnológico.</p>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- BLOQUE DESPLEGABLE (TAREA 1)                 -->
+    <!-- ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame — 🧪 DESMITIFICANDO la estructura y propiedades del grafeno y del fullereno</span>
+        </summary>
+
+        <!-- Ejercicio 1 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 1</span> Comparación de resistencia mecánica</h3>
+            <p><strong>Enunciado:</strong> El grafeno tiene una resistencia a la tracción de 130 GPa, mientras que el acero estructural tiene unos 0,5 GPa. Calcula cuántas veces es más resistente el grafeno que el acero. Si una lámina de grafeno de 1 m² y 0,335 nm de espesor soporta una carga, ¿qué masa máxima podría sostener (g = 9,8 m/s²)?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Relación de resistencias:</strong> \( \frac{130}{0,5} = 260 \). El grafeno es 260 veces más resistente que el acero.</div>
+                <div class="step"><strong>2. Cálculo de la fuerza máxima:</strong> \( F = \text{resistencia} \times \text{área} \). Área = \( 1 \, \text{m}^2 \). \( F = 130 \times 10^9 \, \text{Pa} \times 1 \, \text{m}^2 = 1,3 \times 10^{11} \, \text{N} \).</div>
+                <div class="step"><strong>3. Masa equivalente:</strong> \( m = \frac{F}{g} = \frac{1,3 \times 10^{11}}{9,8} \approx 1,33 \times 10^{10} \, \text{kg} \) (unas 13,3 millones de toneladas).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> El grafeno es ~260 veces más resistente que el acero y podría soportar una masa de ~\( 1,3 \times 10^{10} \) kg (13,3 millones de toneladas) por metro cuadrado.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 2</span> Conductividad eléctrica del grafeno</h3>
+            <p><strong>Enunciado:</strong> La movilidad de los electrones en el grafeno es de \( 2 \times 10^5 \, \text{cm}^2/(\text{V·s}) \). Compara con el cobre, que tiene una movilidad de \( 4 \times 10^3 \, \text{cm}^2/(\text{V·s}) \). ¿Cuántas veces mayor es la movilidad del grafeno? Si se aplica un campo eléctrico de 1 V/cm, ¿qué velocidad de deriva tendrán los electrones en el grafeno?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Relación de movilidades:</strong> \( \frac{2 \times 10^5}{4 \times 10^3} = 50 \). El grafeno tiene 50 veces más movilidad que el cobre.</div>
+                <div class="step"><strong>2. Velocidad de deriva:</strong> \( v = \mu \cdot E \). \( \mu = 2 \times 10^5 \, \text{cm}^2/(\text{V·s}) \), \( E = 1 \, \text{V/cm} \). \( v = 2 \times 10^5 \, \text{cm/s} = 2000 \, \text{m/s} \).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La movilidad es 50 veces mayor; la velocidad de deriva sería de 2000 m/s, muy superior a la de los metales típicos.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 3</span> Geometría del fullereno: teorema de Euler</h3>
+            <p><strong>Enunciado:</strong> Un fullereno \( C_{60} \) tiene 12 pentágonos y 20 hexágonos. Verifica que cumple el teorema de Euler (\( V - A + C = 2 \)) para poliedros, donde \( V \) es el número de vértices, \( A \) el de aristas y \( C \) el de caras.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Datos:</strong> \( V = 60 \) (átomos de carbono, coinciden con vértices), \( C = 12 + 20 = 32 \) caras.</div>
+                <div class="step"><strong>2. Calcular aristas:</strong> Cada pentágono tiene 5 aristas, cada hexágono 6, pero cada arista es compartida por dos caras. \( A = \frac{5 \times 12 + 6 \times 20}{2} = \frac{60 + 120}{2} = 90 \).</div>
+                <div class="step"><strong>3. Aplicar Euler:</strong> \( V - A + C = 60 - 90 + 32 = 2 \). Se cumple.</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La estructura \( C_{60} \) cumple el teorema de Euler, confirmando su validez como poliedro convexo.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 4</span> Aplicación en baterías de grafeno</h3>
+            <p><strong>Enunciado:</strong> Se estima que el grafeno puede almacenar iones de litio en una proporción de 2 átomos de Li por cada 6 átomos de C. Si tenemos 1 g de grafeno, ¿cuántos gramos de litio podría almacenar teóricamente? (M(C)=12 g/mol, M(Li)=6,94 g/mol)</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Moles de C en 1 g:</strong> \( n_C = \frac{1}{12} = 0,0833 \, \text{mol} \).</div>
+                <div class="step"><strong>2. Relación Li:C:</strong> \( \frac{2 \text{ Li}}{6 \text{ C}} = \frac{1}{3} \), es decir, 1 mol de Li por cada 3 moles de C.</div>
+                <div class="step"><strong>3. Moles de Li:</strong> \( n_{Li} = \frac{0,0833}{3} = 0,0278 \, \text{mol} \).</div>
+                <div class="step"><strong>4. Masa de Li:</strong> \( m = 0,0278 \times 6,94 = 0,193 \, \text{g} \).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> 1 g de grafeno podría almacenar aproximadamente 0,193 g de litio, lo que equivale a ~19,3% de su peso en litio.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 5</span> Curvatura y propiedades del fullereno</h3>
+            <p><strong>Enunciado:</strong> Explica por qué la introducción de pentágonos en la estructura del grafeno (para formar fullereno) cambia la reactividad química y la conductividad eléctrica respecto al grafeno plano.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Cambio de hibridación:</strong> En el grafeno plano, el carbono es \( sp^2 \) puro. En el fullereno, la curvatura introduce cierto carácter \( sp^3 \) (los ángulos se desvían de 120°), lo que reduce la conjugación \( \pi \).</div>
+                <div class="step"><strong>2. Reactividad:</strong> La curvatura aumenta el carácter de enlace simple (menos doble), haciendo que los enlaces sean más reactivos frente a adiciones (ej. hidrogenación, halogenación). Además, la tensión de los pentágonos aumenta la energía, haciéndolo más reactivo.</div>
+                <div class="step"><strong>3. Conductividad:</strong> La deslocalización electrónica es menor que en el grafeno debido a la curvatura, por lo que el fullereno es semiconductor (conductor solo cuando se dopa) en lugar de conductor metálico.</div>
+                <div class="step"><span class="highlight-sol">Conclusión:</span> La curvatura reduce la conjugación y aumenta la reactividad, y convierte al fullereno en semiconductor en lugar de conductor.</div>
+            </div>
+        </div>
+
+        <!-- Pie didáctico -->
+        <div class="didactic-footer">
+            <i class="fas fa-graduation-cap"></i>
+            <span><strong>Observaciones claves:</strong> El grafeno y el fullereno son ejemplos paradigmáticos de cómo la geometría a nanoescala determina propiedades macroscópicas. La "trampa" habitual es pensar que el grafeno es solo "grafito más fino"; en realidad, sus propiedades electrónicas (como la movilidad de los electrones sin masa) son cualitativamente diferentes. Entender la relación entre estructura, dimensionalidad y propiedades es esencial para la nanotecnología.</span>
+        </div>
+    </details>
+    <!-- FIN DEL BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

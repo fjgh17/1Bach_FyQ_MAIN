@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T04.04 - Estequiometr铆a en volumen de gases</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            background: rgba(255,255,255,0.2);
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .formula-box-highlight {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        .note-prof {
+            background: #f0fff4;
+            border: 1px dashed #48bb78;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #22543d;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 25px;
+            margin-bottom: 12px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #feebc8 0%, #feebc8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+        }
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            .section {
+                padding: 20px 18px;
+                margin: 12px;
+            }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 20px 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            border-radius: 12px;
+            background: #edf2f7;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #667eea;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 10px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 12px 12px;
+        }
+        .details-content .ejercicio-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .details-content .ejercicio-card:last-child {
+            margin-bottom: 0;
+        }
+        .ejercicio-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .ejercicio-header .badge {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.85em;
+        }
+        .ejercicio-header h3 {
+            margin: 0;
+            font-size: 1.15em;
+            color: #2d3748;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #48bb78;
+            padding: 12px 16px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .math {
+            display: block;
+            text-align: center;
+            margin: 6px 0;
+        }
+        .pie-didactico {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-top: 20px;
+            color: #2a4365;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/C醦sula.png" width="40" height="auto">>
+                <span class="codigo">#T04.04.- </span>
+                <span class="texto">Estequiometr铆a en volumen de gases</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>馃搵 Enunciado</h2>
+        <p>Partiendo de la <strong>ecuaci贸n de estado del gas ideal</strong> (\(pV = nRT\)) y de la <strong>ecuaci贸n qu铆mica ajustada</strong> que establece relaciones molares entre reactivos y productos gaseosos, demostrar que:</p>
+        
+        <div class="formula-box-highlight">
+            Cuando todos los reactivos y productos de una reacci贸n qu铆mica son gases y se miden a la <strong>misma presi贸n y temperatura</strong>, las relaciones entre los vol煤menes de los gases involucrados son <strong>id茅nticas</strong> a los coeficientes estequiom茅tricos de la ecuaci贸n ajustada:
+            \[\frac{V_A}{\nu_A} = \frac{V_B}{\nu_B} = \frac{V_C}{\nu_C} = \frac{V_D}{\nu_D}\]
+            donde \(V_i\) es el volumen del gas \(i\) y \(\nu_i\) su coeficiente estequiom茅trico.
+        </div>
+        
+        <p style="margin-top: 15px;">Es decir, demostrar que la <span class="highlight">Ley de Gay-Lussac de los vol煤menes de combinaci贸n</span> es una consecuencia directa de la ecuaci贸n de Clapeyron y de la conservaci贸n de los moles en la estequiometr铆a.</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes//U04c04 - Estequiometr铆a en volumen de gases.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>馃幆 Objetivo</h2>
+        <p>El objetivo es establecer una <strong>justificaci贸n te贸rica rigurosa</strong> de por qu茅, en reacciones entre gases, se puede operar directamente con vol煤menes sin necesidad de convertir previamente a moles, demostrando que:</p>
+        <ul>
+            <li>El volumen de un gas ideal es <strong>directamente proporcional</strong> a su n煤mero de moles cuando \(p\) y \(T\) son constantes.</li>
+            <li>Por tanto, las <strong>relaciones volum茅tricas</strong> son equivalentes a las <strong>relaciones molares</strong> y, por extensi贸n, a los coeficientes estequiom茅tricos.</li>
+        </ul>
+        <p>Esta demostraci贸n simplifica enormemente los c谩lculos estequiom茅tricos en reacciones gaseosas y justifica el m茅todo directo utilizado en numerosos problemas.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>馃敩 Procedimiento</h2>
+        
+        <div class="step">
+            <span class="step-num">1</span> <strong>Relaci贸n entre volumen y moles para un gas ideal</strong>
+            <p>De la ecuaci贸n de Clapeyron, despejando el volumen:</p>
+            <div class="formula-box">
+                \[V = \frac{nRT}{p}\]
+            </div>
+            <p>Si consideramos un gas a <strong>presi贸n y temperatura constantes</strong> (\(p = \text{cte}\), \(T = \text{cte}\)), los t茅rminos \(R\), \(p\) y \(T\) son constantes. Por tanto:</p>
+            <div class="formula-box-highlight">
+                \[V = n \cdot \left(\frac{RT}{p}\right) = n \cdot k\]
+            </div>
+            <p>donde \(k = \frac{RT}{p}\) es una constante com煤n para todos los gases en esas condiciones. Esto demuestra que:</p>
+            <div class="formula-box">
+                \[V \propto n \quad (p, T = \text{cte})\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">2</span> <strong>Aplicaci贸n a una ecuaci贸n qu铆mica ajustada</strong>
+            <p>Consideremos una reacci贸n qu铆mica ajustada en la que todos los reactivos y productos son gases, medidos a la misma \(p\) y \(T\):</p>
+            <div class="formula-box">
+                \[\nu_A\,A(g) + \nu_B\,B(g) \longrightarrow \nu_C\,C(g) + \nu_D\,D(g)\]
+            </div>
+            <p>Sean \(V_A, V_B, V_C, V_D\) los vol煤menes ocupados por cada gas en las condiciones de la reacci贸n. Aplicando la relaci贸n \(V_i = n_i \cdot k\) a cada sustancia:</p>
+            <div class="formula-box">
+                \[n_A = \frac{V_A}{k}, \quad n_B = \frac{V_B}{k}, \quad n_C = \frac{V_C}{k}, \quad n_D = \frac{V_D}{k}\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">3</span> <strong>Sustituci贸n en la relaci贸n estequiom茅trica molar</strong>
+            <p>De la demostraci贸n del factor de conversi贸n estequiom茅trico (Demostraci贸n 2), sabemos que para la ecuaci贸n ajustada se cumple:</p>
+            <div class="formula-box">
+                \[\frac{n_A}{\nu_A} = \frac{n_B}{\nu_B} = \frac{n_C}{\nu_C} = \frac{n_D}{\nu_D}\]
+            </div>
+            <p>Sustituyendo \(n_i = \frac{V_i}{k}\) en esta expresi贸n:</p>
+            <div class="formula-box">
+                \[\frac{V_A/k}{\nu_A} = \frac{V_B/k}{\nu_B} = \frac{V_C/k}{\nu_C} = \frac{V_D/k}{\nu_D}\]
+            </div>
+            <p>Como \(k\) es una constante com煤n, puede factorizarse y cancelarse en todos los t茅rminos:</p>
+            <div class="formula-box-highlight">
+                \[\frac{1}{k} \cdot \frac{V_A}{\nu_A} = \frac{1}{k} \cdot \frac{V_B}{\nu_B} = \frac{1}{k} \cdot \frac{V_C}{\nu_C} = \frac{1}{k} \cdot \frac{V_D}{\nu_D}\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">4</span> <strong>Obtenci贸n de la relaci贸n volum茅trica</strong>
+            <p>Multiplicando todos los t茅rminos por la constante \(k\), se obtiene directamente:</p>
+            <div class="formula-box-highlight">
+                \[\frac{V_A}{\nu_A} = \frac{V_B}{\nu_B} = \frac{V_C}{\nu_C} = \frac{V_D}{\nu_D}\]
+            </div>
+            <p>Equivalentemente, para cualquier par de gases en la reacci贸n:</p>
+            <div class="formula-box">
+                \[\frac{V_i}{V_j} = \frac{\nu_i}{\nu_j}\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">5</span> <strong>Interpretaci贸n f铆sica y generalizaci贸n</strong>
+            <p>El resultado anterior demuestra que, en las mismas condiciones de presi贸n y temperatura:</p>
+            <ul>
+                <li>El <strong>volumen de un gas es proporcional a su n煤mero de moles</strong> (Ley de Avogadro).</li>
+                <li>Por tanto, los <strong>coeficientes estequiom茅tricos</strong> de la ecuaci贸n ajustada representan simult谩neamente:
+                    <ul>
+                        <li>Relaciones molares entre sustancias.</li>
+                        <li>Relaciones volum茅tricas entre gases (mismas \(p, T\)).</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>Esto permite resolver problemas de estequiometr铆a gaseosa operando <strong>directamente con vol煤menes</strong>, sin necesidad de calcular previamente los moles mediante la ecuaci贸n de Clapeyron.</p>
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>鉁?Resultado</h2>
+        <p>Se ha demostrado que, para reacciones qu铆micas en las que todos los reactivos y productos son gases medidos a la <strong>misma presi贸n y temperatura</strong>, las relaciones entre vol煤menes son id茅nticas a los coeficientes estequiom茅tricos.</p>
+        
+        <div class="formula-box-highlight">
+            <strong>Resultado fundamental:</strong><br><br>
+            Si \(p\) y \(T\) son constantes para todos los gases:
+            \[\frac{V_A}{\nu_A} = \frac{V_B}{\nu_B} = \frac{V_C}{\nu_C} = \frac{V_D}{\nu_D}\]
+            <br>o equivalentemente:
+            \[V_i = V_j \times \frac{\nu_i}{\nu_j}\]
+        </div>
+        
+        <p style="margin-top: 15px;">Esta propiedad, conocida hist贸ricamente como la <strong>Ley de Gay-Lussac de los vol煤menes de combinaci贸n</strong>, es una consecuencia directa de:</p>
+        <ul>
+            <li>La ecuaci贸n de estado del gas ideal (\(pV = nRT\)).</li>
+            <li>La proporcionalidad directa entre volumen y n煤mero de moles a \(p, T\) constantes.</li>
+            <li>La conservaci贸n de los moles en la estequiometr铆a de la ecuaci贸n ajustada.</li>
+        </ul>
+        
+        <div class="note-prof">
+            <strong>馃挕 Observaciones sobre el alumnado:</strong><br>
+            Es crucial advertir a los estudiantes que esta simplificaci贸n <strong>solo es v谩lida cuando todos los gases se miden en las mismas condiciones de presi贸n y temperatura</strong>. Si un reactivo es s贸lido o l铆quido, o si los gases se encuentran en condiciones diferentes, debe aplicarse primero la ecuaci贸n de Clapeyron para calcular los moles y luego utilizar el factor de conversi贸n estequiom茅trico. Un error frecuente es aplicar relaciones volum茅tricas directas cuando las condiciones no son homog茅neas.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (A脩ADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>馃柋锔?Pulsame 鈥?馃И DESMITIFICANDO la estequiometr铆a en volumen de gases</span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <h3>Combusti贸n de metano: volumen de ox铆geno necesario</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>El metano (CH鈧? se quema seg煤n: \(\mathrm{CH_4 + 2\,O_2 \rightarrow CO_2 + 2\,H_2O}\).</li>
+                    <li>Si se queman 25,0 L de CH鈧?medidos a 1 atm y 25 掳C, 驴qu茅 volumen de O鈧? medido en las mismas condiciones, se necesita? 驴Qu茅 volumen de CO鈧?se produce?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resoluci贸n paso a paso:</strong></p>
+                    <p>Ecuaci贸n ajustada: \(\mathrm{CH_4 + 2\,O_2 \rightarrow CO_2 + 2\,H_2O}\).</p>
+                    <p>Coeficientes: \(\nu_{\mathrm{CH_4}}=1\), \(\nu_{\mathrm{O_2}}=2\), \(\nu_{\mathrm{CO_2}}=1\).</p>
+                    <p>Todos los reactivos y productos son gases medidos en las mismas condiciones (\(p, T\) cte). Por tanto, aplicamos la relaci贸n volum茅trica:</p>
+                    <div class="math">\(V_{\mathrm{O_2}} = V_{\mathrm{CH_4}} \times \frac{2}{1} = 25,0 \times 2 = 50,0\,\mathrm{L}\)</div>
+                    <div class="math">\(V_{\mathrm{CO_2}} = V_{\mathrm{CH_4}} \times \frac{1}{1} = 25,0\,\mathrm{L}\)</div>
+                    <p><strong>Resultado:</strong> se necesitan \(\mathbf{50,0\,L}\) de O鈧?y se producen \(\mathbf{25,0\,L}\) de CO鈧?</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <h3>S铆ntesis de amoniaco: relaci贸n de vol煤menes</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>La s铆ntesis del amoniaco se produce seg煤n: \(\mathrm{N_2 + 3\,H_2 \rightarrow 2\,NH_3}\).</li>
+                    <li>Si se introducen 15,0 L de N鈧?y 45,0 L de H鈧?(ambos medidos a 2 atm y 300 K) en un reactor, 驴qu茅 volumen de NH鈧?se obtendr谩 (medido en las mismas condiciones) suponiendo que la reacci贸n es completa?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resoluci贸n:</strong></p>
+                    <p>Ecuaci贸n ajustada: \(\mathrm{N_2 + 3\,H_2 \rightarrow 2\,NH_3}\).</p>
+                    <p>Relaci贸n estequiom茅trica: 1 L de N鈧?reacciona con 3 L de H鈧?para dar 2 L de NH鈧?(en las mismas condiciones).</p>
+                    <p>Disponemos de 15 L de N鈧?y 45 L de H鈧? La proporci贸n es exactamente 1:3, as铆 que ambos reactivos se consumen por completo (no hay reactivo limitante).</p>
+                    <p>Volumen de NH鈧?producido: \(V_{\mathrm{NH_3}} = 15,0 \times \frac{2}{1} = 30,0\,\mathrm{L}\).</p>
+                    <p><strong>Resultado:</strong> se obtienen \(\mathbf{30,0\,L}\) de NH鈧?</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <h3>Descomposici贸n del ozono: relaci贸n de vol煤menes</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>El ozono se descompone en ox铆geno seg煤n: \(\mathrm{2\,O_3 \rightarrow 3\,O_2}\).</li>
+                    <li>Si se descomponen 5,0 L de O鈧?(medidos a 1 atm y 20 掳C), 驴qu茅 volumen de O鈧?se forma (medido en las mismas condiciones)?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resoluci贸n:</strong></p>
+                    <p>Ecuaci贸n ajustada: \(\mathrm{2\,O_3 \rightarrow 3\,O_2}\).</p>
+                    <p>Relaci贸n volum茅trica (mismas \(p, T\)): \(V_{\mathrm{O_2}} = V_{\mathrm{O_3}} \times \frac{3}{2}\).</p>
+                    <div class="math">\(V_{\mathrm{O_2}} = 5,0 \times \frac{3}{2} = 7,5\,\mathrm{L}\)</div>
+                    <p><strong>Resultado:</strong> se forman \(\mathbf{7,5\,L}\) de O鈧?</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <h3>Combusti贸n de una mezcla de gases (propano y butano)</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>Una mezcla de propano (\(\mathrm{C_3H_8}\)) y butano (\(\mathrm{C_4H_{10}}\)) ocupa 10,0 L a 1 atm y 25 掳C.</li>
+                    <li>Si la mezcla contiene 60% en volumen de propano y 40% de butano, 驴qu茅 volumen de O鈧?(medido en las mismas condiciones) se necesita para su combusti贸n completa?</li>
+                    <li>Ecuaciones: \(\mathrm{C_3H_8 + 5\,O_2 \rightarrow 3\,CO_2 + 4\,H_2O}\), \(\mathrm{C_4H_{10} + \frac{13}{2}\,O_2 \rightarrow 4\,CO_2 + 5\,H_2O}\).</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resoluci贸n:</strong></p>
+                    <p>Vol煤menes en la mezcla: \(V_{\mathrm{C_3H_8}} = 10,0 \times 0,60 = 6,0\,\mathrm{L}\); \(V_{\mathrm{C_4H_{10}}} = 10,0 \times 0,40 = 4,0\,\mathrm{L}\).</p>
+                    <p>Para el propano: necesita \(5 \times 6,0 = 30,0\,\mathrm{L}\) de O鈧?</p>
+                    <p>Para el butano: necesita \(\frac{13}{2} \times 4,0 = 6,5 \times 4,0 = 26,0\,\mathrm{L}\) de O鈧?</p>
+                    <p>Volumen total de O鈧?= \(30,0 + 26,0 = 56,0\,\mathrm{L}\).</p>
+                    <p><strong>Resultado:</strong> se necesitan \(\mathbf{56,0\,L}\) de O鈧?</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <h3>Reacci贸n de gases con reactivo limitante</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>La reacci贸n \(\mathrm{2\,SO_2 + O_2 \rightarrow 2\,SO_3}\) se lleva a cabo en un reactor.</li>
+                    <li>Se introducen 8,0 L de SO鈧?y 5,0 L de O鈧?(medidos a 1 atm y 300 K).</li>
+                    <li>a) 驴Cu谩l es el reactivo limitante?</li>
+                    <li>b) 驴Qu茅 volumen de SO鈧?se produce (en las mismas condiciones)?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resoluci贸n:</strong></p>
+                    <p>Ecuaci贸n ajustada: \(\mathrm{2\,SO_2 + O_2 \rightarrow 2\,SO_3}\).</p>
+                    <p>Relaci贸n volum茅trica: 2 L de SO鈧?reaccionan con 1 L de O鈧?</p>
+                    <p>Con 8,0 L de SO鈧?se necesitar铆an \(8,0 / 2 = 4,0\,\mathrm{L}\) de O鈧? Disponemos de 5,0 L, as铆 que el O鈧?est谩 en exceso y el <strong>SO鈧?es el reactivo limitante</strong>.</p>
+                    <p>Volumen de SO鈧?producido: seg煤n la estequiometr铆a, 2 L de SO鈧?dan 2 L de SO鈧?(relaci贸n 1:1).</p>
+                    <div class="math">\(V_{\mathrm{SO_3}} = 8,0 \times \frac{2}{2} = 8,0\,\mathrm{L}\)</div>
+                    <p><strong>Resultados:</strong> a) el reactivo limitante es \(\mathrm{SO_2}\); b) se producen \(\mathbf{8,0\,L}\) de \(\mathrm{SO_3}\).</p>
+                </div>
+            </div>
+
+            <!-- PIE DID脕CTICO -->
+            <div class="pie-didactico">
+                <i class="fas fa-lightbulb" style="color: #2b6cb0;"></i>
+                <strong>Observaciones claves:</strong> La estequiometr铆a en volumen de gases simplifica enormemente los c谩lculos cuando todos los gases est谩n en las mismas condiciones de presi贸n y temperatura. La relaci贸n entre vol煤menes es id茅ntica a la relaci贸n entre moles, lo que permite operar directamente con litros sin necesidad de convertir a moles mediante Clapeyron. Sin embargo, esta regla <strong>solo se aplica a gases</strong> y cuando las condiciones son uniformes. Si intervienen s贸lidos, l铆quidos o condiciones diferentes, hay que recurrir al m茅todo general de factores de conversi贸n.
+            </div>
+        </div>
+    </details>
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE DESPLEGABLE "ES HORA DE"
+     ============================================ -->
+
+<details>
+    <summary style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; cursor: pointer; flex-wrap: wrap;">
+        <i class="fas fa-chevron-circle-down" style="font-size: 1.2em; color: #4a5568; flex-shrink: 0;"></i>
+        <i class="fas fa-user-graduate" style="font-size: 1.6em; color: #667eea; flex-shrink: 0;"></i>
+        <span style="font-weight: 500; font-size: clamp(0.85rem, 3vw, 1.1rem);">
+            Es hora de鈥?<span style="font-style: italic; background: #fefcbf; padding: 0 8px; border-radius: 12px; display: inline-block;">鈥淧rofe, profe鈥?驴entonces? 驴Qu茅 me estudio para el examen?鈥?/span>
+        </span>
+    </summary>
+    <div style="padding: 25px 15px; text-align: center; background: white;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+            
+                    <!-- --------------- -->           
+                    <div style="
+                        max-width: 100%;
+                        padding: 15px;
+                        margin: 10px auto;
+                        text-align: center;
+                        background: #f8fafc;
+                        border-radius: 16px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                    ">
+                        <p style="
+                            font-size: clamp(0.95rem, 3vw, 1.2rem);
+                            color: #2d3748;
+                            margin-top: 0;
+                            margin-bottom: 12px;
+                            padding: 0 10px;
+                        ">
+                            <strong>隆Tranquilo!</strong> Con un par de multiplicaciones 
+                            <span style="
+                                background: #fefcbf;
+                                font-weight: 700;
+                                padding: 0 6px;
+                                border-radius: 8px;
+                                text-decoration: underline;
+                                text-decoration-color: #f6ad55;
+                                text-decoration-thickness: 3px;
+                            ">y algo de pr谩ctica</span>, <br>
+                            esto es m谩s f谩cil de lo que parece. 馃槈
+                        </p>
+
+
+
+<div style="text-align:center;">
+    <a
+        href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+        target="_blank"
+        style="
+            display:inline-block;
+            padding:12px 24px;
+            background:#0078D4;
+            color:white;
+            text-decoration:none;
+            border-radius:12px;
+            font-weight:bold;
+        "
+    >
+        Volver al inicio
+    </a>
+</div>
+
+
+
+                    </div>
+
+                    <!-- --------------- -->
+
+        </div>
+    </div>
+</details>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

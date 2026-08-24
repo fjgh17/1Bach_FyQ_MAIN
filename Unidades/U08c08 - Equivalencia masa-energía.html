@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 8: Equivalencia Masa-Energía</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.08.- </span>
+                    <span class="texto">Demostración 8: Equivalencia Masa-Energía</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de los postulados de la relatividad especial de Einstein (constancia de la velocidad de la luz en el vacío para todos los observadores inerciales y equivalencia de las leyes físicas en todos los sistemas inerciales), demostrar que la energía en reposo \( E \) de un cuerpo de masa \( m \) viene dada por:</p>
+            <div class="formula-box">
+                \[ E = m \cdot c^{2} \]
+            </div>
+            <p>donde \( c = 2.998 \times 10^{8} \, \text{m/s} \) es la velocidad de la luz en el vacío.</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c08 - Equivalencia masa-energía.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Comprender que la masa y la energía son dos manifestaciones de una misma realidad física, relacionadas por el factor de conversión \( c^{2} \). A nivel de 1º de Bachillerato, el objetivo es cualitativo y cuantitativo básico: entender que toda masa posee una energía intrínseca enorme y que, en procesos nucleares, una pequeña fracción de masa se transforma en cantidades colosales de energía.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Contexto histórico y físico (nivel introductorio)</strong>
+                <p>En 1905, Albert Einstein publicó su teoría de la relatividad especial, revolucionando la concepción clásica del espacio, el tiempo, la masa y la energía. Uno de sus resultados más sorprendentes es que la masa de un cuerpo en reposo es una forma de energía.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Conservación del momento en la emisión de luz</strong>
+                <p>Einstein consideró un cuerpo en reposo que emite dos pulsos de luz de energía \( L/2 \) en direcciones opuestas. Por conservación del momento, el cuerpo permanece en reposo. Sin embargo, el cuerpo ha perdido energía \( L \).</p>
+                <div class="formula-box">
+                    \[ E_{\text{inicial}} = E_0 \quad ; \quad E_{\text{final}} = E_1 + L \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Análisis desde un sistema en movimiento</strong>
+                <p>Observando desde un sistema de referencia que se mueve con velocidad \( v \) perpendicular a la dirección de emisión de la luz, Einstein aplicó las transformaciones de Lorentz para la energía. En este sistema, el cuerpo tiene energía cinética y la emisión de luz modifica tanto la energía como el momento del cuerpo.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Relación entre pérdida de energía y pérdida de masa</strong>
+                <p>Einstein demostró que, para que se conserve el momento en ambos sistemas de referencia, la pérdida de energía \( L \) debe ir acompañada de una pérdida de masa \( \Delta m \) tal que:</p>
+                <div class="formula-box">
+                    \[ L = \Delta m \cdot c^{2} \]
+                </div>
+                <p>Es decir, la energía radiada proviene de una disminución de la masa del cuerpo.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Generalización a la energía en reposo</strong>
+                <p>Generalizando este resultado, Einstein propuso que toda masa \( m \) posee una energía en reposo intrínseca:</p>
+                <div class="formula-box">
+                    \[ E = m \cdot c^{2} \]
+                </div>
+                <p>Esta energía representa el contenido energético total de un cuerpo en reposo, incluyendo su masa como tal.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Verificación dimensional</strong>
+                <p>Comprobamos la coherencia de unidades:</p>
+                <div class="formula-box">
+                    \[ [E] = [m] \cdot [c]^{2} = \text{kg} \cdot \left( \frac{\text{m}}{\text{s}} \right)^{2} = \text{kg} \cdot \frac{\text{m}^{2}}{\text{s}^{2}} = \text{J} \]
+                </div>
+                <p>Las unidades son correctas: masa por velocidad al cuadrado da energía en julios.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Implicaciones físicas y escala numérica</strong>
+                <p>El factor \( c^{2} \approx 9 \times 10^{16} \, \text{m}^{2}/\text{s}^{2} \) es enorme, lo que significa que pequeñas cantidades de masa equivalen a cantidades colosales de energía:</p>
+                <div class="formula-box">
+                    \[ 1 \, \text{kg} \leftrightarrow 9 \times 10^{16} \, \text{J} \]
+                </div>
+                <p>Esto equivale aproximadamente a la energía producida por una central eléctrica de 1000 MW funcionando durante 3 años.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">8</span>
+                <strong>Variación de masa en procesos energéticos</strong>
+                <p>En reacciones químicas, la variación de masa es imperceptible (\( \Delta m \approx 10^{-9} \) de la masa total). En reacciones nucleares (fisión y fusión), la fracción de masa convertida en energía es del orden de \( 0.1\% \), lo que explica la enorme potencia de las armas y centrales nucleares. En la materia-antimateria, la conversión es del 100%.</p>
+                <div class="formula-box">
+                    \[ \Delta E = \Delta m \cdot c^{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">9</span>
+                <strong>Conexión con la conservación de la energía</strong>
+                <p>La ecuación \( E = mc^{2} \) unifica la conservación de la masa y la energía. En física moderna, se habla de <strong>conservación de la masa-energía</strong>: en un sistema aislado, la suma de todas las formas de energía (incluida la energía en reposo) se conserva. En nuestro entorno cotidiano, las transformaciones de energía no implican cambios apreciables de masa, por lo que las leyes de conservación clásicas siguen siendo válidas.</p>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ E = m \cdot c^{2} \]
+            </div>
+            <p>La masa y la energía son equivalentes y relacionadas por el cuadrado de la velocidad de la luz. Toda masa posee una energía en reposo intrínseca, y toda energía posee una masa asociada. En procesos donde se libera o absorbe energía, la masa del sistema varía en consecuencia. Este principio es la base de la energía nuclear y explica la enorme cantidad de energía liberada en el Sol y en las estrellas.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> A nivel de 1º de Bachillerato, esta demostración debe presentarse de manera conceptual y cualitativa, sin entrar en el formalismo de las transformaciones de Lorentz. El énfasis debe ponerse en: (1) la enormidad del factor de conversión \( c^{2} \), (2) la verificación experimental (bombas atómicas, centrales nucleares, física de partículas), (3) la distinción entre procesos químicos (mínima conversión de masa) y nucleares (conversión apreciable). El ejercicio 41 del libro (bomba de Hiroshima) es excelente para cuantificar la pequeña cantidad de masa que se transforma en energía. Es importante desmentir la idea popular de que la masa "se convierte" en energía: más bien, la masa es una forma de energía que se manifiesta de diferentes maneras.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO la equivalencia masa-energía</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Energía equivalente de 1 gramo de masa -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Energía contenida en 1 gramo</span>
+                </div>
+                <p><strong>Enunciado:</strong> Calcula la energía equivalente a 1,0 g de masa. Expresa el resultado en julios y en kWh. ¿Cuántos días podría alimentar a una bombilla de 60 W?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>\( m = 1,0 \times 10^{-3} \, \text{kg} \), \( c = 3,0 \times 10^8 \, \text{m/s} \).</p>
+                    <p>\( E = m c^2 = 1,0 \times 10^{-3} \cdot (3,0 \times 10^8)^2 = 1,0 \times 10^{-3} \cdot 9,0 \times 10^{16} = 9,0 \times 10^{13} \, \text{J} \).</p>
+                    <p>En kWh: \( 9,0 \times 10^{13} \, \text{J} \times \frac{1 \, \text{kWh}}{3,6 \times 10^6 \, \text{J}} \approx 2,5 \times 10^7 \, \text{kWh} \).</p>
+                    <p>Una bombilla de 60 W consume \( 60 \, \text{W} = 0,060 \, \text{kW} \). Tiempo = \( \frac{2,5 \times 10^7}{0,060} \approx 4,17 \times 10^8 \, \text{h} \approx 47\,500 \, \text{años} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Masa correspondiente a 1 kWh -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Masa equivalente a 1 kWh</span>
+                </div>
+                <p><strong>Enunciado:</strong> ¿Qué cantidad de masa se debe convertir completamente en energía para obtener 1,0 kWh de energía? Compara con la masa de un grano de arroz (~0,02 g).</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>\( 1 \, \text{kWh} = 3,6 \times 10^6 \, \text{J} \).</p>
+                    <p>De \( E = m c^2 \), \( m = \frac{E}{c^2} = \frac{3,6 \times 10^6}{(3,0 \times 10^8)^2} = \frac{3,6 \times 10^6}{9,0 \times 10^{16}} = 4,0 \times 10^{-11} \, \text{kg} \).</p>
+                    <p>En gramos: \( 4,0 \times 10^{-8} \, \text{g} \), que es aproximadamente \( 2 \times 10^{-6} \) veces la masa de un grano de arroz. ¡Es una cantidad ínfima!</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Energía de fusión del hidrógeno -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Fusión nuclear en el Sol</span>
+                </div>
+                <p><strong>Enunciado:</strong> En el Sol, cada segundo se fusionan aproximadamente \( 6 \times 10^{11} \, \text{kg} \) de hidrógeno, y solo el 0,7% de esa masa se convierte en energía. Calcula la energía liberada por segundo (potencia del Sol) en vatios.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Masa convertida por segundo: \( \Delta m = 0,007 \times 6 \times 10^{11} = 4,2 \times 10^9 \, \text{kg/s} \).</p>
+                    <p>Energía por segundo: \( E = \Delta m c^2 = 4,2 \times 10^9 \cdot (3,0 \times 10^8)^2 = 4,2 \times 10^9 \cdot 9,0 \times 10^{16} = 3,78 \times 10^{26} \, \text{J/s} = 3,78 \times 10^{26} \, \text{W} \).</p>
+                    <p>Esta es la potencia radiada por el Sol (aproximadamente \( 3,8 \times 10^{26} \, \text{W} \)).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Conversión de energía química vs nuclear -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Comparación de eficiencia energética</span>
+                </div>
+                <p><strong>Enunciado:</strong> La combustión de 1 kg de carbón libera aproximadamente \( 3 \times 10^7 \, \text{J} \). Compara esta energía con la que se obtendría si se convirtiera completamente en energía según \( E = mc^2 \). ¿Cuántas veces mayor es la energía nuclear?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Energía de combustión: \( E_{\text{química}} = 3 \times 10^7 \, \text{J} \).</p>
+                    <p>Energía de conversión total: \( E_{\text{nuclear}} = 1 \cdot (3,0 \times 10^8)^2 = 9,0 \times 10^{16} \, \text{J} \).</p>
+                    <p>Relación: \( \frac{E_{\text{nuclear}}}{E_{\text{química}}} = \frac{9,0 \times 10^{16}}{3,0 \times 10^7} = 3,0 \times 10^9 \).</p>
+                    <p>La energía nuclear (conversión total) es 3 mil millones de veces mayor que la química por unidad de masa.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Energía liberada en la fisión de 1 kg de uranio -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Fisión nuclear de uranio</span>
+                </div>
+                <p><strong>Enunciado:</strong> En la fisión de un núcleo de uranio-235 se liberan aproximadamente \( 3,2 \times 10^{-11} \, \text{J} \). Si 1 kg de uranio-235 contiene aproximadamente \( 2,56 \times 10^{24} \) núcleos, calcula la energía total liberada y la masa que se ha convertido en energía (suponiendo que toda la energía proviene de la pérdida de masa).</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Número de núcleos en 1 kg: \( 2,56 \times 10^{24} \).</p>
+                    <p>Energía total: \( E = 2,56 \times 10^{24} \cdot 3,2 \times 10^{-11} = 8,19 \times 10^{13} \, \text{J} \).</p>
+                    <p>Masa convertida: \( \Delta m = \frac{E}{c^2} = \frac{8,19 \times 10^{13}}{9,0 \times 10^{16}} \approx 9,1 \times 10^{-4} \, \text{kg} = 0,91 \, \text{g} \).</p>
+                    <p>Aproximadamente el 0,1% de la masa inicial se convierte en energía, típico de la fisión nuclear.</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> La ecuación \( E = mc^2 \) es uno de los resultados más famosos y malinterpretados de la física. No significa que la masa "se convierta" en energía, sino que la masa <em>es</em> una forma de energía. En cualquier proceso en el que se libera energía, la masa del sistema disminuye en una cantidad \( \Delta m = \Delta E / c^2 \). La enorme magnitud de \( c^2 \) hace que, en la vida cotidiana, los cambios de masa sean imperceptibles. Solo en procesos nucleares se hacen apreciables. Este concepto unifica las leyes de conservación de la masa y de la energía en un único principio de conservación de la masa-energía.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

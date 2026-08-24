@@ -1,0 +1,614 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#T10.01 · Ley de Coulomb</title>
+<!-- MathJax -->
+<!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome (versión 6) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ============================================
+   ESTILOS EXISTENTES (no modificados)
+   ============================================ */
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.header-left h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+.header-left p {
+    margin: 6px 0 0 0;
+    font-size: 1em;
+}
+.header-right img {
+    max-height: 70px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+}
+.section {
+    padding: 25px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border-left: 5px solid;
+}
+.enunciado { background: #f7fafc; border-color: #a0aec0; }
+.objetivo  { background: #fffaf0; border-color: #ed8936; }
+.procedimiento { background: #f0fff4; border-color: #48bb78; }
+.resultado { background: #ebf8ff; border-color: #4299e1; }
+.section h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.enunciado h2 { color: #4a5568; }
+.objetivo h2  { color: #c05621; }
+.procedimiento h2 { color: #276749; }
+.resultado h2 { color: #2b6cb0; }
+.formula-box {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+}
+.step {
+    background: white;
+    border-left: 4px solid #a0aec0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.step-num {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #744210;
+}
+p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.header-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.header-sub img {
+    height: 28px;
+    width: auto;
+    display: block;
+    border-radius: 4px;
+}
+.header-sub .codigo {
+    font-weight: 700;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+    color: #f0e6ff;
+}
+.header-sub .texto {
+    font-size: 1em;
+    color: #f0e6ff;
+    font-weight: 500;
+}
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+/* ============================================
+   NUEVOS ESTILOS PARA EL BLOQUE DESPLEGABLE
+   ============================================ */
+/* Contenedor principal del desplegable */
+details.desmitificando {
+    margin: 30px 15px 20px 15px;
+    border: 2px solid #764ba2;
+    border-radius: 12px;
+    background: #faf5ff;
+    padding: 0.5rem 1rem 1rem 1rem;
+    transition: all 0.2s;
+}
+/* Ocultar el triángulo nativo del navegador */
+details.desmitificando summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.5rem 0;
+    user-select: none;
+}
+details.desmitificando summary::-webkit-details-marker {
+    display: none;
+}
+/* Icono FontAwesome con animación de rotación */
+details.desmitificando summary i.fa-chevron-circle-down {
+    transition: transform 0.3s ease;
+    color: #764ba2;
+    font-size: 1.6rem;
+}
+details.desmitificando[open] summary i.fa-chevron-circle-down {
+    transform: rotate(180deg);
+}
+/* Etiqueta "🖱️ Pulsame" */
+details.desmitificando summary .pulsame {
+    font-size: 0.8rem;
+    color: #6b46c1;
+    background: #e9d8fd;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+/* Contenido interno */
+details.desmitificando .contenido-ejercicios {
+    margin-top: 0.5rem;
+    border-top: 1px solid #d6bcf0;
+    padding-top: 1rem;
+}
+
+/* Tarjetas de ejercicios */
+.ejercicio-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    border: 1px solid #e2d4f0;
+}
+.ejercicio-header {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ejercicio-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.ejercicio-body {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+}
+.ejercicio-body .enunciado-ej {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.ejercicio-body ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+.resolucion {
+    background: #f7f3fc;
+    border-left: 4px solid #764ba2;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 0.5rem 0;
+    font-size: 0.98rem;
+}
+.resolucion .paso {
+    margin-bottom: 0.6rem;
+}
+.resolucion .paso strong {
+    color: #4c2b7a;
+}
+.pie-clave {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: #744210;
+}
+.pie-clave i {
+    margin-right: 8px;
+    color: #d69e2e;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== CABECERA OBLIGATORIA ===== -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T10.01.- </span>
+                <span class="texto">Ley de Coulomb</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES EXISTENTES ===== -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de fuerza electrostática como la interacción entre dos cargas puntuales en el vacío, y de las observaciones experimentales de que dicha fuerza es:</p>
+        <ul>
+            <li>Directamente proporcional al producto de las cargas \( q_1 \) y \( q_2 \)</li>
+            <li>Inversamente proporcional al cuadrado de la distancia \( r \) que las separa</li>
+            <li>Dirigida a lo largo de la línea que une ambas cargas</li>
+        </ul>
+        <p>demostrar que la expresión matemática de la fuerza de interacción viene dada por:</p>
+        <div class="formula-box">
+            \[ \vec{F} = K \frac{q_1 \cdot q_2}{r^2} \hat{u}_r \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U10c01 - Ley de Coulomb.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Obtener de manera formal la expresión vectorial de la Ley de Coulomb, que constituye el fundamento de toda la electrostática. Esta ley permite cuantificar la interacción entre cargas eléctricas y es indispensable para comprender conceptos posteriores como el campo eléctrico y el potencial. La demostración parte del análisis dimensional y de la simetría del problema.</p>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Análisis de proporcionalidad.</strong> Experimentalmente se observa que la fuerza \( F \) entre dos cargas puntuales depende de tres magnitudes: las cargas \( q_1 \) y \( q_2 \), y la distancia \( r \). Por tanto, podemos escribir la relación funcional:
+            <div class="formula-box">
+                \[ F \propto q_1^{\alpha} \cdot q_2^{\beta} \cdot r^{\gamma} \]
+            </div>
+            <p>donde \( \alpha \), \( \beta \) y \( \gamma \) son exponentes que determinaremos.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Determinación de los exponentes.</strong> Mediante experimentos sistemáticos (como los realizados con la balanza de torsión de Coulomb) se establece que:
+            <ul>
+                <li>Si se duplica una de las cargas manteniendo constantes las demás variables, la fuerza se duplica: \( \alpha = 1 \) y \( \beta = 1 \)</li>
+                <li>Si se duplica la distancia, la fuerza se reduce a la cuarta parte: \( \gamma = -2 \)</li>
+            </ul>
+            <div class="formula-box">
+                \[ F \propto \frac{q_1 \cdot q_2}{r^2} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Conversión de proporcionalidad en igualdad.</strong> Introducimos una constante de proporcionalidad \( K \) que depende del medio en que se encuentren las cargas. En el vacío, esta constante vale:
+            <div class="formula-box">
+                \[ K = \frac{1}{4\pi\varepsilon_0} \approx 8{,}99 \times 10^{9} \ \text{N}\cdot\text{m}^2\cdot\text{C}^{-2} \]
+            </div>
+            <p>donde \( \varepsilon_0 \) es la permitividad eléctrica del vacío.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Carácter vectorial de la fuerza.</strong> La fuerza es una magnitud vectorial que actúa a lo largo de la línea que une ambas cargas. Definimos el vector unitario \( \hat{u}_r \) que apunta desde la carga que ejerce la fuerza hacia la carga que la recibe. El signo del producto \( q_1 \cdot q_2 \) determina el sentido:
+            <ul>
+                <li>Si \( q_1 \cdot q_2 > 0 \) (mismo signo): fuerza repulsiva, \( \vec{F} \) en sentido de \( \hat{u}_r \)</li>
+                <li>Si \( q_1 \cdot q_2 < 0 \) (signo contrario): fuerza atractiva, \( \vec{F} \) en sentido opuesto a \( \hat{u}_r \)</li>
+            </ul>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Expresión final.</strong> Combinando todos los elementos anteriores, obtenemos la expresión completa de la Ley de Coulomb en forma vectorial:
+            <div class="formula-box">
+                \[ \vec{F} = K \frac{q_1 \cdot q_2}{r^2} \hat{u}_r \]
+            </div>
+            <p>En forma escalar, considerando el sentido mediante el signo:</p>
+            <div class="formula-box">
+                \[ F = K \frac{|q_1| \cdot |q_2|}{r^2} \]
+            </div>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong> Es fundamental enfatizar que esta ley solo es válida para <strong>cargas puntuales</strong> o distribuciones esféricas de carga. Para cuerpos de forma arbitraria, la carga debe dividirse en elementos diferenciales e integrar. Además, el principio de acción-reacción implica que \( \vec{F}_{12} = -\vec{F}_{21} \), lo cual es un excelente punto de conexión con la mecánica newtoniana.
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            \[ \vec{F} = K \frac{q_1 \cdot q_2}{r^2} \hat{u}_r \quad \text{con} \quad K = \frac{1}{4\pi\varepsilon_0} \]
+        </div>
+        <p>La ley de Coulomb describe la fuerza eléctrica entre dos cargas puntuales. Es una fuerza central que cumple la tercera ley de Newton y es la base de la electrostática.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- BLOQUE DESPLEGABLE AÑADIDO (TAREA 1)      -->
+    <!-- ======================================== -->
+    <details class="desmitificando">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO la Ley de Coulomb</span>
+            <span class="pulsame">🖱️ Pulsame</span>
+        </summary>
+        <div class="contenido-ejercicios">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">1</span>
+                    <span>Cálculo directo de la fuerza electrostática</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos cargas puntuales, \( q_1 = +4{,}0\,\mu\text{C} \) y \( q_2 = -6{,}0\,\mu\text{C} \), están separadas por una distancia de \( 12\,\text{cm} \) en el vacío. Calcula el módulo de la fuerza que ejerce una sobre la otra e indica si es atractiva o repulsiva.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Escribimos la ley de Coulomb en módulo:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F = K \frac{|q_1| \cdot |q_2|}{r^2} \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos los valores. \( K = 8{,}99\times10^9\,\text{N·m}^2/\text{C}^2 \), \( |q_1| = 4{,}0\times10^{-6}\,\text{C} \), \( |q_2| = 6{,}0\times10^{-6}\,\text{C} \), \( r = 0{,}12\,\text{m} \):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F = 8{,}99\times10^9 \cdot \frac{(4{,}0\times10^{-6})(6{,}0\times10^{-6})}{(0{,}12)^2} \]
+                        </div>
+                        <div class="paso"><strong>Paso 3:</strong> Calculamos:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F = 8{,}99\times10^9 \cdot \frac{24\times10^{-12}}{0{,}0144} 
+                            = 8{,}99\times10^9 \cdot 1{,}6667\times10^{-9}
+                            \approx 15{,}0\,\text{N} \]
+                        </div>
+                        <div class="paso"><strong>Paso 4:</strong> Como las cargas tienen signos opuestos, la fuerza es <strong>atractiva</strong>.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">2</span>
+                    <span>Determinación de la distancia a partir de la fuerza</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos cargas iguales de \( +2{,}5\,\mu\text{C} \) se repelen con una fuerza de \( 0{,}50\,\text{N} \). ¿A qué distancia se encuentran?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Despejamos la distancia de la ley de Coulomb:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ r = \sqrt{ K \frac{|q_1| \cdot |q_2|}{F} } \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos \( |q_1| = |q_2| = 2{,}5\times10^{-6}\,\text{C} \), \( F = 0{,}50\,\text{N} \):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ r = \sqrt{ 8{,}99\times10^9 \cdot \frac{(2{,}5\times10^{-6})^2}{0{,}50} }
+                            = \sqrt{ 8{,}99\times10^9 \cdot \frac{6{,}25\times10^{-12}}{0{,}50} }
+                            = \sqrt{ 8{,}99\times10^9 \cdot 1{,}25\times10^{-11} } \]
+                        </div>
+                        <div class="paso"><strong>Paso 3:</strong> Operamos:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ r = \sqrt{ 0{,}112375 } \approx 0{,}335\,\text{m} = 33{,}5\,\text{cm} \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">3</span>
+                    <span>Efecto de duplicar cargas y distancia</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos cargas puntuales se atraen con una fuerza de \( 2{,}0\,\text{N} \) cuando están a \( 5\,\text{cm} \). Si se duplica el valor de ambas cargas y la distancia se triplica, ¿cuál será la nueva fuerza?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Escribimos la situación inicial: \( F_1 = K \frac{q_1 q_2}{r_1^2} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Nueva situación: \( q_1' = 2q_1 \), \( q_2' = 2q_2 \), \( r_2 = 3r_1 \). Entonces:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F_2 = K \frac{(2q_1)(2q_2)}{(3r_1)^2} = K \frac{4 q_1 q_2}{9 r_1^2} = \frac{4}{9} \left( K \frac{q_1 q_2}{r_1^2} \right) = \frac{4}{9} F_1 \]
+                        </div>
+                        <div class="paso"><strong>Paso 3:</strong> Sustituimos \( F_1 = 2{,}0\,\text{N} \):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F_2 = \frac{4}{9} \cdot 2{,}0 \approx 0{,}89\,\text{N} \]
+                        </div>
+                        <div class="paso"><strong>Resultado:</strong> La fuerza se reduce a aproximadamente \( 0{,}89\,\text{N} \) (sigue siendo atractiva).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">4</span>
+                    <span>Aplicación en el mundo real: gotas de lluvia</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos pequeñas gotas de agua en una nube tienen cargas de \( +0{,}80\,\text{nC} \) y \( -1{,}2\,\text{nC} \). Si están separadas \( 0{,}50\,\text{mm} \), ¿con qué fuerza se atraen? (1 nC = \( 10^{-9}\,\text{C} \)).</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Convertimos unidades: \( q_1 = 0{,}80\times10^{-9}\,\text{C} \), \( q_2 = -1{,}2\times10^{-9}\,\text{C} \), \( r = 0{,}50\times10^{-3}\,\text{m} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Aplicamos la ley de Coulomb en módulo:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F = 8{,}99\times10^9 \cdot \frac{(0{,}80\times10^{-9})(1{,}2\times10^{-9})}{(0{,}50\times10^{-3})^2} \]
+                        </div>
+                        <div class="paso"><strong>Paso 3:</strong> Calculamos el numerador: \( 0{,}80\times1{,}2 = 0{,}96 \), y \( (10^{-9})^2 = 10^{-18} \), luego \( 0{,}96\times10^{-18} \). El denominador: \( (0{,}50)^2 \times 10^{-6} = 0{,}25\times10^{-6} \).</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F = 8{,}99\times10^9 \cdot \frac{0{,}96\times10^{-18}}{0{,}25\times10^{-6}} 
+                            = 8{,}99\times10^9 \cdot (3{,}84\times10^{-12}) 
+                            \approx 3{,}45\times10^{-2}\,\text{N} \]
+                        </div>
+                        <div class="paso"><strong>Resultado:</strong> La fuerza de atracción es de aproximadamente \( 3{,}5\times10^{-2}\,\text{N} \), un valor pequeño pero medible.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">5</span>
+                    <span>Comparación con la fuerza gravitatoria</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Un protón y un electrón están separados \( 1{,}0\,\text{nm} \). Calcula la fuerza eléctrica y la fuerza gravitatoria entre ellos y compara sus magnitudes. Datos: \( q_p = +1{,}6\times10^{-19}\,\text{C} \), \( q_e = -1{,}6\times10^{-19}\,\text{C} \), \( m_p = 1{,}67\times10^{-27}\,\text{kg} \), \( m_e = 9{,}11\times10^{-31}\,\text{kg} \), \( G = 6{,}67\times10^{-11}\,\text{N·m}^2/\text{kg}^2 \).</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Fuerza eléctrica (módulo):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F_e = 8{,}99\times10^9 \cdot \frac{(1{,}6\times10^{-19})^2}{(1{,}0\times10^{-9})^2}
+                            = 8{,}99\times10^9 \cdot \frac{2{,}56\times10^{-38}}{1{,}0\times10^{-18}}
+                            = 8{,}99\times10^9 \cdot 2{,}56\times10^{-20}
+                            \approx 2{,}30\times10^{-10}\,\text{N} \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> Fuerza gravitatoria:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ F_g = 6{,}67\times10^{-11} \cdot \frac{(1{,}67\times10^{-27})(9{,}11\times10^{-31})}{(1{,}0\times10^{-9})^2}
+                            = 6{,}67\times10^{-11} \cdot \frac{1{,}52\times10^{-57}}{1{,}0\times10^{-18}}
+                            = 6{,}67\times10^{-11} \cdot 1{,}52\times10^{-39}
+                            \approx 1{,}01\times10^{-49}\,\text{N} \]
+                        </div>
+                        <div class="paso"><strong>Paso 3:</strong> Comparación: \( \frac{F_e}{F_g} \approx \frac{2{,}30\times10^{-10}}{1{,}01\times10^{-49}} \approx 2{,}3\times10^{39} \). La fuerza eléctrica es ¡\( 10^{39} \) veces mayor que la gravitatoria!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE Observaciones claves -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La Ley de Coulomb es formalmente análoga a la ley de gravitación universal de Newton, pero con una diferencia fundamental: la fuerza eléctrica puede ser atractiva o repulsiva según el signo de las cargas. Este hecho da lugar a la riqueza de fenómenos electrostáticos. Además, la constante \( K \) es enorme comparada con \( G \), lo que explica por qué las fuerzas eléctricas dominan a escala atómica y molecular.
+            </div>
+
+        </div> <!-- /contenido-ejercicios -->
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- /container -->
+</body>
+</html>

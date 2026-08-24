@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T01.07 - Escalares vs Vectoriales</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>    
+        
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+        
+        
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+        .table-wrap {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 10px 14px;
+            text-align: center;
+        }
+        th {
+            background: #edf2f7;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        td { color: #2d3748; }
+        .escalar { color: #2b6cb0; font-weight: bold; }
+        .vectorial { color: #c53030; font-weight: bold; }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (DETAILS)
+           ============================================ */
+        details.desmitificando {
+            margin: 30px 20px 20px 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        details.desmitificando > summary {
+            list-style: none;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            background: #edf2f7;
+            border-radius: 14px 14px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details.desmitificando > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.desmitificando > summary:hover {
+            background: #e2e8f0;
+        }
+        details.desmitificando > summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.3em;
+            color: #4a5568;
+        }
+        details.desmitificando[open] > summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.desmitificando .contenido {
+            padding: 20px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 14px 14px;
+        }
+        .ejercicio-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #ebf4ff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #bee3f8;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ejercicio-card .card-header .num {
+            font-weight: 700;
+            color: #2b6cb0;
+            font-size: 1.1em;
+        }
+        .ejercicio-card .card-header .titulo {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.05em;
+        }
+        .ejercicio-card .card-body {
+            padding: 16px 20px 8px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+        .ejercicio-card .card-body .enunciado-ej li {
+            margin-bottom: 4px;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #3182ce;
+            padding: 16px 20px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .paso {
+            margin-bottom: 8px;
+        }
+        .resolucion .paso strong {
+            color: #2b6cb0;
+        }
+        .pie-didactico {
+            background: #fefcbf;
+            border: 1px solid #f6e05e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            color: #744210;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            details.desmitificando > summary { font-size: 1em; padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T01.07.- </span>
+                    <span class="texto">Diferencia Conceptual entre Magnitudes Escalares y Vectoriales</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de <strong>magnitud física</strong> como toda propiedad de los cuerpos o fenómenos que puede medirse y expresarse con un número y una unidad, demostrar que existen dos tipos fundamentales de magnitudes según su comportamiento matemático:</p>
+            <div class="formula-box">
+                \[
+                \text{Magnitud escalar: queda definida únicamente por un número y una unidad}
+                \]
+                \[
+                \text{Magnitud vectorial: requiere número, unidad, dirección y sentido}
+                \]
+            </div>
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U01c07 - Magnitudes escalares y vectoriales.png" alt="Imagen" width="800">
+
+            <!-- -----FIN-------- -->
+
+        </div>
+        
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Establecer los <strong>criterios formales de clasificación</strong> de las magnitudes físicas en escalares y vectoriales. Esta distinción es fundamental para comprender por qué algunas magnitudes se suman algebraicamente mientras otras requieren la regla del paralelogramo, y prepara el terreno para el estudio de la cinemática y la dinámica en unidades posteriores.</p>
+        </div>
+        
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definición de magnitud escalar</strong>
+                <p>Se define una <strong>magnitud escalar</strong> \( S \) como una función que asigna a cada estado físico un número real positivo (su medida) y una unidad:</p>
+                <div class="formula-box">
+                    \[
+                    S = \left\{ \text{número},\; \text{unidad} \right\}
+                    \]
+                </div>
+                <p>Ejemplos: masa, temperatura, tiempo, energía, densidad. La suma de escalares es la <strong>suma algebraica ordinaria</strong>.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Definición de magnitud vectorial</strong>
+                <p>Se define una <strong>magnitud vectorial</strong> \( \vec{V} \) como una función que requiere, además del módulo (número y unidad), una <strong>dirección</strong> (la recta sobre la que actúa) y un <strong>sentido</strong> (uno de los dos sentidos posibles sobre esa recta):</p>
+                <div class="formula-box">
+                    \[
+                    \vec{V} = \left\{ |\vec{V}|,\; \text{unidad},\; \text{dirección},\; \text{sentido} \right\}
+                    \]
+                </div>
+                <p>Ejemplos: velocidad, aceleración, fuerza, campo eléctrico. La suma de vectores requiere la <strong>regla del paralelogramo</strong>.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Demostración por contraste</strong>
+                <p><strong>Demostración por contraste:</strong> consideremos dos desplazamientos. El primero de \( 3\,\text{m} \) hacia el norte; el segundo de \( 4\,\text{m} \) hacia el este. Si sumamos las <strong>distancias recorridas</strong> (magnitud escalar):</p>
+                <div class="formula-box">
+                    \[
+                    d_{\text{total}} = 3\,\text{m} + 4\,\text{m} = 7\,\text{m} \quad \text{(suma escalar)}
+                    \]
+                </div>
+                <p>Pero si sumamos los <strong>desplazamientos</strong> (magnitud vectorial), el resultado es diferente:</p>
+                <div class="formula-box">
+                    \[
+                    |\vec{d}_{\text{total}}| = \sqrt{(3\,\text{m})^{2} + (4\,\text{m})^{2}} = 5\,\text{m} \quad \text{(suma vectorial)}
+                    \]
+                </div>
+                <p>Esto demuestra que <strong>la misma situación física requiere operaciones matemáticas distintas</strong> según la naturaleza escalar o vectorial de la magnitud.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Clasificación de magnitudes</strong>
+                <p><strong>Criterio de clasificación:</strong> una magnitud es vectorial si su descripción completa requiere especificar orientación espacial.</p>
+                <div class="table-wrap">
+                    <table>
+                        <tr>
+                            <th>Magnitud</th>
+                            <th>Tipo</th>
+                            <th>Justificación</th>
+                        </tr>
+                        <tr>
+                            <td>Temperatura</td>
+                            <td class="escalar">Escalar</td>
+                            <td>No tiene dirección ni sentido</td>
+                        </tr>
+                        <tr>
+                            <td>Superficie</td>
+                            <td class="escalar">Escalar</td>
+                            <td>Es el producto de dos longitudes</td>
+                        </tr>
+                        <tr>
+                            <td>Volumen</td>
+                            <td class="escalar">Escalar</td>
+                            <td>Es el producto de tres longitudes</td>
+                        </tr>
+                        <tr>
+                            <td>Presión</td>
+                            <td class="escalar">Escalar</td>
+                            <td>Actúa igual en todas direcciones (isotropía)</td>
+                        </tr>
+                        <tr>
+                            <td>Velocidad</td>
+                            <td class="vectorial">Vectorial</td>
+                            <td>Requiere dirección y sentido del movimiento</td>
+                        </tr>
+                        <tr>
+                            <td>Aceleración</td>
+                            <td class="vectorial">Vectorial</td>
+                            <td>Requiere dirección del cambio de velocidad</td>
+                        </tr>
+                        <tr>
+                            <td>Resistencia eléctrica</td>
+                            <td class="escalar">Escalar</td>
+                            <td>Propiedad intrínseca del conductor</td>
+                        </tr>
+                        <tr>
+                            <td>Potencia</td>
+                            <td class="escalar">Escalar</td>
+                            <td>Rapidez de transferencia de energía</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Notación formal</strong>
+                <p><strong>Notación formal:</strong> los vectores se representan con una flecha sobre la letra \( \vec{V} \) o en negrita \( \mathbf{V} \). Su módulo se denota \( |\vec{V}| \) o simplemente \( V \). En coordenadas cartesianas:</p>
+                <div class="formula-box">
+                    \[
+                    \vec{V} = V_x\,\hat{i} + V_y\,\hat{j} + V_z\,\hat{k}
+                    \]
+                </div>
+                <p>donde \( \hat{i}, \hat{j}, \hat{k} \) son los vectores unitarios de los ejes coordenados.</p>
+            </div>
+        </div>
+        
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>Queda demostrada la <strong>diferencia fundamental</strong> entre magnitudes escalares y vectoriales:</p>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\text{Escalar } S: \text{ queda definida por } |S| \text{ y unidad}}
+                \]
+            </div>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\text{Vectorial } \vec{V}: \text{ requiere } |\vec{V}|, \text{ unidad, dirección y sentido}}
+                \]
+            </div>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\vec{V} \neq -\vec{V} \text{ (mismo módulo, sentido opuesto)} \quad \text{mientras que} \quad S = |S| \text{ siempre}}
+                \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong><br>
+                Es común que se confunda "velocidad" con "rapidez" (celeridad). La rapidez es escalar (solo el módulo de la velocidad); la velocidad es vectorial. Esta distinción será crucial en cinemática (unidad 2) y dinámica (unidad 3).</div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- BLOQUE DESPLEGABLE: "🧪 DESMITIFICANDO LAS MAGNITUDES ESCALARES Y VECTORIALES" -->
+        <!-- ======================================================== -->
+        <details class="desmitificando">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🖱️ Pulsame 👉 🧪 DESMITIFICANDO LAS MAGNITUDES ESCALARES Y VECTORIALES</span>
+            </summary>
+            <div class="contenido">
+
+                <p style="font-size:1.05em; margin-bottom: 18px;">
+                    <i class="fas fa-arrows-alt" style="color:#d69e2e;"></i>
+                    La diferencia entre escalares y vectoriales es una de las bases de la física. 
+                    <strong>No es lo mismo "cuánto" que "cuánto y hacia dónde"</strong>. 
+                    Practica con estos <strong>5 ejercicios</strong> para dominar la clasificación y las operaciones básicas.
+                </p>
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 1</span>
+                        <span class="titulo">Clasificación de magnitudes cotidianas</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Clasifica las siguientes magnitudes como escalares o vectoriales, justificando brevemente tu respuesta:</p>
+                            <ul>
+                                <li><strong>a)</strong> El caudal de un río (litros por segundo).</li>
+                                <li><strong>b)</strong> La intensidad de un campo magnético en un punto.</li>
+                                <li><strong>c)</strong> La energía cinética de un coche en movimiento.</li>
+                                <li><strong>d)</strong> El momento lineal (cantidad de movimiento) de un objeto.</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>a) Caudal:</strong> Es la cantidad de volumen que pasa por unidad de tiempo. No tiene dirección ni sentido, solo un número y unidad. → <span class="escalar">Escalar</span>.
+                            </div>
+                            <div class="paso">
+                                <strong>b) Intensidad de campo magnético:</strong> En cada punto tiene una dirección (la del campo) y un sentido (las líneas de campo). → <span class="vectorial">Vectorial</span>.
+                            </div>
+                            <div class="paso">
+                                <strong>c) Energía cinética:</strong> Es una cantidad que depende del cuadrado de la rapidez (\( \frac{1}{2}mv^{2} \)), no tiene orientación. → <span class="escalar">Escalar</span>.
+                            </div>
+                            <div class="paso">
+                                <strong>d) Momento lineal:</strong> \( \vec{p} = m\vec{v} \), por tanto tiene la misma dirección y sentido que la velocidad. → <span class="vectorial">Vectorial</span>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 2</span>
+                        <span class="titulo">Suma de escalares vs. suma de vectores</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un excursionista camina \( 5\,\text{km} \) hacia el este y luego \( 12\,\text{km} \) hacia el norte.</p>
+                            <ul>
+                                <li>¿Cuál es la distancia total recorrida (escalar)?</li>
+                                <li>¿Cuál es el desplazamiento resultante (vectorial) en módulo y dirección?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Distancia total (escalar):</strong>
+                                \[
+                                d_{\text{total}} = 5\,\text{km} + 12\,\text{km} = 17\,\text{km}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Desplazamiento resultante (vectorial):</strong>
+                                Suma de vectores perpendiculares. Módulo:
+                                \[
+                                |\vec{d}| = \sqrt{5^{2} + 12^{2}} = \sqrt{25 + 144} = \sqrt{169} = 13\,\text{km}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Dirección:</strong>
+                                Ángulo respecto al este:
+                                \[
+                                \theta = \arctan\left(\frac{12}{5}\right) \approx 67{,}4^\circ \text{ (norte del este)}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Respuesta:</strong>
+                                \[
+                                \boxed{\text{Distancia} = 17\,\text{km (escalar)},\quad \text{Desplazamiento} = 13\,\text{km al } 67{,}4^\circ \text{ norte del este (vectorial)}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 3</span>
+                        <span class="titulo">Cálculo del módulo de un vector y clasificación</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Dado el vector velocidad \( \vec{v} = 3\hat{i} - 4\hat{j} \,\text{m/s} \):</p>
+                            <ul>
+                                <li>Calcula su módulo (rapidez).</li>
+                                <li>¿La rapidez es escalar o vectorial? ¿Y la velocidad?</li>
+                                <li>¿Qué representa el signo negativo en la componente \( \hat{j} \)?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Módulo:</strong>
+                                \[
+                                |\vec{v}| = \sqrt{3^{2} + (-4)^{2}} = \sqrt{9 + 16} = \sqrt{25} = 5\,\text{m/s}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Clasificación:</strong>
+                                La rapidez (\( 5\,\text{m/s} \)) es un <span class="escalar">escalar</span> (solo módulo). La velocidad \( \vec{v} \) es <span class="vectorial">vectorial</span> (módulo, dirección y sentido).
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Significado del signo negativo:</strong>
+                                El signo negativo en la componente \( \hat{j} \) indica que el vector apunta hacia el <strong>sentido negativo del eje Y</strong> (por ejemplo, hacia el sur o hacia abajo).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 4</span>
+                        <span class="titulo">Fuerza resultante (contexto real)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Sobre un objeto actúan dos fuerzas: \( \vec{F}_1 = 8\,\text{N} \) hacia el este y \( \vec{F}_2 = 6\,\text{N} \) hacia el norte.</p>
+                            <ul>
+                                <li>Dibuja la situación (mentalmente).</li>
+                                <li>Calcula el módulo de la fuerza resultante.</li>
+                                <li>¿Qué ángulo forma con la dirección este?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Suma vectorial (perpendiculares):</strong>
+                                \[
+                                |\vec{F}_{\text{res}}| = \sqrt{8^{2} + 6^{2}} = \sqrt{64 + 36} = \sqrt{100} = 10\,\text{N}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Ángulo con el este:</strong>
+                                \[
+                                \theta = \arctan\left(\frac{6}{8}\right) = \arctan(0{,}75) \approx 36{,}9^\circ \text{ (norte del este)}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Respuesta:</strong>
+                                \[
+                                \boxed{|\vec{F}_{\text{res}}| = 10\,\text{N},\quad \theta = 36{,}9^\circ \text{ al norte del este}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 5</span>
+                        <span class="titulo">Rapidez vs. Velocidad en movimiento circular</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Una partícula se mueve con rapidez constante de \( 10\,\text{m/s} \) en una circunferencia de radio \( 2\,\text{m} \).</p>
+                            <ul>
+                                <li>¿La rapidez es escalar o vectorial? ¿Y la velocidad instantánea?</li>
+                                <li>¿Cambia la velocidad en algún momento? ¿Y la rapidez?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Clasificación:</strong>
+                                La rapidez (\( 10\,\text{m/s} \)) es <span class="escalar">escalar</span> (solo módulo). La velocidad instantánea es <span class="vectorial">vectorial</span> (módulo \( 10\,\text{m/s} \), dirección tangente a la circunferencia y sentido del movimiento).
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Cambios:</strong>
+                                La dirección de la velocidad cambia continuamente (apunta siempre hacia la tangente), por lo que la <strong>velocidad cambia</strong> (su vector varía). Sin embargo, el módulo (rapidez) permanece constante, por lo que la <strong>rapidez no cambia</strong>.
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong>
+                                \[
+                                \boxed{\text{Rapidez: escalar (constante), Velocidad: vectorial (cambia de dirección)}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DIDÁCTICO -->
+                <div class="pie-didactico">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Observaciones claves:</strong> La "trampa" mental que resuelve esta distinción es entender que <strong>el número solo no basta</strong> cuando la orientación importa. 
+                    La rapidez de un coche es un escalar (ej. 100 km/h), pero para llegar a un destino necesitamos la <strong>velocidad</strong> (100 km/h hacia el norte). 
+                    Esta diferencia será fundamental en toda la física: las <strong>leyes de Newton</strong> se escriben con vectores, y la <strong>energía</strong> es un escalar. 
+                    Practica siempre preguntando: <em>"¿Necesito saber hacia dónde para que esta magnitud tenga sentido completo?"</em> Si la respuesta es sí, es vectorial.
+                </div>
+
+            </div> <!-- fin .contenido -->
+        </details>
+
+        <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+    </div> <!-- fin .container -->
+</body>
+</html>

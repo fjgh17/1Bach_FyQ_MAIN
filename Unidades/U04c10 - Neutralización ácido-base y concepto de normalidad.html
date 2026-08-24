@@ -1,0 +1,743 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T04.10 - Neutralización ácido-base y concepto de normalidad</title>
+    <!-- MathJax para fórmulas -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            background: rgba(255,255,255,0.2);
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .formula-box-highlight {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        .note-prof {
+            background: #f0fff4;
+            border: 1px dashed #48bb78;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #22543d;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 25px;
+            margin-bottom: 12px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #feebc8 0%, #feebc8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+        }
+        .reaction-box {
+            background: #fffaf0;
+            border: 2px solid #ed8936;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        /* ========== ESTILOS PARA EL DESPLEGABLE ========== */
+        details {
+            margin: 2.5rem 1.5rem 1.5rem 1.5rem;
+            background: #f2f6fd;
+            border-radius: 20px;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            border: 1px solid #cdddec;
+            transition: background 0.2s;
+        }
+        details[open] {
+            background: #e8f0fe;
+            padding-bottom: 1.5rem;
+        }
+        summary {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            cursor: pointer;
+            padding: 0.8rem 0.5rem 0.8rem 0.2rem;
+            list-style: none;
+            outline: none;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i.fa-chevron-circle-down {
+            font-size: 1.5rem;
+            color: #2a7de1;
+            transition: transform 0.25s ease;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        summary .badge-pulsa {
+            background: #2a7de1;
+            color: #fff;
+            padding: 0.15rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .ejercicios-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            margin-top: 1.2rem;
+            padding-right: 0.5rem;
+        }
+        .ejercicio-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #d5e0ec;
+        }
+        .ejercicio-card .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e6edf5;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .ejercicio-card .encabezado .num {
+            font-weight: 700;
+            color: #1e4a6f;
+            background: #e0ebf9;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+        .ejercicio-card .encabezado .titulo {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #0b3b5c;
+        }
+        .ejercicio-card .enunciado {
+            font-size: 0.98rem;
+            margin-bottom: 0.8rem;
+        }
+        .ejercicio-card .enunciado ul {
+            padding-left: 1.2rem;
+            margin: 0.3rem 0;
+        }
+        .ejercicio-card .solucion {
+            background: #f4f8ff;
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            border-left: 4px solid #2a7de1;
+            font-size: 0.95rem;
+            margin-top: 0.8rem;
+        }
+        .ejercicio-card .solucion .paso {
+            margin: 0.5rem 0;
+        }
+        .ejercicio-card .solucion .math {
+            display: inline-block;
+            background: #eef2f7;
+            padding: 0.1rem 0.6rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        .pie-clave {
+            margin-top: 1.5rem;
+            background: #dfe9f5;
+            border-radius: 14px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            color: #0b3b5c;
+            border-left: 6px solid #1e4a6f;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+            color: #1e4a6f;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            .section {
+                padding: 20px 18px;
+                margin: 12px;
+            }
+            details {
+                margin: 1.5rem 0.5rem;
+                padding: 0.3rem;
+            }
+            summary {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T04.10.- </span>
+                <span class="texto">Neutralización ácido-base y concepto de normalidad</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la <strong>definición de reacción de neutralización</strong> como el proceso en el que un ácido y una base reaccionan para formar agua y una sal, y de la <strong>definición de equivalente químico</strong> como la cantidad de sustancia que reacciona o se produce en una reacción con la transferencia de 1 mol de protones (H⁺) o electrones, demostrar que:</p>
+        
+        <div class="formula-box-highlight">
+            En el punto de equivalencia de una neutralización ácido-base, el número de <strong>equivalentes de ácido</strong> es igual al número de <strong>equivalentes de base</strong>:
+            \[n_{\text{eq}}(\text{ácido}) = n_{\text{eq}}(\text{base})\]
+            \[\text{o equivalentemente:} \quad V_a \cdot N_a = V_b \cdot N_b\]
+            donde \(N\) es la <strong>normalidad</strong> (eq/L) y \(V\) el volumen de disolución.
+        </div>
+        
+        <p style="margin-top: 15px;">Además, demostrar la <span class="highlight">relación entre normalidad y molaridad</span>:</p>
+        <div class="formula-box">
+            \[N = M \cdot a\]
+            donde \(a\) es la <strong>valencia o número de protones</strong> (para ácidos) o grupos OH⁻ (para bases) que aporta cada molécula.
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U04c10 - Neutralización ácido-base y concepto de normalidad.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>El objetivo es establecer una <strong>base teórica rigurosa</strong> para los cálculos de valoración ácido-base, demostrando que:</p>
+        <ul>
+            <li>La <strong>neutralización completa</strong> requiere igual número de moles de H⁺ y OH⁻.</li>
+            <li>La <strong>normalidad</strong> es una medida de concentración que incorpora la capacidad de reacción (valencia) de la sustancia.</li>
+            <li>La ecuación \(V_a N_a = V_b N_b\) es una <strong>consecuencia directa</strong> de la estequiometría de la neutralización.</li>
+        </ul>
+        <p>Esta demostración es fundamental para comprender las valoraciones químicas y los cálculos de preparación de disoluciones.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔬 Procedimiento</h2>
+        
+        <div class="step">
+            <span class="step-num">1</span> <strong>Reacción general de neutralización</strong>
+            <p>Consideremos un ácido genérico \(H_aA\) (que aporta \(a\) protones por molécula) y una base genérica \(B(OH)_b\) (que aporta \(b\) grupos hidroxilo por molécula):</p>
+            <div class="reaction-box">
+                \[H_aA + B(OH)_b \longrightarrow B_aA_b + a\,b\,\text{H}_2\text{O}\]
+            </div>
+            <p>La ecuación ajustada completa, considerando la neutralización iónica fundamental, es:</p>
+            <div class="formula-box">
+                \[H_aA \longrightarrow a\,\text{H}^+ + A^{a-}\]
+                \[B(OH)_b \longrightarrow B^{b+} + b\,\text{OH}^-\]
+                \[a\,\text{H}^+ + b\,\text{OH}^- \longrightarrow \text{H}_2\text{O}\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">2</span> <strong>Definición de equivalente y normalidad</strong>
+            <p>Definimos el <strong>equivalente</strong> en el contexto ácido-base como:</p>
+            <div class="formula-box">
+                \[1\,\text{eq} = 1\,\text{mol de H}^+ \text{ (o OH}^- \text{) transferidos}\]
+            </div>
+            <p>La <strong>normalidad</strong> \(N\) es el número de equivalentes por litro de disolución:</p>
+            <div class="formula-box">
+                \[N = \frac{n_{\text{eq}}}{V}\]
+            </div>
+            <p>Como cada mol de ácido \(H_aA\) aporta \(a\) moles de H⁺:</p>
+            <div class="formula-box">
+                \[n_{\text{eq}}(\text{ácido}) = n_{\text{moles}} \cdot a\]
+            </div>
+            <p>Por tanto:</p>
+            <div class="formula-box-highlight">
+                \[N = \frac{n \cdot a}{V} = M \cdot a\]
+            </div>
+            <p>donde \(M = \frac{n}{V}\) es la molaridad y \(a\) es la valencia (número de protones intercambiables).</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">3</span> <strong>Condición de neutralización completa</strong>
+            <p>En el punto de equivalencia, todos los protones del ácido han reaccionado con todos los hidroxilos de la base:</p>
+            <div class="formula-box">
+                \[n(\text{H}^+)_{\text{total}} = n(\text{OH}^-)_{\text{total}}\]
+            </div>
+            <p>Expresado en equivalentes:</p>
+            <div class="formula-box">
+                \[n_{\text{eq}}(\text{ácido}) = n_{\text{eq}}(\text{base})\]
+            </div>
+            <p>Sustituyendo la definición de normalidad (\(n_{\text{eq}} = N \cdot V\)):</p>
+            <div class="formula-box-highlight">
+                \[V_a \cdot N_a = V_b \cdot N_b\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">4</span> <strong>Demostración con molaridad y coeficientes estequiométricos</strong>
+            <p>Alternativamente, podemos demostrar la misma relación usando molaridades. Para la reacción ajustada:</p>
+            <div class="formula-box">
+                \[H_aA + \frac{a}{b}B(OH)_b \longrightarrow \text{productos}\]
+            </div>
+            <p>En el punto de equivalencia:</p>
+            <div class="formula-box">
+                \[\frac{n_a}{1} = \frac{n_b}{a/b} \quad \Rightarrow \quad n_b = n_a \cdot \frac{a}{b}\]
+            </div>
+            <p>Sustituyendo \(n = M \cdot V\):</p>
+            <div class="formula-box">
+                \[M_b \cdot V_b = M_a \cdot V_a \cdot \frac{a}{b}\]
+            </div>
+            <p>Reordenando:</p>
+            <div class="formula-box">
+                \[V_a \cdot (M_a \cdot a) = V_b \cdot (M_b \cdot b)\]
+            </div>
+            <p>Identificando \(N = M \cdot a\) para el ácido y \(N = M \cdot b\) para la base:</p>
+            <div class="formula-box-highlight">
+                \[V_a \cdot N_a = V_b \cdot N_b\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">5</span> <strong>Generalización a ácidos y bases polipróticas</strong>
+            <p>Para un ácido diprótico como \(H_2SO_4\) (\(a = 2\)):</p>
+            <div class="formula-box">
+                \[N = M \times 2\]
+            </div>
+            <p>Para una base como \(Al(OH)_3\) (\(b = 3\)):</p>
+            <div class="formula-box">
+                \[N = M \times 3\]
+            </div>
+            <p>La neutralización completa requiere:</p>
+            <div class="formula-box">
+                \[n(\text{H}^+) = 2 \times n(H_2SO_4) = n(\text{OH}^-) = 3 \times n(Al(OH)_3)\]
+            </div>
+            <div class="formula-box">
+                \[2 \cdot M_a \cdot V_a = 3 \cdot M_b \cdot V_b\]
+            </div>
+            <p>Que equivale a:</p>
+            <div class="formula-box">
+                \[N_a \cdot V_a = N_b \cdot V_b\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">6</span> <strong>Cálculo de concentración a partir de una valoración</strong>
+            <p>Si se valora un ácido de concentración desconocida \(M_a\) con una base de concentración conocida \(M_b\), gastando volúmenes \(V_a\) y \(V_b\) respectivamente hasta el punto de equivalencia:</p>
+            <div class="formula-box-highlight">
+                \[M_a = \frac{M_b \cdot V_b \cdot b}{V_a \cdot a} = \frac{N_b \cdot V_b}{V_a \cdot a}\]
+            </div>
+            <p>Esta fórmula permite determinar concentraciones desconocidas por el método de valoración ácido-base.</p>
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que la <strong>neutralización ácido-base</strong> se rige por la equivalencia entre el número de protones y hidroxilos intercambiados, y que esta condición puede expresarse de forma elegante mediante el concepto de <strong>normalidad</strong>.</p>
+        
+        <div class="formula-box-highlight">
+            <strong>Resultados fundamentales:</strong><br><br>
+            
+            <strong>1. Relación entre normalidad y molaridad:</strong>
+            \[N = M \cdot a\]
+            donde \(a\) = número de protones (ácidos) o grupos OH⁻ (bases) por molécula.
+            
+            <strong>2. Condición de neutralización completa:</strong>
+            \[V_a \cdot N_a = V_b \cdot N_b\]
+            
+            <strong>3. Expresión con molaridades:</strong>
+            \[V_a \cdot M_a \cdot a = V_b \cdot M_b \cdot b\]
+            
+            <strong>4. Cálculo de concentración desconocida:</strong>
+            \[M_a = \frac{M_b \cdot V_b \cdot b}{V_a \cdot a}\]
+        </div>
+        
+        <p style="margin-top: 15px;">Estos resultados permiten:</p>
+        <ul>
+            <li>Realizar <strong>valoraciones ácido-base</strong> de forma sistemática y rigurosa.</li>
+            <li>Preparar <strong>disoluciones de normalidad exacta</strong> a partir de reactivos comerciales.</li>
+            <li>Calcular <strong>concentraciones desconocidas</strong> por titulación con patrones primarios.</li>
+            <li>Comparar la <strong>capacidad de reacción</strong> de diferentes ácidos y bases independientemente de su molaridad.</li>
+        </ul>
+        
+        <div class="note-prof">
+            <strong>💡 Observaciones sobre el alumnado:</strong><br>
+            Aunque el concepto de normalidad ha sido en parte sustituido por la molaridad en la literatura científica moderna, sigue siendo <strong>muy útil en el contexto de valoraciones</strong> porque simplifica los cálculos al eliminar la necesidad de recordar los coeficientes estequiométricos. Es importante que los estudiantes comprendan que la normalidad no es una concentración "diferente", sino una <strong>molaridad ponderada por la capacidad de reacción</strong>. Un error frecuente es confundir la valencia del ácido con el número de átomos de hidrógeno en la fórmula molecular: por ejemplo, el ácido acético \(CH_3COOH\) tiene 4 átomos de H, pero solo 1 es ácido (valencia \(a = 1\)). Recomendar siempre identificar primero la valencia real antes de aplicar la fórmula \(N = M \cdot a\).
+        </div>
+    </div>
+
+    <!-- ============ BLOQUE DESPLEGABLE (TAREA 1) ============ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO la neutralización ácido‑base</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+
+        <div class="ejercicios-grid">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo">Cálculo de normalidad a partir de molaridad</span>
+                </div>
+                <div class="enunciado">
+                    <p>Calcula la normalidad de las siguientes disoluciones:</p>
+                    <ul>
+                        <li><strong>a)</strong> Ácido sulfúrico 0,25 mol/L.</li>
+                        <li><strong>b)</strong> Hidróxido de aluminio 0,10 mol/L.</li>
+                        <li><strong>c)</strong> Ácido fosfórico 0,30 mol/L (suponiendo neutralización completa de los tres protones).</li>
+                    </ul>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Recordamos: \(N = M \cdot a\), donde \(a\) es la valencia (número de H⁺ o OH⁻ intercambiables).</div>
+                    <div class="paso"><strong>a)</strong> H₂SO₄ es diprótico (\(a=2\)): \(N = 0,25 \times 2 = 0,50 \, \text{eq/L}\).</div>
+                    <div class="paso"><strong>b)</strong> Al(OH)₃ tiene 3 OH⁻ (\(b=3\)): \(N = 0,10 \times 3 = 0,30 \, \text{eq/L}\).</div>
+                    <div class="paso"><strong>c)</strong> H₃PO₄ es triprótico (\(a=3\)): \(N = 0,30 \times 3 = 0,90 \, \text{eq/L}\).</div>
+                    <p><strong>Respuesta:</strong> a) 0,50 eq/L ; b) 0,30 eq/L ; c) 0,90 eq/L.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo">Valoración de HCl con NaOH</span>
+                </div>
+                <div class="enunciado">
+                    <p>Se valoran 25,0 mL de una disolución de HCl con una disolución de NaOH 0,15 mol/L. El punto de equivalencia se alcanza al gastar 32,0 mL de la base. Calcula:</p>
+                    <ul>
+                        <li><strong>a)</strong> La concentración molar del HCl.</li>
+                        <li><strong>b)</strong> La normalidad del HCl.</li>
+                    </ul>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Reacción: HCl + NaOH → NaCl + H₂O. Ambos tienen valencia 1 (\(a=b=1\)).</div>
+                    <div class="paso">Usamos \(V_a \cdot N_a = V_b \cdot N_b\). Como \(N = M\) (valencia 1), podemos usar molaridades directamente.</div>
+                    <div class="paso"><strong>a)</strong> \(25,0 \cdot M_a = 32,0 \cdot 0,15\) → \(M_a = (32,0 \times 0,15) / 25,0 = 0,192 \, \text{mol/L}\).</div>
+                    <div class="paso"><strong>b)</strong> Como \(a=1\), \(N_a = M_a = 0,192 \, \text{eq/L}\).</div>
+                    <p><strong>Respuesta:</strong> a) 0,192 mol/L ; b) 0,192 eq/L.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo">Neutralización de H₂SO₄ con KOH</span>
+                </div>
+                <div class="enunciado">
+                    <p>¿Qué volumen de una disolución de KOH 0,20 mol/L se necesita para neutralizar 50,0 mL de H₂SO₄ 0,10 mol/L?</p>
+                    <p>Ecuación: H₂SO₄ + 2 KOH → K₂SO₄ + 2 H₂O</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Valencias: \(a=2\) (H₂SO₄), \(b=1\) (KOH).</div>
+                    <div class="paso">Normalidades: \(N_a = M_a \cdot a = 0,10 \times 2 = 0,20 \, \text{eq/L}\); \(N_b = M_b \cdot b = 0,20 \times 1 = 0,20 \, \text{eq/L}\).</div>
+                    <div class="paso">Aplicamos \(V_a \cdot N_a = V_b \cdot N_b\): \(50,0 \cdot 0,20 = V_b \cdot 0,20\) → \(V_b = 50,0 \, \text{mL}\).</div>
+                    <p><strong>Respuesta:</strong> Se necesitan 50,0 mL de KOH 0,20 mol/L.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo">Preparación de disolución de normalidad exacta</span>
+                </div>
+                <div class="enunciado">
+                    <p>Se dispone de ácido clorhídrico comercial del 37 % en masa y densidad 1,18 g/mL. Calcula el volumen de este ácido que se necesita para preparar 500 mL de una disolución 0,25 N de HCl.</p>
+                    <p>Datos: \(M_r(HCl) = 36,5 \, \text{g/mol}\).</p>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">Primero, concentración del comercial: \(c = \frac{1,18 \times 0,37 \times 1000}{36,5} \approx 11,96 \, \text{mol/L}\). Como HCl es monoprótico, \(N = M = 11,96 \, \text{eq/L}\).</div>
+                    <div class="paso">Queremos 500 mL de 0,25 N: \(n_{\text{eq}} = 0,25 \times 0,500 = 0,125 \, \text{eq}\).</div>
+                    <div class="paso">Volumen comercial: \(V = n_{\text{eq}} / N = 0,125 / 11,96 \approx 0,01045 \, \text{L} = 10,45 \, \text{mL}\).</div>
+                    <p><strong>Respuesta:</strong> Se necesitan aproximadamente 10,5 mL del ácido comercial.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo">Valoración de ácido fosfórico con hidróxido de calcio</span>
+                </div>
+                <div class="enunciado">
+                    <p>Se valoran 30,0 mL de H₃PO₄ con Ca(OH)₂ 0,050 mol/L, gastando 45,0 mL hasta el punto de equivalencia (neutralización completa de los tres protones).</p>
+                    <ul>
+                        <li><strong>a)</strong> Escribe la reacción ajustada.</li>
+                        <li><strong>b)</strong> Calcula la molaridad y la normalidad del ácido fosfórico.</li>
+                    </ul>
+                </div>
+                <div class="solucion">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso"><strong>a)</strong> 2 H₃PO₄ + 3 Ca(OH)₂ → Ca₃(PO₄)₂ + 6 H₂O.</div>
+                    <div class="paso">Valencias: \(a=3\) (H₃PO₄), \(b=2\) (Ca(OH)₂).</div>
+                    <div class="paso"><strong>b)</strong> Normalidad de la base: \(N_b = M_b \cdot b = 0,050 \times 2 = 0,10 \, \text{eq/L}\).</div>
+                    <div class="paso">Usamos \(V_a \cdot N_a = V_b \cdot N_b\): \(30,0 \cdot N_a = 45,0 \cdot 0,10\) → \(N_a = 0,15 \, \text{eq/L}\).</div>
+                    <div class="paso">Molaridad: \(M_a = N_a / a = 0,15 / 3 = 0,050 \, \text{mol/L}\).</div>
+                    <p><strong>Respuesta:</strong> a) 2 H₃PO₄ + 3 Ca(OH)₂ → Ca₃(PO₄)₂ + 6 H₂O ; b) \(M = 0,050 \, \text{mol/L}\), \(N = 0,15 \, \text{eq/L}\).</p>
+                </div>
+            </div>
+
+        </div> <!-- fin ejercicios-grid -->
+
+        <div class="pie-clave">
+            <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> 
+            La normalidad es una herramienta que <strong>simplifica los cálculos estequiométricos</strong> en neutralizaciones al integrar la valencia en la propia concentración. 
+            El error más común es usar la valencia incorrecta (por ejemplo, confundir el número total de hidrógenos con el número de protones ácidos). 
+            Siempre hay que identificar primero la reacción ajustada y la capacidad de intercambio de protones.
+        </div>
+
+    </details>
+    <!-- ============ FIN BLOQUE DESPLEGABLE ============ -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

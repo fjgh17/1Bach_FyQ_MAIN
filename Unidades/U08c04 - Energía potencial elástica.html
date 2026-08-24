@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 4: Fórmula de la Energía Potencial Elástica</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.04.- </span>
+                    <span class="texto">Demostración 4: Fórmula de la Energía Potencial Elástica</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la Ley de Hooke, que describe la fuerza recuperadora de un muelle ideal, demostrar que la energía potencial elástica almacenada en un muelle de constante elástica \( k \) que experimenta una deformación \( \Delta x \) (estiramiento o compresión) respecto a su longitud natural viene dada por:</p>
+            <div class="formula-box">
+                \[ E_e = \frac{1}{2} k (\Delta x)^{2} \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c04 - Energía potencial elástica.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Comprender que la energía potencial elástica surge del trabajo realizado contra la fuerza recuperadora del muelle, que no es constante sino que varía linealmente con la deformación. Demostrar que el trabajo de una fuerza variable requiere integración y que el resultado depende del cuadrado de la deformación, explicando por qué la energía es positiva tanto en compresión como en estiramiento.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Ley de Hooke</strong>
+                <p>La fuerza recuperadora que ejerce un muelle ideal es proporcional a la deformación y de sentido opuesto a ella (Ley de Hooke):</p>
+                <div class="formula-box">
+                    \[ F = -k \cdot \Delta x \]
+                </div>
+                <p>donde \( k \) es la constante elástica (rigidez del muelle) y \( \Delta x \) es el estiramiento o compresión respecto a la longitud natural. El signo negativo indica que la fuerza se opone a la deformación.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Fuerza externa para deformar el muelle cuasi-estáticamente</strong>
+                <p>Para estirar o comprimir el muelle de forma cuasi-estática (sin aceleración), debemos aplicar una fuerza externa que equilibre en cada instante la fuerza recuperadora:</p>
+                <div class="formula-box">
+                    \[ F_{\text{ext}} = k \cdot \Delta x \]
+                </div>
+                <p>Esta fuerza no es constante: aumenta linealmente a medida que aumenta la deformación \( \Delta x \).</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Trabajo de una fuerza variable</strong>
+                <p>Como la fuerza externa varía con la posición, no podemos usar \( W = F \cdot \Delta x \) directamente. Debemos integrar la fuerza desde la posición de equilibrio (\( x = 0 \)) hasta la deformación final \( \Delta x \):</p>
+                <div class="formula-box">
+                    \[ W = \int_{0}^{\Delta x} F_{\text{ext}} \, dx = \int_{0}^{\Delta x} k \cdot x \, dx \]
+                </div>
+                <p>Donde hemos llamado \( x \) a la variable de integración (deformación instantánea).</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Evaluación de la integral</strong>
+                <p>Resolviendo la integral definida:</p>
+                <div class="formula-box">
+                    \[ W = k \int_{0}^{\Delta x} x \, dx = k \left[ \frac{x^{2}}{2} \right]_{0}^{\Delta x} = k \cdot \frac{(\Delta x)^{2}}{2} - k \cdot \frac{0^{2}}{2} \]
+                </div>
+                <div class="formula-box">
+                    \[ W = \frac{1}{2} k (\Delta x)^{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Interpretación gráfica</strong>
+                <p>El trabajo realizado es el área bajo la curva \( F_{\text{ext}} \) vs \( x \). Como la fuerza externa es lineal, esta área es un triángulo de base \( \Delta x \) y altura \( k \Delta x \):</p>
+                <div class="formula-box">
+                    \[ W = \text{Área} = \frac{1}{2} \cdot \text{base} \cdot \text{altura} = \frac{1}{2} \cdot \Delta x \cdot k \Delta x = \frac{1}{2} k (\Delta x)^{2} \]
+                </div>
+                <p>Esta interpretación geométrica es útil para estudiantes que aún no dominan el cálculo integral.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Definición de energía potencial elástica</strong>
+                <p>El trabajo realizado contra la fuerza recuperadora se almacena en el muelle como energía potencial elástica, que puede recuperarse completamente cuando el muelle vuelve a su longitud natural:</p>
+                <div class="formula-box">
+                    \[ E_e = \frac{1}{2} k (\Delta x)^{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Independencia del signo de la deformación</strong>
+                <p>Observamos que la energía depende de \( (\Delta x)^{2} \), por lo que es positiva tanto si el muelle se estira (\( \Delta x > 0 \)) como si se comprime (\( \Delta x < 0 \)):</p>
+                <div class="formula-box">
+                    \[ E_e(\text{estiramiento}) = \frac{1}{2} k (+\Delta x)^{2} = \frac{1}{2} k (\Delta x)^{2} \]
+                </div>
+                <div class="formula-box">
+                    \[ E_e(\text{compresión}) = \frac{1}{2} k (-\Delta x)^{2} = \frac{1}{2} k (\Delta x)^{2} \]
+                </div>
+                <p>Desde el punto de vista físico, el muelle almacena energía en ambos casos porque tiende a volver a la posición de equilibrio realizando trabajo.</p>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ E_e = \frac{1}{2} k (\Delta x)^{2} \]
+            </div>
+            <p>La energía potencial elástica es directamente proporcional a la constante elástica del muelle y al cuadrado de la deformación. Es siempre positiva (o nula en la posición de equilibrio) y representa la capacidad del muelle deformado para realizar trabajo al recuperar su longitud natural.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Esta demostración es didácticamente valiosa porque introduce la integración de una fuerza variable de forma natural y geométrica. Es importante destacar que la Ley de Hooke es una aproximación válida solo para deformaciones pequeñas (régimen elástico); para deformaciones grandes, el comportamiento es no lineal. El factor \( \frac{1}{2} \) suele sorprender a los estudiantes que intentan aplicar directamente \( W = F \cdot \Delta x \); debe enfatizarse que la fuerza no es constante. La simetría estiramiento/compresión es un excelente ejemplo de cómo las potencias pares conservan la simetría de un sistema.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO la energía potencial elástica</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Cálculo directo de energía almacenada -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Energía almacenada al estirar un muelle</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un muelle de constante \( k = 800 \, \text{N/m} \) se estira 12 cm desde su longitud natural. Calcula la energía potencial elástica almacenada. ¿Qué energía almacenaría si se comprimiera la misma distancia?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>\( \Delta x = 0,12 \, \text{m} \).</p>
+                    <p>\( E_e = \frac{1}{2} k (\Delta x)^2 = 0,5 \cdot 800 \cdot (0,12)^2 = 0,5 \cdot 800 \cdot 0,0144 = 5,76 \, \text{J} \).</p>
+                    <p>Al comprimir la misma distancia, el cuadrado hace que la energía sea la misma: \( E_e = 5,76 \, \text{J} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Fuerza necesaria para una deformación -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Relación entre fuerza, deformación y energía</span>
+                </div>
+                <p><strong>Enunciado:</strong> Se aplica una fuerza de 150 N a un muelle y se deforma 6,0 cm. Calcula su constante elástica y la energía almacenada en esa deformación.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Por la Ley de Hooke: \( F = k \cdot \Delta x \Rightarrow k = \frac{F}{\Delta x} = \frac{150}{0,06} = 2500 \, \text{N/m} \).</p>
+                    <p>\( E_e = \frac{1}{2} k (\Delta x)^2 = 0,5 \cdot 2500 \cdot (0,06)^2 = 0,5 \cdot 2500 \cdot 0,0036 = 4,5 \, \text{J} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Comparación estiramiento vs compresión (concepto) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Simetría de la energía elástica</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un muelle de \( k = 1200 \, \text{N/m} \) se estira 5,0 cm y luego se comprime 5,0 cm. ¿En qué caso es mayor la energía almacenada? Justifica tu respuesta.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>En ambos casos la deformación es la misma en valor absoluto, \( \Delta x = 0,05 \, \text{m} \).</p>
+                    <p>La energía depende de \( (\Delta x)^2 \), por lo que \( E_e = \frac{1}{2} \cdot 1200 \cdot (0,05)^2 = 1,5 \, \text{J} \) en ambos casos.</p>
+                    <p><strong>Conclusión:</strong> No hay diferencia; la energía es la misma porque el cuadrado elimina el signo.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Transformación de energía elástica en cinética -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Muelle que impulsa un bloque (sin rozamiento)</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un muelle de constante \( k = 400 \, \text{N/m} \) se comprime 8,0 cm y se coloca frente a un bloque de 0,50 kg en reposo sobre una superficie horizontal sin rozamiento. Al soltar el muelle, ¿qué velocidad adquiere el bloque?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>\( \Delta x = 0,08 \, \text{m} \).</p>
+                    <p>Energía elástica inicial: \( E_e = \frac{1}{2} \cdot 400 \cdot (0,08)^2 = 0,5 \cdot 400 \cdot 0,0064 = 1,28 \, \text{J} \).</p>
+                    <p>Por conservación, esa energía se convierte en cinética: \( \frac{1}{2} m v^2 = 1,28 \Rightarrow v = \sqrt{\frac{2 \cdot 1,28}{0,50}} = \sqrt{5,12} \approx 2,26 \, \text{m/s} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Trabajo de deformación con fuerza variable (gráfica) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Interpretación gráfica del trabajo elástico</span>
+                </div>
+                <p><strong>Enunciado:</strong> La fuerza necesaria para estirar un muelle varía linealmente desde 0 hasta 80 N cuando se deforma 20 cm. Calcula el trabajo realizado para estirarlo y la constante elástica del muelle.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La fuerza varía linealmente, el trabajo es el área del triángulo: \( W = \frac{1}{2} \cdot \text{base} \cdot \text{altura} = \frac{1}{2} \cdot 0,20 \cdot 80 = 8,0 \, \text{J} \).</p>
+                    <p>Este trabajo es la energía almacenada: \( E_e = 8,0 \, \text{J} \).</p>
+                    <p>La constante elástica: \( k = \frac{F_{\max}}{\Delta x} = \frac{80}{0,20} = 400 \, \text{N/m} \).</p>
+                    <p>Comprobamos: \( E_e = \frac{1}{2} \cdot 400 \cdot (0,20)^2 = 8,0 \, \text{J} \) (coincide).</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> La energía potencial elástica es un ejemplo paradigmático de cómo el trabajo de una fuerza variable (lineal) conduce a una expresión cuadrática. El factor \( \frac{1}{2} \) no es arbitrario; surge de la integración o del área del triángulo en el gráfico fuerza-deformación. Es muy útil que se relacione esta expresión con el área bajo la curva de la Ley de Hooke. Además, la simetría estiramiento/compresión refuerza la idea de que la energía es una función de estado que solo depende de la configuración final (deformación), no del camino seguido para alcanzarla.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

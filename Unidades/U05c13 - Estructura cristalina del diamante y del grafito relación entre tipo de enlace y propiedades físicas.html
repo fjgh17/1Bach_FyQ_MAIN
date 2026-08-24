@@ -1,0 +1,601 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.14 - Demostración: Estructura cristalina del diamante y del grafito</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILOS ORIGINALES (se mantienen)
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 14px 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .comparison-table td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .comparison-table tr:last-child td { border-bottom: none; }
+        .comparison-table tr:nth-child(even) { background: #f7fafc; }
+        .comparison-table .diamond { background: #e6fffa; }
+        .comparison-table .graphite { background: #fefcbf; }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            .comparison-table { font-size: 0.85em; }
+            .comparison-table th, .comparison-table td { padding: 10px 8px; }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (TAREA 1)
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #eef4fa;
+            border-radius: 16px;
+            padding: 10px 20px 20px;
+            border: 1px solid #bdd6e8;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.6rem;
+            color: #2a7faa;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        .exercise-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #d3e2ed;
+        }
+        .exercise-card h3 {
+            margin-top: 0;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        .exercise-card h3 .badge {
+            background: #2a7faa;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+        }
+        .solution {
+            background: #f7fbfe;
+            border-left: 4px solid #2a7faa;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 0.98rem;
+        }
+        .solution .step {
+            background: transparent;
+            border-left: none;
+            padding: 6px 0;
+            margin: 6px 0;
+            box-shadow: none;
+        }
+        .solution .step strong {
+            color: #0b3b5c;
+        }
+        .didactic-footer {
+            background: #d7e7f3;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #144a66;
+        }
+        .didactic-footer i {
+            font-size: 1.8rem;
+        }
+        .highlight-sol {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.13.- </span>
+                <span class="texto">Demostración: Estructura cristalina del diamante y del grafito</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de que tanto el diamante como el grafito son formas alotrópicas del carbono puro, demostrar que las <strong>diferencias en la disposición espacial de los enlaces covalentes C—C</strong> determinan propiedades físicas radicalmente distintas, estableciendo la correspondencia entre estructura cristalina y comportamiento macroscópico de cada material.</p>
+        <div class="formula-box">
+            <strong>Diamante:</strong> red covalente tridimensional tetraédrica<br>
+            <strong>Grafito:</strong> capas hexagonales bidimensionales con fuerzas de Van der Waals interlaminares
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c13 - Estructura cristalina del diamante y del grafito relación entre tipo de enlace y propiedades físicas.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Comprender cómo la misma sustancia elemental (carbono) puede presentar propiedades opuestas según su organización estructural. El estudiante debe ser capaz de:</p>
+        <ul>
+            <li>Explicar por qué el diamante es el material natural más duro mientras que el grafito es un lubricante.</li>
+            <li>Justificar la conductividad eléctrica del grafito y el aislamiento del diamante.</li>
+            <li>Predecir propiedades de nuevos alótropos del carbono a partir de su estructura.</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Analizar la estructura del diamante.</strong> Cada átomo de carbono presenta hibridación \( sp^3 \) y está unido covalentemente a otros <strong>cuatro átomos de carbono</strong> en los vértices de un tetraedro regular. Esta red tridimensional se extiende indefinidamente en todas las direcciones del espacio.
+            <div class="formula-box">
+                <strong>Geometría:</strong> Tetraédrica<br>
+                <strong>Longitud C—C:</strong> \( 1{,}54 \, \text{\AA} \) (enlace simple)<br>
+                <strong>Ángulo de enlace:</strong> \( 109{,}5^\circ \)<br>
+                <strong>Coordinación:</strong> 4 (cada C unido a 4 vecinos)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Analizar la estructura del grafito.</strong> Cada átomo de carbono presenta hibridación \( sp^2 \) y está unido covalentemente a otros <strong>tres átomos de carbono</strong> en un plano, formando hexágonos regulares. Las capas planas se apilan paralelamente separadas por \( 3{,}4 \, \text{\AA} \), mantenidas por débiles fuerzas de Van der Waals.
+            <div class="formula-box">
+                <strong>Geometría:</strong> Trigonal plana (dentro de cada capa)<br>
+                <strong>Longitud C—C:</strong> \( 1{,}42 \, \text{\AA} \) (carácter de 1,5 enlace)<br>
+                <strong>Ángulo de enlace:</strong> \( 120^\circ \)<br>
+                <strong>Distancia interlaminar:</strong> \( 3{,}4 \, \text{\AA} \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Correlacionar estructura con propiedades del diamante:</strong>
+            <ul>
+                <li><strong>Dureza extrema:</strong> La red tridimensional de enlaces covalentes fuertes en todas las direcciones impide el deslizamiento de planos. Romper la estructura requiere romper múltiples enlaces C—C simultáneamente.</li>
+                <li><strong>Aislamiento eléctrico:</strong> Todos los electrones de valencia están localizados en enlaces \( \sigma \) covalentes. No hay electrones libres ni orbitales \( \pi \) deslocalizados.</li>
+                <li><strong>Alto punto de fusión:</strong> La extensión tridimensional de la red covalente requiere energía enorme para romperla.</li>
+                <li><strong>Transparencia óptica:</strong> La banda prohibida es grande (~5,5 eV), por lo que no absorbe luz visible.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Correlacionar estructura con propiedades del grafito:</strong>
+            <ul>
+                <li><strong>Blandura y lubricación:</strong> Las débiles fuerzas de Van der Waals entre capas permiten que estas se deslicen fácilmente unas sobre otras.</li>
+                <li><strong>Conductividad eléctrica:</strong> Cada carbono aporta un electrón \( p_z \) no hibridado que forma un orbital \( \pi \) deslocalizado extendido sobre toda la capa. Estos electrones están libres para moverse dentro del plano.</li>
+                <li><strong>Opacidad y color negro:</strong> Los electrones \( \pi \) deslocalizados absorben luz en una amplia gama del espectro visible.</li>
+                <li><strong>Anisotropía:</strong> Las propiedades difieren según la dirección (dentro del plano vs. perpendicular a él).</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Tabla comparativa estructura-propiedades:</strong>
+            <table class="comparison-table">
+                <tr>
+                    <th>Propiedad</th>
+                    <th class="diamond">Diamante</th>
+                    <th class="graphite">Grafito</th>
+                </tr>
+                <tr>
+                    <td>Hibridación</td>
+                    <td>\( sp^3 \)</td>
+                    <td>\( sp^2 \)</td>
+                </tr>
+                <tr>
+                    <td>Enlaces C—C por átomo</td>
+                    <td>4</td>
+                    <td>3 (en capa)</td>
+                </tr>
+                <tr>
+                    <td>Dimensionalidad</td>
+                    <td>3D</td>
+                    <td>2D (capas)</td>
+                </tr>
+                <tr>
+                    <td>Dureza (escala Mohs)</td>
+                    <td>10 (máxima)</td>
+                    <td>1–2 (muy blando)</td>
+                </tr>
+                <tr>
+                    <td>Conductividad eléctrica</td>
+                    <td>Aislante</td>
+                    <td>Conductor (en plano)</td>
+                </tr>
+                <tr>
+                    <td>Conductividad térmica</td>
+                    <td>Muy alta</td>
+                    <td>Alta (en plano)</td>
+                </tr>
+                <tr>
+                    <td>Color</td>
+                    <td>Transparente</td>
+                    <td>Negro opaco</td>
+                </tr>
+                <tr>
+                    <td>Densidad (\( \text{g/cm}^3 \))</td>
+                    <td>3,51</td>
+                    <td>2,26</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Esta demostración ilustra el principio fundamental de la ciencia de materiales: <em>la estructura determina las propiedades</em>. Es útil contrastar estos dos alótropos con el grafeno (una sola capa de grafito) y el fullereno (estructura esférica cerrada) para mostrar la versatilidad del carbono. Se recomienda enfatizar que el grafito y el diamante son termodinámicamente metaestables a temperatura ambiente; la conversión de uno a otro requiere condiciones extremas de presión y temperatura (síntesis de diamantes industriales a ~1500 °C y 60 kbar).
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Conclusión estructural</strong>
+            <p style="font-size: 1.05em; margin: 10px 0 0 0;">
+                \[ \boxed{\text{Propiedades del alótropo} \;=\; f(\text{hibridación}, \text{dimensionalidad}, \text{tipo de fuerzas interatómicas})} \]
+            </p>
+        </div>
+        <div class="formula-box" style="margin-top: 12px;">
+            <strong>Resumen de correlaciones</strong>
+            <p style="text-align: left; font-size: 0.95em; margin: 10px 0 0 0;">
+                <strong>Diamante (\( sp^3 \), 3D):</strong> Red covalente tridimensional → dureza extrema, aislante eléctrico, alto punto de fusión.<br><br>
+                <strong>Grafito (\( sp^2 \), 2D):</strong> Capas con electrones \( \pi \) deslocalizados → lubricante, conductor eléctrico (en plano), blando.
+            </p>
+        </div>
+        <p>La demostración realizada mediante el análisis comparativo de las estructuras cristalinas y su correlación con las propiedades físicas confirma que la disposición espacial de los enlaces covalentes determina radicalmente el comportamiento de los alótropos del carbono.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> El diamante y el grafito, a pesar de estar formados exclusivamente por carbono, presentan propiedades opuestas debido a sus diferentes estructuras cristalinas, demostrando que la organización estructural es clave para determinar las propiedades de los materiales.</p>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- BLOQUE DESPLEGABLE (TAREA 1)                 -->
+    <!-- ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame — 🧪 DESMITIFICANDO la estructura cristalina del diamante y del grafito</span>
+        </summary>
+
+        <!-- Ejercicio 1 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 1</span> Hibridación y geometría</h3>
+            <p><strong>Enunciado:</strong> Explica cómo la hibridación del carbono determina la geometría y el número de coordinación en el diamante y en el grafito. ¿Qué relación tiene esto con la dureza de cada material?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Diamante:</strong> Hibridación \( sp^3 \), geometría tetraédrica, ángulo 109,5°, coordinación 4. Esto genera una red tridimensional rígida con enlaces fuertes en todas direcciones, lo que explica su dureza máxima.</div>
+                <div class="step"><strong>2. Grafito:</strong> Hibridación \( sp^2 \), geometría trigonal plana, ángulo 120°, coordinación 3. Los enlaces son fuertes dentro de las capas, pero las capas están unidas por fuerzas de Van der Waals, lo que permite el deslizamiento y confiere blandura.</div>
+                <div class="step"><span class="highlight-sol">Conclusión:</span> La hibridación determina la dimensionalidad de la red y, por tanto, la dureza: 3D → duro, 2D con interacciones débiles entre capas → blando.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 2</span> Conductividad eléctrica</h3>
+            <p><strong>Enunciado:</strong> El grafito conduce la electricidad en el plano de las capas, pero el diamante es aislante. Justifica esta diferencia en términos de la estructura electrónica.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Diamante:</strong> Todos los electrones de valencia del carbono participan en enlaces \( \sigma \) (hibridación \( sp^3 \)). No hay electrones \( \pi \) deslocalizados ni portadores de carga libres.</div>
+                <div class="step"><strong>2. Grafito:</strong> Cada carbono \( sp^2 \) tiene un electrón \( p_z \) no hibridado que forma orbitales \( \pi \) deslocalizados extendidos sobre toda la capa. Estos electrones pueden moverse libremente bajo un campo eléctrico, dando conductividad metálica en el plano.</div>
+                <div class="step"><strong>3. Perpendicular al plano:</strong> La conductividad es muy baja porque las capas están aisladas por fuerzas de Van der Waals.</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La presencia de electrones \( \pi \) deslocalizados es la causa de la conductividad en el grafito; su ausencia hace que el diamante sea aislante.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 3</span> Densidad y empaquetamiento</h3>
+            <p><strong>Enunciado:</strong> La densidad del diamante es 3,51 g/cm³ y la del grafito 2,26 g/cm³. Explica esta diferencia en términos de sus estructuras.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Diamante:</strong> Red tridimensional compacta donde cada carbono está unido a 4 vecinos. El empaquetamiento es eficiente y no hay espacios vacíos significativos. Todos los enlaces son covalentes y la estructura es muy densa.</div>
+                <div class="step"><strong>2. Grafito:</strong> Estructura en capas separadas por 3,4 Å. La distancia interlaminar es grande comparada con las distancias dentro de la capa (1,42 Å), lo que crea espacios vacíos entre capas. Esto reduce la densidad global.</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La mayor separación entre capas en el grafito explica su menor densidad.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 4</span> Aplicación práctica: lubricantes y abrasivos</h3>
+            <p><strong>Enunciado:</strong> El grafito se usa como lubricante sólido, mientras que el diamante se usa como abrasivo para cortar y pulir. Explica por qué cada material es adecuado para su aplicación.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Grafito como lubricante:</strong> Las capas hexagonales se deslizan unas sobre otras gracias a las débiles fuerzas de Van der Waals. Esto reduce la fricción entre superficies, siendo ideal para mecanismos donde no se pueden usar lubricantes líquidos (altas temperaturas, vacío).</div>
+                <div class="step"><strong>2. Diamante como abrasivo:</strong> La red tridimensional de enlaces covalentes fuertes lo convierte en el material natural más duro. Puede rayar cualquier otro material, por lo que se usa en herramientas de corte, pulido y perforación.</div>
+                <div class="step"><span class="highlight-sol">Conclusión:</span> La estructura determina la función: blandura y lubricación en el grafito, dureza extrema en el diamante.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 5</span> Comparación con otros alótropos: grafeno y fullereno</h3>
+            <p><strong>Enunciado:</strong> El grafeno es una capa individual de grafito, y el fullereno (C₆₀) es una estructura esférica cerrada. ¿Cómo se relacionan estas estructuras con las del grafito y el diamante? ¿Qué nuevas propiedades presentan?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Grafeno:</strong> Es una capa hexagonal \( sp^2 \) de un solo átomo de espesor. Mantiene la conductividad eléctrica del grafito (electrones \( \pi \) deslocalizados), pero al no tener interacciones entre capas, su resistencia mecánica es extraordinaria (el material más resistente conocido).</div>
+                <div class="step"><strong>2. Fullereno (C₆₀):</strong> Estructura esférica formada por pentágonos y hexágonos, con hibridación \( sp^2 \) pero curvada. La curvatura introduce cierta hibridación \( sp^3 \) parcial. Presenta propiedades semiconductoras y puede actuar como "jaula" para átomos (endoedrales).</div>
+                <div class="step"><strong>3. Relación:</strong> Todos son alótropos del carbono con enlaces \( sp^2 \) (excepto el diamante), pero la dimensionalidad (2D para grafeno, 0D para fullereno) y la curvatura cambian radicalmente las propiedades.</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La versatilidad del carbono permite una gran variedad de alótropos con propiedades personalizadas.</div>
+            </div>
+        </div>
+
+        <!-- Pie didáctico -->
+        <div class="didactic-footer">
+            <i class="fas fa-graduation-cap"></i>
+            <span><strong>Observaciones claves:</strong> La comparación entre diamante y grafito es el ejemplo más claro de cómo la estructura atómica determina las propiedades macroscópicas de un material. La "trampa" habitual es pensar que el carbono solo existe como grafito o diamante; en realidad, los alótropos son mucho más variados (grafeno, fullerenos, nanotubos). Entender la relación estructura-propiedad es esencial para la ciencia de materiales y la nanotecnología.</span>
+        </div>
+    </details>
+    <!-- FIN DEL BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

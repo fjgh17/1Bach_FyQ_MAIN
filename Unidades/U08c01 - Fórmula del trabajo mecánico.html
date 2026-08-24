@@ -1,0 +1,538 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 1: Fórmula del Trabajo Mecánico</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE (TAREA 1) ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.01.- </span>
+                    <span class="texto">Demostración 1: Fórmula del Trabajo Mecánico</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES TRANSFORMADAS ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de trabajo como el producto escalar entre el vector fuerza y el vector desplazamiento, demostrar que el trabajo mecánico realizado por una fuerza constante sobre un cuerpo que se desplaza se expresa como:</p>
+            <div class="formula-box">
+                \[ W = F \cdot \Delta x \cdot \cos\alpha \]
+            </div>
+            <p>donde \( \alpha \) es el ángulo que forma la fuerza con la dirección del desplazamiento.</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c01 - Fórmula del trabajo mecánico.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Obtener una expresión escalar que permita calcular el trabajo sin necesidad de operar con vectores, facilitando los cálculos numéricos en problemas de 1º de Bachillerato. Comprender que solo la componente de la fuerza en la dirección del movimiento realiza trabajo efectivo.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definición vectorial del trabajo</strong>
+                <p>El trabajo elemental realizado por una fuerza \( \vec{F} \) que produce un desplazamiento \( d\vec{r} \) se define como el producto escalar:</p>
+                <div class="formula-box">
+                    \[ dW = \vec{F} \cdot d\vec{r} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Desarrollo del producto escalar</strong>
+                <p>Recordando que el producto escalar de dos vectores se define como \( \vec{A} \cdot \vec{B} = |\vec{A}| |\vec{B}| \cos\alpha \), donde \( \alpha \) es el ángulo entre ellos, aplicamos esta definición:</p>
+                <div class="formula-box">
+                    \[ dW = |\vec{F}| |d\vec{r}| \cos\alpha = F \, dr \, \cos\alpha \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Integración para fuerza constante</strong>
+                <p>Para una fuerza constante y un desplazamiento rectilíneo finito \( \Delta x \), integramos entre los puntos inicial y final:</p>
+                <div class="formula-box">
+                    \[ W = \int_{i}^{f} \vec{F} \cdot d\vec{r} = F \cos\alpha \int_{i}^{f} dx \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Evaluación de la integral</strong>
+                <p>Como \( F \) y \( \alpha \) son constantes, salen de la integral:</p>
+                <div class="formula-box">
+                    \[ W = F \cos\alpha \cdot \Delta x \]
+                </div>
+                <p>Reordenando los factores obtenemos la expresión habitual:</p>
+                <div class="formula-box">
+                    \[ W = F \cdot \Delta x \cdot \cos\alpha \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Interpretación física de casos particulares</strong>
+                <p>Analizamos el signo del trabajo según el ángulo \( \alpha \):</p>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li>Si \( \alpha = 0^{\circ} \): \( \cos 0^{\circ} = 1 \Rightarrow W = F \Delta x \) (trabajo máximo, fuerza a favor del movimiento)</li>
+                    <li>Si \( 0^{\circ} < \alpha < 90^{\circ} \): \( \cos\alpha > 0 \Rightarrow W > 0 \) (trabajo motor, fuerza favorece el movimiento)</li>
+                    <li>Si \( \alpha = 90^{\circ} \): \( \cos 90^{\circ} = 0 \Rightarrow W = 0 \) (fuerza perpendicular, no realiza trabajo)</li>
+                    <li>Si \( 90^{\circ} < \alpha < 180^{\circ} \): \( \cos\alpha < 0 \Rightarrow W < 0 \) (trabajo resistente, fuerza se opone al movimiento)</li>
+                    <li>Si \( \alpha = 180^{\circ} \): \( \cos 180^{\circ} = -1 \Rightarrow W = -F \Delta x \) (trabajo mínimo, fuerza opuesta al movimiento)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ W = F \cdot \Delta x \cdot \cos\alpha \]
+            </div>
+            <p>El trabajo mecánico depende del módulo de la fuerza, del desplazamiento y del coseno del ángulo entre ellos. Solo la componente de la fuerza en la dirección del desplazamiento, \( F_{\parallel} = F \cos\alpha \), contribuye al trabajo.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es fundamental que los estudiantes comprendan que el trabajo es una magnitud escalar (puede ser positiva, negativa o nula) y no un vector. El caso \( \alpha = 90^{\circ} \) es especialmente importante: una fuerza perpendicular al desplazamiento (como la fuerza centrípeta en un MCU o el peso en un desplazamiento horizontal) no realiza trabajo. Esta demostración conecta la geometría vectorial con la física del movimiento.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE (TAREA 1) – se añade justo al final    -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO la fórmula del trabajo mecánico</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Trabajo con fuerza horizontal (α=0) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Arrastre horizontal sin rozamiento</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un niño arrastra un trineo de 12 kg por una superficie horizontal nevada con una fuerza constante de 45 N en la dirección del movimiento. Si el trineo se desplaza 8,0 m, calcula:</p>
+                <ul>
+                    <li>a) El trabajo realizado por el niño.</li>
+                    <li>b) Si la fuerza se aplica formando 30° con la horizontal, ¿cuál sería ahora el trabajo?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) La fuerza es paralela al desplazamiento → \( \alpha = 0^\circ \), \( \cos 0^\circ = 1 \).</p>
+                    <p>\( W = F \cdot \Delta x \cdot \cos 0^\circ = 45 \, \text{N} \times 8,0 \, \text{m} \times 1 = 360 \, \text{J} \).</p>
+                    <p>b) Ahora \( \alpha = 30^\circ \), \( \cos 30^\circ \approx 0,866 \).</p>
+                    <p>\( W' = 45 \times 8,0 \times 0,866 \approx 312 \, \text{J} \).</p>
+                    <p>Solo la componente horizontal de la fuerza (\( F_x = 45 \cos 30^\circ \)) realiza trabajo.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Trabajo vertical y comparación con horizontal (α=90°) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Levantar vs. desplazar horizontalmente</span>
+                </div>
+                <p><strong>Enunciado:</strong> Una persona sostiene una caja de 20 kg y la sube verticalmente 2,5 m. Después la transporta horizontalmente 3,0 m con velocidad constante (sin rozamiento). Calcula el trabajo realizado por la fuerza aplicada en cada tramo.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La fuerza aplicada para subir con velocidad constante es igual al peso: \( F = m g = 20 \times 9,8 = 196 \, \text{N} \).</p>
+                    <p>En el tramo vertical: fuerza y desplazamiento tienen la misma dirección y sentido → \( \alpha = 0^\circ \).</p>
+                    <p>\( W_{\text{subida}} = 196 \times 2,5 \times 1 = 490 \, \text{J} \).</p>
+                    <p>En el tramo horizontal: la fuerza aplicada es vertical (para sostener la caja), pero el desplazamiento es horizontal → \( \alpha = 90^\circ \), \( \cos 90^\circ = 0 \).</p>
+                    <p>\( W_{\text{horizontal}} = 196 \times 3,0 \times 0 = 0 \, \text{J} \).</p>
+                    <p><strong>Conclusión:</strong> En el desplazamiento horizontal, la fuerza vertical no realiza trabajo, aunque la persona se canse (el cansancio se debe a la actividad muscular interna, no al trabajo mecánico externo).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Fuerza con ángulo intermedio -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Tirar de un carro con un ángulo</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un carro de supermercado es empujado con una fuerza de 60 N que forma 25° con la horizontal. Si el carro se desplaza 15 m en línea recta, calcula el trabajo realizado. ¿Qué trabajo haría si el ángulo fuera de 60°?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Para \( \alpha = 25^\circ \), \( \cos 25^\circ \approx 0,9063 \).</p>
+                    <p>\( W = 60 \times 15 \times 0,9063 \approx 816 \, \text{J} \).</p>
+                    <p>Para \( \alpha = 60^\circ \), \( \cos 60^\circ = 0,5 \).</p>
+                    <p>\( W' = 60 \times 15 \times 0,5 = 450 \, \text{J} \).</p>
+                    <p>Observamos que cuanto mayor es el ángulo, menor es la componente horizontal y, por tanto, menor el trabajo para el mismo desplazamiento.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Trabajo de rozamiento (α=180°) y teorema trabajo-energía -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Trabajo de la fuerza de rozamiento</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un bloque de 5,0 kg se desliza por una superficie horizontal con rozamiento. El coeficiente de rozamiento cinético es 0,25. Si el bloque se desplaza 4,0 m, calcula el trabajo realizado por la fuerza de rozamiento. ¿Cuánto vale el trabajo neto si no hay otras fuerzas?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La fuerza de rozamiento es \( F_r = \mu m g = 0,25 \times 5,0 \times 9,8 = 12,25 \, \text{N} \).</p>
+                    <p>La fuerza de rozamiento siempre se opone al movimiento → \( \alpha = 180^\circ \), \( \cos 180^\circ = -1 \).</p>
+                    <p>\( W_r = F_r \cdot \Delta x \cdot (-1) = -12,25 \times 4,0 = -49,0 \, \text{J} \).</p>
+                    <p>Si no hay otras fuerzas, el trabajo neto es el trabajo de rozamiento (negativo), lo que implica que la energía cinética del bloque disminuye en 49 J (teorema trabajo-energía).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Trabajo nulo (α=90°) – fuerza centrípeta -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Fuerza perpendicular al movimiento</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un cuerpo de 2,0 kg describe un movimiento circular uniforme de radio 0,50 m atado a una cuerda. La tensión de la cuerda es de 80 N. Si el cuerpo da una vuelta completa, ¿qué trabajo realiza la tensión de la cuerda?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>En un MCU, la fuerza de tensión (fuerza centrípeta) siempre es perpendicular a la velocidad, y por tanto perpendicular al desplazamiento instantáneo.</p>
+                    <p>En cada punto, \( \alpha = 90^\circ \), \( \cos 90^\circ = 0 \).</p>
+                    <p>Entonces \( dW = F \, dr \, \cos 90^\circ = 0 \) en cada instante.</p>
+                    <p>El trabajo total a lo largo de toda la vuelta es cero. La fuerza centrípeta no realiza trabajo, solo cambia la dirección de la velocidad, no su módulo.</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> La fórmula \( W = F \Delta x \cos\alpha \) es el puente entre el álgebra vectorial y la física cotidiana. 
+                Se debe interiorizar que el trabajo no depende solo de la intensidad de la fuerza, sino de la <em>componente útil</em> en la dirección del movimiento. 
+                El caso \( \alpha = 90^\circ \) suele ser una fuente de errores conceptuales: fuerzas que no realizan trabajo (como el peso en un movimiento horizontal o la fuerza centrípeta) son ejemplos clave para afianzar la idea.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

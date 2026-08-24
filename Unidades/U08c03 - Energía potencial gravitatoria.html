@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 3: Fórmula de la Energía Potencial Gravitatoria</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.03.- </span>
+                    <span class="texto">Demostración 3: Fórmula de la Energía Potencial Gravitatoria</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de trabajo mecánico y de la fuerza gravitatoria (peso) como fuerza conservativa, demostrar que la energía potencial gravitatoria de un cuerpo de masa \( m \) situado a una altura \( h \) respecto a un nivel de referencia viene dada por:</p>
+            <div class="formula-box">
+                \[ E_p = m \cdot g \cdot h \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c03 - Energía potencial gravitatoria.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Establecer que el trabajo realizado contra la gravedad para elevar un cuerpo se almacena como energía potencial gravitatoria, una magnitud que depende de la posición del cuerpo en el campo gravitatorio y que puede recuperarse completamente al descender. Comprender el carácter relativo de esta energía respecto al nivel de referencia elegido.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Planteamiento del sistema</strong>
+                <p>Consideramos un cuerpo de masa \( m \) que se encuentra inicialmente a una altura \( h_1 \) sobre un nivel de referencia arbitrario. Queremos elevarlo cuasi-estáticamente (sin variación de energía cinética) hasta una altura \( h_2 \), siendo \( \Delta h = h_2 - h_1 \) el desplazamiento vertical.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Fuerzas en equilibrio cuasi-estático</strong>
+                <p>Para elevar el cuerpo sin aceleración, aplicamos una fuerza externa \( F_{\text{ext}} \) que equilibra exactamente el peso del cuerpo. El peso es \( P = m \cdot g \), dirigido verticalmente hacia abajo:</p>
+                <div class="formula-box">
+                    \[ F_{\text{ext}} = P = m \cdot g \]
+                </div>
+                <p>Esta fuerza actúa en la misma dirección y sentido que el desplazamiento vertical ascendente.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Cálculo del trabajo realizado por la fuerza externa</strong>
+                <p>El desplazamiento es vertical \( \Delta h \) y la fuerza externa es paralela a él (\( \alpha = 0^{\circ} \)). Aplicando la fórmula del trabajo:</p>
+                <div class="formula-box">
+                    \[ W_{\text{ext}} = F_{\text{ext}} \cdot \Delta h \cdot \cos 0^{\circ} = m \cdot g \cdot \Delta h \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Trabajo realizado por la fuerza gravitatoria</strong>
+                <p>Simultáneamente, el peso realiza un trabajo opuesto al desplazamiento (\( \alpha = 180^{\circ} \)):</p>
+                <div class="formula-box">
+                    \[ W_g = P \cdot \Delta h \cdot \cos 180^{\circ} = -m \cdot g \cdot \Delta h \]
+                </div>
+                <p>El peso es una fuerza conservativa: el trabajo que realiza depende solo de las posiciones inicial y final, no de la trayectoria seguida.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Definición de energía potencial gravitatoria</strong>
+                <p>Para fuerzas conservativas, definimos una función de energía potencial \( E_p \) tal que el trabajo realizado por la fuerza conservativa sea igual a la disminución de dicha función:</p>
+                <div class="formula-box">
+                    \[ W_g = -\Delta E_p = -(E_{p,2} - E_{p,1}) \]
+                </div>
+                <p>Comparando con el resultado del paso 4:</p>
+                <div class="formula-box">
+                    \[ -m \cdot g \cdot \Delta h = -(E_{p,2} - E_{p,1}) \]
+                </div>
+                <p>Por tanto:</p>
+                <div class="formula-box">
+                    \[ E_{p,2} - E_{p,1} = m \cdot g \cdot (h_2 - h_1) \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Elección del nivel de referencia</strong>
+                <p>La energía potencial está definida salvo una constante arbitraria. Elegimos el nivel de referencia \( h = 0 \) donde \( E_p = 0 \). Entonces, para cualquier altura \( h \):</p>
+                <div class="formula-box">
+                    \[ E_p(h) = m \cdot g \cdot h \]
+                </div>
+                <p>Esta elección es convencional; lo físicamente relevante son las variaciones de energía potencial, no su valor absoluto.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Verificación de la independencia de la trayectoria</strong>
+                <p>Como demostración adicional, verificamos que el trabajo del peso es independiente de la trayectoria. Si el cuerpo se desplaza entre dos puntos A y B a diferentes alturas, el trabajo del peso solo depende de la diferencia de altura vertical, no del camino seguido (horizontal, inclinado o curvo):</p>
+                <div class="formula-box">
+                    \[ W_g = -m \cdot g \cdot (h_B - h_A) \]
+                </div>
+                <p>Esto confirma el carácter conservativo del campo gravitatorio terrestre (aproximado como uniforme en la escala del problema).</p>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ E_p = m \cdot g \cdot h \]
+            </div>
+            <p>La energía potencial gravitatoria es directamente proporcional a la masa del cuerpo, a la intensidad del campo gravitatorio y a la altura respecto al nivel de referencia elegido. Es una magnitud escalar que puede ser positiva, negativa o nula según la posición relativa al nivel de referencia.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es crucial que los estudiantes comprendan el carácter relativo de la energía potencial: el valor \( E_p = mgh \) depende del nivel de referencia \( h = 0 \) que elijamos arbitrariamente. Sin embargo, las variaciones \( \Delta E_p = mg\Delta h \) son independientes de esta elección y tienen significado físico absoluto. Un error común es confundir la altura \( h \) con la distancia recorrida sobre un plano inclinado; debe insistirse en que \( h \) es la coordenada vertical. También es importante contrastar que cerca de la superficie terrestre \( g \approx 9.8 \, \text{m/s}^2 \) es constante, lo que hace válida esta expresión; a grandes altitudes habría que usar la expresión gravitatoria newtoniana general.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO la energía potencial gravitatoria</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Cálculo directo de Ep -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Energía potencial de un objeto elevado</span>
+                </div>
+                <p><strong>Enunciado:</strong> Una maceta de 2,5 kg se encuentra en un balcón a 12 m de altura sobre la calle. Calcula su energía potencial gravitatoria respecto al suelo. ¿Cuánto valdría si el nivel de referencia fuera el balcón?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Respecto al suelo: \( E_p = m g h = 2,5 \cdot 9,8 \cdot 12 = 294 \, \text{J} \).</p>
+                    <p>Si el nivel de referencia es el balcón, \( h = 0 \Rightarrow E_p = 0 \). (El valor absoluto no tiene significado físico; solo importa la diferencia).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Trabajo del peso al bajar -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Trabajo de la gravedad en caída</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un libro de 0,80 kg se deja caer desde una estantería a 1,5 m de altura hasta el suelo. Calcula el trabajo realizado por el peso y la variación de energía potencial gravitatoria.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>El peso es una fuerza conservativa, \( W_g = -\Delta E_p = - (E_{p,f} - E_{p,i}) \).</p>
+                    <p>\( E_{p,i} = 0,8 \cdot 9,8 \cdot 1,5 = 11,76 \, \text{J} \); \( E_{p,f} = 0 \) (suelo).</p>
+                    <p>\( \Delta E_p = -11,76 \, \text{J} \).</p>
+                    <p>El trabajo del peso es \( W_g = -\Delta E_p = 11,76 \, \text{J} \) (positivo, porque la fuerza y el desplazamiento tienen el mismo sentido hacia abajo).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Cambio de nivel de referencia -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Independencia del origen de alturas</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un cuerpo de 3,0 kg se eleva desde el suelo hasta una altura de 4,0 m. Calcula la variación de energía potencial. Repite el cálculo tomando como nivel de referencia una altura de 2,0 m sobre el suelo. ¿Coinciden?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Con nivel de referencia en el suelo: \( \Delta E_p = m g (h_f - h_i) = 3 \cdot 9,8 \cdot (4 - 0) = 117,6 \, \text{J} \).</p>
+                    <p>Con nivel de referencia a 2,0 m: \( h_i = -2,0 \, \text{m} \), \( h_f = 2,0 \, \text{m} \).</p>
+                    <p>\( \Delta E_p = 3 \cdot 9,8 \cdot (2 - (-2)) = 3 \cdot 9,8 \cdot 4 = 117,6 \, \text{J} \).</p>
+                    <p><strong>Coinciden:</strong> la variación es independiente del origen de alturas.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Trabajo para subir por un plano inclinado -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Subida por una rampa sin rozamiento</span>
+                </div>
+                <p><strong>Enunciado:</strong> Se empuja un carrito de 5,0 kg desde la base hasta la parte superior de un plano inclinado de 3,0 m de altura, con una rampa de 6,0 m de longitud. Despreciando el rozamiento, ¿qué trabajo mínimo se debe realizar? ¿Coincide con el trabajo si se subiera verticalmente?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>El trabajo mínimo contra la gravedad es igual al aumento de energía potencial: \( W = \Delta E_p = m g \Delta h = 5 \cdot 9,8 \cdot 3,0 = 147 \, \text{J} \).</p>
+                    <p>La longitud de la rampa no afecta al trabajo de la fuerza conservativa (peso); si se subiera verticalmente, el trabajo también sería 147 J. La rampa reduce la fuerza necesaria pero no el trabajo (si no hay rozamiento).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Energía potencial y conservación -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Transformación de energía potencial en cinética</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un péndulo de 1,2 m de longitud se separa 30° de la vertical. Si su masa es de 0,50 kg, calcula su energía potencial en el punto más alto respecto al punto más bajo y la velocidad al pasar por el punto más bajo (despreciando rozamientos).</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Altura ganada: \( \Delta h = L (1 - \cos 30^\circ) = 1,2 \cdot (1 - 0,866) = 0,1608 \, \text{m} \).</p>
+                    <p>\( E_p = m g \Delta h = 0,50 \cdot 9,8 \cdot 0,1608 \approx 0,788 \, \text{J} \).</p>
+                    <p>Por conservación, esa energía se transforma en cinética: \( \frac{1}{2} m v^2 = 0,788 \Rightarrow v = \sqrt{\frac{2 \cdot 0,788}{0,50}} \approx 1,78 \, \text{m/s} \).</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> La energía potencial gravitatoria es una <em>energía almacenada</em> gracias a la posición en un campo conservativo. El valor numérico es arbitrario (depende del nivel de referencia), pero las diferencias son absolutas y equivalen al trabajo que puede realizar el peso. Es fundamental que se asocien \( E_p = mgh \) con el trabajo necesario para elevar el cuerpo, y que entiendan que en un plano inclinado la altura vertical es la que cuenta, no la distancia recorrida. La independencia de la trayectoria es la propiedad que define a las fuerzas conservativas.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

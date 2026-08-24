@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto Escalar y Vectorial – Guía completa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1e293b;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #0b3d5f, #1a6b8a);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .header h1 i { color: #fcd34d; font-size: 2rem; }
+        .header p { opacity: 0.9; font-size: 1.1rem; max-width: 500px; }
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 40px;
+        }
+        .nav-tabs a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            opacity: 0.85;
+        }
+        .nav-tabs a:hover, .nav-tabs a.active {
+            background: rgba(255,255,255,0.25);
+            opacity: 1;
+        }
+        .nav-tabs a.active { background: white; color: #0b3d5f; opacity: 1; }
+        .section {
+            padding: 30px 40px;
+            border-bottom: 1px solid #e9edf2;
+        }
+        .section:last-of-type { border-bottom: none; }
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0b3d5f;
+        }
+        .section h2 i { color: #1a6b8a; }
+        .section p { line-height: 1.7; margin-bottom: 16px; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1rem;
+            overflow-x: auto;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 20px 0;
+        }
+        .card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 18px 22px;
+            border-left: 6px solid #1a6b8a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
+        .card h3 { font-size: 1.2rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .card h3 i { color: #1a6b8a; width: 28px; }
+        .card ul { list-style: none; padding-left: 0; line-height: 1.9; }
+        .card ul li::before { content: "● "; color: #1a6b8a; font-weight: 700; }
+        .tabla-propiedades {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .tabla-propiedades th {
+            background: #0b3d5f;
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .tabla-propiedades td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e9edf2;
+            vertical-align: top;
+        }
+        .tabla-propiedades tr:nth-child(even) { background: #f8fafc; }
+        .tabla-propiedades tr:hover { background: #e6f0fa; }
+        .badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-esc { background: #dbeafe; color: #1e40af; }
+        .badge-vec { background: #fce4ec; color: #880e4f; }
+        .badge-app { background: #d1fae5; color: #065f46; }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            color: #744210;
+        }
+        .note-success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            color: #065f46;
+        }
+        details {
+            margin: 25px 0 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #1a6b8a;
+            box-shadow: 0 8px 20px rgba(26,107,138,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b3d5f;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary i { font-size: 1.8rem; color: #1a6b8a; transition: transform 0.3s ease; }
+        details[open] summary i { transform: rotate(180deg); }
+        summary .titulo-principal { flex: 1; }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-problema {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-problema .cabecera-prob {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-prob .num-prob { background: #1a6b8a; color: white; font-weight: 700; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.9rem; }
+        .cabecera-prob .titulo-prob { font-weight: 600; font-size: 1.2rem; color: #0b1e33; }
+        .enunciado-prob { margin-bottom: 1rem; background: #f9fafb; padding: 0.8rem 1.2rem; border-radius: 12px; border-left: 4px solid #94a3b8; }
+        .solucion-prob { background: #f1f5f9; padding: 1.2rem 1.8rem; border-radius: 16px; border: 1px solid #cbd5e1; font-size: 0.98rem; }
+        .solucion-prob .paso { margin: 0.6rem 0; }
+        .solucion-prob .paso strong { color: #1a6b8a; }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #1a6b8a;
+            font-weight: 500;
+            color: #0b3d5f;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i { font-size: 1.6rem; color: #1a6b8a; }
+        .footer {
+            background: #0b3d5f;
+            color: white;
+            padding: 24px 40px;
+            text-align: center;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        .footer a { color: #fcd34d; text-decoration: none; }
+        .btn-volver { display: inline-block; padding: 12px 24px; background: #fcd34d; color: #0b3d5f; text-decoration: none; border-radius: 12px; font-weight: bold; }
+        .btn-volver:hover { background: #fbbf24; }
+        @media (max-width: 768px) {
+            .header { padding: 20px; flex-direction: column; align-items: stretch; text-align: center; }
+            .header h1 { font-size: 1.6rem; justify-content: center; }
+            .nav-tabs { justify-content: center; }
+            .section { padding: 20px; }
+            .tabla-propiedades { font-size: 0.85rem; }
+            .tabla-propiedades th, .tabla-propiedades td { padding: 8px 10px; }
+        }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+<div class="container" id="top">
+
+    <!-- HEADER -->
+    <header class="header">
+        <div>
+            <h1><i class="fas fa-arrows-alt-h"></i> Producto Escalar y Vectorial</h1>
+            <p>Definiciones, formas de multiplicación, propiedades y aplicaciones</p>
+        </div>
+        <nav class="nav-tabs">
+            <a href="#escalar" class="active"><i class="fas fa-circle"></i> Escalar</a>
+            <a href="#vectorial"><i class="fas fa-arrow-right"></i> Vectorial</a>
+            <a href="#formas"><i class="fas fa-table"></i> Formas</a>
+            <a href="#aplicaciones"><i class="fas fa-cogs"></i> Aplicaciones</a>
+            <a href="#problemas-formas"><i class="fas fa-calculator"></i> Formas</a>
+            <a href="#problemas-aplicaciones"><i class="fas fa-rocket"></i> Aplicaciones</a>
+        </nav>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 1: PRODUCTO ESCALAR -->
+    <!-- ============================================================ -->
+    <section class="section" id="escalar">
+        <h2><i class="fas fa-circle"></i> Producto Escalar (o producto punto)</h2>
+        <p>El producto escalar de dos vectores \(\vec{a}\) y \(\vec{b}\) es un <strong>número real</strong> (escalar) que mide la proyección de un vector sobre el otro. Se denota \(\vec{a} \cdot \vec{b}\).</p>
+
+        <div class="grid-2">
+            <div class="card" style="border-left-color: #1e40af;">
+                <h3><i class="fas fa-calculator"></i> Definición algebraica</h3>
+                <p>En componentes cartesianas:</p>
+                <div class="formula-box" style="margin:10px 0; font-size:1rem;">
+                    \[ \vec{a} \cdot \vec{b} = a_x b_x + a_y b_y + a_z b_z = \sum_{i=1}^3 a_i b_i \]
+                </div>
+                <p>Para vectores en \(\mathbb{R}^n\): \(\vec{a}\cdot\vec{b} = \sum_{i=1}^n a_i b_i\).</p>
+            </div>
+            <div class="card" style="border-left-color: #f59e0b;">
+                <h3><i class="fas fa-ruler-combined"></i> Definición geométrica</h3>
+                <div class="formula-box" style="margin:10px 0; font-size:1rem;">
+                    \[ \vec{a} \cdot \vec{b} = |\vec{a}|\,|\vec{b}| \cos\theta \]
+                </div>
+                <p>donde \(\theta\) es el ángulo entre los vectores. Si \(\theta = 90^\circ\), el producto escalar es cero (vectores ortogonales).</p>
+            </div>
+        </div>
+
+        <h3 style="margin:20px 0 10px; color:#0b3d5f;">Propiedades del producto escalar</h3>
+        <table class="tabla-propiedades">
+            <thead>
+                <tr><th>Propiedad</th><th>Expresión</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Conmutativa</strong></td><td>\(\vec{a}\cdot\vec{b} = \vec{b}\cdot\vec{a}\)</td></tr>
+                <tr><td><strong>Distributiva</strong></td><td>\(\vec{a}\cdot(\vec{b}+\vec{c}) = \vec{a}\cdot\vec{b} + \vec{a}\cdot\vec{c}\)</td></tr>
+                <tr><td><strong>Asociativa con escalar</strong></td><td>\((k\vec{a})\cdot\vec{b} = k(\vec{a}\cdot\vec{b})\)</td></tr>
+                <tr><td><strong>Norma al cuadrado</strong></td><td>\(\vec{a}\cdot\vec{a} = |\vec{a}|^2\)</td></tr>
+                <tr><td><strong>Desigualdad de Cauchy-Schwarz</strong></td><td>\(|\vec{a}\cdot\vec{b}| \le |\vec{a}|\,|\vec{b}|\)</td></tr>
+                <tr><td><strong>Ángulo entre vectores</strong></td><td>\(\cos\theta = \frac{\vec{a}\cdot\vec{b}}{|\vec{a}|\,|\vec{b}|}\)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <i class="fas fa-lightbulb"></i> <strong>Interpretación física:</strong> El producto escalar mide la proyección de un vector sobre la dirección del otro. Por ejemplo, el <strong>trabajo</strong> realizado por una fuerza constante es \(W = \vec{F}\cdot\vec{d}\).
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 2: PRODUCTO VECTORIAL -->
+    <!-- ============================================================ -->
+    <section class="section" id="vectorial">
+        <h2><i class="fas fa-arrow-right"></i> Producto Vectorial (o producto cruz)</h2>
+        <p>El producto vectorial de dos vectores \(\vec{a}\) y \(\vec{b}\) es un <strong>vector</strong> perpendicular a ambos, con dirección dada por la regla de la mano derecha. Se denota \(\vec{a} \times \vec{b}\).</p>
+
+        <div class="grid-2">
+            <div class="card" style="border-left-color: #dc2626;">
+                <h3><i class="fas fa-calculator"></i> Definición algebraica</h3>
+                <p>En componentes cartesianas (usando el determinante):</p>
+                <div class="formula-box" style="margin:10px 0; font-size:1rem;">
+                    \[
+                    \vec{a} \times \vec{b} = \begin{vmatrix}
+                    \hat{i} & \hat{j} & \hat{k} \\
+                    a_x & a_y & a_z \\
+                    b_x & b_y & b_z
+                    \end{vmatrix}
+                    \]
+                </div>
+                <p>Expandido: \((a_y b_z - a_z b_y)\,\hat{i} - (a_x b_z - a_z b_x)\,\hat{j} + (a_x b_y - a_y b_x)\,\hat{k}\).</p>
+            </div>
+            <div class="card" style="border-left-color: #f59e0b;">
+                <h3><i class="fas fa-ruler-combined"></i> Definición geométrica</h3>
+                <div class="formula-box" style="margin:10px 0; font-size:1rem;">
+                    \[ |\vec{a} \times \vec{b}| = |\vec{a}|\,|\vec{b}| \sin\theta \]
+                </div>
+                <p>donde \(\theta\) es el ángulo entre los vectores. La dirección es perpendicular al plano que forman \(\vec{a}\) y \(\vec{b}\).</p>
+            </div>
+        </div>
+
+        <h3 style="margin:20px 0 10px; color:#0b3d5f;">Propiedades del producto vectorial</h3>
+        <table class="tabla-propiedades">
+            <thead>
+                <tr><th>Propiedad</th><th>Expresión</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Anticonmutativa</strong></td><td>\(\vec{a}\times\vec{b} = -\vec{b}\times\vec{a}\)</td></tr>
+                <tr><td><strong>Distributiva</strong></td><td>\(\vec{a}\times(\vec{b}+\vec{c}) = \vec{a}\times\vec{b} + \vec{a}\times\vec{c}\)</td></tr>
+                <tr><td><strong>Asociativa con escalar</strong></td><td>\((k\vec{a})\times\vec{b} = k(\vec{a}\times\vec{b})\)</td></tr>
+                <tr><td><strong>Producto vectorial consigo mismo</strong></td><td>\(\vec{a}\times\vec{a} = \vec{0}\)</td></tr>
+                <tr><td><strong>Identidad de Jacobi</strong></td><td>\(\vec{a}\times(\vec{b}\times\vec{c}) + \vec{b}\times(\vec{c}\times\vec{a}) + \vec{c}\times(\vec{a}\times\vec{b}) = 0\)</td></tr>
+                <tr><td><strong>Módulo y área</strong></td><td>\(|\vec{a}\times\vec{b}|\) es el área del paralelogramo formado por \(\vec{a}\) y \(\vec{b}\).</td></tr>
+            </tbody>
+        </table>
+
+        <div class="note-success">
+            <i class="fas fa-check-circle"></i> <strong>Interpretación geométrica:</strong> El módulo del producto vectorial es el área del paralelogramo generado por los dos vectores. El vector resultante es perpendicular a ese plano.
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 3: FORMAS DE MULTIPLICACIÓN -->
+    <!-- ============================================================ -->
+    <section class="section" id="formas">
+        <h2><i class="fas fa-table"></i> Formas de multiplicación</h2>
+        <p>Existen varias formas de representar y calcular los productos escalar y vectorial. Aquí las resumimos.</p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3><i class="fas fa-calculator"></i> Algebraica (componentes)</h3>
+                <ul>
+                    <li><strong>Escalar:</strong> \(\vec{a}\cdot\vec{b} = a_x b_x + a_y b_y + a_z b_z\)</li>
+                    <li><strong>Vectorial:</strong> \(\vec{a}\times\vec{b} = (a_y b_z - a_z b_y, a_z b_x - a_x b_z, a_x b_y - a_y b_x)\)</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-ruler"></i> Geométrica (módulos y ángulos)</h3>
+                <ul>
+                    <li><strong>Escalar:</strong> \(\vec{a}\cdot\vec{b} = |\vec{a}|\,|\vec{b}|\cos\theta\)</li>
+                    <li><strong>Vectorial:</strong> \(|\vec{a}\times\vec{b}| = |\vec{a}|\,|\vec{b}|\sin\theta\)</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-braille"></i> Matricial</h3>
+                <ul>
+                    <li><strong>Escalar:</strong> \(\vec{a}\cdot\vec{b} = \begin{pmatrix} a_x & a_y & a_z \end{pmatrix} \begin{pmatrix} b_x \\ b_y \\ b_z \end{pmatrix}\) (vector fila × vector columna).</li>
+                    <li><strong>Vectorial:</strong> Se usa una <strong>matriz antisimétrica</strong> \( [\vec{a}]_\times = \begin{pmatrix} 0 & -a_z & a_y \\ a_z & 0 & -a_x \\ -a_y & a_x & 0 \end{pmatrix} \), de modo que \(\vec{a}\times\vec{b} = [\vec{a}]_\times \vec{b}\).</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-superscript"></i> Con índices (notación de Einstein)</h3>
+                <ul>
+                    <li><strong>Escalar:</strong> \(\vec{a}\cdot\vec{b} = a_i b_i\) (suma implícita sobre \(i\)).</li>
+                    <li><strong>Vectorial:</strong> \((\vec{a}\times\vec{b})_i = \epsilon_{ijk} a_j b_k\), donde \(\epsilon_{ijk}\) es el <strong>símbolo de Levi-Civita</strong> (totalmente antisimétrico: \(\epsilon_{123}=1\), \(\epsilon_{213}=-1\), etc.).</li>
+                </ul>
+                <p style="margin-top:8px; font-size:0.9rem; color:#475569;"><i class="fas fa-info-circle"></i> La notación de Einstein es muy usada en relatividad y teoría de campos.</p>
+            </div>
+        </div>
+
+        <div style="background:#e0f2fe; padding:14px 20px; border-radius:12px; margin:10px 0;">
+            <i class="fas fa-star" style="color:#0369a1;"></i>
+            <strong>Relación entre formas:</strong> Todas las formas son equivalentes. La elección depende del contexto: la forma algebraica es la más directa para cálculos, la geométrica es útil para interpretar, la matricial es común en computación gráfica, y la de índices es fundamental en física avanzada.
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SECCIÓN 4: APLICACIONES -->
+    <!-- ============================================================ -->
+    <section class="section" id="aplicaciones">
+        <h2><i class="fas fa-cogs"></i> Aplicaciones en Física y Geometría</h2>
+        <div class="grid-2">
+            <div class="card" style="border-left-color: #f59e0b;">
+                <h3><i class="fas fa-bolt"></i> Producto Escalar</h3>
+                <ul>
+                    <li><strong>Trabajo:</strong> \(W = \vec{F}\cdot\vec{d}\) (fuerza × desplazamiento).</li>
+                    <li><strong>Potencia:</strong> \(P = \vec{F}\cdot\vec{v}\) (fuerza × velocidad).</li>
+                    <li><strong>Proyección:</strong> La proyección de \(\vec{a}\) sobre \(\vec{b}\) es \(\frac{\vec{a}\cdot\vec{b}}{|\vec{b}|}\).</li>
+                    <li><strong>Ángulo entre vectores:</strong> \(\cos\theta = \frac{\vec{a}\cdot\vec{b}}{|\vec{a}||\vec{b}|}\).</li>
+                    <li><strong>Norma:</strong> \(|\vec{a}| = \sqrt{\vec{a}\cdot\vec{a}}\).</li>
+                    <li><strong>Densidad de energía electromagnética:</strong> \(u = \frac{1}{2}(\vec{E}\cdot\vec{D} + \vec{B}\cdot\vec{H})\).</li>
+                </ul>
+            </div>
+            <div class="card" style="border-left-color: #dc2626;">
+                <h3><i class="fas fa-sync-alt"></i> Producto Vectorial</h3>
+                <ul>
+                    <li><strong>Momento de una fuerza (torque):</strong> \(\vec{\tau} = \vec{r}\times\vec{F}\).</li>
+                    <li><strong>Momento angular:</strong> \(\vec{L} = \vec{r}\times\vec{p}\).</li>
+                    <li><strong>Fuerza de Lorentz magnética:</strong> \(\vec{F}_m = q\,\vec{v}\times\vec{B}\).</li>
+                    <li><strong>Área del paralelogramo:</strong> \(A = |\vec{a}\times\vec{b}|\).</li>
+                    <li><strong>Velocidad angular:</strong> \(\vec{v} = \vec{\omega}\times\vec{r}\).</li>
+                    <li><strong>Normal a una superficie:</strong> El producto vectorial da un vector perpendicular al plano de los dos vectores.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="note">
+            <i class="fas fa-lightbulb"></i> <strong>En resumen:</strong> El producto escalar mide <strong>cuánto</strong> de un vector apunta en la dirección del otro (contribución paralela). El producto vectorial mide la <strong>perpendicularidad</strong> y el área barrida.
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE 1: PROBLEMAS POR FORMA DE MULTIPLICACIÓN (ORIGINAL) -->
+    <!-- ============================================================ -->
+    <details id="problemas-formas" open>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">📝 Bloque 1: Problemas por forma de multiplicación</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Cerrar</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- Problema 1: Algebraica -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 1</span>
+                    <span class="titulo-prob">Forma algebraica (componentes)</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Dados \(\vec{a} = (2, -1, 3)\) y \(\vec{b} = (1, 4, -2)\), calcula \(\vec{a}\cdot\vec{b}\) y \(\vec{a}\times\vec{b}\) usando la forma algebraica (suma de productos y determinante).</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1 (escalar):</strong> \(\vec{a}\cdot\vec{b} = 2\cdot1 + (-1)\cdot4 + 3\cdot(-2) = 2 - 4 - 6 = -8\).</div>
+                    <div class="paso"><strong>Paso 2 (vectorial, determinante):</strong>
+                        \[
+                        \vec{a}\times\vec{b} = \begin{vmatrix}
+                        \hat{i} & \hat{j} & \hat{k} \\
+                        2 & -1 & 3 \\
+                        1 & 4 & -2
+                        \end{vmatrix}
+                        = ((-1)(-2)-3\cdot4)\hat{i} - (2(-2)-3\cdot1)\hat{j} + (2\cdot4 - (-1)\cdot1)\hat{k}
+                        = (2-12)\hat{i} - (-4-3)\hat{j} + (8+1)\hat{k}
+                        = -10\hat{i} + 7\hat{j} + 9\hat{k}
+                        \]
+                    </div>
+                    <div class="paso"><strong>Resultado:</strong> \(\vec{a}\cdot\vec{b} = -8\), \(\vec{a}\times\vec{b} = (-10, 7, 9)\).</div>
+                </div>
+            </div>
+
+            <!-- Problema 2: Geométrica -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 2</span>
+                    <span class="titulo-prob">Forma geométrica (módulos y ángulos)</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Dos vectores \(\vec{a}\) y \(\vec{b}\) tienen módulos \(|\vec{a}|=5\), \(|\vec{b}|=3\) y forman un ángulo de \(60^\circ\). Calcula su producto escalar y el módulo de su producto vectorial usando la forma geométrica.</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1 (escalar):</strong> \(\vec{a}\cdot\vec{b} = |\vec{a}|\,|\vec{b}| \cos 60^\circ = 5 \cdot 3 \cdot 0.5 = 7.5\).</div>
+                    <div class="paso"><strong>Paso 2 (vectorial):</strong> \(|\vec{a}\times\vec{b}| = |\vec{a}|\,|\vec{b}| \sin 60^\circ = 5 \cdot 3 \cdot \frac{\sqrt{3}}{2} = \frac{15\sqrt{3}}{2} \approx 12.99\).</div>
+                    <div class="paso"><strong>Resultado:</strong> \(\vec{a}\cdot\vec{b} = 7.5\), \(|\vec{a}\times\vec{b}| = \frac{15\sqrt{3}}{2}\).</div>
+                </div>
+            </div>
+
+            <!-- Problema 3: Matricial -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 3</span>
+                    <span class="titulo-prob">Forma matricial (producto de matrices)</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Dados \(\vec{a} = (1, 2, 3)\) y \(\vec{b} = (4, 5, 6)\), calcula \(\vec{a}\cdot\vec{b}\) como producto de una fila por una columna, y \(\vec{a}\times\vec{b}\) usando la matriz antisimétrica \([\vec{a}]_\times\).</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1 (escalar):</strong>
+                        \[
+                        \vec{a}\cdot\vec{b} = \begin{pmatrix} 1 & 2 & 3 \end{pmatrix} \begin{pmatrix} 4 \\ 5 \\ 6 \end{pmatrix} = 1\cdot4 + 2\cdot5 + 3\cdot6 = 4+10+18 = 32
+                        \]
+                    </div>
+                    <div class="paso"><strong>Paso 2 (vectorial):</strong> Construimos \([\vec{a}]_\times\):
+                        \[
+                        [\vec{a}]_\times = \begin{pmatrix} 0 & -3 & 2 \\ 3 & 0 & -1 \\ -2 & 1 & 0 \end{pmatrix}
+                        \]
+                        Entonces:
+                        \[
+                        \vec{a}\times\vec{b} = [\vec{a}]_\times \vec{b} = \begin{pmatrix} 0 & -3 & 2 \\ 3 & 0 & -1 \\ -2 & 1 & 0 \end{pmatrix} \begin{pmatrix} 4 \\ 5 \\ 6 \end{pmatrix}
+                        = \begin{pmatrix} 0 - 15 + 12 \\ 12 + 0 - 6 \\ -8 + 5 + 0 \end{pmatrix} = \begin{pmatrix} -3 \\ 6 \\ -3 \end{pmatrix}
+                        \]
+                    </div>
+                    <div class="paso"><strong>Resultado:</strong> \(\vec{a}\cdot\vec{b} = 32\), \(\vec{a}\times\vec{b} = (-3, 6, -3)\).</div>
+                </div>
+            </div>
+
+            <!-- Problema 4: Con índices -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 4</span>
+                    <span class="titulo-prob">Forma con índices (Einstein y Levi-Civita)</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Usando la notación de Einstein (\(a_i b_i\)) y el símbolo de Levi-Civita (\(\epsilon_{ijk}\)), calcula \(\vec{a}\cdot\vec{b}\) y la componente \(x\) de \(\vec{a}\times\vec{b}\) para \(\vec{a} = (1, 0, 2)\) y \(\vec{b} = (0, 3, 1)\).</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1 (escalar):</strong> \(\vec{a}\cdot\vec{b} = a_i b_i = a_1 b_1 + a_2 b_2 + a_3 b_3 = 1\cdot0 + 0\cdot3 + 2\cdot1 = 2\).</div>
+                    <div class="paso"><strong>Paso 2 (vectorial, componente x):</strong> \((\vec{a}\times\vec{b})_1 = \epsilon_{1jk} a_j b_k\).</div>
+                    <div class="paso"><strong>Paso 3:</strong> Expandimos:
+                        \[
+                        (\vec{a}\times\vec{b})_1 = \epsilon_{123} a_2 b_3 + \epsilon_{132} a_3 b_2 = 1\cdot0\cdot1 + (-1)\cdot2\cdot3 = 0 - 6 = -6
+                        \]
+                        (los otros términos con \(\epsilon_{1jk}\) son cero porque \(a_1=0\) o \(b_1=0\)).</div>
+                    <div class="paso"><strong>Resultado:</strong> \(\vec{a}\cdot\vec{b} = 2\), \((\vec{a}\times\vec{b})_x = -6\).</div>
+                </div>
+            </div>
+
+            <!-- Problema 5: Mixto -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 5</span>
+                    <span class="titulo-prob">Producto mixto (combinación de formas)</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Dados \(\vec{a} = (1, 0, 0)\), \(\vec{b} = (0, 1, 0)\) y \(\vec{c} = (1, 1, 1)\), calcula el producto mixto \(\vec{a}\cdot(\vec{b}\times\vec{c})\) usando la forma algebraica y también con índices. Determina el volumen del paralelepípedo.</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1 (algebraico):</strong> \(\vec{b}\times\vec{c} = (1\cdot1 - 0\cdot1, 0\cdot1 - 0\cdot1, 0\cdot1 - 1\cdot1) = (1, 0, -1)\).<br>
+                        \(\vec{a}\cdot(\vec{b}\times\vec{c}) = 1\cdot1 + 0\cdot0 + 0\cdot(-1) = 1\).
+                    </div>
+                    <div class="paso"><strong>Paso 2 (con índices):</strong> \(\vec{a}\cdot(\vec{b}\times\vec{c}) = \epsilon_{ijk} a_i b_j c_k\).<br>
+                        \(\epsilon_{123} a_1 b_2 c_3 = 1\cdot1\cdot1\cdot1 = 1\). El resto son cero. Da 1.
+                    </div>
+                    <div class="paso"><strong>Paso 3:</strong> El volumen es el valor absoluto: \(V = |1| = 1\) u³.</div>
+                    <div class="paso"><strong>Resultado:</strong> Producto mixto \(= 1\), volumen \(= 1\) u³.</div>
+                </div>
+            </div>
+
+            <!-- Problema 6: Aplicación física (torque) -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 6</span>
+                    <span class="titulo-prob">Aplicación física: torque</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Una fuerza \(\vec{F} = (0, 0, 5)\) N se aplica en el punto \(\vec{r} = (2, 3, 0)\) m. Calcula el torque \(\vec{\tau} = \vec{r}\times\vec{F}\) usando la forma algebraica y también la matricial.</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1 (algebraica):</strong>
+                        \[
+                        \vec{\tau} = \begin{vmatrix}
+                        \hat{i} & \hat{j} & \hat{k} \\
+                        2 & 3 & 0 \\
+                        0 & 0 & 5
+                        \end{vmatrix}
+                        = (3\cdot5 - 0\cdot0)\hat{i} - (2\cdot5 - 0\cdot0)\hat{j} + (2\cdot0 - 3\cdot0)\hat{k}
+                        = 15\hat{i} - 10\hat{j}
+                        \]
+                    </div>
+                    <div class="paso"><strong>Paso 2 (matricial):</strong> \([\vec{r}]_\times = \begin{pmatrix} 0 & -0 & 3 \\ 0 & 0 & -2 \\ -3 & 2 & 0 \end{pmatrix}\).<br>
+                        \(\vec{\tau} = [\vec{r}]_\times \vec{F} = \begin{pmatrix} 0 & 0 & 3 \\ 0 & 0 & -2 \\ -3 & 2 & 0 \end{pmatrix} \begin{pmatrix} 0 \\ 0 \\ 5 \end{pmatrix} = \begin{pmatrix} 15 \\ -10 \\ 0 \end{pmatrix}\).
+                    </div>
+                    <div class="paso"><strong>Resultado:</strong> \(\vec{\tau} = (15, -10, 0)\) N·m.</div>
+                </div>
+            </div>
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Clave:</strong> Cada forma de multiplicación (algebraica, geométrica, matricial, con índices) es útil en diferentes contextos. La algebraica es la más directa para cálculos numéricos; la geométrica ayuda a interpretar; la matricial es usada en computación gráfica y robótica; y la de índices es fundamental en relatividad y física avanzada. Dominar todas te dará una gran versatilidad.</span>
+            </div>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE 2: PROBLEMAS DE APLICACIONES (NUEVO) -->
+    <!-- ============================================================ -->
+    <details id="problemas-aplicaciones" open>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🔧 Bloque 2: Problemas sobre aplicaciones en Física y Geometría</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Cerrar</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- Problema 7: Trabajo -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 7</span>
+                    <span class="titulo-prob">Aplicación: Trabajo (\(W = \vec{F}\cdot\vec{d}\))</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Una fuerza constante \(\vec{F} = (3, -1, 2)\) N actúa sobre una partícula que se desplaza \(\vec{d} = (2, 0, -1)\) m. Calcula el trabajo realizado por la fuerza.</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1:</strong> El trabajo es el producto escalar de la fuerza y el desplazamiento:
+                        \[
+                        W = \vec{F}\cdot\vec{d} = 3\cdot2 + (-1)\cdot0 + 2\cdot(-1) = 6 + 0 - 2 = 4 \, \text{J}
+                        \]
+                    </div>
+                    <div class="paso"><strong>Resultado:</strong> \(W = 4\) J. El trabajo es positivo, lo que indica que la fuerza favorece el desplazamiento.</div>
+                </div>
+            </div>
+
+            <!-- Problema 8: Potencia -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 8</span>
+                    <span class="titulo-prob">Aplicación: Potencia (\(P = \vec{F}\cdot\vec{v}\))</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Una fuerza \(\vec{F} = (5, 0, 0)\) N actúa sobre una partícula que se mueve con velocidad \(\vec{v} = (0, 2, 0)\) m/s. Calcula la potencia instantánea desarrollada.</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1:</strong> La potencia es el producto escalar de la fuerza y la velocidad:
+                        \[
+                        P = \vec{F}\cdot\vec{v} = 5\cdot0 + 0\cdot2 + 0\cdot0 = 0 \, \text{W}
+                        \]
+                    </div>
+                    <div class="paso"><strong>Resultado:</strong> \(P = 0\) W. La fuerza es perpendicular a la velocidad, por lo que no realiza trabajo ni transfiere energía.</div>
+                </div>
+            </div>
+
+            <!-- Problema 9: Momento angular -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 9</span>
+                    <span class="titulo-prob">Aplicación: Momento angular (\(\vec{L} = \vec{r}\times\vec{p}\))</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Una partícula se encuentra en la posición \(\vec{r} = (0, 0, 3)\) m y tiene momento lineal \(\vec{p} = (1, 0, 0)\) kg·m/s. Calcula su momento angular respecto al origen.</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1:</strong> Aplicamos \(\vec{L} = \vec{r}\times\vec{p}\):
+                        \[
+                        \vec{L} = \begin{vmatrix}
+                        \hat{i} & \hat{j} & \hat{k} \\
+                        0 & 0 & 3 \\
+                        1 & 0 & 0
+                        \end{vmatrix}
+                        = (0\cdot0 - 3\cdot0)\hat{i} - (0\cdot0 - 3\cdot1)\hat{j} + (0\cdot0 - 0\cdot1)\hat{k}
+                        = 0\hat{i} - (-3)\hat{j} + 0\hat{k} = 3\hat{j}
+                        \]
+                    </div>
+                    <div class="paso"><strong>Resultado:</strong> \(\vec{L} = (0, 3, 0)\) kg·m²/s. El momento angular está dirigido a lo largo del eje \(Y\).</div>
+                </div>
+            </div>
+
+            <!-- Problema 10: Fuerza de Lorentz -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 10</span>
+                    <span class="titulo-prob">Aplicación: Fuerza de Lorentz (\(\vec{F}_m = q\,\vec{v}\times\vec{B}\))</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Una carga \(q = -2\) C se mueve con velocidad \(\vec{v} = (1, 0, 0)\) m/s en un campo magnético \(\vec{B} = (0, 0, 4)\) T. Calcula la fuerza magnética que actúa sobre ella.</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1:</strong> Primero calculamos \(\vec{v}\times\vec{B}\):
+                        \[
+                        \vec{v}\times\vec{B} = \begin{vmatrix}
+                        \hat{i} & \hat{j} & \hat{k} \\
+                        1 & 0 & 0 \\
+                        0 & 0 & 4
+                        \end{vmatrix}
+                        = (0\cdot4 - 0\cdot0)\hat{i} - (1\cdot4 - 0\cdot0)\hat{j} + (1\cdot0 - 0\cdot0)\hat{k}
+                        = 0\hat{i} - 4\hat{j} + 0\hat{k} = (0, -4, 0)
+                        \]
+                    </div>
+                    <div class="paso"><strong>Paso 2:</strong> Multiplicamos por la carga \(q = -2\):
+                        \[
+                        \vec{F}_m = q(\vec{v}\times\vec{B}) = -2(0, -4, 0) = (0, 8, 0) \, \text{N}
+                        \]
+                    </div>
+                    <div class="paso"><strong>Resultado:</strong> \(\vec{F}_m = (0, 8, 0)\) N. La fuerza actúa en la dirección positiva del eje \(Y\).</div>
+                </div>
+            </div>
+
+            <!-- Problema 11: Área de un triángulo -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 11</span>
+                    <span class="titulo-prob">Aplicación: Área de un triángulo en el espacio</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Dados los puntos \(A(1,0,0)\), \(B(0,1,0)\) y \(C(0,0,1)\), calcula el área del triángulo \(ABC\).</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1:</strong> Formamos los vectores \(\vec{AB} = B - A = (-1, 1, 0)\) y \(\vec{AC} = C - A = (-1, 0, 1)\).</div>
+                    <div class="paso"><strong>Paso 2:</strong> El área del triángulo es la mitad del módulo del producto vectorial:
+                        \[
+                        \vec{AB}\times\vec{AC} = \begin{vmatrix}
+                        \hat{i} & \hat{j} & \hat{k} \\
+                        -1 & 1 & 0 \\
+                        -1 & 0 & 1
+                        \end{vmatrix}
+                        = (1\cdot1 - 0\cdot0)\hat{i} - ((-1)\cdot1 - 0\cdot(-1))\hat{j} + ((-1)\cdot0 - 1\cdot(-1))\hat{k}
+                        = (1, 1, 1)
+                        \]
+                    </div>
+                    <div class="paso"><strong>Paso 3:</strong> Módulo: \(|\vec{AB}\times\vec{AC}| = \sqrt{1^2+1^2+1^2} = \sqrt{3}\).</div>
+                    <div class="paso"><strong>Paso 4:</strong> Área: \(A_{\triangle} = \frac{\sqrt{3}}{2}\) u².</div>
+                    <div class="paso"><strong>Resultado:</strong> Área \(= \frac{\sqrt{3}}{2}\) unidades cuadradas.</div>
+                </div>
+            </div>
+
+            <!-- Problema 12: Componente perpendicular -->
+            <div class="tarjeta-problema">
+                <div class="cabecera-prob">
+                    <span class="num-prob">Problema 12</span>
+                    <span class="titulo-prob">Aplicación: Componente perpendicular de un vector</span>
+                </div>
+                <div class="enunciado-prob">
+                    <p>Dado \(\vec{a} = (2, 1, 0)\) y \(\vec{b} = (1, 0, 1)\), calcula la componente de \(\vec{a}\) perpendicular a \(\vec{b}\) y verifica que es efectivamente perpendicular.</p>
+                </div>
+                <div class="solucion-prob">
+                    <div class="paso"><strong>Paso 1:</strong> Calculamos la proyección paralela (escalar y vector):
+                        \[
+                        \vec{a}\cdot\vec{b} = 2\cdot1 + 1\cdot0 + 0\cdot1 = 2, \quad |\vec{b}|^2 = 1^2 + 0^2 + 1^2 = 2
+                        \]
+                        \[
+                        \vec{a}_{\parallel} = \frac{\vec{a}\cdot\vec{b}}{|\vec{b}|^2} \vec{b} = \frac{2}{2}(1,0,1) = (1,0,1)
+                        \]
+                    </div>
+                    <div class="paso"><strong>Paso 2:</strong> La componente perpendicular es:
+                        \[
+                        \vec{a}_{\perp} = \vec{a} - \vec{a}_{\parallel} = (2,1,0) - (1,0,1) = (1,1,-1)
+                        \]
+                    </div>
+                    <div class="paso"><strong>Paso 3 (Verificación):</strong> Comprobamos que \(\vec{a}_{\perp}\) es perpendicular a \(\vec{b}\):
+                        \[
+                        \vec{a}_{\perp}\cdot\vec{b} = 1\cdot1 + 1\cdot0 + (-1)\cdot1 = 1 + 0 - 1 = 0
+                        \]
+                        Efectivamente, el producto escalar es cero, así que son perpendiculares.
+                    </div>
+                    <div class="paso"><strong>Resultado:</strong> \(\vec{a}_{\perp} = (1,1,-1)\).</div>
+                </div>
+            </div>
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Clave:</strong> Las aplicaciones del producto escalar y vectorial son omnipresentes en física (trabajo, potencia, momento angular, fuerzas magnéticas) y geometría (áreas, proyecciones, perpendiculares). Saber identificar cuándo usar cada producto es fundamental para resolver problemas reales.</span>
+            </div>
+        </div>
+    </details>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <footer class="footer">
+        <p><i class="fas fa-arrows-alt-h"></i> Producto Escalar y Vectorial – Guía completa</p>
+        <p style="opacity:0.7; font-size:0.85rem; margin-top:4px;">
+            <i class="fas fa-code"></i> Recurso educativo interactivo · 2025
+        </p>
+        <p><a href="#top" class="btn-volver" style="background:#fcd34d; color:#0b3d5f;">Volver arriba</a></p>
+    </footer>
+</div>
+</body>
+</html>

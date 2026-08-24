@@ -1,0 +1,573 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.11 - Demostración: Derivación de la relación densidad-masa molar</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILOS ORIGINALES (se mantienen)
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .derivation {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 14px 0;
+        }
+        .derivation-step {
+            padding: 10px 0;
+            border-bottom: 1px dashed #cbd5e0;
+        }
+        .derivation-step:last-child {
+            border-bottom: none;
+        }
+        .arrow-down {
+            text-align: center;
+            color: #667eea;
+            font-size: 1.5em;
+            margin: 6px 0;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (TAREA 1)
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #eef4fa;
+            border-radius: 16px;
+            padding: 10px 20px 20px;
+            border: 1px solid #bdd6e8;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.6rem;
+            color: #2a7faa;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        .exercise-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #d3e2ed;
+        }
+        .exercise-card h3 {
+            margin-top: 0;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        .exercise-card h3 .badge {
+            background: #2a7faa;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+        }
+        .solution {
+            background: #f7fbfe;
+            border-left: 4px solid #2a7faa;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 0.98rem;
+        }
+        .solution .step {
+            background: transparent;
+            border-left: none;
+            padding: 6px 0;
+            margin: 6px 0;
+            box-shadow: none;
+        }
+        .solution .step strong {
+            color: #0b3b5c;
+        }
+        .didactic-footer {
+            background: #d7e7f3;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #144a66;
+        }
+        .didactic-footer i {
+            font-size: 1.8rem;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.10.- </span>
+                <span class="texto">Demostración: Derivación de la relación densidad-masa molar</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la ecuación de estado de los gases ideales (ecuación de Clapeyron), demostrar que la masa molar \( M \) de un gas puede determinarse experimentalmente a partir de su densidad \( d \), la presión \( p \) y la temperatura absoluta \( T \), según la expresión:</p>
+        <div class="formula-box">
+            \( M = \dfrac{d \cdot R \cdot T}{p} \)
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c10 - Derivación de la relación entre densidad de un gas y su masa molar a partir de la ecuación de Clapeyron.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Comprender la conexión fundamental entre las propiedades macroscópicas medibles de un gas (densidad, presión, temperatura) y su masa molar, una propiedad molecular. Esto permite al estudiante:</p>
+        <ul>
+            <li>Determinar la fórmula molecular de un compuesto gaseoso a partir de datos experimentales sencillos.</li>
+            <li>Comprender por qué los gases más pesados son más densos en las mismas condiciones de presión y temperatura.</li>
+            <li>Aplicar correctamente las unidades en cálculos de gases (Pa, atm, J, L, K).</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Enunciar la ecuación de Clapeyron.</strong> Para un gas ideal, la relación entre presión, volumen, cantidad de sustancia y temperatura es:
+            <div class="formula-box">
+                \( p \cdot V = n \cdot R \cdot T \)
+            </div>
+            <p>donde \( R = 8{,}314 \, \dfrac{\text{J}}{\text{mol} \cdot \text{K}} = 0{,}082 \, \dfrac{\text{atm} \cdot \text{L}}{\text{mol} \cdot \text{K}} \).</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Expresar los moles en función de la masa.</strong> El número de moles se define como:
+            <div class="formula-box">
+                \( n = \dfrac{m}{M} \)
+            </div>
+            <p>donde \( m \) es la masa del gas (en gramos) y \( M \) es su masa molar (en \( \dfrac{\text{g}}{\text{mol}} \)).</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Sustituir en la ecuación de Clapeyron:</strong>
+            <div class="derivation">
+                <div class="derivation-step">
+                    \( p \cdot V = \dfrac{m}{M} \cdot R \cdot T \)
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="derivation-step">
+                    \( p \cdot V \cdot M = m \cdot R \cdot T \)
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Introducir la definición de densidad.</strong> La densidad se define como masa por unidad de volumen:
+            <div class="formula-box">
+                \( d = \dfrac{m}{V} \quad \Longrightarrow \quad m = d \cdot V \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Despejar la masa molar \( M \):</strong>
+            <div class="derivation">
+                <div class="derivation-step">
+                    \( p \cdot V \cdot M = d \cdot V \cdot R \cdot T \)
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="derivation-step">
+                    \( p \cdot M = d \cdot R \cdot T \)
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="derivation-step">
+                    \( M = \dfrac{d \cdot R \cdot T}{p} \)
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Verificación dimensional:</strong>
+            <div class="formula-box">
+                \( \left[ M \right] = \dfrac{\dfrac{\text{g}}{\text{L}} \cdot \dfrac{\text{atm} \cdot \text{L}}{\text{mol} \cdot \text{K}} \cdot \text{K}}{\text{atm}} = \dfrac{\text{g}}{\text{mol}} \quad \checkmark \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Verificación numérica (ejemplo del documento):</strong> Un hidrocarburo gaseoso tiene densidad \( d = 1{,}71 \, \dfrac{\text{kg}}{\text{m}^3} \) a \( 20^\circ\text{C} \) y \( 98{,}7 \, \text{kPa} \).
+            <div class="formula-box">
+                <p>\( d = 1{,}71 \, \dfrac{\text{kg}}{\text{m}^3} = 1{,}71 \, \dfrac{\text{g}}{\text{L}} \)</p>
+                <p>\( T = 20 + 273 = 293 \, \text{K} \)</p>
+                <p>\( p = 98\,700 \, \text{Pa} \)</p>
+                <p style="margin-top: 10px;">\( M = \dfrac{1{,}71 \cdot 8{,}31 \cdot 293}{98\,700} \approx 0{,}0422 \, \dfrac{\text{kg}}{\text{mol}} = 42{,}2 \, \dfrac{\text{g}}{\text{mol}} \)</p>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Es fundamental insistir en el uso correcto de unidades. Un error común es mezclar kPa con \( R = 0{,}082 \) (que requiere atm) o usar \( ^\circ\text{C} \) en lugar de K. Se recomienda que los estudiantes siempre conviertan las unidades antes de sustituir en la fórmula. También es útil destacar que esta relación solo es válida para gases ideales; a presiones muy altas o temperaturas muy bajas, las desviaciones de la idealidad pueden ser significativas.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Relación densidad-masa molar</strong>
+            \[ \boxed{M = \dfrac{d \cdot R \cdot T}{p}} \]
+        </div>
+        <div class="formula-box" style="margin-top: 12px;">
+            <strong>Forma equivalente (condiciones normales)</strong>
+            <p style="font-size: 0.95em; margin: 10px 0 0 0;">Si \( p = 1 \, \text{atm} \) y \( T = 273{,}15 \, \text{K} \):</p>
+            \[ M = d \cdot 22{,}4 \, \dfrac{\text{L}}{\text{mol}} \]
+        </div>
+        <p>La demostración realizada mediante la manipulación algebraica de la ecuación de Clapeyron confirma la relación entre la densidad de un gas y su masa molar, permitiendo determinar esta última a partir de datos experimentales accesibles.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> La relación \( M = \dfrac{d \cdot R \cdot T}{p} \) es una herramienta fundamental en química analítica para la identificación de compuestos gaseosos, permitiendo determinar su masa molar y, por tanto, su fórmula molecular.</p>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- BLOQUE DESPLEGABLE (TAREA 1)                 -->
+    <!-- ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame — 🧪 DESMITIFICANDO la relación densidad-masa molar</span>
+        </summary>
+
+        <!-- Ejercicio 1 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 1</span> Aplicación directa: cálculo de masa molar</h3>
+            <p><strong>Enunciado:</strong> Un gas desconocido tiene una densidad de \( 2,50 \, \text{g/L} \) a \( 27^\circ\text{C} \) y \( 750 \, \text{mmHg} \). Calcula su masa molar.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Convertir unidades:</strong> \( T = 27 + 273 = 300 \, \text{K} \). \( p = 750 \, \text{mmHg} \times \frac{1 \, \text{atm}}{760 \, \text{mmHg}} = 0,9868 \, \text{atm} \).</div>
+                <div class="step"><strong>2. Usar \( R = 0,082 \, \text{atm·L/(mol·K)} \):</strong> \( M = \dfrac{d \cdot R \cdot T}{p} = \dfrac{2,50 \times 0,082 \times 300}{0,9868} \).</div>
+                <div class="step"><strong>3. Calcular:</strong> \( M = \dfrac{61,5}{0,9868} \approx 62,3 \, \text{g/mol} \).</div>
+                <div class="step"><span class="highlight">Resultado:</span> \( M \approx 62,3 \, \text{g/mol} \).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 2</span> Cálculo de densidad a partir de la masa molar</h3>
+            <p><strong>Enunciado:</strong> Calcula la densidad del oxígeno molecular (\( O_2 \)) a \( 25^\circ\text{C} \) y \( 1,2 \, \text{atm} \).</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Masa molar del \( O_2 \):</strong> \( M = 32 \, \text{g/mol} \).</div>
+                <div class="step"><strong>2. Despejar la densidad de la fórmula:</strong> \( d = \dfrac{M \cdot p}{R \cdot T} \).</div>
+                <div class="step"><strong>3. Sustituir:</strong> \( T = 25 + 273 = 298 \, \text{K} \). \( d = \dfrac{32 \times 1,2}{0,082 \times 298} \).</div>
+                <div class="step"><strong>4. Calcular:</strong> \( d = \dfrac{38,4}{24,44} \approx 1,57 \, \text{g/L} \).</div>
+                <div class="step"><span class="highlight">Resultado:</span> La densidad del \( O_2 \) es \( 1,57 \, \text{g/L} \) en esas condiciones.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 3</span> Determinación de fórmula molecular a partir de densidad y composición</h3>
+            <p><strong>Enunciado:</strong> Un hidrocarburo gaseoso tiene una densidad de \( 1,34 \, \text{g/L} \) en condiciones normales (CN). Su composición centesimal es \( 85,7\% \) de C y \( 14,3\% \) de H. Determina su fórmula molecular.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Masa molar en CN:</strong> \( M = d \times 22,4 = 1,34 \times 22,4 = 30,0 \, \text{g/mol} \).</div>
+                <div class="step"><strong>2. Fórmula empírica:</strong> \( n_C = \frac{85,7}{12} = 7,14 \); \( n_H = \frac{14,3}{1} = 14,3 \). Relación \( 7,14 : 14,3 = 1 : 2 \) → \( CH_2 \). Masa empírica = 14.</div>
+                <div class="step"><strong>3. Relación con la masa molar:</strong> \( \frac{30}{14} \approx 2 \). Fórmula molecular = \( (CH_2)_2 = C_2H_4 \).</div>
+                <div class="step"><span class="highlight">Resultado:</span> La fórmula molecular es \( C_2H_4 \) (eteno).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 4</span> Comparación de densidades de gases</h3>
+            <p><strong>Enunciado:</strong> ¿Cuál es más denso, el helio (\( M = 4 \, \text{g/mol} \)) o el dióxido de carbono (\( M = 44 \, \text{g/mol} \)) a la misma presión y temperatura? ¿Cuántas veces mayor es su densidad?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Relación de densidades:</strong> a igual \( p \) y \( T \), \( d \propto M \). Por tanto, \( \frac{d_{CO_2}}{d_{He}} = \frac{44}{4} = 11 \).</div>
+                <div class="step"><strong>2. Conclusión:</strong> El \( CO_2 \) es 11 veces más denso que el helio en las mismas condiciones.</div>
+                <div class="step"><span class="highlight">Resultado:</span> El \( CO_2 \) es más denso, 11 veces mayor.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 5</span> Contexto real: identificación de un gas desconocido</h3>
+            <p><strong>Enunciado:</strong> Un gas de uso industrial se almacena a \( 25^\circ\text{C} \) y \( 5 \, \text{atm} \). Su densidad medida es \( 10,2 \, \text{g/L} \). Identifica el gas entre los siguientes: \( N_2 \) (28), \( O_2 \) (32), \( Cl_2 \) (71), \( CO_2 \) (44).</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Calcular la masa molar:</strong> \( M = \dfrac{d \cdot R \cdot T}{p} \). \( T = 298 \, \text{K} \), \( R = 0,082 \).</div>
+                <div class="step"><strong>2. Sustituir:</strong> \( M = \dfrac{10,2 \times 0,082 \times 298}{5} = \dfrac{249,3}{5} \approx 49,9 \, \text{g/mol} \).</div>
+                <div class="step"><strong>3. Comparar:</strong> \( 49,9 \) se acerca a 44 (CO₂) y a 71 (Cl₂). Ninguno coincide exactamente, pero el más cercano es el \( CO_2 \) (44). Podría ser una mezcla o error experimental. Si fuera puro, sería \( CO_2 \) (44) con un pequeño error de medición.</div>
+                <div class="step"><span class="highlight">Resultado:</span> El gas más probable es \( CO_2 \) (dióxido de carbono).</div>
+            </div>
+        </div>
+
+        <!-- Pie didáctico -->
+        <div class="didactic-footer">
+            <i class="fas fa-graduation-cap"></i>
+            <span><strong>Observaciones claves:</strong> La relación \( M = dRT/p \) es una de las aplicaciones más poderosas de la ecuación de Clapeyron, ya que permite "pesar" moléculas de gas sin necesidad de una balanza molecular. La "trampa" habitual son las unidades: siempre convertir la presión a atm (o Pa con R adecuado) y la temperatura a kelvin. Practicar con diferentes conjuntos de unidades ayuda a dominar la ecuación.</span>
+        </div>
+    </details>
+    <!-- FIN DEL BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

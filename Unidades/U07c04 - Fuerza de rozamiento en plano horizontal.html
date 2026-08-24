@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.04. Fuerza de Rozamiento en Plano Horizontal</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.04.- </span>
+                <span class="texto">Fuerza de Rozamiento en Plano Horizontal</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de fuerza de rozamiento como la fuerza tangencial que se opone al movimiento o tendencia al movimiento entre dos superficies en contacto, y de la ley de proporcionalidad entre la fuerza de rozamiento máxima estática y la fuerza normal, demostrar que el coeficiente de rozamiento es una magnitud adimensional que relaciona la fuerza de rozamiento con la fuerza normal de reacción del plano.</p>
+        <div class="formula-box">
+            \[ F_r = \mu \, N \]
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U07c04 - Fuerza de rozamiento en plano horizontal.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Obtener la expresión matemática de la fuerza de rozamiento sobre un plano horizontal, demostrando que depende únicamente del coeficiente de rozamiento y de la fuerza normal, y que no depende del área de contacto aparente. Esta demostración permite resolver problemas de equilibrio y movimiento con rozamiento en la dirección horizontal.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Diagrama de fuerzas:</strong> Consideremos un bloque de masa \( m \) apoyado sobre un plano horizontal. Sobre el bloque actúan dos fuerzas verticales: el peso \( \vec{P} \), dirigido hacia abajo, y la reacción normal \( \vec{N} \), dirigida hacia arriba y perpendicular al plano. En la dirección horizontal actúa una fuerza aplicada \( \vec{F} \) y la fuerza de rozamiento \( \vec{F}_r \) en sentido opuesto al movimiento.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Equilibrio en la dirección vertical:</strong> Como no hay aceleración vertical, la suma de fuerzas en el eje \( Oy \) es nula. Aplicando la segunda ley de Newton:
+            <div class="formula-box">
+                \[ \sum F_y = N - P = 0 \quad \Rightarrow \quad N = P = m g \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Definición empírica de rozamiento:</strong> Experimentalmente se observa que, para dos superficies dadas, la fuerza de rozamiento máxima que puede aparecer antes de que se inicie el deslizamiento es proporcional a la fuerza normal que presiona las superficies. Se define el coeficiente de rozamiento estático \( \mu_e \) como la constante de proporcionalidad:
+            <div class="formula-box">
+                \[ F_{r,\text{máx}} = \mu_e \, N \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Análisis dimensional del coeficiente:</strong> Despejando \( \mu_e \) de la ecuación anterior:
+            <div class="formula-box">
+                \[ \mu_e = \frac{F_{r,\text{máx}}}{N} \]
+            </div>
+            Como tanto \( F_{r,\text{máx}} \) como \( N \) son fuerzas y se miden en newtons, el cociente es adimensional. Por tanto, el coeficiente de rozamiento no tiene unidades.
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Rozamiento cinético:</strong> Una vez iniciado el movimiento, la fuerza de rozamiento que se opone al deslizamiento se denomina rozamiento cinético \( F_{r,c} \), y cumple una ley análoga con el coeficiente cinético \( \mu_c \):
+            <div class="formula-box">
+                \[ F_{r,c} = \mu_c \, N \]
+            </div>
+            Experimentalmente se verifica que \( \mu_c < \mu_e \), lo que explica por qué es más fácil mantener un cuerpo en movimiento que iniciar el deslizamiento.
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Condición de equilibrio estático:</strong> Si el cuerpo está en reposo y se aplica una fuerza horizontal \( F \), la fuerza de rozamiento estática se ajusta para equilibrarla, siempre que se cumpla:
+            <div class="formula-box">
+                \[ F \leq \mu_e \, N = \mu_e \, m g \]
+            </div>
+            Si \( F > \mu_e \, m g \), el cuerpo comienza a deslizarse y el rozamiento pasa a ser cinético.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que la fuerza de rozamiento sobre un plano horizontal es proporcional a la fuerza normal, siendo el coeficiente de rozamiento una constante adimensional característica de los materiales en contacto:</p>
+        <div class="formula-box">
+            \[ \boxed{F_r = \mu \, N = \mu \, m g} \]
+        </div>
+        <p>donde \( \mu \) puede ser \( \mu_e \) (rozamiento estático) o \( \mu_c \) (rozamiento cinético), según el cuerpo esté en reposo o en movimiento.</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Es importante aclarar que la fuerza de rozamiento no depende del área de contacto aparente, sino de la naturaleza microscópica de las superficies. El coeficiente puede ser mayor que la unidad (por ejemplo, caucho sobre asfalto seco o cobre sobre hierro fundido, donde \( \mu \approx 1{,}1 \)). Se recomienda realizar la experiencia del plano inclinado para determinar \( \mu_e = \tan \alpha \) de forma experimental, conectando la demostración teórica con la práctica de laboratorio.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Fuerza de Rozamiento"    -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Fuerza de Rozamiento en Plano Horizontal</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Fuerza de rozamiento estático y cinético -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Comparación de rozamiento estático y cinético</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(m = 15\,\text{kg}\) está en reposo sobre una superficie horizontal. Los coeficientes de rozamiento son \(\mu_e = 0,60\) y \(\mu_c = 0,40\).</p>
+                    <ul>
+                        <li>a) Calcula la fuerza de rozamiento estática máxima.</li>
+                        <li>b) Si se aplica una fuerza horizontal de \(80\,\text{N}\), ¿se moverá el bloque? En caso afirmativo, ¿qué fuerza de rozamiento actúa?</li>
+                        <li>c) Si se aplica una fuerza de \(120\,\text{N}\), calcula la aceleración del bloque.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(N = m g = 15 \cdot 9,8 = 147\,\text{N}\). \(F_{r,\text{máx}} = \mu_e N = 0,60 \cdot 147 = 88,2\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La fuerza aplicada \(F = 80\,\text{N}\) es menor que \(88,2\,\text{N}\), por lo que el bloque permanece en reposo. La fuerza de rozamiento estática se ajusta: \(F_r = F = 80\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>c)</strong> \(F = 120\,\text{N} > 88,2\,\text{N}\), el bloque se mueve. Usamos \(\mu_c\): \(F_r = \mu_c N = 0,40 \cdot 147 = 58,8\,\text{N}\). La fuerza neta es \(F_{\text{neta}} = 120 - 58,8 = 61,2\,\text{N}\). Aceleración: \(a = F_{\text{neta}}/m = 61,2 / 15 = 4,08\,\text{m/s}^2\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Distancia de frenado con rozamiento -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Frenado de un vehículo sobre asfalto</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un coche de \(1200\,\text{kg}\) circula a \(72\,\text{km/h}\) (\(20\,\text{m/s}\)) cuando frena bruscamente, bloqueando las ruedas. El coeficiente de rozamiento cinético entre los neumáticos y el asfalto es \(\mu_c = 0,70\).</p>
+                    <ul>
+                        <li>a) Calcula la aceleración (de frenado) del coche.</li>
+                        <li>b) ¿Qué distancia recorre hasta detenerse?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> La única fuerza horizontal es el rozamiento, opuesto al movimiento: \(F_r = \mu_c m g = 0,70 \cdot 1200 \cdot 9,8 = 8232\,\text{N}\). Aplicando la segunda ley: \(a = -F_r/m = -8232/1200 = -6,86\,\text{m/s}^2\) (el signo negativo indica frenado).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Usamos \(v_f^2 = v_0^2 + 2 a x\), con \(v_f = 0\): \(0 = (20)^2 + 2(-6,86)x \Rightarrow x = \frac{400}{13,72} \approx 29,2\,\text{m}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Sistema de dos bloques en contacto -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Dos bloques en contacto con rozamiento</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Dos bloques A (\(m_A = 4,0\,\text{kg}\)) y B (\(m_B = 6,0\,\text{kg}\)) están en contacto sobre una superficie horizontal rugosa (\(\mu_c = 0,25\)). Se empuja el conjunto con una fuerza horizontal de \(50\,\text{N}\) aplicada al bloque A.</p>
+                    <ul>
+                        <li>a) Calcula la aceleración del sistema.</li>
+                        <li>b) Determina la fuerza de contacto entre los bloques.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Masa total \(m_T = 4,0 + 6,0 = 10\,\text{kg}\). Fuerza de rozamiento total: \(F_r = \mu_c (m_A + m_B) g = 0,25 \cdot 10 \cdot 9,8 = 24,5\,\text{N}\). Fuerza neta: \(F_{\text{neta}} = 50 - 24,5 = 25,5\,\text{N}\). Aceleración: \(a = 25,5 / 10 = 2,55\,\text{m/s}^2\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Sobre el bloque B actúa la fuerza de contacto \(F_c\) hacia la derecha y el rozamiento (\(F_{r,B} = \mu_c m_B g = 0,25 \cdot 6,0 \cdot 9,8 = 14,7\,\text{N}\)). Aplicando segunda ley a B: \(F_c - F_{r,B} = m_B a \Rightarrow F_c = m_B a + F_{r,B} = 6,0 \cdot 2,55 + 14,7 = 15,3 + 14,7 = 30,0\,\text{N}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Fuerza inclinada que modifica la normal -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Fuerza aplicada con ángulo (componente vertical)</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(8,0\,\text{kg}\) está en reposo sobre una superficie horizontal. Se aplica una fuerza de \(60\,\text{N}\) que forma un ángulo de \(30^\circ\) por encima de la horizontal. El coeficiente de rozamiento estático es \(\mu_e = 0,50\).</p>
+                    <ul>
+                        <li>a) Calcula la fuerza normal.</li>
+                        <li>b) Determina la fuerza de rozamiento estática máxima.</li>
+                        <li>c) ¿Se moverá el bloque? Justifica.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Componente vertical de la fuerza: \(F_y = F \sin 30^\circ = 60 \cdot 0,5 = 30\,\text{N}\) (hacia arriba). Peso: \(P = 8,0 \cdot 9,8 = 78,4\,\text{N}\). Equilibrio vertical: \(N + F_y = P \Rightarrow N = P - F_y = 78,4 - 30 = 48,4\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(F_{r,\text{máx}} = \mu_e N = 0,50 \cdot 48,4 = 24,2\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>c)</strong> Componente horizontal de la fuerza: \(F_x = F \cos 30^\circ = 60 \cdot 0,866 \approx 52,0\,\text{N}\). Como \(F_x > F_{r,\text{máx}}\) (\(52,0 > 24,2\)), el bloque se moverá (la fuerza aplicada supera la rozamiento estático máximo).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Tiempo de parada y masa independiente -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Tiempo de frenado y dependencia de la masa</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un objeto se desliza sobre una superficie horizontal rugosa (\(\mu_c = 0,30\)) con una velocidad inicial de \(12\,\text{m/s}\).</p>
+                    <ul>
+                        <li>a) Calcula el tiempo que tarda en detenerse.</li>
+                        <li>b) Si se duplica la masa del objeto, ¿cómo varía el tiempo de frenado? (supón el mismo \(\mu_c\)).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Aceleración de frenado: \(a = -\mu_c g = -0,30 \cdot 9,8 = -2,94\,\text{m/s}^2\). Usando \(v = v_0 + a t\), con \(v = 0\): \(0 = 12 - 2,94 t \Rightarrow t = 12 / 2,94 \approx 4,08\,\text{s}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La aceleración no depende de la masa (pues \(a = -\mu_c g\)). Por tanto, el tiempo de frenado es independiente de la masa. Al duplicar la masa, el tiempo sigue siendo \(4,08\,\text{s}\). Esto refuerza la idea de que la masa no influye en la desaceleración debida al rozamiento en horizontal.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> La fuerza de rozamiento en horizontal es proporcional a la normal (\(N = m g\)). El coeficiente de rozamiento es adimensional y no depende del área de contacto. Es fundamental distinguir entre rozamiento estático (se ajusta al valor necesario hasta un máximo) y cinético (constante para una dada \(N\)). La masa no influye en la aceleración de frenado cuando solo actúa el rozamiento, ya que \(a = \mu g\).</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 14: Descenso Crioscópico</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul, ol { padding-left: 1.5rem; }
+        li { margin-bottom: 6px; }
+
+        .phase-box {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 12px 20px;
+            background: #f0f4ff;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary:hover {
+            background: #e6edff;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+
+        .ejercicio-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 0;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        .ejercicio-card .card-header {
+            background: #f7fafc;
+            padding: 12px 20px;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 600;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ejercicio-card .card-header .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 50px;
+            padding: 2px 12px;
+            font-size: 0.8em;
+        }
+        .ejercicio-card .card-body {
+            padding: 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            background: #f9f9fc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+            margin-bottom: 15px;
+        }
+        .ejercicio-card .card-body .resolucion {
+            background: #f0fff4;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #c6f6d5;
+            margin-top: 10px;
+        }
+        .ejercicio-card .card-body .resolucion p {
+            margin: 8px 0;
+        }
+        .pie-clave {
+            background: #edf2f7;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            font-style: italic;
+            border-left: 6px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T03.14.- </span>
+                <span class="texto">Descenso Crioscópico</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES ORIGINALES ===== -->
+    <!-- Enunciado -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la <strong>Ley de Raoult</strong> sobre la disminución de la presión de vapor de una disolución, y del hecho de que el <strong>punto de congelación</strong> de un líquido es la temperatura a la que sus fases sólida y líquida coexisten en equilibrio (iguales presiones de vapor), demostrar que el descenso del punto de congelación de una disolución diluida es directamente proporcional a la molalidad del soluto.</p>
+        <div class="formula-box">
+            \[ \Delta T_f = K_f \cdot m \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U03c14 - Descenso crioscópico.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- Objetivo -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta demostración permite:</p>
+        <ul>
+            <li>Comprender por qué se añade <strong>sal a las carreteras</strong> en invierno (descenso del punto de congelación del agua).</li>
+            <li>Justificar el uso de <strong>anticongelantes</strong> en radiadores de automóviles.</li>
+            <li>Determinar <strong>masas molares de solutos</strong> desconocidos mediante crioscopia.</li>
+            <li>Conectar la propiedad coligativa con el <strong>diagrama de fases</strong> del disolvente.</li>
+        </ul>
+    </div>
+
+    <!-- Procedimiento -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Analizamos el equilibrio de fases del disolvente puro</strong>. En el punto de congelación \( T_f^0 \), el disolvente líquido y sólido coexisten en equilibrio, lo que significa que tienen la misma presión de vapor:
+            <div class="formula-box">
+                \[ p_{\text{líquido}}^0(T_f^0) = p_{\text{sólido}}(T_f^0) \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Aplicamos la Ley de Raoult a la disolución líquida</strong>. La presión de vapor del disolvente en la disolución líquida es menor que la del disolvente puro:
+            <div class="formula-box">
+                \[ p_{\text{líquido}}(T) = x_{\text{disolvente}} \cdot p_{\text{líquido}}^0(T) \]
+            </div>
+            <p>Como \( x_{\text{disolvente}} < 1 \), se tiene \( p_{\text{líquido}}(T) < p_{\text{líquido}}^0(T) \).</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Determinamos la nueva temperatura de congelación</strong>. La fase sólida (cristales de disolvente puro) tiene la misma presión de vapor con o sin soluto (el soluto no entra en la red cristalina). Para que haya equilibrio líquido-sólido en la disolución:
+            <div class="formula-box">
+                \[ p_{\text{líquido}}(T_f) = p_{\text{sólido}}(T_f) \]
+            </div>
+            <p>Como \( p_{\text{líquido}}(T) < p_{\text{líquido}}^0(T) \), la curva de presión de vapor del líquido se ha desplazado hacia abajo. El nuevo punto de intersección con la curva del sólido ocurre a una <strong>temperatura menor</strong>.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Usamos la aproximación de Clausius-Clapeyron</strong> (simplificada para Bachillerato). La pendiente de la curva de presión de vapor del líquido cerca del punto de congelación permite relacionar el cambio de presión con el cambio de temperatura. Para cambios pequeños:
+            <div class="formula-box">
+                \[ \frac{\Delta p}{p^0} \approx \frac{\Delta H_{\text{fusión}}}{R \cdot (T_f^0)^2} \cdot \Delta T_f \]
+            </div>
+            <p>Donde \( \Delta H_{\text{fusión}} \) es el calor latente de fusión del disolvente.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Combinamos con la Ley de Raoult</strong>. Sabemos que \( \frac{\Delta p}{p^0} = x_{\text{soluto}} \), y para disoluciones diluidas:
+            <div class="formula-box">
+                \[ x_{\text{soluto}} \approx \frac{n_{\text{soluto}}}{n_{\text{disolvente}}} = \frac{m \cdot M_{\text{disolvente}}}{1000} \]
+            </div>
+            <p>donde \( m \) es la molalidad (mol/kg) y hemos usado que \( n_{\text{disolvente}} = \frac{1000}{M_{\text{disolvente}}} \) para 1 kg de disolvente.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Despejamos el descenso crioscópico</strong>:
+            <div class="formula-box">
+                \[ \Delta T_f = \frac{R \cdot (T_f^0)^2 \cdot M_{\text{disolvente}}}{1000 \cdot \Delta H_{\text{fusión}}} \cdot m \]
+            </div>
+            <p>El factor que multiplica a \( m \) es una <strong>constante característica del disolvente</strong>, llamada <strong>constante crioscópica molal</strong> \( K_f \):</p>
+            <div class="formula-box">
+                \[ K_f = \frac{R \cdot (T_f^0)^2 \cdot M_{\text{disolvente}}}{1000 \cdot \Delta H_{\text{fusión}}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Escribimos la ecuación final del descenso crioscópico</strong>:
+            <div class="formula-box">
+                \[ \Delta T_f = K_f \cdot m \]
+            </div>
+            <p>Donde \( \Delta T_f = T_f^0 - T_f > 0 \) es el descenso (siempre positivo).</p>
+        </div>
+    </div>
+
+    <!-- Resultado -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado la ecuación del <strong>descenso crioscópico</strong>:</p>
+        <div class="formula-box">
+            \[ \Delta T_f = K_f \cdot m \]
+        </div>
+        <div class="phase-box">
+            <strong>Constante crioscópica del agua:</strong><br>
+            \( K_f = 1,86 \, \frac{^\circ\text{C} \cdot \text{kg}}{\text{mol}} \)<br><br>
+            <strong>Para el agua:</strong> \( \Delta T_f = 1,86 \cdot m \) (en °C)
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">El punto de congelación de una disolución diluida desciende en proporción directa a la molalidad del soluto, siendo \( K_f \) una constante del disolvente.</p>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  El paso 4 utiliza una aproximación termodinámica que en Bachillerato se presenta usualmente como "se puede demostrar que..." sin entrar en el desarrollo completo de Clausius-Clapeyron. Lo esencial es que se comprenda el <strong>mecanismo físico</strong>: el soluto baja la presión de vapor del líquido, desplazando el equilibrio líquido-sólido hacia temperaturas más bajas. Es importante destacar que esta propiedad es <strong>coligativa</strong>: depende del número de partículas, no de su naturaleza. Para electrolitos, hay que multiplicar por el factor de Van 't Hoff \( i \) (número de iones): \( \Delta T_f = i \cdot K_f \cdot m \). El ejemplo práctico del anticongelante (etilenglicol) conecta perfectamente con ejemplos de la vida cotidiana.
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- BLOQUE DESPLEGABLE: EJERCICIOS RESUELTOS (NUEVOS)        -->
+    <!-- ========================================================= -->
+    <details style="margin: 20px 30px 30px 30px;">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="font-weight: 600;">🖱️ Pulsame 👉 🧪 DESMITIFICANDO Descenso Crioscópico</span>
+        </summary>
+
+        <div style="padding: 5px 0;">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 1</span>
+                    Cálculo del descenso crioscópico de una disolución de glucosa
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Se disuelven 18,0 g de glucosa (C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>, M = 180 g/mol) en 500 g de agua. Calcula el punto de congelación de la disolución. Dato: \( K_f(\text{agua}) = 1,86 \, ^\circ\text{C·kg/mol} \).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Moles de glucosa:</strong></p>
+                        <p>\( n = \dfrac{18,0}{180} = 0,100 \ \text{mol} \)</p>
+                        <p><strong>Paso 2 → Molalidad:</strong></p>
+                        <p>\( m = \dfrac{0,100 \ \text{mol}}{0,500 \ \text{kg agua}} = 0,200 \ \text{mol/kg} \)</p>
+                        <p><strong>Paso 3 → Descenso crioscópico:</strong></p>
+                        <p>\( \Delta T_f = K_f \cdot m = 1,86 \times 0,200 = 0,372 \ ^\circ\text{C} \)</p>
+                        <p><strong>Paso 4 → Punto de congelación de la disolución:</strong></p>
+                        <p>\( T_f = 0 - 0,372 = -0,372 \ ^\circ\text{C} \)</p>
+                        <p>La disolución congela a <strong>-0,37 °C</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 2</span>
+                    Determinación de la masa molar de un soluto desconocido
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Una disolución que contiene 3,20 g de un compuesto orgánico no electrolito en 250 g de benceno (C<sub>6</sub>H<sub>6</sub>) congela a 4,72 °C. El benceno puro congela a 5,48 °C y su constante crioscópica es \( K_f = 5,12 \, ^\circ\text{C·kg/mol} \). Calcula la masa molar del compuesto.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Descenso crioscópico:</strong></p>
+                        <p>\( \Delta T_f = 5,48 - 4,72 = 0,76 \ ^\circ\text{C} \)</p>
+                        <p><strong>Paso 2 → Molalidad de la disolución:</strong></p>
+                        <p>\( m = \dfrac{\Delta T_f}{K_f} = \dfrac{0,76}{5,12} = 0,1484 \ \text{mol/kg} \)</p>
+                        <p><strong>Paso 3 → Moles de soluto:</strong></p>
+                        <p>\( n = m \cdot \text{kg disolvente} = 0,1484 \times 0,250 = 0,0371 \ \text{mol} \)</p>
+                        <p><strong>Paso 4 → Masa molar:</strong></p>
+                        <p>\( M = \dfrac{3,20}{0,0371} = 86,3 \ \text{g/mol} \)</p>
+                        <p>La masa molar del compuesto es aproximadamente <strong>86 g/mol</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 3</span>
+                    Comparación entre soluto no electrolito y electrolito
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Se preparan dos disoluciones acuosas: (a) 0,50 mol de urea (no electrolito) en 1,00 kg de agua; (b) 0,50 mol de NaCl en 1,00 kg de agua. Calcula el punto de congelación de cada una. Dato: \( K_f(\text{agua}) = 1,86 \, ^\circ\text{C·kg/mol} \), considerar disociación completa del NaCl.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Disolución de urea (no electrolito):</strong></p>
+                        <p>\( m = \dfrac{0,50}{1,00} = 0,50 \ \text{mol/kg} \)</p>
+                        <p>\( \Delta T_f = 1,86 \times 0,50 = 0,93 \ ^\circ\text{C} \)</p>
+                        <p>\( T_f = 0 - 0,93 = -0,93 \ ^\circ\text{C} \)</p>
+                        <p><strong>Paso 2 → Disolución de NaCl (electrolito):</strong></p>
+                        <p>El NaCl se disocia en 2 iones: \( i = 2 \). La molalidad efectiva de partículas es \( i \cdot m = 2 \times 0,50 = 1,00 \ \text{mol/kg} \).</p>
+                        <p>\( \Delta T_f = 1,86 \times 1,00 = 1,86 \ ^\circ\text{C} \)</p>
+                        <p>\( T_f = 0 - 1,86 = -1,86 \ ^\circ\text{C} \)</p>
+                        <p><strong>Conclusión:</strong> El NaCl produce un descenso doble debido al factor de Van 't Hoff \( i \).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 4</span>
+                    Anticongelante para el radiador (mezcla etilenglicol-agua)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Queremos que el agua del radiador no se congele hasta -15 °C. ¿Qué masa de etilenglicol (C<sub>2</sub>H<sub>6</sub>O<sub>2</sub>, M = 62 g/mol) debemos añadir a 3,0 L de agua (densidad 1 kg/L)? Dato: \( K_f(\text{agua}) = 1,86 \, ^\circ\text{C·kg/mol} \).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Descenso crioscópico necesario:</strong></p>
+                        <p>\( \Delta T_f = 0 - (-15) = 15 \ ^\circ\text{C} \)</p>
+                        <p><strong>Paso 2 → Molalidad necesaria:</strong></p>
+                        <p>\( m = \dfrac{\Delta T_f}{K_f} = \dfrac{15}{1,86} = 8,06 \ \text{mol/kg} \)</p>
+                        <p><strong>Paso 3 → Moles de etilenglicol:</strong></p>
+                        <p>Masa de agua = 3,0 kg (3,0 L).</p>
+                        <p>\( n = m \cdot \text{kg agua} = 8,06 \times 3,0 = 24,2 \ \text{mol} \)</p>
+                        <p><strong>Paso 4 → Masa de etilenglicol:</strong></p>
+                        <p>\( m_{\text{etilenglicol}} = n \cdot M = 24,2 \times 62 = 1500 \ \text{g} \approx 1,5 \ \text{kg} \)</p>
+                        <p>Se necesitan <strong>1,5 kg de etilenglicol</strong> para 3 L de agua.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="card-header">
+                    <span class="badge">Ejercicio 5</span>
+                    Mezcla de dos solutos (molalidad total)
+                </div>
+                <div class="card-body">
+                    <div class="enunciado-ej">
+                        <p><strong>Enunciado:</strong> Se disuelven 10,0 g de glucosa (M = 180) y 10,0 g de sacarosa (M = 342) en 200 g de agua. Calcula el punto de congelación de la mezcla. Dato: \( K_f(\text{agua}) = 1,86 \, ^\circ\text{C·kg/mol} \).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <p><strong>Paso 1 → Moles de cada soluto:</strong></p>
+                        <p>\( n_{\text{glucosa}} = \dfrac{10,0}{180} = 0,0556 \ \text{mol} \)</p>
+                        <p>\( n_{\text{sacarosa}} = \dfrac{10,0}{342} = 0,0292 \ \text{mol} \)</p>
+                        <p><strong>Paso 2 → Moles totales de soluto:</strong></p>
+                        <p>\( n_{\text{total}} = 0,0556 + 0,0292 = 0,0848 \ \text{mol} \)</p>
+                        <p><strong>Paso 3 → Molalidad total:</strong></p>
+                        <p>\( m = \dfrac{0,0848}{0,200} = 0,424 \ \text{mol/kg} \)</p>
+                        <p><strong>Paso 4 → Descenso crioscópico:</strong></p>
+                        <p>\( \Delta T_f = 1,86 \times 0,424 = 0,789 \ ^\circ\text{C} \)</p>
+                        <p>\( T_f = 0 - 0,789 = -0,789 \ ^\circ\text{C} \)</p>
+                        <p>La disolución congela a <strong>-0,79 °C</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                💡 <strong>Observaciones claves:</strong> El descenso crioscópico es una propiedad coligativa que depende <strong>exclusivamente del número de partículas de soluto</strong> y no de su identidad química. Por eso, para electrolitos hay que considerar el factor de Van 't Hoff \( i \). La fórmula \( \Delta T_f = K_f \cdot m \) es muy útil para determinar masas molares y para diseñar mezclas anticongelantes. Un error frecuente es olvidar que la molalidad se refiere al <strong>disolvente</strong> y que el descenso es <strong>siempre positivo</strong> (\( T_f^0 - T_f > 0 \)). Además, la constante \( K_f \) es característica de cada disolvente y se puede obtener experimentalmente.
+            </div>
+
+        </div>
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- Fin del contenedor principal -->
+</body>
+</html>

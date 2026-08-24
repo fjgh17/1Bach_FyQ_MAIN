@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T01.08 - Propagación de Errores</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>    
+        
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+        
+        
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (DETAILS)
+           ============================================ */
+        details.desmitificando {
+            margin: 30px 20px 20px 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        details.desmitificando > summary {
+            list-style: none;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            background: #edf2f7;
+            border-radius: 14px 14px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details.desmitificando > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.desmitificando > summary:hover {
+            background: #e2e8f0;
+        }
+        details.desmitificando > summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.3em;
+            color: #4a5568;
+        }
+        details.desmitificando[open] > summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.desmitificando .contenido {
+            padding: 20px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 14px 14px;
+        }
+        .ejercicio-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #ebf4ff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #bee3f8;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ejercicio-card .card-header .num {
+            font-weight: 700;
+            color: #2b6cb0;
+            font-size: 1.1em;
+        }
+        .ejercicio-card .card-header .titulo {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.05em;
+        }
+        .ejercicio-card .card-body {
+            padding: 16px 20px 8px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+        .ejercicio-card .card-body .enunciado-ej li {
+            margin-bottom: 4px;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #3182ce;
+            padding: 16px 20px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .paso {
+            margin-bottom: 8px;
+        }
+        .resolucion .paso strong {
+            color: #2b6cb0;
+        }
+        .pie-didactico {
+            background: #fefcbf;
+            border: 1px solid #f6e05e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            color: #744210;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            details.desmitificando > summary { font-size: 1em; padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T01.08.- </span>
+                    <span class="texto">Propagación de Errores en Operaciones Aritméticas</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de dos magnitudes medidas \( A \pm \Delta A \) y \( B \pm \Delta B \), donde \( \Delta A \) y \( \Delta B \) son sus respectivos <strong>errores absolutos máximos</strong>, demostrar las fórmulas de propagación del error para las cuatro operaciones aritméticas fundamentales:</p>
+            <div class="formula-box">
+                \[
+                \text{Suma: } \Delta(A + B) = \Delta A + \Delta B
+                \]
+                \[
+                \text{Resta: } \Delta(A - B) = \Delta A + \Delta B
+                \]
+                \[
+                \text{Producto: } \frac{\Delta(A \cdot B)}{|A \cdot B|} = \frac{\Delta A}{|A|} + \frac{\Delta B}{|B|}
+                \]
+                \[
+                \text{Cociente: } \frac{\Delta(A / B)}{|A / B|} = \frac{\Delta A}{|A|} + \frac{\Delta B}{|B|}
+                \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U01c08 - Propagación de errores en operaciones.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+        
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Obtener las <strong>leyes de propagación de errores</strong> que permiten calcular la incertidumbre de un resultado obtenido a partir de operaciones con magnitudes medidas. Estas fórmulas son indispensables en cualquier trabajo experimental, ya que toda medida indirecta (obtenida por cálculo a partir de otras medidas directas) requiere estimar su error a partir de los errores de las medidas originales.</p>
+        </div>
+        
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Caso A: Suma de magnitudes</strong>
+                <p><strong>Caso A: Suma de magnitudes.</strong> Sea \( C = A + B \). El valor máximo de \( C \) se obtiene cuando ambas magnitudes toman su valor máximo:</p>
+                <div class="formula-box">
+                    \[
+                    C_{\text{máx}} = (A + \Delta A) + (B + \Delta B) = A + B + \Delta A + \Delta B
+                    \]
+                </div>
+                <p>El valor mínimo de \( C \) es:</p>
+                <div class="formula-box">
+                    \[
+                    C_{\text{mín}} = (A - \Delta A) + (B - \Delta B) = A + B - \Delta A - \Delta B
+                    \]
+                </div>
+                <p>Por tanto, el error absoluto de la suma es:</p>
+                <div class="formula-box">
+                    \[
+                    \Delta C = \frac{C_{\text{máx}} - C_{\text{mín}}}{2} = \frac{(\Delta A + \Delta B) + (\Delta A + \Delta B)}{2} = \Delta A + \Delta B
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Caso B: Resta de magnitudes</strong>
+                <p><strong>Caso B: Resta de magnitudes.</strong> Sea \( D = A - B \). El valor máximo de \( D \) se obtiene cuando \( A \) es máxima y \( B \) es mínima:</p>
+                <div class="formula-box">
+                    \[
+                    D_{\text{máx}} = (A + \Delta A) - (B - \Delta B) = A - B + \Delta A + \Delta B
+                    \]
+                </div>
+                <p>El valor mínimo de \( D \) es:</p>
+                <div class="formula-box">
+                    \[
+                    D_{\text{mín}} = (A - \Delta A) - (B + \Delta B) = A - B - \Delta A - \Delta B
+                    \]
+                </div>
+                <p>Por tanto, el error absoluto de la resta es:</p>
+                <div class="formula-box">
+                    \[
+                    \Delta D = \frac{D_{\text{máx}} - D_{\text{mín}}}{2} = \frac{(\Delta A + \Delta B) + (\Delta A + \Delta B)}{2} = \Delta A + \Delta B
+                    \]
+                </div>
+                <p><strong>Observación importante:</strong> en la resta, los errores se suman, no se restan. Esto hace que la resta de magnitudes similares sea especialmente problemática (pérdida de cifras significativas).</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Caso C: Producto de magnitudes</strong>
+                <p><strong>Caso C: Producto de magnitudes.</strong> Sea \( E = A \cdot B \). El valor máximo de \( E \) es:</p>
+                <div class="formula-box">
+                    \[
+                    E_{\text{máx}} = (A + \Delta A) \cdot (B + \Delta B) = A \cdot B + A \cdot \Delta B + B \cdot \Delta A + \Delta A \cdot \Delta B
+                    \]
+                </div>
+                <p>Despreciando el término \( \Delta A \cdot \Delta B \) (mucho menor que los demás si los errores relativos son pequeños):</p>
+                <div class="formula-box">
+                    \[
+                    E_{\text{máx}} \approx A \cdot B + A \cdot \Delta B + B \cdot \Delta A
+                    \]
+                </div>
+                <p>El valor mínimo, de forma análoga:</p>
+                <div class="formula-box">
+                    \[
+                    E_{\text{mín}} \approx A \cdot B - A \cdot \Delta B - B \cdot \Delta A
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Error del producto</strong>
+                <p>El error absoluto del producto es:</p>
+                <div class="formula-box">
+                    \[
+                    \Delta E = \frac{E_{\text{máx}} - E_{\text{mín}}}{2} \approx A \cdot \Delta B + B \cdot \Delta A
+                    \]
+                </div>
+                <p>Dividiendo por \( |E| = |A \cdot B| \) para obtener el <strong>error relativo</strong>:</p>
+                <div class="formula-box">
+                    \[
+                    \frac{\Delta E}{|E|} = \frac{A \cdot \Delta B + B \cdot \Delta A}{|A \cdot B|} = \frac{\Delta B}{|B|} + \frac{\Delta A}{|A|}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Caso D: Cociente de magnitudes</strong>
+                <p><strong>Caso D: Cociente de magnitudes.</strong> Sea \( F = \frac{A}{B} \). El valor máximo de \( F \) se obtiene cuando \( A \) es máxima y \( B \) es mínima:</p>
+                <div class="formula-box">
+                    \[
+                    F_{\text{máx}} = \frac{A + \Delta A}{B - \Delta B} = \frac{A + \Delta A}{B} \cdot \frac{1}{1 - \frac{\Delta B}{B}}
+                    \]
+                </div>
+                <p>Usando la aproximación \( \frac{1}{1 - x} \approx 1 + x \) para \( x \ll 1 \):</p>
+                <div class="formula-box">
+                    \[
+                    F_{\text{máx}} \approx \frac{A}{B} \left(1 + \frac{\Delta A}{A}\right) \left(1 + \frac{\Delta B}{B}\right) \approx \frac{A}{B} \left(1 + \frac{\Delta A}{A} + \frac{\Delta B}{B}\right)
+                    \]
+                </div>
+                <p>De forma análoga para el mínimo:</p>
+                <div class="formula-box">
+                    \[
+                    F_{\text{mín}} \approx \frac{A}{B} \left(1 - \frac{\Delta A}{A} - \frac{\Delta B}{B}\right)
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Error del cociente</strong>
+                <p>El error relativo del cociente es, por tanto:</p>
+                <div class="formula-box">
+                    \[
+                    \frac{\Delta F}{|F|} = \frac{F_{\text{máx}} - F_{\text{mín}}}{2 \cdot |F|} \approx \frac{\Delta A}{|A|} + \frac{\Delta B}{|B|}
+                    \]
+                </div>
+                <p>Obsérvese que el error relativo del cociente tiene la <strong>misma forma</strong> que el del producto.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Resumen de fórmulas</strong>
+                <p><strong>Resumen de las fórmulas de propagación:</strong></p>
+                <div class="formula-box">
+                    \[
+                    \begin{aligned}
+                    \text{Suma/Resta:} \quad &\Delta(A \pm B) = \Delta A + \Delta B \\[6pt]
+                    \text{Producto/Cociente:} \quad &\frac{\Delta(A \cdot B)}{|A \cdot B|} = \frac{\Delta(A / B)}{|A / B|} = \frac{\Delta A}{|A|} + \frac{\Delta B}{|B|}
+                    \end{aligned}
+                    \]
+                </div>
+            </div>
+        </div>
+        
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>Quedan demostradas las <strong>leyes de propagación de errores</strong> para las operaciones aritméticas fundamentales:</p>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\Delta(A \pm B) = \Delta A + \Delta B}
+                \]
+            </div>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\frac{\Delta(A \cdot B)}{|A \cdot B|} = \frac{\Delta(A / B)}{|A / B|} = \frac{\Delta A}{|A|} + \frac{\Delta B}{|B|}}
+                \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong><br>
+                Estas fórmulas de propagación justifican las <strong>reglas de cifras significativas</strong> de la Demostración 5: en multiplicación/división, los errores relativos se suman, lo que explica que el resultado herede las cifras significativas del factor menos preciso. En suma/resta, los errores absolutos se suman, lo que explica que el resultado herede los decimales del término menos preciso.&nbsp;</div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- BLOQUE DESPLEGABLE: "🧪 DESMITIFICANDO LA PROPAGACIÓN DE ERRORES" -->
+        <!-- ======================================================== -->
+        <details class="desmitificando">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🖱️ Pulsame — 🧪 DESMITIFICANDO LA PROPAGACIÓN DE ERRORES</span>
+            </summary>
+            <div class="contenido">
+
+                <p style="font-size:1.05em; margin-bottom: 18px;">
+                    <i class="fas fa-arrow-right" style="color:#d69e2e;"></i>
+                    La propagación de errores es la <strong>herramienta que permite estimar la incertidumbre final</strong> cuando se combinan varias medidas. 
+                    Sin ella, no sabríamos si un resultado es fiable. 
+                    Practica con estos <strong>5 ejercicios</strong> para dominar la suma, resta, producto y cociente de errores.
+                </p>
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 1</span>
+                        <span class="titulo">Suma de longitudes</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se miden dos segmentos: \( A = 12{,}3 \pm 0{,}2\,\text{cm} \) y \( B = 8{,}7 \pm 0{,}3\,\text{cm} \).</p>
+                            <ul>
+                                <li>Calcula la suma \( S = A + B \) con su error absoluto y su error relativo.</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 – Suma de los valores centrales:</strong>
+                                \[
+                                S = 12{,}3 + 8{,}7 = 21{,}0\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 – Error absoluto de la suma (fórmula de suma):</strong>
+                                \[
+                                \Delta S = \Delta A + \Delta B = 0{,}2 + 0{,}3 = 0{,}5\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 – Resultado:</strong>
+                                \[
+                                S = 21{,}0 \pm 0{,}5\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 4 – Error relativo:</strong>
+                                \[
+                                \varepsilon_{r} = \frac{0{,}5}{21{,}0} \times 100 \approx 2{,}38\,\%
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Respuesta final:</strong>
+                                \[
+                                \boxed{S = 21{,}0 \pm 0{,}5\,\text{cm}, \quad \varepsilon_{r} \approx 2{,}4\%}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 2</span>
+                        <span class="titulo">Resta de temperaturas</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se mide la temperatura de un líquido caliente \( T_{\text{cal}} = 85{,}0 \pm 0{,}5\,^\circ\text{C} \) y la temperatura ambiente \( T_{\text{amb}} = 22{,}0 \pm 0{,}2\,^\circ\text{C} \).</p>
+                            <ul>
+                                <li>Calcula la diferencia de temperatura \( \Delta T = T_{\text{cal}} - T_{\text{amb}} \) con su error absoluto.</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 – Diferencia de los valores centrales:</strong>
+                                \[
+                                \Delta T = 85{,}0 - 22{,}0 = 63{,}0\,^\circ\text{C}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 – Error absoluto de la resta (fórmula de resta):</strong>
+                                \[
+                                \Delta(\Delta T) = \Delta T_{\text{cal}} + \Delta T_{\text{amb}} = 0{,}5 + 0{,}2 = 0{,}7\,^\circ\text{C}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 – Resultado:</strong>
+                                \[
+                                \boxed{\Delta T = 63{,}0 \pm 0{,}7\,^\circ\text{C}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 3</span>
+                        <span class="titulo">Producto (área de un rectángulo)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se mide la base de un rectángulo \( b = 5{,}2 \pm 0{,}1\,\text{cm} \) y la altura \( h = 8{,}4 \pm 0{,}2\,\text{cm} \).</p>
+                            <ul>
+                                <li>Calcula el área \( A = b \cdot h \) con su error absoluto y error relativo.</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 – Área nominal:</strong>
+                                \[
+                                A = 5{,}2 \times 8{,}4 = 43{,}68\,\text{cm}^2
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 – Error relativo de cada factor:</strong>
+                                \[
+                                \frac{\Delta b}{b} = \frac{0{,}1}{5{,}2} \approx 0{,}01923,\quad \frac{\Delta h}{h} = \frac{0{,}2}{8{,}4} \approx 0{,}02381
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 – Error relativo del producto (suma):</strong>
+                                \[
+                                \frac{\Delta A}{A} = \frac{\Delta b}{b} + \frac{\Delta h}{h} \approx 0{,}01923 + 0{,}02381 = 0{,}04304
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 4 – Error absoluto del producto:</strong>
+                                \[
+                                \Delta A = A \times 0{,}04304 \approx 43{,}68 \times 0{,}04304 \approx 1{,}88\,\text{cm}^2
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 5 – Resultado con cifras razonables:</strong>
+                                \[
+                                A = 43{,}7 \pm 1{,}9\,\text{cm}^2 \quad (\text{error relativo } \approx 4{,}3\%)
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Respuesta final:</strong>
+                                \[
+                                \boxed{A = 43{,}7 \pm 1{,}9\,\text{cm}^2,\quad \varepsilon_{r} \approx 4{,}3\%}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 4</span>
+                        <span class="titulo">Cociente (velocidad media)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un móvil recorre una distancia \( d = 120{,}0 \pm 0{,}5\,\text{m} \) en un tiempo \( t = 15{,}0 \pm 0{,}2\,\text{s} \).</p>
+                            <ul>
+                                <li>Calcula la velocidad media \( v = d / t \) con su error absoluto.</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 – Velocidad nominal:</strong>
+                                \[
+                                v = \frac{120{,}0}{15{,}0} = 8{,}00\,\text{m/s}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 – Errores relativos:</strong>
+                                \[
+                                \frac{\Delta d}{d} = \frac{0{,}5}{120{,}0} = 0{,}004167,\quad \frac{\Delta t}{t} = \frac{0{,}2}{15{,}0} = 0{,}01333
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 – Error relativo del cociente:</strong>
+                                \[
+                                \frac{\Delta v}{v} = \frac{\Delta d}{d} + \frac{\Delta t}{t} \approx 0{,}004167 + 0{,}01333 = 0{,}01750
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 4 – Error absoluto:</strong>
+                                \[
+                                \Delta v = v \times 0{,}01750 = 8{,}00 \times 0{,}01750 \approx 0{,}14\,\text{m/s}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Respuesta final:</strong>
+                                \[
+                                \boxed{v = 8{,}00 \pm 0{,}14\,\text{m/s}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 5</span>
+                        <span class="titulo">Operación combinada (densidad)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se mide la masa de un objeto \( m = 250{,}0 \pm 0{,}2\,\text{g} \) y su volumen \( V = 98{,}0 \pm 0{,}5\,\text{cm}^3 \).</p>
+                            <ul>
+                                <li>Calcula la densidad \( \rho = m / V \) con su error absoluto.</li>
+                                <li>Expresa el resultado con las cifras significativas adecuadas.</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 – Densidad nominal:</strong>
+                                \[
+                                \rho = \frac{250{,}0}{98{,}0} \approx 2{,}5510\,\text{g/cm}^3
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 – Errores relativos:</strong>
+                                \[
+                                \frac{\Delta m}{m} = \frac{0{,}2}{250{,}0} = 0{,}0008,\quad \frac{\Delta V}{V} = \frac{0{,}5}{98{,}0} \approx 0{,}005102
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 – Error relativo del cociente:</strong>
+                                \[
+                                \frac{\Delta \rho}{\rho} = 0{,}0008 + 0{,}005102 = 0{,}005902
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 4 – Error absoluto:</strong>
+                                \[
+                                \Delta \rho = \rho \times 0{,}005902 \approx 2{,}5510 \times 0{,}005902 \approx 0{,}01506\,\text{g/cm}^3
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 5 – Redondeo y CS:</strong>
+                                La masa tiene 4 CS, el volumen 3 CS (el 98,0 tiene 3 CS), por lo que el resultado debe tener 3 CS. 
+                                \[
+                                \rho = 2{,}55 \pm 0{,}02\,\text{g/cm}^3
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Respuesta final:</strong>
+                                \[
+                                \boxed{\rho = 2{,}55 \pm 0{,}02\,\text{g/cm}^3}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DIDÁCTICO -->
+                <div class="pie-didactico">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Observaciones claves:</strong> La "trampa" mental que resuelve la propagación de errores es entender que <strong>los errores nunca se restan, siempre se suman</strong> (en la práctica). 
+                    Esto es especialmente crítico en la resta: si restas dos números muy parecidos, el error relativo se dispara (pérdida de precisión). 
+                    La propagación de errores es la <strong>base matemática de las reglas de cifras significativas</strong>: 
+                    si sumas, los errores absolutos se suman (heredas los decimales); si multiplicas, los errores relativos se suman (heredas las cifras significativas).
+                </div>
+
+            </div> <!-- fin .contenido -->
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin .container -->
+</body>
+</html>

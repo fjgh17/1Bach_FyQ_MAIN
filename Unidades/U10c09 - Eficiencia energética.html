@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#T10.09 · Eficiencia Energética</title>
+<!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome (versión 6) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ============================================
+   ESTILOS EXISTENTES (no modificados)
+   ============================================ */
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.header-left h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+.header-left p {
+    margin: 6px 0 0 0;
+    font-size: 1em;
+}
+.header-right img {
+    max-height: 70px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+}
+.section {
+    padding: 25px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border-left: 5px solid;
+}
+.enunciado { background: #f7fafc; border-color: #a0aec0; }
+.objetivo  { background: #fffaf0; border-color: #ed8936; }
+.procedimiento { background: #f0fff4; border-color: #48bb78; }
+.resultado { background: #ebf8ff; border-color: #4299e1; }
+.section h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.enunciado h2 { color: #4a5568; }
+.objetivo h2  { color: #c05621; }
+.procedimiento h2 { color: #276749; }
+.resultado h2 { color: #2b6cb0; }
+.formula-box {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+}
+.step {
+    background: white;
+    border-left: 4px solid #a0aec0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.step-num {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #744210;
+}
+p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.header-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.header-sub img {
+    height: 28px;
+    width: auto;
+    display: block;
+    border-radius: 4px;
+}
+.header-sub .codigo {
+    font-weight: 700;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+    color: #f0e6ff;
+}
+.header-sub .texto {
+    font-size: 1em;
+    color: #f0e6ff;
+    font-weight: 500;
+}
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+/* ============================================
+   NUEVOS ESTILOS PARA EL BLOQUE DESPLEGABLE
+   ============================================ */
+details.desmitificando {
+    margin: 30px 15px 20px 15px;
+    border: 2px solid #805ad5;
+    border-radius: 12px;
+    background: #faf5ff;
+    padding: 0.5rem 1rem 1rem 1rem;
+    transition: all 0.2s;
+}
+details.desmitificando summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.5rem 0;
+    user-select: none;
+}
+details.desmitificando summary::-webkit-details-marker {
+    display: none;
+}
+details.desmitificando summary i.fa-chevron-circle-down {
+    transition: transform 0.3s ease;
+    color: #805ad5;
+    font-size: 1.6rem;
+}
+details.desmitificando[open] summary i.fa-chevron-circle-down {
+    transform: rotate(180deg);
+}
+details.desmitificando summary .pulsame {
+    font-size: 0.8rem;
+    color: #553c9a;
+    background: #e9d8fd;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+details.desmitificando .contenido-ejercicios {
+    margin-top: 0.5rem;
+    border-top: 1px solid #d6bcf0;
+    padding-top: 1rem;
+}
+
+.ejercicio-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    border: 1px solid #d6bcf0;
+}
+.ejercicio-header {
+    background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ejercicio-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.ejercicio-body {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+}
+.ejercicio-body .enunciado-ej {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.ejercicio-body ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+.resolucion {
+    background: #faf5ff;
+    border-left: 4px solid #805ad5;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 0.5rem 0;
+    font-size: 0.98rem;
+}
+.resolucion .paso {
+    margin-bottom: 0.6rem;
+}
+.resolucion .paso strong {
+    color: #553c9a;
+}
+.pie-clave {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: #744210;
+}
+.pie-clave i {
+    margin-right: 8px;
+    color: #d69e2e;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== CABECERA OBLIGATORIA ===== -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T10.09.- </span>
+                <span class="texto">Eficiencia Energética</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES EXISTENTES ===== -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de eficiencia como cociente entre la energía útil obtenida y la energía total consumida, y de la conservación de la energía (primera ley de la termodinámica), demostrar que la eficiencia \( \eta \) de cualquier máquina o dispositivo energético viene dada por:</p>
+        <div class="formula-box">
+            \[ \eta = \frac{E_{\text{útil}}}{E_{\text{total}}} = \frac{P_{\text{útil}}}{P_{\text{total}}} = 1 - \frac{E_{\text{pérdidas}}}{E_{\text{total}}} \]
+        </div>
+        <p>y que para un motor de combustión interna, la eficiencia máxima teórica viene dada por el rendimiento de Carnot:</p>
+        <div class="formula-box">
+            \[ \eta_{\text{Carnot}} = 1 - \frac{T_{\text{f}}}{T_{\text{c}}} \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U10c09 - Eficiencia energética.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Fundamentar el concepto de eficiencia energética como medida de calidad de una transformación energética. Esta demostración conecta la conservación de la energía con la inevitabilidad de las pérdidas, y establece el límite teórico de eficiencia para máquinas térmicas mediante el ciclo de Carnot. Es esencial para la comprensión de la sostenibilidad energética y la transición hacia vehículos eléctricos.</p>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Balance energético.</strong> Por conservación de la energía, la energía total que entra en un sistema se distribuye entre la energía útil obtenida y las pérdidas (calor, fricción, rozamiento, etc.):
+            <div class="formula-box">
+                \[ E_{\text{total}} = E_{\text{útil}} + E_{\text{pérdidas}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Definición de eficiencia.</strong> La eficiencia se define como la fracción de energía total que se transforma en trabajo útil:
+            <div class="formula-box">
+                \[ \eta = \frac{E_{\text{útil}}}{E_{\text{total}}} \]
+            </div>
+            <p>Expresada en porcentaje: \( \eta (\%) = \frac{E_{\text{útil}}}{E_{\text{total}}} \times 100 \).</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Expresión alternativa en función de las pérdidas.</strong> Despejando \( E_{\text{útil}} \) del balance energético y sustituyendo:
+            <div class="formula-box">
+                \[ E_{\text{útil}} = E_{\text{total}} - E_{\text{pérdidas}} \]
+            </div>
+            <div class="formula-box">
+                \[ \eta = \frac{E_{\text{total}} - E_{\text{pérdidas}}}{E_{\text{total}}} = 1 - \frac{E_{\text{pérdidas}}}{E_{\text{total}}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Eficiencia en términos de potencia.</strong> Si el proceso ocurre durante un tiempo \( t \), dividiendo numerador y denominador por \( t \):
+            <div class="formula-box">
+                \[ \eta = \frac{\frac{E_{\text{útil}}}{t}}{\frac{E_{\text{total}}}{t}} = \frac{P_{\text{útil}}}{P_{\text{total}}} \]
+            </div>
+            <p>donde \( P = \frac{E}{t} \) es la potencia.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Límite teórico: ciclo de Carnot.</strong> Para una máquina térmica que opera entre dos focos térmicos (caliente a \( T_{\text{c}} \) y frío a \( T_{\text{f}} \)), la segunda ley de la termodinámica establece que ninguna máquina puede ser más eficiente que una máquina reversible (Carnot). El rendimiento máximo teórico es:
+            <div class="formula-box">
+                \[ \eta_{\text{Carnot}} = \frac{W_{\text{útil}}}{Q_{\text{c}}} = \frac{Q_{\text{c}} - Q_{\text{f}}}{Q_{\text{c}}} = 1 - \frac{Q_{\text{f}}}{Q_{\text{c}}} \]
+            </div>
+            <p>Para el ciclo de Carnot, se demuestra que \( \frac{Q_{\text{f}}}{Q_{\text{c}}} = \frac{T_{\text{f}}}{T_{\text{c}}} \) (temperaturas en kelvin), por tanto:</p>
+            <div class="formula-box">
+                \[ \eta_{\text{Carnot}} = 1 - \frac{T_{\text{f}}}{T_{\text{c}}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Imposibilidad del rendimiento unitario.</strong> Para que \( \eta_{\text{Carnot}} = 1 \) (100%), sería necesario que \( T_{\text{f}} = 0 \ \text{K} \) o \( T_{\text{c}} \to \infty \), ambos imposibles en la práctica. Por tanto, toda máquina térmica tiene eficiencia estrictamente menor que 1.
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Comparación: motor eléctrico vs motor de combustión.</strong>
+            <ul>
+                <li><strong>Motor eléctrico:</strong> No es una máquina térmica. Su eficiencia no está limitada por Carnot. Puede alcanzar \( \eta \approx 90\% \) o más, ya que las pérdidas son principalmente por efecto Joule en los devanados.</li>
+                <li><strong>Motor de combustión:</strong> Es una máquina térmica. Con \( T_{\text{c}} \approx 773 \ \text{K} \) (500 °C) y \( T_{\text{f}} \approx 293 \ \text{K} \) (20 °C):</li>
+            </ul>
+            <div class="formula-box">
+                \[ \eta_{\text{Carnot}} = 1 - \frac{293}{773} \approx 0{,}62 = 62\% \]
+            </div>
+            <p>En la práctica, los motores de gasolina alcanzan solo \( 25\text{--}30\% \) debido a irreversibilidades adicionales.</p>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong> Es fundamental distinguir entre <strong>eficiencia</strong> (cociente de energías, adimensional) y <strong>rendimiento</strong> (a veces usado como sinónimo, aunque en ingeniería puede referirse a la relación potencia útil/potencia indicada). El límite de Carnot explica por qué los motores eléctricos son inherentemente más eficientes que los de combustión: al no depender de un ciclo térmico, no están sujetos a esta restricción termodinámica. Esta diferencia es el argumento científico principal a favor de la movilidad eléctrica, aunque hay que considerar también la eficiencia de generación de electricidad (huella de carbono).
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            \[ \eta = \frac{E_{\text{útil}}}{E_{\text{total}}} = 1 - \frac{E_{\text{pérdidas}}}{E_{\text{total}}} \]
+        </div>
+        <div class="formula-box">
+            \[ \eta_{\text{Carnot}} = 1 - \frac{T_{\text{f}}}{T_{\text{c}}} \quad \text{(Límite teórico para máquinas térmicas)} \]
+        </div>
+        <p>La eficiencia mide la calidad de una transformación energética. Para máquinas térmicas, el límite máximo está dado por el rendimiento de Carnot, que depende exclusivamente de las temperaturas de los focos caliente y frío. Los motores eléctricos, al no ser máquinas térmicas, pueden alcanzar eficiencias mucho mayores.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- BLOQUE DESPLEGABLE AÑADIDO (TAREA 1)      -->
+    <!-- ======================================== -->
+    <details class="desmitificando">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO la Eficiencia Energética</span>
+            <span class="pulsame">🖱️ Pulsame</span>
+        </summary>
+        <div class="contenido-ejercicios">
+
+            <!-- EJERCICIO 1: Cálculo directo de eficiencia con energías -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">1</span>
+                    <span>Cálculo de eficiencia a partir de energías</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una caldera de gas consume \( 50\,\text{kWh} \) de energía química y produce \( 40\,\text{kWh} \) de calor útil para calefacción. Calcula su eficiencia y la energía perdida.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Identificamos \( E_{\text{total}} = 50\,\text{kWh} \), \( E_{\text{útil}} = 40\,\text{kWh} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Eficiencia: \( \eta = \frac{E_{\text{útil}}}{E_{\text{total}}} = \frac{40}{50} = 0{,}80 = 80\% \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Energía perdida: \( E_{\text{pérdidas}} = E_{\text{total}} - E_{\text{útil}} = 50 - 40 = 10\,\text{kWh} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> Eficiencia \( 80\% \), pérdidas \( 10\,\text{kWh} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Cálculo de la energía total a partir de la eficiencia -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">2</span>
+                    <span>Determinación de la energía total necesaria</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Un motor eléctrico tiene una eficiencia del \( 92\% \) y necesita entregar \( 15\,\text{kJ} \) de trabajo útil. ¿Cuánta energía eléctrica debe consumir?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Despejamos \( E_{\text{total}} \) de \( \eta = \frac{E_{\text{útil}}}{E_{\text{total}}} \): \( E_{\text{total}} = \frac{E_{\text{útil}}}{\eta} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( E_{\text{total}} = \frac{15}{0{,}92} \approx 16{,}30\,\text{kJ} \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Pérdidas: \( E_{\text{pérdidas}} = 16{,}30 - 15 = 1{,}30\,\text{kJ} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> Debe consumir \( \approx 16{,}3\,\text{kJ} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Eficiencia de Carnot -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">3</span>
+                    <span>Cálculo del rendimiento máximo de Carnot</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una central térmica opera con vapor a \( 600\,\text{K} \) y cede calor al ambiente a \( 300\,\text{K} \). ¿Cuál es su eficiencia máxima teórica? ¿Y si se aumentara la temperatura del foco caliente a \( 900\,\text{K} \) manteniendo el foco frío?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Caso 1: \( T_{\text{c}} = 600\,\text{K} \), \( T_{\text{f}} = 300\,\text{K} \).</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ \eta_{\text{Carnot}} = 1 - \frac{300}{600} = 1 - 0{,}5 = 0{,}5 = 50\% \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> Caso 2: \( T_{\text{c}} = 900\,\text{K} \), \( T_{\text{f}} = 300\,\text{K} \).</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ \eta_{\text{Carnot}} = 1 - \frac{300}{900} = 1 - \frac{1}{3} \approx 0{,}667 = 66{,}7\% \]
+                        </div>
+                        <div class="paso"><strong>Resultado:</strong> Subir la temperatura del foco caliente mejora la eficiencia máxima teórica.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Comparación de eficiencias (motor eléctrico vs gasolina) -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">4</span>
+                    <span>Comparativa: motor eléctrico vs motor de gasolina</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Un motor de gasolina tiene una temperatura de combustión de \( 800\,\text{K} \) y el ambiente está a \( 290\,\text{K} \). Calcula su eficiencia máxima teórica. Compárala con la de un motor eléctrico de eficiencia \( 88\% \).</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Eficiencia de Carnot del motor de gasolina:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ \eta_{\text{Carnot}} = 1 - \frac{290}{800} = 1 - 0{,}3625 = 0{,}6375 \approx 63{,}8\% \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> En la práctica, el motor de gasolina tiene pérdidas adicionales (fricción, bombeo, etc.), por lo que su eficiencia real es mucho menor (típicamente \( \approx 25-30\% \)).</div>
+                        <div class="paso"><strong>Paso 3:</strong> El motor eléctrico tiene \( \eta = 88\% \), que es superior al límite de Carnot del motor de combustión (\( 63,8\% \)).</div>
+                        <div class="paso"><strong>Conclusión:</strong> El motor eléctrico es intrínsecamente más eficiente porque no está sujeto al límite de Carnot.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Eficiencia en un proceso de recarga de batería -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">5</span>
+                    <span>Eficiencia global de un vehículo eléctrico (pozo a rueda)</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Un vehículo eléctrico consume \( 20\,\text{kWh} \) de la batería para recorrer \( 100\,\text{km} \). La batería tiene una eficiencia de carga del \( 90\% \) y el motor del \( 85\% \). Si la electricidad se genera en una central con eficiencia del \( 40\% \), calcula la eficiencia global "pozo a rueda".</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> La eficiencia global es el producto de las eficiencias de cada etapa (la energía se transforma secuencialmente):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ \eta_{\text{global}} = \eta_{\text{central}} \times \eta_{\text{carga}} \times \eta_{\text{motor}} \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( \eta_{\text{global}} = 0{,}40 \times 0{,}90 \times 0{,}85 = 0{,}306 = 30{,}6\% \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Esto significa que solo el \( 30{,}6\% \) de la energía primaria (combustible en la central) se convierte en energía mecánica en las ruedas. El resto se pierde en generación, transmisión y proceso de carga.</div>
+                        <div class="paso"><strong>Interpretación:</strong> La alta eficiencia del motor eléctrico se ve compensada por las pérdidas en la generación de electricidad si esta proviene de combustibles fósiles. Con renovables, la eficiencia "pozo a rueda" puede ser mucho mayor.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE Observaciones claves -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La eficiencia energética mide cuánto de la energía consumida se convierte en trabajo útil. La "trampa" más común es confundir eficiencia con rendimiento o pensar que una máquina puede tener eficiencia del 100% (imposible por la segunda ley). El límite de Carnot es fundamental para entender por qué los motores de combustión interna son inherentemente menos eficientes que los eléctricos: los primeros son máquinas térmicas, los segundos no.
+            </div>
+
+        </div> <!-- /contenido-ejercicios -->
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- /container -->
+</body>
+</html>

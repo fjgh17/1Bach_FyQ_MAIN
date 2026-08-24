@@ -1,0 +1,611 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T02.07. Energía de los niveles cuánticos del hidrógeno</title>
+    <!-- FontAwesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;      /* <--- ESTA ES LA CLAVE */
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajuste para el subtítulo de la cabecera */
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;  /* mismo padding que las secciones */
+            border: 2px solid #cbd5e0;
+            border-radius: 20px;
+            background: #f8fafc;
+            padding: 0.2rem 0.6rem 0.6rem 0.6rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        details[open] {
+            border-color: #667eea;
+            background: #f4f7ff;
+        }
+
+        details summary {
+            list-style: none;           /* oculta el triángulo por defecto en Firefox/Chrome */
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 0.4rem 0.8rem 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            border-radius: 16px;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;              /* oculta el triángulo en WebKit */
+        }
+
+        details summary i.fa-chevron-circle-down {
+            font-size: 2rem;
+            color: #667eea;
+            transition: transform 0.35s ease;
+        }
+
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+            color: #764ba2;
+        }
+
+        details summary .titulo-desplegable {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.3rem 0.8rem;
+        }
+
+        details summary .titulo-desplegable .pulsame {
+            font-size: 1rem;
+            font-weight: 400;
+            background: #e9edf4;
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            color: #2d3748;
+            letter-spacing: 0.3px;
+        }
+
+        .contenido-desplegable {
+            padding: 0.2rem 0.8rem 1.2rem 0.8rem;
+        }
+
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .ejercicio-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #dde6ef;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .ejercicio-card .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .ejercicio-card .ej-header .num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.1rem 0.9rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .ejercicio-card .ej-header .tit {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #2d3748;
+        }
+
+        .ejercicio-card .enunciado {
+            margin: 0.6rem 0 1rem 0;
+            padding-left: 0.6rem;
+            border-left: 3px solid #b3cbe0;
+        }
+
+        .ejercicio-card .enunciado ul {
+            list-style: disc;
+            padding-left: 1.6rem;
+            margin: 0.4rem 0;
+        }
+
+        .ejercicio-card .enunciado ul li {
+            margin-bottom: 0.2rem;
+        }
+
+        .resolucion {
+            background: #f2f7fd;
+            border-radius: 16px;
+            padding: 1rem 1.6rem;
+            border: 1px solid #d4e2f0;
+            margin-top: 0.8rem;
+        }
+
+        .resolucion p {
+            margin-bottom: 0.4rem;
+        }
+
+        .clave-didactica {
+            margin-top: 1.2rem;
+            padding: 0.8rem 1.6rem;
+            background: #e5eff9;
+            border-radius: 40px;
+            color: #1a3c5e;
+            font-weight: 500;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T02.06.- </span>
+                    <span class="texto">Energía de los niveles cuánticos del hidrógeno</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIÓN ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la energía del estado fundamental del átomo de hidrógeno (\(E_1 = -13{,}6\ \text{eV}\)) y del postulado de cuantización de Bohr, demostrar que la energía de cualquier nivel cuántico \(n\) viene dada por:</p>
+            <div class="formula-box">
+                \[ E_n = \frac{E_1}{n^2} = -\frac{13{,}6\ \text{eV}}{n^2} \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U02c06 Energía de los niveles cuánticos del hidrógeno-02.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- SECCIÓN OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar que las energías de los niveles electrónicos del hidrógeno no son arbitrarias, sino que decrecen con el cuadrado del número cuántico principal. Esto explica por qué los niveles se van acercando entre sí a medida que \(n\) aumenta y por qué existe un límite de ionización en \(n \to \infty\).</p>
+        </div>
+
+        <!-- SECCIÓN PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔧 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Postulado de cuantización del momento angular:</strong> Bohr impuso que el momento angular del electrón solo puede tomar valores múltiplos enteros de \(\frac{h}{2\pi}\):
+                <div class="formula-box">
+                    \[ m_e v r = n \frac{h}{2\pi} \]
+                </div>
+                donde \(n = 1, 2, 3, \ldots\)
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Condición de fuerza centrípeta:</strong> la fuerza electrostática de Coulomb proporciona la aceleración centrípeta necesaria para la órbita circular:
+                <div class="formula-box">
+                    \[ \frac{k e^2}{r^2} = \frac{m_e v^2}{r} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Obtener el radio de la órbita:</strong> combinando las dos ecuaciones anteriores y despejando \(r\) (Se utiliza la ecuación #1 y #2 para eliminar la velocidad, dando una expresión sin velocidad del electrón):
+                <div class="formula-box">
+                    \[ r_n = n^2 \frac{h^2}{4\pi^2 m_e k e^2} = n^2 a_0 \]
+                </div>
+                donde \(a_0\) es el radio de Bohr. El radio crece con \(n^2\).
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Calcular la energía total del electrón:</strong> la energía total es la suma de la energía cinética y la potencial electrostática:
+                <div class="formula-box">
+                    \[ E = E_c + E_p = \frac{1}{2} m_e v^2 - \frac{k e^2}{r} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Sustituir las expresiones de \(v\) y \(r\):</strong> operando algebraicamente y sustituyendo las constantes fundamentales, se obtiene que la energía total del nivel \(n\) es:
+                <div class="formula-box">
+                    \[ E_n = -\frac{2\pi^2 m_e k^2 e^4}{h^2} \cdot \frac{1}{n^2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Evaluar la constante numérica:</strong> sustituyendo los valores de todas las constantes físicas (\(m_e\), \(k\), \(e\), \(h\)) se obtiene el valor numérico:
+                <div class="formula-box">
+                    \[ E_n = -\frac{13{,}6\ \text{eV}}{n^2} \]
+                </div>
+                que coincide con la energía del estado fundamental \(E_1 = -13{,}6\ \text{eV}\) cuando \(n = 1\).
+            </div>
+        </div>
+
+        <!-- SECCIÓN RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ E_n = \frac{E_1}{n^2} = -\frac{13{,}6\ \text{eV}}{n^2} \]
+            </div>
+            <div class="note">
+                <strong>Observaciones sobre el alumnado:</strong> Es crucial destacar que la energía es negativa (estados ligados) y que tiende a cero cuando \(n \to \infty\), que corresponde al estado ionizado (electrón libre). La convergencia de los niveles hacia cero explica visualmente por qué las líneas espectrales se van espaciando menos en las series de Paschen o Brackett comparadas con la serie de Lyman.
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- BLOQUE DESPLEGABLE CON EJERCICIOS TIPO        -->
+        <!-- ============================================ -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo-desplegable">
+                    <span>🧪 DESMITIFICANDO Energía de los niveles cuánticos del hidrógeno</span>
+                    <span class="pulsame"><i class="fas fa-hand-pointer" style="margin-right: 6px;"></i>Púlsame</span>
+                </span>
+            </summary>
+            <div class="contenido-desplegable">
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">1</span>
+                        <span class="tit">Cálculo de la energía de un nivel excitado</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Calcula la energía (en eV) del nivel \(n=4\) del átomo de hidrógeno y compárala con la del nivel \(n=2\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Usamos la fórmula \(E_n = -\dfrac{13{,}6}{n^2}\ \text{eV}\):</p>
+                        <p>Para \(n=4\): \(E_4 = -\dfrac{13{,}6}{16} = -0{,}85\ \text{eV}\)</p>
+                        <p>Para \(n=2\): \(E_2 = -\dfrac{13{,}6}{4} = -3{,}40\ \text{eV}\)</p>
+                        <p>El nivel \(n=4\) tiene menor energía en valor absoluto (está menos ligado) que el \(n=2\). La diferencia entre ambos es \(3{,}40 - 0{,}85 = 2{,}55\ \text{eV}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">2</span>
+                        <span class="tit">Energía de ionización desde un nivel excitado</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>¿Cuál es la energía mínima (en eV) necesaria para ionizar un átomo de hidrógeno que se encuentra en el nivel \(n=3\)?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>La ionización consiste en llevar el electrón desde el nivel \(n=3\) hasta el continuo (\(n=\infty\), \(E=0\)).</p>
+                        <p>La energía necesaria es \(E_{\text{ioniz}} = 0 - E_3 = -E_3\).</p>
+                        <p>\(E_3 = -\dfrac{13{,}6}{9} \approx -1{,}51\ \text{eV}\)</p>
+                        <p>Por tanto, \(E_{\text{ioniz}} = 1{,}51\ \text{eV}\).</p>
+                        <p>Es mucho menor que la energía de ionización desde el fundamental (13,6 eV).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">3</span>
+                        <span class="tit">Determinación del nivel a partir de la energía absorbida</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un átomo de hidrógeno en estado fundamental absorbe un fotón de \(10{,}2\ \text{eV}\). ¿A qué nivel excitado asciende el electrón?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>La energía del fotón absorbido es la diferencia entre el nivel final y el fundamental:</p>
+                        <p>\(\Delta E = E_n - E_1 = -\dfrac{13{,}6}{n^2} - (-13{,}6) = 13{,}6\left(1 - \dfrac{1}{n^2}\right)\)</p>
+                        <p>Igualamos a \(10{,}2\ \text{eV}\):</p>
+                        \[
+                        13{,}6\left(1 - \frac{1}{n^2}\right) = 10{,}2 \Rightarrow 1 - \frac{1}{n^2} = \frac{10{,}2}{13{,}6} = 0{,}75
+                        \]
+                        \[
+                        \frac{1}{n^2} = 0{,}25 \Rightarrow n^2 = 4 \Rightarrow n = 2
+                        \]
+                        <p>El electrón asciende al nivel \(n=2\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">4</span>
+                        <span class="tit">Longitud de onda de la radiación emitida en una transición</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un electrón en hidrógeno cae del nivel \(n=5\) al nivel \(n=2\). Calcula la longitud de onda (en nm) del fotón emitido.</p>
+                        <p>Datos: \(h = 6{,}626\times10^{-34}\ \text{J s}\), \(c = 3{,}00\times10^8\ \text{m/s}\), \(1\ \text{eV} = 1{,}60\times10^{-19}\ \text{J}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Primero calculamos la diferencia de energía:</p>
+                        <p>\(E_5 = -\dfrac{13{,}6}{25} = -0{,}544\ \text{eV}\), \(E_2 = -\dfrac{13{,}6}{4} = -3{,}40\ \text{eV}\)</p>
+                        <p>\(\Delta E = E_5 - E_2 = (-0{,}544) - (-3{,}40) = 2{,}856\ \text{eV}\) (energía emitida)</p>
+                        <p>Convertimos a julios: \(2{,}856 \times 1{,}60\times10^{-19} = 4{,}57\times10^{-19}\ \text{J}\)</p>
+                        <p>Usamos \(E = \dfrac{h c}{\lambda} \Rightarrow \lambda = \dfrac{h c}{E}\):</p>
+                        \[
+                        \lambda = \frac{6{,}626\times10^{-34} \cdot 3{,}00\times10^8}{4{,}57\times10^{-19}} = \frac{1{,}988\times10^{-25}}{4{,}57\times10^{-19}} \approx 4{,}35\times10^{-7}\ \text{m} = 435\ \text{nm}
+                        \]
+                        <p>La radiación emitida está en el visible (violeta-azul).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">5</span>
+                        <span class="tit">Frecuencia de un fotón emitido en la serie de Brackett</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un átomo de hidrógeno emite un fotón cuando el electrón pasa del nivel \(n=6\) al nivel \(n=4\).</p>
+                        <ul>
+                            <li><strong>a)</strong> Calcula la energía del fotón en eV.</li>
+                            <li><strong>b)</strong> ¿Cuál es su frecuencia en Hz?</li>
+                            <li><strong>c)</strong> ¿A qué serie espectral pertenece?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p><strong>a)</strong> \(E_6 = -\dfrac{13{,}6}{36} \approx -0{,}378\ \text{eV}\), \(E_4 = -\dfrac{13{,}6}{16} = -0{,}850\ \text{eV}\)</p>
+                        <p>\(\Delta E = E_6 - E_4 = (-0{,}378) - (-0{,}850) = 0{,}472\ \text{eV}\)</p>
+                        <p><strong>b)</strong> Convertimos a julios: \(0{,}472 \times 1{,}60\times10^{-19} = 7{,}55\times10^{-20}\ \text{J}\)</p>
+                        <p>\(\nu = \dfrac{E}{h} = \dfrac{7{,}55\times10^{-20}}{6{,}626\times10^{-34}} \approx 1{,}14\times10^{14}\ \text{Hz}\)</p>
+                        <p><strong>c)</strong> La transición termina en \(n=4\), por lo que pertenece a la serie de Brackett (infrarrojo).</p>
+                    </div>
+                </div>
+
+                <!-- Observaciones claves -->
+                <div class="clave-didactica">
+                    💡 <strong>Observaciones claves:</strong> La energía de los niveles es inversamente proporcional al cuadrado de \(n\). Esto significa que los niveles superiores están más juntos entre sí (la diferencia de energía entre \(n=5\) y \(n=6\) es menor que entre \(n=1\) y \(n=2\)). La ionización corresponde a \(n=\infty\), donde la energía es cero. ¡Recuerda que la energía es negativa para estados ligados!
+                </div>
+
+            </div> <!-- fin contenido-desplegable -->
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

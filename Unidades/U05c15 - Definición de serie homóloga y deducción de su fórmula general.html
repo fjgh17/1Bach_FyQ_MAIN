@@ -1,0 +1,646 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.16 - Demostración: Definición de serie homóloga y fórmula general</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILOS ORIGINALES (se mantienen)
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .homologous-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .homologous-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 14px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        .homologous-table td {
+            padding: 12px 14px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95em;
+        }
+        .homologous-table tr:last-child td { border-bottom: none; }
+        .homologous-table tr:nth-child(even) { background: #f7fafc; }
+        .increment-box {
+            background: #c6f6d5;
+            border: 2px dashed #48bb78;
+            border-radius: 12px;
+            padding: 14px 20px;
+            text-align: center;
+            margin: 14px 0;
+        }
+        .increment-box .label {
+            font-size: 0.85em;
+            color: #276749;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            .homologous-table { font-size: 0.8em; }
+            .homologous-table th, .homologous-table td { padding: 8px 6px; }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (TAREA 1)
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #eef4fa;
+            border-radius: 16px;
+            padding: 10px 20px 20px;
+            border: 1px solid #bdd6e8;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.6rem;
+            color: #2a7faa;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        .exercise-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #d3e2ed;
+        }
+        .exercise-card h3 {
+            margin-top: 0;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        .exercise-card h3 .badge {
+            background: #2a7faa;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+        }
+        .solution {
+            background: #f7fbfe;
+            border-left: 4px solid #2a7faa;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 0.98rem;
+        }
+        .solution .step {
+            background: transparent;
+            border-left: none;
+            padding: 6px 0;
+            margin: 6px 0;
+            box-shadow: none;
+        }
+        .solution .step strong {
+            color: #0b3b5c;
+        }
+        .didactic-footer {
+            background: #d7e7f3;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #144a66;
+        }
+        .didactic-footer i {
+            font-size: 1.8rem;
+        }
+        .highlight-sol {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.15.- </span>
+                <span class="texto">Definición de serie homóloga y fórmula general</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la definición de compuestos orgánicos con el mismo grupo funcional, demostrar que los miembros de una <strong>serie homóloga</strong> se diferencian sistemáticamente en un grupo metileno \( -CH_2- \), y deducir la fórmula general que describe a todos los miembros de la serie.</p>
+        <div class="formula-box">
+            Si \( C_nH_{2n+2} \) es el alcano de \( n \) carbonos, el siguiente miembro de la serie homóloga se obtiene añadiendo \( -CH_2- \):<br>
+            \( C_nH_{2n+2} + CH_2 \rightarrow C_{n+1}H_{2(n+1)+2} = C_{n+1}H_{2n+4} \)
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U05c15 - Definición de serie homóloga y deducción de su fórmula general.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Comprender la regularidad sistemática que permite predecir las propiedades de los miembros de una serie homóloga a partir de los conocidos de sus vecinos. El estudiante debe ser capaz de:</p>
+        <ul>
+            <li>Escribir los diez primeros miembros de cualquier serie homóloga dado el grupo funcional.</li>
+            <li>Predecir propiedades físicas (punto de ebullición, densidad, solubilidad) por interpolación.</li>
+            <li>Reconocer que la reactividad química es similar dentro de una serie homóloga.</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definir serie homóloga.</strong> Una serie homóloga es el conjunto de compuestos orgánicos que:
+            <ul>
+                <li>Poseen el <strong>mismo grupo funcional</strong>.</li>
+                <li>Tienen la <strong>misma fórmula general</strong>.</li>
+                <li>Se diferencian entre sí consecutivamente en un grupo <strong>\( -CH_2- \)</strong> (metileno).</li>
+                <li>Presentan propiedades físicas que varían de forma <strong>regular y predecible</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Demostrar el incremento sistemático.</strong> Consideremos la serie de los alcanos:
+            <div class="formula-box">
+                <p><strong>Metano:</strong> \( CH_4 = C_1H_{2(1)+2} \)</p>
+                <p><strong>Etano:</strong> \( C_2H_6 = C_2H_{2(2)+2} \)</p>
+                <p><strong>Propano:</strong> \( C_3H_8 = C_3H_{2(3)+2} \)</p>
+            </div>
+            <div class="increment-box">
+                <div class="label">Incremento homólogo</div>
+                <p style="font-size: 1.1em; color: #276749; font-weight: 600;">\( C_nH_{2n+2} + CH_2 \rightarrow C_{n+1}H_{2n+4} \)</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Verificar para otras series funcionales:</strong>
+            <table class="homologous-table">
+                <tr>
+                    <th>Serie homóloga</th>
+                    <th>Grupo funcional</th>
+                    <th>Fórmula general</th>
+                    <th>Ejemplo (n=1)</th>
+                    <th>Ejemplo (n=2)</th>
+                </tr>
+                <tr>
+                    <td>Alcanos</td>
+                    <td>— (solo C—C)</td>
+                    <td>\( C_nH_{2n+2} \)</td>
+                    <td>Metano</td>
+                    <td>Etano</td>
+                </tr>
+                <tr>
+                    <td>Alquenos</td>
+                    <td>C=C</td>
+                    <td>\( C_nH_{2n} \)</td>
+                    <td>Eteno</td>
+                    <td>Prop-1-eno</td>
+                </tr>
+                <tr>
+                    <td>Alquinos</td>
+                    <td>C≡C</td>
+                    <td>\( C_nH_{2n-2} \)</td>
+                    <td>Etino</td>
+                    <td>Prop-1-ino</td>
+                </tr>
+                <tr>
+                    <td>Alcoholes</td>
+                    <td>—OH</td>
+                    <td>\( C_nH_{2n+1}OH \)</td>
+                    <td>Metanol</td>
+                    <td>Etanol</td>
+                </tr>
+                <tr>
+                    <td>Aldehídos</td>
+                    <td>—CHO</td>
+                    <td>\( C_nH_{2n+1}CHO \)</td>
+                    <td>Metanal</td>
+                    <td>Etanal</td>
+                </tr>
+                <tr>
+                    <td>Cetonas</td>
+                    <td>—CO—</td>
+                    <td>\( C_nH_{2n+1}COCH_3 \)</td>
+                    <td>—</td>
+                    <td>Propanona</td>
+                </tr>
+                <tr>
+                    <td>Ácidos carboxílicos</td>
+                    <td>—COOH</td>
+                    <td>\( C_nH_{2n+1}COOH \)</td>
+                    <td>Ácido metanoico</td>
+                    <td>Ácido etanoico</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Demostrar la variación regular de propiedades.</strong> Dentro de una serie homóloga, al aumentar \( n \) (número de carbonos):
+            <ul>
+                <li><strong>Masa molecular:</strong> Aumenta en \( 14 \, \text{g/mol} \) por cada \( -CH_2- \) añadido.</li>
+                <li><strong>Punto de ebullición:</strong> Aumenta progresivamente debido al incremento de fuerzas de Van der Waals.</li>
+                <li><strong>Densidad:</strong> Aumenta ligeramente (los alcanos líquidos: ~0,6–0,8 g/cm³).</li>
+                <li><strong>Solubilidad en agua:</strong> Disminuye para compuestos polares (alcoholes, ácidos) al crecer la cadena hidrocarbonada apolar.</li>
+                <li><strong>Reactividad química:</strong> Permanece cualitativamente similar (mismo grupo funcional).</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Generalizar la fórmula de incremento.</strong> Para cualquier serie homóloga, el incremento de un miembro al siguiente es siempre:
+            <div class="formula-box">
+                \( \Delta M = M(CH_2) = 12 + 2(1) = 14 \, \text{g/mol} \)
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> La serie homóloga es uno de los conceptos organizadores más poderosos de la química orgánica. Permite al estudiante no memorizar cientos de compuestos, sino <em>generarlos sistemáticamente</em>. Es recomendable practicar la escritura de los diez primeros miembros de cada serie (met-, et-, prop-, but-, pent-, hex-, hept-, oct-, non-, dec-) para automatizar la nomenclatura. También es útil destacar que las propiedades físicas no varían linealmente con \( n \), sino que presentan tendencias asintóticas (p. ej., la diferencia de punto de ebullición entre miembros consecutivos disminuye a medida que \( n \) aumenta).
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Definición formal de serie homóloga</strong>
+            <p style="font-size: 1.05em; margin: 10px 0 0 0;">
+                \[ \boxed{\text{Serie homóloga} = \{ C_nH_{2n+2-2k}X \mid n \in \mathbb{N}, \, k = \text{grados de insaturación}, \, X = \text{grupo funcional} \}} \]
+            </p>
+        </div>
+        <div class="formula-box" style="margin-top: 12px;">
+            <strong>Fórmulas generales por familia funcional</strong>
+            <p style="text-align: left; font-size: 0.95em; margin: 10px 0 0 0;">
+                <strong>Alcanos (saturados, acíclicos):</strong> \( C_nH_{2n+2} \)<br>
+                <strong>Cicloalcanos / Alquenos:</strong> \( C_nH_{2n} \)<br>
+                <strong>Alquinos / Alkadienos:</strong> \( C_nH_{2n-2} \)<br>
+                <strong>Alcoholes / Éteres (saturados):</strong> \( C_nH_{2n+2}O \)<br>
+                <strong>Aldehídos / Cetonas (saturados):</strong> \( C_nH_{2n}O \)<br>
+                <strong>Ácidos carboxílicos / Ésteres (saturados):</strong> \( C_nH_{2n}O_2 \)<br>
+                <strong>Aminas (saturadas, monofuncionales):</strong> \( C_nH_{2n+3}N \)
+            </p>
+        </div>
+        <p>La demostración realizada mediante el análisis de las series homólogas confirma que los miembros de una misma serie se diferencian sistemáticamente en un grupo metileno, lo que permite predecir sus propiedades y reactividad de forma regular.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> El concepto de serie homóloga es fundamental para organizar y comprender la química orgánica, permitiendo predecir propiedades físicas y químicas a partir de la estructura molecular y el grupo funcional.</p>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- BLOQUE DESPLEGABLE (TAREA 1)                 -->
+    <!-- ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame — 🧪 DESMITIFICANDO la definición de serie homóloga y fórmula general</span>
+        </summary>
+
+        <!-- Ejercicio 1 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 1</span> Identificación de la serie homóloga</h3>
+            <p><strong>Enunciado:</strong> Dadas las siguientes fórmulas, identifica a qué serie homóloga pertenece cada una y escribe su fórmula general:</p>
+            <ul>
+                <li><strong>a)</strong> \( C_6H_{12} \)</li>
+                <li><strong>b)</strong> \( C_4H_8O \)</li>
+                <li><strong>c)</strong> \( C_3H_7Cl \)</li>
+                <li><strong>d)</strong> \( C_5H_{10}O_2 \)</li>
+            </ul>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>a)</strong> \( C_6H_{12} \) cumple \( C_nH_{2n} \) → puede ser <span class="highlight-sol">alqueno o cicloalcano</span>. (Serie: alquenos/cicloalcanos).</div>
+                <div class="step"><strong>b)</strong> \( C_4H_8O \) cumple \( C_nH_{2n}O \) → <span class="highlight-sol">aldehído o cetona saturada</span>.</div>
+                <div class="step"><strong>c)</strong> \( C_3H_7Cl \) cumple \( C_nH_{2n+1}Cl \) → <span class="highlight-sol">halogenuro de alquilo (cloruro de alquilo)</span>.</div>
+                <div class="step"><strong>d)</strong> \( C_5H_{10}O_2 \) cumple \( C_nH_{2n}O_2 \) → <span class="highlight-sol">ácido carboxílico o éster saturado</span>.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 2</span> Deducir la fórmula general a partir de la serie</h3>
+            <p><strong>Enunciado:</strong> Los primeros miembros de una serie homóloga son: \( CH_3OH \), \( C_2H_5OH \), \( C_3H_7OH \). Deduce la fórmula general y escribe el miembro con 6 átomos de carbono.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Identificar el grupo funcional:</strong> Todos tienen \( -OH \) (alcoholes).</div>
+                <div class="step"><strong>2. Fórmula general:</strong> Para un alcohol saturado de cadena abierta: \( C_nH_{2n+1}OH \) o \( C_nH_{2n+2}O \).</div>
+                <div class="step"><strong>3. Miembro con n=6:</strong> \( C_6H_{13}OH \) (hexan-1-ol) o \( C_6H_{14}O \).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> Fórmula general: \( C_nH_{2n+1}OH \); para n=6: \( C_6H_{13}OH \) (hexanol).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 3</span> Aplicación del incremento homólogo</h3>
+            <p><strong>Enunciado:</strong> La masa molar del propano (\( C_3H_8 \)) es 44 g/mol. Calcula la masa molar del decano (\( C_{10}H_{22} \)) utilizando el incremento homólogo y comprueba con la suma de masas atómicas.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Diferencia de carbonos:</strong> \( 10 - 3 = 7 \) grupos \( CH_2 \) añadidos.</div>
+                <div class="step"><strong>2. Incremento por grupo:</strong> \( M(CH_2) = 14 \, \text{g/mol} \).</div>
+                <div class="step"><strong>3. Masa molar estimada:</strong> \( M = 44 + 7 \times 14 = 44 + 98 = 142 \, \text{g/mol} \).</div>
+                <div class="step"><strong>4. Comprobación directa:</strong> \( M(C_{10}H_{22}) = 10 \times 12 + 22 \times 1 = 120 + 22 = 142 \, \text{g/mol} \). Coincide.</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La masa molar del decano es 142 g/mol.</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 4</span> Predicción de propiedades: puntos de ebullición</h3>
+            <p><strong>Enunciado:</strong> Los puntos de ebullición del metano, etano y propano son, respectivamente: -161,5 °C, -88,6 °C y -42,1 °C. Estima el punto de ebullición del butano (\( C_4H_{10} \)) y del pentano (\( C_5H_{12} \)) asumiendo un incremento regular.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Incrementos observados:</strong> \( \Delta T_{eb} \) (metano→etano) = 72,9 °C; (etano→propano) = 46,5 °C. No es constante, pero podemos usar el incremento medio \( \frac{72,9+46,5}{2} = 59,7 \) °C.</div>
+                <div class="step"><strong>2. Estimar butano:</strong> \( T_{eb} \approx -42,1 + 59,7 = 17,6 \) °C (real: -0,5 °C, cercano).</div>
+                <div class="step"><strong>3. Estimar pentano:</strong> \( T_{eb} \approx 17,6 + 59,7 = 77,3 \) °C (real: 36,1 °C, sobreestimado porque el incremento disminuye).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> Estimación aproximada: butano ~18 °C, pentano ~77 °C (los valores reales son -0,5 °C y 36,1 °C, mostrando que el incremento no es lineal).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 5</span> Isómeros dentro de una serie homóloga</h3>
+            <p><strong>Enunciado:</strong> La fórmula \( C_5H_{12} \) corresponde a tres isómeros de cadena (alcanos). Escríbelos y nómbralos. ¿Pertencen todos a la misma serie homóloga?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Isómeros de \( C_5H_{12} \):</strong></div>
+                <ul>
+                    <li>\( CH_3-CH_2-CH_2-CH_2-CH_3 \) → <span class="highlight-sol">n-pentano</span></li>
+                    <li>\( CH_3-CH(CH_3)-CH_2-CH_3 \) → <span class="highlight-sol">2-metilbutano</span></li>
+                    <li>\( C(CH_3)_4 \) → <span class="highlight-sol">2,2-dimetilpropano</span></li>
+                </ul>
+                <div class="step"><strong>2. Serie homóloga:</strong> Todos son alcanos (\( C_nH_{2n+2} \)), por lo que pertenecen a la misma serie homóloga (los alcanos).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> Los tres son isómeros de cadena y pertenecen a la serie de los alcanos.</div>
+            </div>
+        </div>
+
+        <!-- Pie didáctico -->
+        <div class="didactic-footer">
+            <i class="fas fa-graduation-cap"></i>
+            <span><strong>Observaciones claves:</strong> El concepto de serie homóloga permite organizar el conocimiento de la química orgánica de forma sistemática. La "trampa" habitual es pensar que todos los compuestos con la misma fórmula general son isómeros; en realidad, la fórmula general define una familia, mientras que los isómeros son compuestos diferentes dentro de esa familia. Practicar la escritura de los miembros de una serie y la predicción de sus propiedades es clave para dominar el tema.</span>
+        </div>
+    </details>
+    <!-- FIN DEL BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

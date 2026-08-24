@@ -1,0 +1,620 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.11 - Demostración: Coeficiente de rendimiento frigorífico</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.11.- </span>
+                    <span class="texto">Demostración: Coeficiente de rendimiento frigorífico</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo del Primer Principio de la Termodinámica aplicado a un ciclo, de la definición de coeficiente de rendimiento de una máquina frigorífica, y del teorema de Carnot, demostrar que el coeficiente de rendimiento máximo de una máquina frigorífica reversible que opera entre dos focos térmicos a temperaturas \( T_c \) (foco caliente) y \( T_f \) (foco frío) viene dado por:</p>
+            <div class="formula-box">
+                \[ \varepsilon_{\text{frigorífico}} = \frac{T_f}{T_c - T_f} \]
+            </div>
+            <p>y que el de una bomba de calor reversible es:</p>
+            <div class="formula-box">
+                \[ \varepsilon_{\text{bomba}} = \frac{T_c}{T_c - T_f} \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c11 - Coeficiente de rendimiento de una máquina frigorífica.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar que una máquina frigorífica puede extraer más energía calorífica del foco frío que la energía mecánica que consume, lo que a veces se expresa coloquialmente como "rendimiento mayor que 100%". Esto no viola el Primer Principio porque el calor extraído del foco frío se suma al trabajo consumido para ceder calor al foco caliente. El resultado conecta con las aplicaciones prácticas de neveras, aires acondicionados y bombas de calor.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definición de coeficiente de rendimiento frigorífico:</strong> El coeficiente de rendimiento (o eficiencia) de una máquina frigorífica se define como el cociente entre el calor extraído del foco frío (el objetivo del aparato) y el trabajo consumido:
+                <div class="formula-box">
+                    \[ \varepsilon_{\text{frigorífico}} = \frac{Q_f}{|W|} = \frac{Q_f}{Q_c - Q_f} \]
+                </div>
+                donde \( Q_f \) es el calor extraído del foco frío, \( Q_c \) es el calor cedido al foco caliente, y \( W \) es el trabajo consumido (todos en valor absoluto).
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Aplicación del Primer Principio:</strong> En un ciclo completo, la variación de energía interna es cero (\( \Delta U = 0 \)), por lo que:
+                <div class="formula-box">
+                    \[ Q_c - Q_f - W = 0 \quad \Rightarrow \quad W = Q_c - Q_f \]
+                </div>
+                El trabajo consumido es la diferencia entre el calor cedido al foco caliente y el extraído del foco frío.
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Relación de Carnot para máquinas reversibles:</strong> Para una máquina reversible que opera como frigorífico (ciclo de Carnot en sentido inverso), se cumple la misma relación que para el motor:
+                <div class="formula-box">
+                    \[ \frac{Q_f}{Q_c} = \frac{T_f}{T_c} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Sustitución en el coeficiente frigorífico:</strong> Sustituyendo \( Q_c = Q_f \frac{T_c}{T_f} \) en la definición:
+                <div class="formula-box">
+                    \[ \varepsilon_{\text{frigorífico}} = \frac{Q_f}{Q_f \frac{T_c}{T_f} - Q_f} = \frac{Q_f}{Q_f \left( \frac{T_c}{T_f} - 1 \right)} = \frac{1}{\frac{T_c - T_f}{T_f}} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Resultado para máquina frigorífica:</strong>
+                <div class="formula-box">
+                    \[ \varepsilon_{\text{frigorífico}} = \frac{T_f}{T_c - T_f} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Definición de coeficiente de bomba de calor:</strong> Una bomba de calor es una máquina frigorífica cuyo objetivo es ceder calor al foco caliente (calefacción). Su coeficiente de rendimiento se define como:
+                <div class="formula-box">
+                    \[ \varepsilon_{\text{bomba}} = \frac{Q_c}{|W|} = \frac{Q_c}{Q_c - Q_f} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Resultado para bomba de calor:</strong> Procediendo de forma análoga:
+                <div class="formula-box">
+                    \[ \varepsilon_{\text{bomba}} = \frac{Q_c}{Q_c - Q_f} = \frac{Q_c}{Q_c \left( 1 - \frac{T_f}{T_c} \right)} = \frac{1}{1 - \frac{T_f}{T_c}} = \frac{T_c}{T_c - T_f} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">8</span>
+                <strong>Relación entre coeficientes:</strong> Observamos que:
+                <div class="formula-box">
+                    \[ \varepsilon_{\text{bomba}} = \varepsilon_{\text{frigorífico}} + 1 \]
+                </div>
+                Esto se debe a que \( Q_c = Q_f + W \), por lo que el calor cedido al foco caliente siempre es mayor que el extraído del foco frío.
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p><strong>Máquina frigorífica:</strong></p>
+            <div class="formula-box">
+                \[ \varepsilon_{\text{frigorífico}} = \frac{Q_f}{W} = \frac{T_f}{T_c - T_f} \]
+            </div>
+            <p><strong>Bomba de calor:</strong></p>
+            <div class="formula-box">
+                \[ \varepsilon_{\text{bomba}} = \frac{Q_c}{W} = \frac{T_c}{T_c - T_f} = \varepsilon_{\text{frigorífico}} + 1 \]
+            </div>
+            <p>Donde:</p>
+            <ul style="margin-left: 20px;">
+                <li>\( T_c \): temperatura absoluta del foco caliente (K)</li>
+                <li>\( T_f \): temperatura absoluta del foco frío (K)</li>
+                <li>\( \varepsilon \): coeficiente de rendimiento (puede ser > 1)</li>
+            </ul>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es importante aclarar que el coeficiente de rendimiento de una máquina frigorífica <em>puede ser mayor que 1</em> (e incluso mucho mayor), lo que no contradice ninguna ley de la termodinámica porque no es un "rendimiento" en el sentido de conversión de energía, sino una relación de "beneficio/coste". Por ejemplo, un aire acondicionado con \( T_f = 293 \text{ K} \) (20°C) y \( T_c = 313 \text{ K} \) (40°C) tiene \( \varepsilon = \frac{293}{20} \approx 14{,}7 \), lo que significa que por cada julio de electricidad consume, extrae ~14,7 J del interior. Las bombas de calor son especialmente eficientes en climas templados, donde \( T_c - T_f \) es pequeño. Se recomienda contrastar estos valores con los rendimientos típicos de máquinas térmicas (&lt; 40%) para enfatizar la diferencia conceptual.
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO el coeficiente de rendimiento frigorífico</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Cálculo del COP de una nevera</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una nevera doméstica extrae \( 1.5 \, \text{kJ} \) de calor del interior (foco frío) y consume \( 0.4 \, \text{kJ} \) de trabajo eléctrico en cada ciclo. Calcula su coeficiente de rendimiento frigorífico.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Aplicar \(\varepsilon_{\text{frigorífico}} = \frac{Q_f}{W}\).</p>
+                        <p><span class="step-label">Paso 2:</span> \( \varepsilon = \frac{1.5}{0.4} = 3.75 \).</p>
+                        <p><span class="step-label">Resultado:</span> El COP de la nevera es \( 3.75 \), es decir, por cada julio de electricidad extrae 3,75 J del interior.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Cálculo del COP máximo de un frigorífico de Carnot</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un frigorífico de Carnot opera entre \( T_f = 268 \, \text{K} \) (\( -5^\circ\text{C} \)) y \( T_c = 298 \, \text{K} \) (\( 25^\circ\text{C} \)). Calcula su coeficiente de rendimiento máximo.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Usar \(\varepsilon_{\text{frigorífico}} = \frac{T_f}{T_c - T_f}\).</p>
+                        <p><span class="step-label">Paso 2:</span> \( \varepsilon = \frac{268}{298 - 268} = \frac{268}{30} \approx 8.93 \).</p>
+                        <p><span class="step-label">Resultado:</span> El COP máximo teórico es \( 8.93 \).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Cálculo del COP de una bomba de calor</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una bomba de calor consume \( 2.0 \, \text{kW} \) de potencia eléctrica y entrega \( 8.0 \, \text{kW} \) de calor a la vivienda (foco caliente). Calcula su coeficiente de rendimiento.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> \(\varepsilon_{\text{bomba}} = \frac{Q_c}{W} = \frac{8.0}{2.0} = 4.0\).</p>
+                        <p><span class="step-label">Resultado:</span> La bomba de calor tiene un COP de 4.0, es decir, por cada kW eléctrico aporta 4 kW térmicos a la casa.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Relación entre COP frigorífico y bomba de calor</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un aparato de aire acondicionado funciona como frigorífico con un COP de \( 5.0 \). Si se utiliza como bomba de calor para calefacción, ¿cuál será su COP?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Sabemos que \(\varepsilon_{\text{bomba}} = \varepsilon_{\text{frigorífico}} + 1\).</p>
+                        <p><span class="step-label">Paso 2:</span> \( \varepsilon_{\text{bomba}} = 5.0 + 1 = 6.0 \).</p>
+                        <p><span class="step-label">Resultado:</span> El COP como bomba de calor es \( 6.0 \).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Contexto real: eficiencia de una bomba de calor geotérmica</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una bomba de calor geotérmica extrae calor del suelo a \( T_f = 278 \, \text{K} \) (\( 5^\circ\text{C} \)) y lo entrega a la vivienda a \( T_c = 293 \, \text{K} \) (\( 20^\circ\text{C} \)).</p>
+                        <ul>
+                            <li>a) Calcula su COP máximo (Carnot).</li>
+                            <li>b) Si su COP real es el 60% del máximo, ¿cuánto calor entrega por cada kWh eléctrico consumido?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(\varepsilon_{\text{máx}} = \frac{T_c}{T_c - T_f} = \frac{293}{293 - 278} = \frac{293}{15} \approx 19.53\).</p>
+                        <p><span class="step-label">b)</span> COP real = \( 0.60 \times 19.53 \approx 11.72 \).</p>
+                        <p>Por cada kWh eléctrico (\( 1 \, \text{kWh} = 3.6 \, \text{MJ} \)), entrega \( 11.72 \times 3.6 \approx 42.2 \, \text{MJ} \) de calor.</p>
+                        <p><span class="step-label">Resultado:</span> COP máximo \( 19.53 \), COP real \( 11.72 \), calor entregado \( 42.2 \, \text{MJ} \) por kWh.</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> El COP de una máquina frigorífica puede ser > 1, lo que no viola la conservación de la energía porque el trabajo consumido se suma al calor extraído para ceder más calor al foco caliente. Cuanto menor sea la diferencia de temperaturas entre focos, mayor será el COP. Esto explica por qué las bombas de calor son tan eficientes en climas templados y por qué los frigoríficos funcionan mejor en ambientes fríos.
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

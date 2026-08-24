@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.02. Segunda Ley de Newton</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.02.- </span>
+                <span class="texto">Segunda Ley de Newton</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de cantidad de movimiento \( \vec{p} = m\vec{v} \) y del principio de que la fuerza neta sobre un cuerpo es igual a la variación temporal de su cantidad de movimiento, demostrar que la fuerza neta aplicada sobre un cuerpo de masa constante es directamente proporcional a su aceleración, siendo la masa la constante de proporcionalidad.</p>
+        <div class="formula-box">
+            \[ \vec{F}_{\text{neta}} = m\vec{a} \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c02 - Segunda ley de Newton.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Derivar la expresión fundamental \( \vec{F} = m\vec{a} \) a partir de la definición general de fuerza como tasa de cambio del momento lineal. Esta relación es el pilar central de la dinámica newtoniana, ya que conecta las causas (fuerzas) con los efectos (aceleraciones) del movimiento.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definición general de fuerza:</strong> La fuerza neta que actúa sobre un cuerpo se define como la derivada temporal de su cantidad de movimiento (momento lineal):
+            <div class="formula-box">
+                \[ \vec{F}_{\text{neta}} = \frac{\mathrm{d}\vec{p}}{\mathrm{d}t} \]
+            </div>
+            Esta es la forma más general de la segunda ley, válida incluso cuando la masa varía (por ejemplo, en sistemas de propulsión a reacción).
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Expansión de la derivada del producto:</strong> Dado que \( \vec{p} = m\vec{v} \), aplicamos la regla del producto para la derivada:
+            <div class="formula-box">
+                \[ \vec{F}_{\text{neta}} = \frac{\mathrm{d}}{\mathrm{d}t}(m\vec{v}) = \frac{\mathrm{d}m}{\mathrm{d}t}\vec{v} + m\frac{\mathrm{d}\vec{v}}{\mathrm{d}t} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Condición de masa constante:</strong> Para la mayoría de los sistemas mecánicos en Bachillerato, la masa del cuerpo no cambia con el tiempo \( \left( \frac{\mathrm{d}m}{\mathrm{d}t} = 0 \right) \). Por tanto, el primer término se anula:
+            <div class="formula-box">
+                \[ \frac{\mathrm{d}m}{\mathrm{d}t} = 0 \quad \Rightarrow \quad \vec{F}_{\text{neta}} = m\frac{\mathrm{d}\vec{v}}{\mathrm{d}t} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Identificación de la aceleración:</strong> Por definición cinemática, la aceleración es la derivada temporal de la velocidad:
+            <div class="formula-box">
+                \[ \vec{a} = \frac{\mathrm{d}\vec{v}}{\mathrm{d}t} \]
+            </div>
+            Sustituyendo en la expresión anterior, obtenemos:
+            <div class="formula-box">
+                \[ \vec{F}_{\text{neta}} = m\vec{a} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Análisis de proporcionalidad:</strong> De la ecuación \( \vec{F} = m\vec{a} \) se deduce que, para una masa dada, la aceleración es directamente proporcional a la fuerza neta aplicada. Asimismo, para una fuerza dada, la aceleración es inversamente proporcional a la masa:
+            <div class="formula-box">
+                \[ a = \frac{F}{m} \quad ; \quad \text{si } F = \text{cte} \Rightarrow a \propto \frac{1}{m} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Forma vectorial y componentes:</strong> La ecuación es vectorial, lo que implica que se cumple independientemente para cada componente cartesiana:
+            <div class="formula-box">
+                \[ F_x = m a_x \quad ; \quad F_y = m a_y \quad ; \quad F_z = m a_z \]
+            </div>
+            Esto permite desacoplar el problema en cada dirección espacial.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que, para un cuerpo de masa constante, la fuerza neta es igual al producto de la masa por la aceleración, siendo ambos vectores de la misma dirección y sentido:</p>
+        <div class="formula-box">
+            \[ \boxed{\vec{F}_{\text{neta}} = m\vec{a}} \]
+        </div>
+        <p>En el Sistema Internacional, la fuerza se mide en newtons (N), donde \( 1 \, \mathrm{N} = 1 \, \mathrm{kg} \cdot \mathrm{m} \cdot \mathrm{s}^{-2} \).</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Es fundamental enfatizar el carácter vectorial de esta ley. Un error común entre los estudiantes es sumar escalares en lugar de vectores. Se recomienda insistir en que la aceleración tiene siempre la misma dirección y sentido que la fuerza neta resultante, no necesariamente la misma que una fuerza individual aplicada. La masa actúa como medida de la inercia del cuerpo: cuanto mayor es \( m \), más fuerza se requiere para producir una aceleración dada.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Segunda Ley de Newton"    -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Segunda Ley de Newton</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Aplicación directa -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Aplicación directa de \(F = m a\)</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(8,0\,\text{kg}\) se encuentra en reposo sobre una superficie horizontal sin rozamiento. Se le aplica una fuerza constante y horizontal de \(56\,\text{N}\).</p>
+                    <ul>
+                        <li>a) Calcula la aceleración del bloque.</li>
+                        <li>b) ¿Qué velocidad tendrá al cabo de \(4,0\,\text{s}\)?</li>
+                        <li>c) ¿Qué distancia habrá recorrido en ese tiempo?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Aplicamos la segunda ley: \(F = m a \Rightarrow a = \frac{F}{m} = \frac{56}{8,0} = 7,0\,\text{m/s}^2\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Movimiento uniformemente acelerado, parte del reposo: \(v = v_0 + a t = 0 + 7,0 \cdot 4,0 = 28\,\text{m/s}\).
+                    </div>
+                    <div class="paso">
+                        <strong>c)</strong> \(x = v_0 t + \frac{1}{2} a t^2 = 0 + \frac{1}{2} \cdot 7,0 \cdot (4,0)^2 = 56\,\text{m}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Despeje de masa y comparación -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Despeje de la masa y proporcionalidad inversa</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Sobre dos cuerpos A y B se aplica la misma fuerza resultante de \(24\,\text{N}\). El cuerpo A acelera a \(6,0\,\text{m/s}^2\) y el B a \(3,0\,\text{m/s}^2\).</p>
+                    <ul>
+                        <li>a) Calcula la masa de cada cuerpo.</li>
+                        <li>b) Si se aplica una fuerza de \(36\,\text{N}\) al cuerpo A, ¿qué aceleración adquiere?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(m_A = \frac{F}{a_A} = \frac{24}{6,0} = 4,0\,\text{kg}\); \(m_B = \frac{24}{3,0} = 8,0\,\text{kg}\). Se observa que \(m_A = \frac{1}{2} m_B\), y las aceleraciones son inversamente proporcionales.
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Con \(F' = 36\,\text{N}\) sobre A: \(a'_A = \frac{F'}{m_A} = \frac{36}{4,0} = 9,0\,\text{m/s}^2\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Plano inclinado con rozamiento -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Plano inclinado con rozamiento</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un bloque de \(5,0\,\text{kg}\) se lanza hacia arriba por un plano inclinado \(30^\circ\) con una velocidad inicial de \(8,0\,\text{m/s}\). El coeficiente de rozamiento cinético es \(\mu_c = 0,20\).</p>
+                    <ul>
+                        <li>a) Dibuja el diagrama de fuerzas y calcula la aceleración durante la subida.</li>
+                        <li>b) ¿Qué distancia recorre hasta detenerse?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Fuerzas: peso (\(P\)), normal (\(N\)), rozamiento (\(F_r = \mu_c N\)). Eje paralelo al plano (hacia arriba positivo): \(-P_x - F_r = m a\). 
+                        \(P_x = m g \sin 30^\circ = 5,0 \cdot 9,8 \cdot 0,5 = 24,5\,\text{N}\).
+                        \(N = m g \cos 30^\circ = 5,0 \cdot 9,8 \cdot 0,866 \approx 42,4\,\text{N}\).
+                        \(F_r = 0,20 \cdot 42,4 \approx 8,48\,\text{N}\).
+                        Entonces \(a = \frac{-24,5 - 8,48}{5,0} = -6,60\,\text{m/s}^2\) (la aceleración es negativa, frena).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Usamos \(v_f^2 = v_0^2 + 2 a x\) con \(v_f = 0\): \(0 = (8,0)^2 + 2(-6,60)x \Rightarrow x = \frac{64}{13,2} \approx 4,85\,\text{m}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Sistema de dos cuerpos (polea) -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Máquina de Atwood (dos masas)</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Dos masas \(m_1 = 6,0\,\text{kg}\) y \(m_2 = 4,0\,\text{kg}\) cuelgan de los extremos de una cuerda inextensible que pasa por una polea fija y sin masa. Se dejan en libertad.</p>
+                    <ul>
+                        <li>a) Calcula la aceleración del sistema.</li>
+                        <li>b) Halla la tensión de la cuerda.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Tomamos como positivo el sentido de caída de \(m_1\) (la más pesada). Ecuaciones:
+                        \[
+                        m_1 g - T = m_1 a \quad (1)
+                        \]
+                        \[
+                        T - m_2 g = m_2 a \quad (2)
+                        \]
+                        Sumamos (1) y (2): \((m_1 - m_2)g = (m_1 + m_2)a \Rightarrow a = \frac{(6,0 - 4,0) \cdot 9,8}{6,0 + 4,0} = \frac{19,6}{10} = 1,96\,\text{m/s}^2\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> De (2): \(T = m_2(g + a) = 4,0 \cdot (9,8 + 1,96) = 4,0 \cdot 11,76 = 47,04\,\text{N} \approx 47\,\text{N}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Fuerza neta y aceleración en dos dimensiones -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Fuerza neta en 2D y aceleración</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Sobre un objeto de \(2,0\,\text{kg}\) actúan dos fuerzas: \(\vec{F}_1 = (8,0\,\hat{i} + 6,0\,\hat{j})\,\text{N}\) y \(\vec{F}_2 = (-4,0\,\hat{i} - 2,0\,\hat{j})\,\text{N}\).</p>
+                    <ul>
+                        <li>a) Calcula la fuerza neta (vector) y su módulo.</li>
+                        <li>b) Determina el vector aceleración y su módulo.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(\vec{F}_{\text{neta}} = \vec{F}_1 + \vec{F}_2 = (8,0 - 4,0)\,\hat{i} + (6,0 - 2,0)\,\hat{j} = (4,0\,\hat{i} + 4,0\,\hat{j})\,\text{N}\). 
+                        Módulo: \(|\vec{F}| = \sqrt{4,0^2 + 4,0^2} = \sqrt{32} \approx 5,66\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(\vec{a} = \frac{\vec{F}_{\text{neta}}}{m} = \frac{(4,0\,\hat{i} + 4,0\,\hat{j})}{2,0} = (2,0\,\hat{i} + 2,0\,\hat{j})\,\text{m/s}^2\). 
+                        Módulo: \(|\vec{a}| = \sqrt{2,0^2 + 2,0^2} = \sqrt{8} \approx 2,83\,\text{m/s}^2\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> La segunda ley es una ecuación vectorial. La aceleración siempre tiene la misma dirección y sentido que la <em>fuerza neta</em>, no de una fuerza aislada. Es crucial dibujar todas las fuerzas y sumarlas vectorialmente antes de aplicar \(F = m a\). La masa mide la inercia: a mayor masa, menor aceleración para una misma fuerza.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

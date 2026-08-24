@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T01.06 - Precisión, Exactitud y Sensibilidad</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>    
+        
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+        
+        
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+        .def-box {
+            background: #e6fffa;
+            border: 2px solid #38b2ac;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 12px 0;
+        }
+        .def-title {
+            font-weight: bold;
+            color: #234e52;
+            margin-bottom: 6px;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (DETAILS)
+           ============================================ */
+        details.desmitificando {
+            margin: 30px 20px 20px 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        details.desmitificando > summary {
+            list-style: none;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            background: #edf2f7;
+            border-radius: 14px 14px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details.desmitificando > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.desmitificando > summary:hover {
+            background: #e2e8f0;
+        }
+        details.desmitificando > summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.3em;
+            color: #4a5568;
+        }
+        details.desmitificando[open] > summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.desmitificando .contenido {
+            padding: 20px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 14px 14px;
+        }
+        .ejercicio-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #ebf4ff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #bee3f8;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ejercicio-card .card-header .num {
+            font-weight: 700;
+            color: #2b6cb0;
+            font-size: 1.1em;
+        }
+        .ejercicio-card .card-header .titulo {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.05em;
+        }
+        .ejercicio-card .card-body {
+            padding: 16px 20px 8px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+        .ejercicio-card .card-body .enunciado-ej li {
+            margin-bottom: 4px;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #3182ce;
+            padding: 16px 20px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .paso {
+            margin-bottom: 8px;
+        }
+        .resolucion .paso strong {
+            color: #2b6cb0;
+        }
+        .pie-didactico {
+            background: #fefcbf;
+            border: 1px solid #f6e05e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            color: #744210;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            details.desmitificando > summary { font-size: 1em; padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T01.06.- </span>
+                    <span class="texto">Relación entre Precisión, Exactitud y Sensibilidad</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de las definiciones formales de <strong>exactitud</strong>, <strong>precisión</strong> y <strong>sensibilidad</strong> de un instrumento de medida, demostrar que:</p>
+            <div class="formula-box">
+                \[
+                \text{a) Precisión y exactitud son cualidades independientes}
+                \]
+                \[
+                \text{b) La sensibilidad no garantiza ni precisión ni exactitud}
+                \]
+                \[
+                \text{c) Un aparato puede ser muy preciso y poco exacto (mal calibrado)}
+                \]
+            </div>
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U01c06 - Relación entre precisión, exactitud y sensibilidad.png" alt="Imagen" width="800">
+
+            <!-- -----FIN-------- -->
+
+        </div>
+        
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Clarificar las diferencias conceptuales entre tres cualidades fundamentales de los instrumentos de medida. Esta distinción es esencial para interpretar correctamente los resultados experimentales, diseñar protocolos de medida adecuados y comprender por qué un mismo aparato puede comportarse de forma muy diferente según el contexto de uso.</p>
+        </div>
+        
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definiciones formales</strong>
+                <p>Se establecen las <strong>definiciones formales</strong> de cada cualidad:</p>
+                <div class="def-box">
+                    <div class="def-title">Exactitud</div>
+                    Grado de concordancia entre el valor medio de un conjunto de mediciones y el <strong>valor verdadero</strong> (o de referencia) de la magnitud. Un aparato exacto produce valores cercanos al valor real.
+                </div>
+                <div class="def-box">
+                    <div class="def-title">Precisión</div>
+                    Grado de concordancia entre <strong>mediciones repetidas</strong> de la misma magnitud en las mismas condiciones. Un aparato preciso produce valores muy próximos entre sí, independientemente de si coinciden con el valor real.
+                </div>
+                <div class="def-box">
+                    <div class="def-title">Sensibilidad</div>
+                    Capacidad del aparato para <strong>detectar pequeñas variaciones</strong> en la magnitud medida. Relacionada con la mínima división de la escala o la resolución del instrumento digital.
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Precisión vs Exactitud (I)</strong>
+                <p><strong>Demostración de la independencia entre precisión y exactitud.</strong> Consideremos una báscula mal calibrada que siempre marca \( 1{,}5\,\text{kg} \) de más. Si pesamos un objeto de \( 2{,}0\,\text{kg} \) cinco veces, obtenemos:</p>
+                <div class="formula-box">
+                    \[
+                    3{,}50\,\text{kg},\; 3{,}50\,\text{kg},\; 3{,}50\,\text{kg},\; 3{,}50\,\text{kg},\; 3{,}50\,\text{kg}
+                    \]
+                </div>
+                <p>Las medidas son <strong>idénticas</strong> (muy precisas), pero el valor real es \( 2{,}0\,\text{kg} \) (muy inexactas). Por tanto:</p>
+                <div class="formula-box">
+                    \[
+                    \text{Precisión alta} \;\nRightarrow\; \text{Exactitud alta}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Precisión vs Exactitud (II)</strong>
+                <p><strong>Demostración de que un aparato puede ser exacto y poco preciso.</strong> Consideremos una báscula de baño con fluctuaciones aleatorias. Al pesar un objeto de \( 70{,}0\,\text{kg} \), obtenemos:</p>
+                <div class="formula-box">
+                    \[
+                    68{,}5\,\text{kg},\; 71{,}2\,\text{kg},\; 69{,}8\,\text{kg},\; 70{,}5\,\text{kg},\; 70{,}3\,\text{kg}
+                    \]
+                </div>
+                <p>La media es \( 70{,}06\,\text{kg} \approx 70{,}0\,\text{kg} \) (exacta en media), pero las medidas individuales están muy dispersas (poco precisas). Por tanto:</p>
+                <div class="formula-box">
+                    \[
+                    \text{Exactitud alta (en media)} \;\nRightarrow\; \text{Precisión alta}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Sensibilidad vs Precisión</strong>
+                <p><strong>Demostración de que la sensibilidad no implica precisión.</strong> Un polímetro digital con resolución de \( 0{,}001\,\text{mA} \) (muy sensible) puede mostrar fluctuaciones constantes al medir una corriente inestable:</p>
+                <div class="formula-box">
+                    \[
+                    2{,}345\,\text{mA},\; 2{,}287\,\text{mA},\; 2{,}401\,\text{mA},\; 2{,}312\,\text{mA}
+                    \]
+                </div>
+                <p>El aparato detecta variaciones mínimas (alta sensibilidad), pero las medidas no son repetibles (baja precisión). La sensibilidad aumenta la resolución, pero si la magnitud medida fluctúa, la precisión disminuye:</p>
+                <div class="formula-box">
+                    \[
+                    \text{Sensibilidad alta} \;\nRightarrow\; \text{Precisión alta}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Relación matemática</strong>
+                <p><strong>Relación matemática entre sensibilidad y precisión.</strong> La sensibilidad \( S \) se define como el cociente entre la variación de la indicación \( \Delta L \) y la variación de la magnitud \( \Delta M \):</p>
+                <div class="formula-box">
+                    \[
+                    S = \frac{\Delta L}{\Delta M}
+                    \]
+                </div>
+                <p>Si \( S \) es muy grande, pequeñas fluctuaciones de \( M \) producen grandes variaciones de \( L \). Si la magnitud \( M \) no es estable, un instrumento muy sensible registrará cada fluctuación, haciendo que las lecturas sean menos repetibles (menos precisas).</p>
+            </div>
+        </div>
+        
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>Quedan demostradas las siguientes <strong>relaciones conceptuales</strong> entre las cualidades de un instrumento de medida:</p>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\text{Precisión} \perp \text{Exactitud} \quad \text{(cualidades independientes)}}
+                \]
+            </div>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\text{Sensibilidad alta} \;\nRightarrow\; \begin{cases} \text{Precisión alta} \\ \text{Exactitud alta} \end{cases}}
+                \]
+            </div>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{\text{Precisión alta} + \text{Exactitud alta} = \text{Calidad de medida óptima}}
+                \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong><br>Es especialmente útil el ejemplo del polímetro analógico: al medir en mA (alta sensibilidad) la aguja fluctúa más que en A (menor sensibilidad), mostrando que la precisión puede disminuir al aumentar la sensibilidad si la magnitud no es estable. Recomendar el uso de la analogía de las dianas de tiro para fijar conceptos.
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- BLOQUE DESPLEGABLE: "🧪 DESMITIFICANDO PRECISIÓN, EXACTITUD Y SENSIBILIDAD" -->
+        <!-- ======================================================== -->
+        <details class="desmitificando">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🖱️ Pulsame 👉 🧪 DESMITIFICANDO PRECISIÓN, EXACTITUD Y SENSIBILIDAD</span>
+            </summary>
+            <div class="contenido">
+
+                <p style="font-size:1.05em; margin-bottom: 18px;">
+                    <i class="fas fa-bullseye" style="color:#d69e2e;"></i>
+                    Precisión, exactitud y sensibilidad son conceptos que suelen confundirse. 
+                    Una medida puede ser precisa pero inexacta, o exacta pero imprecisa. 
+                    Practica con estos <strong>5 ejercicios</strong> para dominar estas diferencias.
+                </p>
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 1</span>
+                        <span class="titulo">Interpretación de un conjunto de medidas (diana)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se han realizado 5 mediciones de la longitud de una mesa que realmente mide \( 150{,}0\,\text{cm} \). Los resultados son:</p>
+                            <ul>
+                                <li>\( 149{,}8\,\text{cm} \), \( 150{,}2\,\text{cm} \), \( 150{,}1\,\text{cm} \), \( 149{,}9\,\text{cm} \), \( 150{,}0\,\text{cm} \)</li>
+                            </ul>
+                            <p>Clasifica estas medidas en términos de <strong>exactitud</strong> y <strong>precisión</strong>.</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Calcular la media:</strong>
+                                \[
+                                \bar{x} = \frac{149{,}8 + 150{,}2 + 150{,}1 + 149{,}9 + 150{,}0}{5} = \frac{750{,}0}{5} = 150{,}0\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Comparar con el valor real:</strong>
+                                La media coincide exactamente con el valor real (\( 150{,}0\,\text{cm} \)), por lo que las medidas son <strong>exactas</strong>.
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Evaluar la dispersión:</strong>
+                                Los valores oscilan entre \( 149{,}8 \) y \( 150{,}2 \), con una desviación máxima de \( 0{,}2\,\text{cm} \). Están muy agrupados, por lo que la medición es <strong>muy precisa</strong>.
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong>
+                                \[
+                                \boxed{\text{Medidas exactas y precisas (calidad óptima)}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 2</span>
+                        <span class="titulo">Caso de precisión alta pero exactitud baja</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un termómetro digital mal calibrado da las siguientes lecturas para una habitación que realmente está a \( 22{,}0\,^\circ\text{C} \):</p>
+                            <ul>
+                                <li>\( 24{,}1\,^\circ\text{C} \), \( 24{,}0\,^\circ\text{C} \), \( 24{,}0\,^\circ\text{C} \), \( 24{,}1\,^\circ\text{C} \), \( 24{,}0\,^\circ\text{C} \)</li>
+                            </ul>
+                            <p>Describe la <strong>precisión</strong> y la <strong>exactitud</strong> de estas medidas.</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Evaluar la dispersión:</strong>
+                                Todas las medidas están entre \( 24{,}0 \) y \( 24{,}1 \), muy próximas entre sí. Por tanto, la precisión es <strong>muy alta</strong>.
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Comparar con el valor real:</strong>
+                                El valor real es \( 22{,}0\,^\circ\text{C} \), mientras que las medidas están alrededor de \( 24\,^\circ\text{C} \), es decir, \( 2\,^\circ\text{C} \) por encima. La exactitud es <strong>baja</strong> (error sistemático de +2°C).
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong>
+                                \[
+                                \boxed{\text{Alta precisión, baja exactitud (mal calibrado)}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 3</span>
+                        <span class="titulo">Caso de exactitud alta pero precisión baja</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se mide el tiempo de reacción de una persona con un cronómetro de mano. Los resultados (en segundos) para una tarea que realmente dura \( 0{,}50\,\text{s} \) son:</p>
+                            <ul>
+                                <li>\( 0{,}32\,\text{s} \), \( 0{,}68\,\text{s} \), \( 0{,}45\,\text{s} \), \( 0{,}55\,\text{s} \), \( 0{,}50\,\text{s} \)</li>
+                            </ul>
+                            <p>Clasifica la medición en términos de exactitud y precisión.</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Calcular la media:</strong>
+                                \[
+                                \bar{x} = \frac{0{,}32 + 0{,}68 + 0{,}45 + 0{,}55 + 0{,}50}{5} = \frac{2{,}50}{5} = 0{,}50\,\text{s}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Exactitud:</strong>
+                                La media coincide con el valor real (\( 0{,}50\,\text{s} \)), por lo que la medida es <strong>exacta</strong> en promedio.
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Precisión:</strong>
+                                Los valores van desde \( 0{,}32 \) hasta \( 0{,}68 \), con una dispersión muy grande (rango de \( 0{,}36\,\text{s} \)). La precisión es <strong>baja</strong>.
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong>
+                                \[
+                                \boxed{\text{Alta exactitud (en media), baja precisión}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 4</span>
+                        <span class="titulo">Relación entre sensibilidad y precisión</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un voltímetro analógico tiene dos escalas: \( 0-10\,\text{V} \) (sensibilidad baja) y \( 0-1\,\text{V} \) (sensibilidad alta). Al medir una pila de \( 1{,}50\,\text{V} \) se obtienen las siguientes lecturas en cada escala (5 medidas):</p>
+                            <ul>
+                                <li>Escala de 10 V: \( 1{,}5; 1{,}5; 1{,}5; 1{,}5; 1{,}5 \)</li>
+                                <li>Escala de 1 V: \( 1{,}48; 1{,}52; 1{,}49; 1{,}51; 1{,}50 \)</li>
+                            </ul>
+                            <p>¿Qué escala proporciona mayor sensibilidad? ¿Y mayor precisión? Justifica.</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Sensibilidad:</strong>
+                                La escala de 1 V tiene menor rango y mayor resolución, por lo que es <strong>más sensible</strong> (detecta variaciones de 0,01 V frente a 0,1 V en la escala de 10 V).
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Precisión:</strong>
+                                En la escala de 10 V todas las medidas son idénticas (muy precisas). En la escala de 1 V hay fluctuación (\( 1{,}48 \) a \( 1{,}52 \)), por lo que la precisión es <strong>menor</strong>.
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong>
+                                \[
+                                \boxed{\text{Mayor sensibilidad} \rightarrow \text{menor precisión (si la señal fluctúa)}}
+                                \]
+                                \text{La escala de 10 V es menos sensible pero más precisa en este caso.}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 5</span>
+                        <span class="titulo">Elección del instrumento adecuado</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se necesita medir la temperatura de un reactor químico que debe mantenerse a \( 200{,}0\,^\circ\text{C} \pm 0{,}5\,^\circ\text{C} \). Se dispone de tres termómetros:</p>
+                            <ul>
+                                <li><strong>A:</strong> rango \( 0-300\,^\circ\text{C} \), resolución \( 1\,^\circ\text{C} \), calibrado correctamente.</li>
+                                <li><strong>B:</strong> rango \( 0-250\,^\circ\text{C} \), resolución \( 0{,}1\,^\circ\text{C} \), pero con un error sistemático de +1°C.</li>
+                                <li><strong>C:</strong> rango \( 0-1000\,^\circ\text{C} \), resolución \( 0{,}01\,^\circ\text{C} \), pero con fluctuaciones aleatorias de \( \pm 2\,^\circ\text{C} \).</li>
+                            </ul>
+                            <p>¿Cuál de los tres es más adecuado? ¿Por qué?</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Análisis de A:</strong> Resolución \( 1\,^\circ\text{C} \) → no puede garantizar \( \pm 0{,}5\,^\circ\text{C} \). <strong>No adecuado.</strong>
+                            </div>
+                            <div class="paso">
+                                <strong>Análisis de B:</strong> Resolución \( 0{,}1\,^\circ\text{C} \) suficiente, pero error sistemático de +1°C → si se corrige (restando 1°C) podría ser exacto y preciso. <strong>Adecuado si se calibra.</strong>
+                            </div>
+                            <div class="paso">
+                                <strong>Análisis de C:</strong> Muy sensible, pero fluctuaciones de \( \pm 2\,^\circ\text{C} \) → la precisión es mala, no puede asegurar la tolerancia. <strong>No adecuado.</strong>
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong>
+                                \[
+                                \boxed{\text{El termómetro B es el más adecuado (tras calibrarlo)}}
+                                \]
+                                \text{La exactitud se puede corregir (calibración), pero la precisión y resolución son condiciones necesarias.}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DIDÁCTICO -->
+                <div class="pie-didactico">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Observaciones claves:</strong> La "trampa" mental que resuelven estos conceptos es entender que <strong>precisión y exactitud no van de la mano</strong>. 
+                    La analogía de las <strong>dianas</strong> es muy útil: 
+                    <ul style="margin-left: 20px; margin-top: 6px;">
+                        <li><strong>Agrupadas y centradas</strong> → precisas y exactas.</li>
+                        <li><strong>Agrupadas pero descentradas</strong> → precisas pero inexactas (error sistemático).</li>
+                        <li><strong>Dispersas pero centradas</strong> → exactas en media pero imprecisas.</li>
+                        <li><strong>Dispersas y descentradas</strong> → ni precisas ni exactas.</li>
+                    </ul>
+                    La sensibilidad es la <strong>lupa</strong>: permite ver más detalles, pero si lo que ves ya es inestable, verás más fluctuaciones y la precisión empeorará.
+                </div>
+
+            </div> <!-- fin .contenido -->
+        </details>
+
+        <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+    </div> <!-- fin .container -->
+</body>
+</html>

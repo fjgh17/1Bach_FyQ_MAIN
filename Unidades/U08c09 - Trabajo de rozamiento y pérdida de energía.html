@@ -1,0 +1,582 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 9: Trabajo de Rozamiento y Pérdida de Energía Mecánica</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.09.- </span>
+                    <span class="texto">Demostración 9: Trabajo de Rozamiento y Pérdida de Energía Mecánica</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo del teorema de la energía cinética y de la definición de energía mecánica, demostrar que cuando actúan fuerzas de rozamiento (no conservativas), la variación de la energía mecánica del sistema es igual al trabajo realizado por dichas fuerzas:</p>
+            <div class="formula-box">
+                \[ W_r = \Delta E_m = E_{m,f} - E_{m,i} \]
+            </div>
+            <p>Y que, para un cuerpo que se desliza sobre una superficie horizontal, el trabajo de rozamiento se expresa como:</p>
+            <div class="formula-box">
+                \[ W_r = -\mu \cdot m \cdot g \cdot \Delta x \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c09 - Trabajo de rozamiento y pérdida de energía.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Comprender que el rozamiento es una fuerza no conservativa que disipa energía mecánica, transformándola en calor. Establecer la conexión cuantitativa entre el trabajo de rozamiento y la pérdida de energía mecánica, permitiendo resolver problemas donde la energía no se conserva debido a la fricción.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Planteamiento del sistema con rozamiento</strong>
+                <p>Consideramos un cuerpo de masa \( m \) que se desliza sobre una superficie horizontal rugosa con coeficiente de rozamiento cinético \( \mu \). El cuerpo tiene velocidad inicial \( v_i \) y recorre una distancia \( \Delta x \) hasta detenerse (o cambiar su velocidad a \( v_f \)).</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Fuerzas que actúan sobre el cuerpo</strong>
+                <p>En la dirección vertical, el peso \( P = mg \) se equilibra con la normal \( N \):</p>
+                <div class="formula-box">
+                    \[ N = m \cdot g \]
+                </div>
+                <p>La fuerza de rozamiento cinético se opone al movimiento y su módulo es:</p>
+                <div class="formula-box">
+                    \[ F_r = \mu \cdot N = \mu \cdot m \cdot g \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Trabajo realizado por la fuerza de rozamiento</strong>
+                <p>Como el rozamiento actúa en sentido opuesto al desplazamiento (\( \alpha = 180^{\circ} \), \( \cos 180^{\circ} = -1 \)):</p>
+                <div class="formula-box">
+                    \[ W_r = F_r \cdot \Delta x \cdot \cos 180^{\circ} = -\mu \cdot m \cdot g \cdot \Delta x \]
+                </div>
+                <p>El trabajo de rozamiento es siempre negativo (o nulo si no hay desplazamiento), lo que indica que disipa energía del sistema.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Aplicación del teorema de la energía cinética</strong>
+                <p>El trabajo neto es igual a la variación de energía cinética. Como el peso y la normal no realizan trabajo (son perpendiculares al desplazamiento), el trabajo neto es solo el de rozamiento:</p>
+                <div class="formula-box">
+                    \[ W_{\text{neto}} = W_r = \Delta E_c = E_{c,f} - E_{c,i} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Relación con la energía mecánica</strong>
+                <p>En una superficie horizontal, la energía potencial gravitatoria no varía (\( \Delta E_p = 0 \)). Por tanto, la variación de energía mecánica es igual a la variación de energía cinética:</p>
+                <div class="formula-box">
+                    \[ \Delta E_m = \Delta E_c + \Delta E_p = \Delta E_c + 0 = \Delta E_c \]
+                </div>
+                <p>Sustituyendo el resultado del paso 4:</p>
+                <div class="formula-box">
+                    \[ W_r = \Delta E_m \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Generalización a superficies inclinadas</strong>
+                <p>Para un plano inclinado un ángulo \( \alpha \), la normal es \( N = mg \cos\alpha \), por lo que la fuerza de rozamiento es:</p>
+                <div class="formula-box">
+                    \[ F_r = \mu \cdot m \cdot g \cdot \cos\alpha \]
+                </div>
+                <p>Y el trabajo de rozamiento a lo largo de una distancia \( \Delta x \) sobre el plano:</p>
+                <div class="formula-box">
+                    \[ W_r = -\mu \cdot m \cdot g \cdot \cos\alpha \cdot \Delta x \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Destino de la energía disipada</strong>
+                <p>La energía mecánica "perdida" no desaparece: se transforma en energía interna (calor) de las superficies en contacto, aumentando su temperatura. Este proceso es irreversible (segundo principio de la termodinámica):</p>
+                <div class="formula-box">
+                    \[ |W_r| = Q = \Delta E_{\text{interna}} \]
+                </div>
+                <p>donde \( Q \) es el calor generado por fricción.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">8</span>
+                <strong>Caso particular: cuerpo que se detiene</strong>
+                <p>Si el cuerpo se detiene completamente (\( v_f = 0 \)), toda su energía cinética inicial se disipa por rozamiento:</p>
+                <div class="formula-box">
+                    \[ -\mu \cdot m \cdot g \cdot \Delta x = 0 - \frac{1}{2} m v_i^{2} \]
+                </div>
+                <p>Despejando la distancia de frenado:</p>
+                <div class="formula-box">
+                    \[ \Delta x = \frac{v_i^{2}}{2 \mu g} \]
+                </div>
+                <p>Observamos que la distancia de frenado es independiente de la masa del cuerpo (ejercicio 10 del libro de texto).</p>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ W_r = -\mu \cdot m \cdot g \cdot \Delta x \quad (\text{superficie horizontal}) \]
+            </div>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ W_r = \Delta E_m \quad (\text{trabajo de fuerzas no conservativas}) \]
+            </div>
+            <p>El trabajo de rozamiento es negativo y disipa energía mecánica, transformándola en calor. La variación de energía mecánica de un sistema es igual al trabajo de las fuerzas no conservativas que actúan sobre él. Cuando solo actúan fuerzas conservativas, este trabajo es nulo y la energía mecánica se conserva.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Esta demostración es crucial para conectar la mecánica con la termodinámica. Es importante que los estudiantes comprendan que la energía no "desaparece" sino que cambia de forma (mecánica → térmica). El ejercicio 10 del libro (velocidad inicial independiente de la masa) es un excelente resultado para discutir: ¿por qué un camión y una moto con la misma velocidad inicial no se detienen a la misma distancia en la realidad? (Respuesta: el coeficiente de rozamiento no es constante y depende de la presión sobre la superficie). Se recomienda contrastar problemas con y sin rozamiento para que los estudiantes aprecien cuándo puede aplicarse la conservación de la energía mecánica y cuándo debe usarse el teorema general de la energía cinética.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO el Trabajo de Rozamiento y Pérdida de Energía Mecánica</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Trabajo de rozamiento en superficie horizontal -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Trabajo de rozamiento y energía disipada</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un bloque de 8,0 kg se desliza sobre una superficie horizontal rugosa con coeficiente de rozamiento \( \mu = 0,30 \). Si el bloque se desplaza 5,0 m, calcula:</p>
+                <ul>
+                    <li>a) El trabajo realizado por la fuerza de rozamiento.</li>
+                    <li>b) La energía disipada en forma de calor.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) \( F_r = \mu m g = 0,30 \cdot 8,0 \cdot 9,8 = 23,52 \, \text{N} \).</p>
+                    <p>\( W_r = -F_r \cdot \Delta x = -23,52 \cdot 5,0 = -117,6 \, \text{J} \).</p>
+                    <p>b) La energía disipada es el valor absoluto del trabajo: \( Q = |W_r| = 117,6 \, \text{J} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Distancia de frenado (independencia de la masa) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Distancia de frenado de un vehículo</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un automóvil circula a 90 km/h sobre una carretera con coeficiente de rozamiento \( \mu = 0,50 \). Calcula la distancia que recorre hasta detenerse si frena bruscamente (suponiendo que todas las ruedas bloquean y el rozamiento es cinético). ¿Cambiaría si el coche pesara el doble?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>\( v_i = 90 \, \text{km/h} = 25 \, \text{m/s} \), \( v_f = 0 \).</p>
+                    <p>Usamos \( \Delta x = \frac{v_i^2}{2 \mu g} = \frac{25^2}{2 \cdot 0,50 \cdot 9,8} = \frac{625}{9,8} \approx 63,8 \, \text{m} \).</p>
+                    <p>La distancia de frenado es independiente de la masa, por lo que si el coche pesara el doble, la distancia sería la misma (suponiendo el mismo \( \mu \)).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Plano inclinado con rozamiento -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Rozamiento en un plano inclinado</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un bloque de 5,0 kg desciende por un plano inclinado 30° con velocidad inicial de 2,0 m/s. El coeficiente de rozamiento es 0,20 y la longitud del plano es 4,0 m. Calcula:</p>
+                <ul>
+                    <li>a) El trabajo de rozamiento.</li>
+                    <li>b) La energía cinética al final del plano.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) \( F_r = \mu m g \cos 30^\circ = 0,20 \cdot 5,0 \cdot 9,8 \cdot 0,866 \approx 8,49 \, \text{N} \).</p>
+                    <p>\( W_r = -F_r \cdot \Delta x = -8,49 \cdot 4,0 \approx -33,96 \, \text{J} \).</p>
+                    <p>b) Por el teorema trabajo-energía: \( W_{\text{neto}} = \Delta E_c \). El trabajo neto incluye el del peso y el rozamiento.</p>
+                    <p>Altura descendida: \( h = \Delta x \sin 30^\circ = 4,0 \cdot 0,5 = 2,0 \, \text{m} \).</p>
+                    <p>\( W_{\text{peso}} = m g h = 5,0 \cdot 9,8 \cdot 2,0 = 98 \, \text{J} \).</p>
+                    <p>\( W_{\text{neto}} = 98 - 33,96 = 64,04 \, \text{J} \).</p>
+                    <p>\( E_{c,i} = \frac{1}{2} \cdot 5,0 \cdot 2,0^2 = 10 \, \text{J} \).</p>
+                    <p>\( E_{c,f} = E_{c,i} + W_{\text{neto}} = 10 + 64,04 = 74,04 \, \text{J} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Comparación de superficies -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Influencia del coeficiente de rozamiento</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un mismo objeto se lanza con velocidad inicial de 15 m/s sobre dos superficies horizontales diferentes: una con \( \mu = 0,20 \) y otra con \( \mu = 0,40 \). Calcula la distancia de frenado en cada caso y la energía disipada si la masa es de 3,0 kg.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Para \( \mu = 0,20 \): \( \Delta x_1 = \frac{15^2}{2 \cdot 0,20 \cdot 9,8} = \frac{225}{3,92} \approx 57,4 \, \text{m} \).</p>
+                    <p>Para \( \mu = 0,40 \): \( \Delta x_2 = \frac{15^2}{2 \cdot 0,40 \cdot 9,8} = \frac{225}{7,84} \approx 28,7 \, \text{m} \).</p>
+                    <p>Energía disipada (inicialmente toda cinética): \( E_{c,i} = \frac{1}{2} \cdot 3,0 \cdot 15^2 = 337,5 \, \text{J} \). Esta energía se disipa en ambos casos (el trabajo de rozamiento es igual a \(-337,5 \, \text{J}\)), pero la distancia necesaria es menor cuando el rozamiento es mayor.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Pérdida de energía mecánica en un sistema -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Caída vertical con rozamiento del aire</span>
+                </div>
+                <p><strong>Enunciado:</strong> Una pelota de 0,50 kg se deja caer desde una altura de 10 m y llega al suelo con una velocidad de 12 m/s. Calcula:</p>
+                <ul>
+                    <li>a) La energía mecánica inicial y final.</li>
+                    <li>b) El trabajo de las fuerzas no conservativas (rozamiento del aire).</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) Inicial: \( E_{m,i} = E_{p,i} + E_{c,i} = 0,50 \cdot 9,8 \cdot 10 + 0 = 49 \, \text{J} \).</p>
+                    <p>Final (suelo): \( E_{m,f} = E_{p,f} + E_{c,f} = 0 + \frac{1}{2} \cdot 0,50 \cdot 12^2 = 36 \, \text{J} \).</p>
+                    <p>b) \( W_{nc} = \Delta E_m = E_{m,f} - E_{m,i} = 36 - 49 = -13 \, \text{J} \).</p>
+                    <p>El rozamiento del aire ha realizado un trabajo negativo de 13 J, disipando esa energía en forma de calor.</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> El rozamiento es la principal causa de que la energía mecánica no se conserve en los sistemas reales. El trabajo de rozamiento es negativo y su valor absoluto es la energía que se "pierde" en forma de calor. Es fundamental que los estudiantes entiendan que esta energía no desaparece, sino que se transforma en energía térmica. La independencia de la distancia de frenado respecto a la masa (en superficies horizontales) es un resultado contra-intuitivo que suele generar debate: en la práctica, la masa influye porque el coeficiente de rozamiento puede variar con la carga, pero en el modelo idealizado, no.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

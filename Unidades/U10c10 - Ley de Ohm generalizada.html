@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#T10.10 · Ley de Ohm Generalizada</title>
+<!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome (versión 6) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ============================================
+   ESTILOS EXISTENTES (no modificados)
+   ============================================ */
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.header-left h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+.header-left p {
+    margin: 6px 0 0 0;
+    font-size: 1em;
+}
+.header-right img {
+    max-height: 70px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+}
+.section {
+    padding: 25px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border-left: 5px solid;
+}
+.enunciado { background: #f7fafc; border-color: #a0aec0; }
+.objetivo  { background: #fffaf0; border-color: #ed8936; }
+.procedimiento { background: #f0fff4; border-color: #48bb78; }
+.resultado { background: #ebf8ff; border-color: #4299e1; }
+.section h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.enunciado h2 { color: #4a5568; }
+.objetivo h2  { color: #c05621; }
+.procedimiento h2 { color: #276749; }
+.resultado h2 { color: #2b6cb0; }
+.formula-box {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+}
+.step {
+    background: white;
+    border-left: 4px solid #a0aec0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.step-num {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #744210;
+}
+p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.header-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.header-sub img {
+    height: 28px;
+    width: auto;
+    display: block;
+    border-radius: 4px;
+}
+.header-sub .codigo {
+    font-weight: 700;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+    color: #f0e6ff;
+}
+.header-sub .texto {
+    font-size: 1em;
+    color: #f0e6ff;
+    font-weight: 500;
+}
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+/* ============================================
+   NUEVOS ESTILOS PARA EL BLOQUE DESPLEGABLE
+   ============================================ */
+details.desmitificando {
+    margin: 30px 15px 20px 15px;
+    border: 2px solid #2b6cb0;
+    border-radius: 12px;
+    background: #ebf8ff;
+    padding: 0.5rem 1rem 1rem 1rem;
+    transition: all 0.2s;
+}
+details.desmitificando summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.5rem 0;
+    user-select: none;
+}
+details.desmitificando summary::-webkit-details-marker {
+    display: none;
+}
+details.desmitificando summary i.fa-chevron-circle-down {
+    transition: transform 0.3s ease;
+    color: #2b6cb0;
+    font-size: 1.6rem;
+}
+details.desmitificando[open] summary i.fa-chevron-circle-down {
+    transform: rotate(180deg);
+}
+details.desmitificando summary .pulsame {
+    font-size: 0.8rem;
+    color: #2b6cb0;
+    background: #bee3f8;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+details.desmitificando .contenido-ejercicios {
+    margin-top: 0.5rem;
+    border-top: 1px solid #90cdf4;
+    padding-top: 1rem;
+}
+
+.ejercicio-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    border: 1px solid #90cdf4;
+}
+.ejercicio-header {
+    background: linear-gradient(135deg, #2b6cb0 0%, #1a365d 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ejercicio-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.ejercicio-body {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+}
+.ejercicio-body .enunciado-ej {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.ejercicio-body ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+.resolucion {
+    background: #ebf8ff;
+    border-left: 4px solid #2b6cb0;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 0.5rem 0;
+    font-size: 0.98rem;
+}
+.resolucion .paso {
+    margin-bottom: 0.6rem;
+}
+.resolucion .paso strong {
+    color: #2b6cb0;
+}
+.pie-clave {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: #744210;
+}
+.pie-clave i {
+    margin-right: 8px;
+    color: #d69e2e;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== CABECERA OBLIGATORIA ===== -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T10.10.- </span>
+                <span class="texto">Ley de Ohm Generalizada</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES EXISTENTES ===== -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de fuerza electromotriz (fem) como la energía que el generador aporta por unidad de carga, y de la Ley de Ohm aplicada al circuito completo (generador + resistencia externa), demostrar que la diferencia de potencial terminal \( V \) entre los bornes de un generador real con fem \( \varepsilon \) y resistencia interna \( r \), conectado a una resistencia externa \( R \) por la que circula una corriente \( I \), viene dada por:</p>
+        <div class="formula-box">
+            \[ V = \varepsilon - I \cdot r \]
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U10c10 - Ley de Ohm generalizada.png" alt="Imagen" width="800">
+            <!-- -----FIN-------- -->
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Fundamentar matemáticamente por qué la tensión medida en los bornes de un generador real es menor que su fem cuando suministra corriente. Esta demostración conecta el modelo ideal de generador con el comportamiento real, explicando fenómenos como la caída de tensión en baterías descargadas y la necesidad de mantener baja la resistencia interna en fuentes de alimentación. Es esencial para el diseño de circuitos y el análisis de instalaciones eléctricas.</p>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Modelo de generador real.</strong> Un generador real se modela como una fuente ideal de fuerza electromotriz \( \varepsilon \) (fem) en serie con una resistencia interna \( r \). La fem representa la energía química, mecánica o de otro tipo convertida en energía eléctrica por unidad de carga. La resistencia interna modela las pérdidas irreversibles dentro del propio generador.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Balance energético por unidad de carga.</strong> Consideremos una carga \( q \) que recorre el circuito completo. La energía total que el generador aporta a la carga es \( \varepsilon \cdot q \). Esta energía se distribuye en:
+            <ul>
+                <li>Energía disipada en la resistencia interna: \( I^2 \cdot r \cdot t = I \cdot r \cdot q \) (pues \( q = I \cdot t \))</li>
+                <li>Energía entregada al circuito externo: \( V \cdot q \)</li>
+            </ul>
+            <div class="formula-box">
+                \[ \varepsilon \cdot q = I \cdot r \cdot q + V \cdot q \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Simplificación.</strong> Dividiendo toda la ecuación por la carga \( q \) (que es no nula):
+            <div class="formula-box">
+                \[ \varepsilon = I \cdot r + V \]
+            </div>
+            <p>Despejando la diferencia de potencial terminal \( V \):</p>
+            <div class="formula-box">
+                \[ V = \varepsilon - I \cdot r \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Interpretación física.</strong> La expresión \( V = \varepsilon - I \cdot r \) indica que:
+            <ul>
+                <li>Cuando \( I = 0 \) (circuito abierto): \( V = \varepsilon \). La tensión en bornes coincide con la fem.</li>
+                <li>Cuando \( I > 0 \): \( V < \varepsilon \). La tensión en bornes es menor que la fem debido a la caída de potencial interno \( I \cdot r \).</li>
+                <li>Cuanto mayor sea la corriente demandada, mayor es la caída interna y menor la tensión terminal.</li>
+            </ul>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Aplicación de la Ley de Ohm al circuito completo.</strong> El circuito total tiene resistencia \( R + r \) (resistencia externa más interna). Por la Ley de Ohm:
+            <div class="formula-box">
+                \[ I = \frac{\varepsilon}{R + r} \]
+            </div>
+            <p>Despejando \( \varepsilon \):</p>
+            <div class="formula-box">
+                \[ \varepsilon = I \cdot (R + r) = I \cdot R + I \cdot r \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Relación con la tensión terminal.</strong> Como \( V = I \cdot R \) (Ley de Ohm en la resistencia externa), sustituimos:
+            <div class="formula-box">
+                \[ \varepsilon = V + I \cdot r \]
+            </div>
+            <p>Despejando nuevamente \( V \):</p>
+            <div class="formula-box">
+                \[ V = \varepsilon - I \cdot r \]
+            </div>
+            <p>Esto confirma el resultado obtenido por balance energético.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Expresión alternativa en función de la resistencia externa.</strong> Sustituyendo \( I = \frac{\varepsilon}{R + r} \) en la expresión de \( V \):
+            <div class="formula-box">
+                \[ V = \varepsilon - \frac{\varepsilon}{R + r} \cdot r = \varepsilon \left( 1 - \frac{r}{R + r} \right) = \varepsilon \cdot \frac{R}{R + r} \]
+            </div>
+            <div class="formula-box">
+                \[ V = \varepsilon \cdot \frac{R}{R + r} \]
+            </div>
+            <p>Esta forma muestra explícitamente que \( V \to \varepsilon \) cuando \( R \gg r \) (resistencia externa mucho mayor que la interna).</p>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong> Es crucial que los estudiantes comprendan que la fem \( \varepsilon \) es una propiedad <strong>intrínseca</strong> del generador (independiente del circuito), mientras que la tensión terminal \( V \) depende de la carga conectada. Una batería descargada tiene mayor resistencia interna \( r \), lo que provoca una caída de tensión más pronunciada al suministrar corriente. Por ello, al medir una batería con un voltímetro (que consume corriente despreciable) se obtiene \( \varepsilon \), pero al conectarla a un circuito la tensión cae. Los generadores de alta calidad (como las fuentes de alimentación de laboratorio) tienen \( r \) muy pequeña para mantener \( V \approx \varepsilon \) incluso con cargas variables.
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            \[ V = \varepsilon - I \cdot r \quad \text{(Ley de Ohm generalizada)} \]
+        </div>
+        <div class="formula-box">
+            \[ V = \varepsilon \cdot \frac{R}{R + r} \quad \text{(Forma alternativa)} \]
+        </div>
+        <p>La tensión terminal de un generador real es igual a su fem menos la caída de potencial en su resistencia interna. Esta caída es proporcional a la corriente suministrada. En el caso límite de resistencia externa infinita (circuito abierto), la tensión terminal coincide con la fem.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- BLOQUE DESPLEGABLE AÑADIDO (TAREA 1)      -->
+    <!-- ======================================== -->
+    <details class="desmitificando">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO la Ley de Ohm Generalizada</span>
+            <span class="pulsame">🖱️ Pulsame</span>
+        </summary>
+        <div class="contenido-ejercicios">
+
+            <!-- EJERCICIO 1: Cálculo de la tensión terminal -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">1</span>
+                    <span>Cálculo de la tensión terminal a partir de ε, I y r</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una batería tiene una fem de \( 12\,\text{V} \) y una resistencia interna de \( 0{,}5\,\Omega \). Si se conecta a un circuito que demanda \( 3\,\text{A} \), ¿cuál es la tensión en los bornes de la batería?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Aplicamos la ley de Ohm generalizada: \( V = \varepsilon - I \cdot r \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( V = 12 - 3 \times 0{,}5 = 12 - 1{,}5 = 10{,}5\,\text{V} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La tensión en bornes es \( 10{,}5\,\text{V} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Cálculo de la resistencia interna -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">2</span>
+                    <span>Determinación de la resistencia interna de un generador</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una pila de \( 9\,\text{V} \) de fem alimenta una resistencia de \( 150\,\Omega \). Si la tensión medida en los bornes de la pila es \( 8{,}7\,\text{V} \), calcula su resistencia interna y la corriente que circula.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Calculamos la corriente: \( I = \frac{V}{R} = \frac{8{,}7}{150} = 0{,}058\,\text{A} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Despejamos \( r \) de \( V = \varepsilon - I \cdot r \): \( r = \frac{\varepsilon - V}{I} = \frac{9 - 8{,}7}{0{,}058} = \frac{0{,}3}{0{,}058} \approx 5{,}17\,\Omega \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La resistencia interna es \( \approx 5{,}2\,\Omega \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Cálculo de la fem -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">3</span>
+                    <span>Determinación de la fem de un generador</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Un generador de \( 0{,}8\,\Omega \) de resistencia interna suministra \( 2{,}5\,\text{A} \) a un circuito y la tensión en sus bornes es \( 11{,}5\,\text{V} \). Calcula su fem.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Despejamos \( \varepsilon \) de \( V = \varepsilon - I \cdot r \): \( \varepsilon = V + I \cdot r \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( \varepsilon = 11{,}5 + 2{,}5 \times 0{,}8 = 11{,}5 + 2 = 13{,}5\,\text{V} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> La fem del generador es \( 13{,}5\,\text{V} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Efecto de la resistencia externa sobre la tensión terminal -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">4</span>
+                    <span>Variación de la tensión terminal con la carga</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una batería de \( 24\,\text{V} \) y \( 0{,}2\,\Omega \) de resistencia interna se conecta a una resistencia variable. Calcula la tensión terminal para \( R = 10\,\Omega \), \( R = 1\,\Omega \) y \( R = 0{,}1\,\Omega \) (cortocircuito aproximado).</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Usamos \( V = \varepsilon \cdot \frac{R}{R + r} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Para \( R = 10\,\Omega \): \( V = 24 \cdot \frac{10}{10 + 0{,}2} = 24 \cdot \frac{10}{10{,}2} \approx 23{,}53\,\text{V} \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> Para \( R = 1\,\Omega \): \( V = 24 \cdot \frac{1}{1 + 0{,}2} = 24 \cdot \frac{1}{1{,}2} = 20\,\text{V} \).</div>
+                        <div class="paso"><strong>Paso 4:</strong> Para \( R = 0{,}1\,\Omega \): \( V = 24 \cdot \frac{0{,}1}{0{,}1 + 0{,}2} = 24 \cdot \frac{0{,}1}{0{,}3} = 8\,\text{V} \).</div>
+                        <div class="paso"><strong>Conclusión:</strong> La tensión terminal cae drásticamente cuando la resistencia externa es comparable o menor que la interna. En cortocircuito (\( R \to 0 \)), \( V \to 0 \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Aplicación práctica — batería de coche -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">5</span>
+                    <span>Aplicación en el arranque de un coche</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>La batería de un coche tiene una fem de \( 12{,}6\,\text{V} \) y una resistencia interna de \( 0{,}02\,\Omega \). Durante el arranque, el motor de arranque consume \( 150\,\text{A} \). Calcula la tensión en bornes de la batería durante el arranque y la potencia disipada en la resistencia interna.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Tensión terminal: \( V = \varepsilon - I \cdot r = 12{,}6 - 150 \times 0{,}02 = 12{,}6 - 3 = 9{,}6\,\text{V} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Potencia disipada en la resistencia interna: \( P_r = I^2 \cdot r = 150^2 \times 0{,}02 = 22500 \times 0{,}02 = 450\,\text{W} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> Durante el arranque, la tensión cae a \( 9{,}6\,\text{V} \) y se disipan \( 450\,\text{W} \) en el interior de la batería (se calienta). Esto explica por qué las baterías se calientan durante arranques prolongados.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE Observaciones claves -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La diferencia fundamental entre la Ley de Ohm simple (\( V = I \cdot R \)) y la generalizada (\( V = \varepsilon - I \cdot r \)) es que la primera se aplica a resistencias, mientras que la segunda describe el comportamiento de <strong>generadores reales</strong>. La "trampa" más común es confundir la fem \( \varepsilon \) con la tensión terminal \( V \), olvidando que la resistencia interna provoca una caída de tensión que aumenta con la corriente. En circuitos abiertos o con voltímetros ideales (corriente nula), ambas coinciden.
+            </div>
+
+        </div> <!-- /contenido-ejercicios -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- /container -->
+</body>
+</html>

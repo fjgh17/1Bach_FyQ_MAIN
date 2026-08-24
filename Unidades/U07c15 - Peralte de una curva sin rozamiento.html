@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.15. Peralte de una Curva (Sin Rozamiento)</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.15.- </span>
+                <span class="texto">Peralte de una Curva (Sin Rozamiento)</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la segunda ley de Newton aplicada a un vehículo que describe una curva circular sobre un plano inclinado (peralte), sin considerar rozamiento, demostrar que existe un ángulo de inclinación óptimo que permite que la curva sea recorrida sin necesidad de fuerzas de rozamiento lateral, dependiendo únicamente de la velocidad, el radio de la curva y la gravedad.</p>
+        <div class="formula-box">
+            \[ \tan \alpha = \frac{v^2}{g R} \]
+        </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U07c15 - Peralte de una curva sin rozamiento.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Demostrar que el peralte de una carretera en curva es un diseño físico inteligente que utiliza la componente horizontal de la fuerza normal para proporcionar la fuerza centrípeta necesaria, eliminando la dependencia del rozamiento y aumentando la seguridad a alta velocidad.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Diagrama de fuerzas:</strong> Consideremos un vehículo de masa \( m \) que recorre una curva circular de radio \( R \) con velocidad constante \( v \). La carretera está inclinada un ángulo \( \alpha \) respecto a la horizontal. Las únicas fuerzas que actúan son:
+            <ul>
+                <li>El <strong>peso</strong> \( \vec{P} = m\vec{g} \), vertical hacia abajo.</li>
+                <li>La <strong>fuerza normal</strong> \( \vec{N} \), perpendicular a la superficie de la carretera hacia arriba.</li>
+            </ul>
+            No hay rozamiento (\( F_r = 0 \)).
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Descomposición de la normal:</strong> La fuerza normal se descompone en componentes horizontal y vertical respecto al suelo:
+            <div class="formula-box">
+                \[ N_x = N \sin \alpha \quad \text{(horizontal, hacia el centro de la curva)} \]
+                \[ N_y = N \cos \alpha \quad \text{(vertical, hacia arriba)} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Equilibrio en la dirección vertical:</strong> No hay aceleración vertical, por lo que la componente vertical de la normal equilibra al peso:
+            <div class="formula-box">
+                \[ \sum F_y = N \cos \alpha - m g = 0 \quad \Rightarrow \quad N \cos \alpha = m g \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Dinámica en la dirección horizontal:</strong> La componente horizontal de la normal es la única fuerza que apunta hacia el centro de la curva, por lo que proporciona la fuerza centrípeta:
+            <div class="formula-box">
+                \[ \sum F_x = N \sin \alpha = \frac{m v^2}{R} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Eliminación de la normal:</strong> Dividiendo la ecuación horizontal entre la vertical para eliminar \( N \) y \( m \):
+            <div class="formula-box">
+                \[ \frac{N \sin \alpha}{N \cos \alpha} = \frac{\frac{m v^2}{R}}{m g} \]
+            </div>
+            Simplificando:
+            <div class="formula-box">
+                \[ \tan \alpha = \frac{v^2}{g R} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Interpretación y diseño:</strong> El ángulo de peralte óptimo depende únicamente de \( v \), \( g \) y \( R \). Para una curva de radio dado:
+            <ul>
+                <li>A <strong>mayor velocidad</strong> \( \Rightarrow \) mayor ángulo de peralte necesario.</li>
+                <li>A <strong>mayor radio</strong> \( \Rightarrow \) menor ángulo necesario.</li>
+                <li>A esta velocidad de diseño, el vehículo no tiende ni a deslizarse hacia abajo ni hacia arriba de la curva.</li>
+            </ul>
+            Si el vehículo va más lento, tendería a deslizarse hacia el interior (bajo el peralte); si va más rápido, hacia el exterior (sobre el peralte). En ambos casos, el rozamiento (si existe) compensaría la diferencia.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que el ángulo de peralte óptimo de una curva sin rozamiento viene dado por:</p>
+        <div class="formula-box">
+            \[ \boxed{\tan \alpha = \frac{v^2}{g R}} \]
+        </div>
+        <p>A esta velocidad de diseño, la componente horizontal de la normal proporciona exactamente la fuerza centrípeta requerida, sin necesidad de rozamiento lateral.</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Esta demostración conecta la dinámica circular con la estática (componentes de fuerzas). Es un excelente ejemplo de <strong>ingeniería física</strong>: las autopistas y pistas de carreras se peraltan precisamente por este principio. Se recomienda calcular un ejemplo numérico: para \( R = 100 \, \mathrm{m} \) y \( v = 72 \, \mathrm{km/h} = 20 \, \mathrm{m/s} \), se obtiene \( \tan \alpha = \frac{400}{9{,}8 \times 100} \approx 0{,}41 \), es decir, \( \alpha \approx 22^\circ \). También se puede relacionar con el peralte de las pistas de ciclismo o de los tramos de montaña rusa.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Peralte de una Curva"    -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Peralte de una Curva (Sin Rozamiento)</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Cálculo del ángulo de peralte -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Ángulo de peralte para una carretera</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Una curva de una autopista tiene un radio de \(R = 150\,\text{m}\). La velocidad de diseño para la que se ha peraltado es de \(90\,\text{km/h}\).</p>
+                    <ul>
+                        <li>a) Calcula el ángulo de peralte necesario.</li>
+                        <li>b) Si un vehículo circula a \(60\,\text{km/h}\), ¿hacia dónde tendería a deslizarse (interior o exterior)?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Convertimos velocidad a m/s: \(v = 90\,\text{km/h} = 90 \cdot \frac{1000}{3600} = 25\,\text{m/s}\). 
+                        Aplicamos \(\tan \alpha = \frac{v^2}{g R} = \frac{25^2}{9,8 \cdot 150} = \frac{625}{1470} \approx 0,4252\). 
+                        \(\alpha = \arctan(0,4252) \approx 23,0^\circ\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> A \(60\,\text{km/h} \approx 16,67\,\text{m/s}\), la velocidad es menor que la de diseño. La fuerza centrípeta requerida es menor, pero la normal horizontal es fija (diseñada para 25 m/s). El vehículo tenderá a deslizarse hacia el <strong>interior</strong> de la curva (bajo el peralte), ya que la componente horizontal de la normal es excesiva para su velocidad.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Velocidad de diseño a partir del peralte -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Velocidad de diseño para un peralte dado</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Una curva de una pista de carreras tiene un radio \(R = 80\,\text{m}\) y un peralte de \(15^\circ\).</p>
+                    <ul>
+                        <li>a) Calcula la velocidad de diseño (la que permite tomar la curva sin rozamiento).</li>
+                        <li>b) Si la pista está diseñada para coches de Fórmula 1, ¿es razonable esta velocidad? (compara con velocidades típicas de F1 ~ 200-300 km/h).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> De \(\tan \alpha = \frac{v^2}{g R}\), despejamos \(v = \sqrt{g R \tan \alpha}\). 
+                        \(\tan 15^\circ \approx 0,2679\). 
+                        \(v = \sqrt{9,8 \cdot 80 \cdot 0,2679} = \sqrt{210,0} \approx 14,5\,\text{m/s}\) (aproximadamente \(52\,\text{km/h}\)).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(52\,\text{km/h}\) es una velocidad muy baja para F1. Una pista de F1 necesita peraltes mucho mayores (20°-30°) y radios más grandes para alcanzar altas velocidades sin rozamiento. Este peralte sería adecuado para una curva de un circuito urbano o de baja velocidad.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Comparación de dos curvas -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Comparación de peraltes para diferentes curvas</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Se tienen dos curvas:</p>
+                    <ul>
+                        <li>Curva A: \(R = 50\,\text{m}\), \(v = 20\,\text{m/s}\)</li>
+                        <li>Curva B: \(R = 100\,\text{m}\), \(v = 30\,\text{m/s}\)</li>
+                        <li>a) Calcula el ángulo de peralte necesario en cada caso.</li>
+                        <li>b) ¿Cuál de las dos curvas es más "peraltada"? Explica por qué.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Curva A: \(\tan \alpha_A = \frac{20^2}{9,8 \cdot 50} = \frac{400}{490} \approx 0,8163 \Rightarrow \alpha_A \approx 39,2^\circ\). 
+                        Curva B: \(\tan \alpha_B = \frac{30^2}{9,8 \cdot 100} = \frac{900}{980} \approx 0,9184 \Rightarrow \alpha_B \approx 42,6^\circ\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La curva B tiene un ángulo de peralte ligeramente mayor (42,6° > 39,2°), a pesar de tener mayor radio. Esto se debe a que la velocidad en B es mucho mayor, y el efecto de \(v^2\) domina sobre el aumento de \(R\). La curva B es más peraltada.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Velocidad máxima sin rozamiento para un peralte dado -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Velocidad máxima permitida por el peralte</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Una curva de radio \(R = 120\,\text{m}\) tiene un peralte de \(20^\circ\).</p>
+                    <ul>
+                        <li>a) ¿Cuál es la velocidad de diseño (sin rozamiento)?</li>
+                        <li>b) Si un vehículo entra a \(40\,\text{m/s}\), ¿se saldrá de la curva? (sin rozamiento). ¿Qué ocurriría?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(v = \sqrt{g R \tan \alpha} = \sqrt{9,8 \cdot 120 \cdot \tan 20^\circ} = \sqrt{9,8 \cdot 120 \cdot 0,3640} = \sqrt{428,1} \approx 20,7\,\text{m/s}\) (74,5 km/h).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(40\,\text{m/s}\) es mucho mayor que la velocidad de diseño. La componente horizontal de la normal es insuficiente para proporcionar la fuerza centrípeta necesaria; el vehículo tenderá a salirse hacia el <strong>exterior</strong> de la curva. Sin rozamiento, se saldría de la pista.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Aplicación en una pista de motociclismo -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Peralte variable en un velódromo</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un velódromo tiene una curva de radio \(R = 25\,\text{m}\) y está diseñado para que los ciclistas la recorran a \(15\,\text{m/s}\) sin rozamiento.</p>
+                    <ul>
+                        <li>a) Calcula el ángulo de peralte.</li>
+                        <li>b) Si el ciclista reduce su velocidad a \(10\,\text{m/s}\), ¿qué debe hacer para no caerse? (considera que el rozamiento es despreciable).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(\tan \alpha = \frac{15^2}{9,8 \cdot 25} = \frac{225}{245} \approx 0,9184 \Rightarrow \alpha \approx 42,6^\circ\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> A \(10\,\text{m/s}\) la velocidad es menor que la de diseño. El ciclista tendería a deslizarse hacia el interior (parte baja del peralte). Para compensar, puede inclinar la bicicleta aún más hacia el interior (aumentar el ángulo de inclinación) o, si el peralte es fijo, necesitaría rozamiento para mantener la trayectoria. Sin rozamiento, la única opción es aumentar la velocidad o cambiar de trayectoria (radio menor). En la práctica, los ciclistas ajustan su inclinación para compensar.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> El peralte convierte parte de la fuerza normal en fuerza centrípeta, permitiendo que los vehículos tomen curvas a mayor velocidad sin depender del rozamiento. La fórmula \(\tan \alpha = v^2/(gR)\) muestra que el ángulo depende del cuadrado de la velocidad, por lo que pequeñas variaciones de velocidad requieren grandes cambios de peralte. En curvas reales, siempre hay un margen de rozamiento que permite velocidades ligeramente superiores o inferiores a la de diseño.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

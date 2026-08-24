@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.06 - Demostración: Ley de Gay-Lussac (isocórica)</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.06.- </span>
+                    <span class="texto">Demostración: Ley de Gay-Lussac (isocórica)</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo de la ecuación de estado de los gases ideales \(pV = nRT\), demostrar que en un proceso isocórico (a volumen constante) con una cantidad fija de gas, el cociente entre la presión y la temperatura absoluta permanece constante:</p>
+            <div class="formula-box">
+                \[ \frac{p}{T} = \text{cte} \quad \text{o equivalentemente} \quad \frac{p_1}{T_1} = \frac{p_2}{T_2} \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c06 - Ley de Gay-Lussac.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar matemáticamente la ley experimental de Gay-Lussac a partir de la ecuación de Clapeyron, mostrando que la constancia del volumen impone una relación de proporcionalidad directa entre presión y temperatura absoluta. Esta ley explica fenómenos como el aumento de presión en un recipiente cerrado al calentarlo, o el funcionamiento de los termómetros de gas a volumen constante.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Ecuación de estado inicial:</strong> Partimos de la ecuación de Clapeyron para una cantidad fija de gas (\(n = \text{cte}\)) en un recipiente de volumen \(V\) determinado:
+                <div class="formula-box">
+                    \[ p_1 V_1 = nRT_1 \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Condición de proceso isocórico:</strong> En un proceso isocórico, el volumen permanece constante durante toda la transformación (recipiente rígido de paredes fijas). Por tanto:
+                <div class="formula-box">
+                    \[ V_1 = V_2 = V = \text{cte} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Ecuación de estado final:</strong> Al final del proceso, la ecuación de Clapeyron sigue siendo válida:
+                <div class="formula-box">
+                    \[ p_2 V_2 = nRT_2 \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Despeje de \(nR\):</strong> De ambas ecuaciones podemos despejar el producto \(nR\) que es constante:
+                <div class="formula-box">
+                    \[ nR = \frac{p_1 V_1}{T_1} = \frac{p_2 V_2}{T_2} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Simplificación:</strong> Como \(V_1 = V_2\), podemos simplificar el volumen en ambos miembros:
+                <div class="formula-box">
+                    \[ \frac{p_1}{T_1} = \frac{p_2}{T_2} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Generalización:</strong> Dado que los estados son arbitrarios, para cualquier estado del gas en condiciones isocóricas:
+                <div class="formula-box">
+                    \[ \frac{p}{T} = \text{cte} \]
+                </div>
+                donde la constante depende del volumen \(V\) y de la cantidad de sustancia \(n\): \(\text{cte} = \frac{nR}{V}\).
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ \frac{p}{T} = \text{cte} \quad \text{(proceso isocórico, } n = \text{cte)} \]
+            </div>
+            <p>O equivalentemente, comparando dos estados:</p>
+            <div class="formula-box">
+                \[ \frac{p_1}{T_1} = \frac{p_2}{T_2} \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Esta ley es especialmente útil para explicar por qué no se debe calentar un recipiente cerrado (como una lata de aerosol) porque la presión aumenta proporcionalmente con la temperatura, pudiendo llegar a explosionar. Se recomienda representar gráficamente \(p\) frente a \(T\) (en K) obteniendo una recta que pasa por el origen. Es importante destacar que en procesos isocóricos no hay trabajo de expansión (\(W = 0\)), por lo que todo el calor intercambiado se traduce en variación de energía interna (\(\Delta U = Q_V\)), como se demuestra en el Primer Principio.
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO la Ley de Gay-Lussac (isocórica)</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Calentamiento isocórico: presión final</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un recipiente rígido contiene gas a \(2.5\,\text{atm}\) y \(25^\circ\text{C}\). Si se calienta hasta \(85^\circ\text{C}\), ¿cuál será la nueva presión?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Convertir temperaturas a kelvin: \(T_1 = 25+273 = 298\,\text{K}\), \(T_2 = 85+273 = 358\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Aplicar \(\frac{p_1}{T_1} = \frac{p_2}{T_2}\) → \(p_2 = p_1 \cdot \frac{T_2}{T_1} = 2.5 \times \frac{358}{298} \approx 3.00\,\text{atm}\).</p>
+                        <p><span class="step-label">Resultado:</span> La presión final es \(3.00\,\text{atm}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Enfriamiento isocórico: temperatura final</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un neumático (volumen constante) tiene una presión de \(3.2\,\text{atm}\) a \(40^\circ\text{C}\). Si la presión baja a \(2.8\,\text{atm}\) por un descenso de temperatura, ¿cuál es la nueva temperatura en °C?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> \(T_1 = 40+273 = 313\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 2:</span> \(T_2 = T_1 \cdot \frac{p_2}{p_1} = 313 \times \frac{2.8}{3.2} = 273.875\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 3:</span> Convertir a °C: \(273.875 - 273 = 0.875^\circ\text{C}\).</p>
+                        <p><span class="step-label">Resultado:</span> La temperatura final es aproximadamente \(0.9^\circ\text{C}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Contexto: olla a presión</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>En una olla a presión, el vapor alcanza \(2.0\,\text{atm}\) a \(120^\circ\text{C}\). Si la olla se calienta hasta que la presión es \(3.0\,\text{atm}\) (sin cambiar el volumen), ¿cuál es la nueva temperatura?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> \(T_1 = 120+273 = 393\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 2:</span> \(T_2 = T_1 \cdot \frac{p_2}{p_1} = 393 \times \frac{3.0}{2.0} = 589.5\,\text{K}\).</p>
+                        <p><span class="step-label">Paso 3:</span> Convertir: \(589.5 - 273 = 316.5^\circ\text{C}\).</p>
+                        <p><span class="step-label">Resultado:</span> La temperatura sería \(316.5^\circ\text{C}\) (peligroso).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Comparación de estados y representación gráfica</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas en un recipiente rígido a \(1.0\,\text{atm}\) y \(0^\circ\text{C}\) se calienta hasta \(150^\circ\text{C}\).</p>
+                        <ul>
+                            <li>a) Calcula la presión final.</li>
+                            <li>b) Representa en un diagrama \(p\)-\(T\) (en K) los dos estados y la recta que los une. ¿Cuál es la ecuación de la recta?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(T_1 = 273\,\text{K}\), \(T_2 = 423\,\text{K}\).</p>
+                        <p>\(p_2 = 1.0 \times \frac{423}{273} \approx 1.55\,\text{atm}\).</p>
+                        <p><span class="step-label">b)</span> La gráfica es una recta que pasa por el origen: \(p = kT\) con \(k = \frac{p_1}{T_1} = \frac{1.0}{273} \approx 0.00366\,\text{atm/K}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Aplicación en un termómetro de gas</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un termómetro de gas a volumen constante usa aire. A \(0^\circ\text{C}\) la presión es \(80.0\,\text{kPa}\). Al sumergirlo en agua hirviendo, la presión sube a \(109.2\,\text{kPa}\).</p>
+                        <ul>
+                            <li>a) Calcula la temperatura del agua hirviendo usando la ley de Gay-Lussac.</li>
+                            <li>b) ¿Coincide con el valor esperado (\(100^\circ\text{C}\))? Justifica la posible discrepancia.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(T_1 = 273\,\text{K}\), \(p_1 = 80.0\,\text{kPa}\), \(p_2 = 109.2\,\text{kPa}\).</p>
+                        <p>\(T_2 = T_1 \cdot \frac{p_2}{p_1} = 273 \times \frac{109.2}{80.0} = 372.6\,\text{K}\).</p>
+                        <p>\(T_2 = 372.6 - 273 = 99.6^\circ\text{C}\).</p>
+                        <p><span class="step-label">b)</span> Coincide prácticamente con \(100^\circ\text{C}\); la pequeña diferencia se debe a errores experimentales o a que el gas no es ideal.</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La ley de Gay-Lussac establece que, a volumen constante, la presión es directamente proporcional a la temperatura absoluta. Gráficamente, es una recta que pasa por el origen. Recuerda siempre usar kelvin y que en procesos isocóricos no hay trabajo (\(W=0\)), por lo que el calor intercambiado se invierte íntegramente en variar la energía interna (\(\Delta U = Q_V\)).
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

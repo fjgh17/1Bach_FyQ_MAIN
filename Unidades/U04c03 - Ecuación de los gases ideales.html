@@ -1,0 +1,660 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T04.03 - Ecuación de los gases ideales (Ecuación de Clapeyron)</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            background: rgba(255,255,255,0.2);
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .formula-box-highlight {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        .note-prof {
+            background: #f0fff4;
+            border: 1px dashed #48bb78;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #22543d;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin-left: 25px;
+            margin-bottom: 12px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #feebc8 0%, #feebc8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 88%;
+            padding: 0 4px;
+        }
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            .section {
+                padding: 20px 18px;
+                margin: 12px;
+            }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 20px 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            border-radius: 12px;
+            background: #edf2f7;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #667eea;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 10px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 12px 12px;
+        }
+        .details-content .ejercicio-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .details-content .ejercicio-card:last-child {
+            margin-bottom: 0;
+        }
+        .ejercicio-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .ejercicio-header .badge {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.85em;
+        }
+        .ejercicio-header h3 {
+            margin: 0;
+            font-size: 1.15em;
+            color: #2d3748;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #48bb78;
+            padding: 12px 16px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .math {
+            display: block;
+            text-align: center;
+            margin: 6px 0;
+        }
+        .pie-didactico {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-top: 20px;
+            color: #2a4365;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T04.03.- </span>
+                <span class="texto">Ecuación de los gases ideales (Ecuación de Clapeyron)</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de las <strong>leyes empíricas de los gases</strong> —Ley de Boyle-Mariotte (\(pV = \text{cte}\) a \(T\) constante), Ley de Charles-Gay-Lussac (\(V = V_0(1 + \alpha t)\) a \(p\) constante, con \(\alpha = \frac{1}{273{,}15}\,^{\circ}\text{C}^{-1}\)) y Ley de Avogadro (volúmenes iguales de gases diferentes en las mismas condiciones de \(p\) y \(T\) contienen el mismo número de moléculas)—, demostrar que:</p>
+        
+        <div class="formula-box-highlight">
+            Para un gas ideal, las variables de estado presión \(p\), volumen \(V\), temperatura absoluta \(T\) y cantidad de sustancia \(n\) están relacionadas mediante la <strong>ecuación de estado</strong>:
+            \[pV = nRT\]
+            donde \(R\) es la <strong>constante universal de los gases ideales</strong>.
+        </div>
+        
+        <p style="margin-top: 15px;">Es decir, demostrar que la combinación de las tres leyes empíricas conduce a una <span class="highlight">ecuación de estado única</span> capaz de predecir el comportamiento de cualquier gas en el límite de bajas presiones.</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U04c03 - Ecuación de los gases ideales.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Se pretende obtener una <strong>deducción formal de la ecuación de Clapeyron</strong> a partir de las leyes experimentales conocidas, demostrando que:</p>
+        <ul>
+            <li>La combinación de las leyes de Boyle y Charles-Gay-Lussac permite definir una <strong>función de estado</strong> \(f(p, V, T) = 0\).</li>
+            <li>La introducción de la cantidad de sustancia \(n\) mediante la Ley de Avogadro permite generalizar la ecuación para cualquier masa de gas.</li>
+            <li>La constante \(R\) es <strong>universal</strong>, es decir, independiente de la naturaleza del gas.</li>
+        </ul>
+        <p>Esta demostración es fundamental porque unifica el tratamiento de los gases y constituye la base para todos los cálculos estequiométricos que involucran fases gaseosas.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔬 Procedimiento</h2>
+        
+        <div class="step">
+            <span class="step-num">1</span> <strong>Planteamiento de la función de estado para un gas</strong>
+            <p>Experimentalmente se observa que, para una cantidad fija de gas (\(n = \text{cte}\)), el volumen \(V\) depende de la presión \(p\) y de la temperatura \(T\):</p>
+            <div class="formula-box">
+                \[V = f(p, T)\]
+            </div>
+            <p>La Ley de Boyle establece que, a temperatura constante:</p>
+            <div class="formula-box">
+                \[pV = k_1 \quad (T = \text{cte})\]
+            </div>
+            <p>donde \(k_1\) es una constante que depende de \(T\) y de la cantidad de gas.</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">2</span> <strong>Incorporación de la dependencia con la temperatura</strong>
+            <p>La Ley de Charles-Gay-Lussac establece que, a presión constante, el volumen varía linealmente con la temperatura en grados Celsius:</p>
+            <div class="formula-box">
+                \[V = V_0 \left(1 + \alpha \, t\right) \quad (p = \text{cte})\]
+            </div>
+            <p>donde \(V_0\) es el volumen a \(0\,^{\circ}\text{C}\) y \(\alpha = \frac{1}{273{,}15}\,^{\circ}\text{C}^{-1}\) es el coeficiente de dilatación térmica (idéntico para todos los gases ideales).</p>
+            <p>Definiendo la <strong>temperatura absoluta</strong> (escala Kelvin):</p>
+            <div class="formula-box">
+                \[T = 273{,}15 + t \quad \Rightarrow \quad \frac{V}{V_0} = \frac{T}{T_0}\]
+            </div>
+            <p>con \(T_0 = 273{,}15\,\text{K}\). Por tanto, a presión constante:</p>
+            <div class="formula-box">
+                \[\frac{V}{T} = k_2 \quad (p = \text{cte})\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">3</span> <strong>Combinación de las leyes de Boyle y Charles-Gay-Lussac</strong>
+            <p>Para una cantidad fija de gas, el volumen es inversamente proporcional a \(p\) (Ley de Boyle) y directamente proporcional a \(T\) (Ley de Charles-Gay-Lussac). Por tanto, debe cumplirse simultáneamente:</p>
+            <div class="formula-box">
+                \[V \propto \frac{1}{p} \quad \text{y} \quad V \propto T\]
+            </div>
+            <p>Combinando ambas proporcionalidades:</p>
+            <div class="formula-box">
+                \[V \propto \frac{T}{p}\]
+            </div>
+            <p>Introduciendo una constante de proporcionalidad \(k\) (que depende de la cantidad de gas):</p>
+            <div class="formula-box-highlight">
+                \[pV = k\,T\]
+            </div>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">4</span> <strong>Introducción de la cantidad de sustancia mediante la Ley de Avogadro</strong>
+            <p>La Ley de Avogadro establece que, en las mismas condiciones de \(p\) y \(T\), volúmenes iguales de gases diferentes contienen el mismo número de moléculas. Equivalentemente:</p>
+            <div class="formula-box">
+                \[\frac{V}{n} = \text{cte} \quad (p, T = \text{cte})\]
+            </div>
+            <p>Esto implica que la constante \(k\) en la ecuación anterior debe ser <strong>proporcional a la cantidad de sustancia</strong> \(n\):</p>
+            <div class="formula-box">
+                \[k = n \cdot R\]
+            </div>
+            <p>donde \(R\) es una nueva constante de proporcionalidad que, por la Ley de Avogadro, debe ser <strong>idéntica para todos los gases</strong> (constante universal).</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">5</span> <strong>Obtención de la ecuación de estado</strong>
+            <p>Sustituyendo \(k = nR\) en la ecuación combinada:</p>
+            <div class="formula-box-highlight">
+                \[pV = nRT\]
+            </div>
+            <p>Esta es la <strong>ecuación de Clapeyron</strong> o ecuación de estado del gas ideal.</p>
+        </div>
+        
+        <div class="step">
+            <span class="step-num">6</span> <strong>Determinación del valor de la constante universal \(R\)</strong>
+            <p>Considerando 1 mol de gas ideal en condiciones normales (\(p = 101{,}325\,\text{kPa}\), \(T = 273{,}15\,\text{K}\)), el volumen molar es \(V_m = 22{,}414\,\text{L/mol} = 22{,}414 \times 10^{-3}\,\text{m}^3\text{/mol}\):</p>
+            <div class="formula-box">
+                \[R = \frac{pV_m}{T} = \frac{101{,}325 \times 10^{3}\,\text{Pa} \times 22{,}414 \times 10^{-3}\,\text{m}^3\text{/mol}}{273{,}15\,\text{K}}\]
+            </div>
+            <div class="formula-box">
+                \[R \approx 8{,}314\,\frac{\text{J}}{\text{mol}\cdot\text{K}}\]
+            </div>
+            <p>En otras unidades frecuentes en Química:</p>
+            <div class="formula-box">
+                \[R = 0{,}082\,\frac{\text{atm}\cdot\text{L}}{\text{mol}\cdot\text{K}} = 8{,}314\,\frac{\text{kPa}\cdot\text{L}}{\text{mol}\cdot\text{K}}\]
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que la combinación de las leyes empíricas de Boyle, Charles-Gay-Lussac y Avogadro conduce a una <strong>ecuación de estado universal</strong> para los gases en el límite de bajas presiones.</p>
+        
+        <div class="formula-box-highlight">
+            <strong>Ecuación de estado del gas ideal (Ecuación de Clapeyron):</strong>
+            \[pV = nRT\]
+            <br>con
+            \[R = 8{,}314\,\frac{\text{J}}{\text{mol}\cdot\text{K}} = 0{,}082\,\frac{\text{atm}\cdot\text{L}}{\text{mol}\cdot\text{K}}\]
+        </div>
+        
+        <p style="margin-top: 15px;">Esta ecuación permite:</p>
+        <ul>
+            <li>Calcular cualquiera de las variables de estado (\(p\), \(V\), \(T\), \(n\)) conocidas las otras tres.</li>
+            <li>Determinar volúmenes de gases en reacciones químicas en condiciones no estándar.</li>
+            <li>Establecer la base teórica para la <strong>estequiometría en fase gaseosa</strong>.</li>
+        </ul>
+        
+        <div class="note-prof">
+            <strong>💡 Observaciones sobre el alumnado:</strong><br>
+            Es importante destacar que la ecuación de Clapeyron es un <strong>modelo ideal</strong> válido en el límite de presiones bajas y temperaturas altas. En el contexto de 1.º de Bachillerato, puede mencionarse que los gases reales se desvían ligeramente de este comportamiento, pero que para los cálculos estequiométricos del curso la aproximación es más que suficiente. Recomendar el uso consistente de unidades del SI (Pa, m³, K) o, alternativamente, mantener coherencia entre atmósferas, litros y la constante \(R\) correspondiente.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame — 🧪 DESMITIFICANDO la ecuación de los gases ideales (Ecuación de Clapeyron)</span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <h3>Cálculo de volumen a partir de moles, presión y temperatura</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>Se tienen 2,50 mol de un gas ideal a 25 °C y 150 kPa de presión.</li>
+                    <li>Calcula el volumen que ocupa el gas.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución paso a paso:</strong></p>
+                    <p>Ecuación de Clapeyron: \(pV = nRT\).</p>
+                    <p>Datos: \(n = 2,50\,\text{mol}\), \(T = 25 + 273 = 298\,\text{K}\), \(p = 150\,\text{kPa} = 150\,000\,\text{Pa}\).</p>
+                    <p>Despejamos \(V = \frac{nRT}{p}\).</p>
+                    <p>Usamos \(R = 8,314\,\frac{\text{J}}{\text{mol}\cdot\text{K}}\) (unidades SI).</p>
+                    <div class="math">\(V = \frac{2,50 \times 8,314 \times 298}{150\,000} = \frac{6194}{150\,000} = 0,0413\,\text{m}^3\)</div>
+                    <p>Convertimos a litros: \(0,0413 \times 1000 = \mathbf{41,3\,L}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <h3>Determinación de la masa molar a partir de la densidad</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>Un gas desconocido tiene una densidad de 2,86 g/L a 27 °C y 101 kPa.</li>
+                    <li>Calcula su masa molar.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Relación entre densidad (\(d\)) y masa molar: \(d = \frac{m}{V} = \frac{nM}{V} = \frac{pM}{RT}\).</p>
+                    <p>Despejamos \(M = \frac{dRT}{p}\).</p>
+                    <p>Datos: \(d = 2,86\,\text{g/L} = 2,86\,\text{kg/m}^3\) (aunque podemos trabajar en L con \(R = 8,314\,\frac{\text{kPa}\cdot\text{L}}{\text{mol}\cdot\text{K}}\)).</p>
+                    <p>Usamos \(R = 8,314\,\frac{\text{kPa}\cdot\text{L}}{\text{mol}\cdot\text{K}}\), \(p = 101\,\text{kPa}\), \(T = 300\,\text{K}\).</p>
+                    <div class="math">\(M = \frac{2,86 \times 8,314 \times 300}{101} = \frac{7130}{101} \approx 70,6\,\text{g/mol}\)</div>
+                    <p><strong>Resultado:</strong> \(\mathbf{70,6\,\text{g/mol}}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <h3>Comparación de dos gases en distintas condiciones</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>Un gas ocupa 5,00 L a 20 °C y 100 kPa.</li>
+                    <li>a) ¿Qué volumen ocupará a 50 °C y 150 kPa?</li>
+                    <li>b) ¿Cuántos moles de gas hay?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) Para la misma cantidad de gas, usamos la relación \(\frac{p_1 V_1}{T_1} = \frac{p_2 V_2}{T_2}\).</p>
+                    <p>Datos: \(p_1=100\,\text{kPa}\), \(V_1=5,00\,\text{L}\), \(T_1=293\,\text{K}\); \(p_2=150\,\text{kPa}\), \(T_2=323\,\text{K}\).</p>
+                    <div class="math">\(V_2 = V_1 \times \frac{p_1}{p_2} \times \frac{T_2}{T_1} = 5,00 \times \frac{100}{150} \times \frac{323}{293} = 5,00 \times 0,667 \times 1,102 = 3,67\,\text{L}\)</div>
+                    <p>b) Usamos Clapeyron con los datos iniciales: \(n = \frac{pV}{RT}\).</p>
+                    <div class="math">\(n = \frac{100 \times 5,00}{8,314 \times 293} = \frac{500}{2436} \approx 0,205\,\text{mol}\)</div>
+                    <p><strong>Resultados:</strong> a) \(\mathbf{3,67\,L}\); b) \(\mathbf{0,205\,mol}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <h3>Estequiometría con gas: volumen de gas producido</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>En la reacción \(\mathrm{2\,KClO_3 \rightarrow 2\,KCl + 3\,O_2}\), se descomponen 12,0 g de KClO₃.</li>
+                    <li>¿Qué volumen de O₂ se obtiene a 30 °C y 95 kPa?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Masa molar KClO₃ = 122,5 g/mol. Moles = \(12,0 / 122,5 = 0,0980\,\text{mol}\).</p>
+                    <p>Estequiometría: 2 mol KClO₃ → 3 mol O₂, luego \(n_{\mathrm{O_2}} = 0,0980 \times \frac{3}{2} = 0,147\,\text{mol}\).</p>
+                    <p>Usamos Clapeyron: \(V = \frac{nRT}{p}\) con \(T=303\,\text{K}\), \(p=95\,000\,\text{Pa}\).</p>
+                    <div class="math">\(V = \frac{0,147 \times 8,314 \times 303}{95\,000} = \frac{370}{95\,000} = 0,00389\,\text{m}^3 = 3,89\,\text{L}\)</div>
+                    <p><strong>Resultado:</strong> \(\mathbf{3,89\,L}\).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <h3>Cálculo de presión final en un recipiente tras reacción química</h3>
+                </div>
+                <p><strong>Enunciado:</strong></p>
+                <ul>
+                    <li>En un recipiente de 2,00 L se introducen 0,200 mol de N₂ y 0,300 mol de H₂ a 25 °C.</li>
+                    <li>La reacción \(\mathrm{N_2 + 3\,H_2 \rightarrow 2\,NH_3}\) transcurre con un rendimiento del 80%.</li>
+                    <li>Calcula la presión total final en el recipiente suponiendo que la temperatura se mantiene constante.</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Reactivo limitante: H₂ (0,300 mol) necesita 0,100 mol de N₂ (tenemos 0,200), luego el H₂ es limitante.</p>
+                    <p>Moles de NH₃ teóricos = \(0,300 \times \frac{2}{3} = 0,200\,\text{mol}\). Con 80% rendimiento: \(0,200 \times 0,80 = 0,160\,\text{mol NH}_3\).</p>
+                    <p>Moles de N₂ consumidos = \(0,300 \times \frac{1}{3} = 0,100\,\text{mol}\), quedan \(0,200 - 0,100 = 0,100\,\text{mol N}_2\).</p>
+                    <p>Moles de H₂ consumidos = 0,300 mol (todos), quedan 0.</p>
+                    <p>Moles totales finales = \(0,100 + 0,160 = 0,260\,\text{mol}\).</p>
+                    <p>Aplicamos Clapeyron: \(p = \frac{nRT}{V} = \frac{0,260 \times 8,314 \times 298}{2,00 \times 10^{-3}} = \frac{644}{0,002} = 322\,000\,\text{Pa} = \mathbf{322\,\text{kPa}}\).</p>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-didactico">
+                <i class="fas fa-lightbulb" style="color: #2b6cb0;"></i>
+                <strong>Observaciones claves:</strong> La ecuación de Clapeyron es la herramienta que conecta el mundo microscópico (moles) con el macroscópico (presión, volumen y temperatura). Permite resolver problemas de gases en cualquier condición, y combinada con la estequiometría, es la base para calcular volúmenes de reactivos y productos en reacciones que involucran sustancias gaseosas. La clave está en elegir las unidades adecuadas para \(R\) y mantener la coherencia dimensional.
+            </div>
+        </div>
+    </details>
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

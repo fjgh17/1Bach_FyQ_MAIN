@@ -1,0 +1,605 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.02 - Demostración: Primer Principio de la Termodinámica</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.02.- </span>
+                    <span class="texto">Demostración: Primer Principio de la Termodinámica</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo del principio de conservación de la energía y de las definiciones de calor (\(Q\)) y trabajo (\(W\)) como formas de intercambio de energía entre un sistema y su entorno, demostrar que la variación de la energía interna de un sistema viene dada por:</p>
+            <div class="formula-box">
+                \[ \Delta U = Q + W \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c02 - Primer principio de la termodinámica.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Establecer la ecuación fundamental que rige todos los procesos termodinámicos, relacionando la energía interna del sistema con los dos únicos mecanismos de intercambio energético: el calor (flujo de energía por diferencia de temperatura) y el trabajo (flujo de energía por desplazamiento macroscópico). Este principio es la base para analizar cualquier proceso termodinámico en la unidad.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Principio de conservación de la energía:</strong> La energía total del universo se conserva. Si un sistema intercambia energía con su entorno, la variación de su energía interna \(\Delta U\) debe ser igual a la energía que recibe del exterior menos la energía que cede al exterior.
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Formas de intercambio energético:</strong> En termodinámica, un sistema solo puede intercambiar energía con su entorno de dos maneras:
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li><strong>Calor (\(Q\)):</strong> flujo de energía debido a una diferencia de temperatura entre el sistema y el entorno.</li>
+                    <li><strong>Trabajo (\(W\)):</strong> flujo de energía debido a fuerzas macroscópicas que producen desplazamientos (expansión, compresión, agitación, etc.).</li>
+                </ul>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Convención de signos:</strong> Se adopta la convención IUPAC:
+                <div class="formula-box">
+                    \[ Q > 0 \text{ (calor absorbido por el sistema)} \quad ; \quad Q < 0 \text{ (calor cedido por el sistema)} \]
+                    \[ W > 0 \text{ (trabajo realizado sobre el sistema)} \quad ; \quad W < 0 \text{ (trabajo realizado por el sistema)} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Balance energético:</strong> La variación de energía interna del sistema es la suma algebraica de todas las energías que entran al sistema. Si el sistema absorbe calor (\(Q > 0\)), su energía interna aumenta. Si el entorno realiza trabajo sobre el sistema (\(W > 0\), compresión), su energía interna también aumenta. Por tanto:
+                <div class="formula-box">
+                    \[ \Delta U = Q + W \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Interpretación física:</strong> Esta ecuación indica que la energía interna es una <em>función de estado</em> (su variación solo depende del estado inicial y final), mientras que \(Q\) y \(W\) son <em>formas de intercambio</em> (dependen del camino seguido). El sistema no "tiene" calor ni trabajo; solo tiene energía interna, y el calor y el trabajo son procesos de transferencia.
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ \Delta U = Q + W \]
+            </div>
+            <p>Donde:</p>
+            <ul style="margin-left: 20px;">
+                <li>\(\Delta U\): variación de energía interna del sistema (J)</li>
+                <li>\(Q\): calor intercambiado (J) — positivo si entra, negativo si sale</li>
+                <li>\(W\): trabajo intercambiado (J) — positivo si se realiza sobre el sistema, negativo si lo realiza el sistema</li>
+            </ul>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es crucial distinguir entre "energía interna" (propiedad del sistema) y "calor/trabajo" (procesos de transferencia). Un error frecuente es afirmar que "un cuerpo caliente tiene más calor". Se recomienda usar la analogía de la cuenta bancaria: el saldo es la energía interna, los ingresos son el calor/work recibidos, y los gastos son el calor/work cedidos. El saldo no "tiene" ingresos, solo tiene un valor numérico.
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO el Primer Principio</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Aplicación directa del primer principio</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un sistema absorbe \(450\,\text{cal}\) de calor y, al mismo tiempo, el entorno realiza un trabajo de \(250\,\text{J}\) sobre él. Calcula la variación de energía interna del sistema en julios.</p>
+                        <p>Dato: \(1\,\text{cal} = 4.18\,\text{J}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Convertir el calor a julios: \(Q = 450 \times 4.18 = 1881\,\text{J}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Identificar signos: \(Q > 0\) (absorbido), \(W > 0\) (trabajo sobre el sistema).</p>
+                        <p><span class="step-label">Paso 3:</span> Aplicar \(\Delta U = Q + W = 1881 + 250 = 2131\,\text{J}\).</p>
+                        <p><span class="step-label">Resultado:</span> La energía interna aumenta en \(2.13\,\text{kJ}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Proceso isobárico con cambio de temperatura</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas ideal se calienta a presión constante de \(1.2\,\text{atm}\) desde \(V_i = 5.0\,\text{L}\) hasta \(V_f = 9.0\,\text{L}\). Durante el proceso, la temperatura aumenta en \(60\,\text{K}\).</p>
+                        <ul>
+                            <li>a) Calcula el trabajo realizado por el gas (en J).</li>
+                            <li>b) Si el gas absorbe \(800\,\text{J}\) de calor, determina la variación de su energía interna.</li>
+                        </ul>
+                        <p>Dato: \(1\,\text{atm·L} = 101.3\,\text{J}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(\Delta V = 9.0 - 5.0 = 4.0\,\text{L}\).</p>
+                        <p>\(W = -p \Delta V = -1.2 \times 4.0 = -4.8\,\text{atm·L}\).</p>
+                        <p>Convertimos: \(-4.8 \times 101.3 \approx -486.2\,\text{J}\) (trabajo realizado por el sistema).</p>
+                        <p><span class="step-label">b)</span> \(\Delta U = Q + W = 800 + (-486.2) = 313.8\,\text{J}\).</p>
+                        <p><span class="step-label">Resultado:</span> La energía interna aumenta en \(314\,\text{J}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Compresión isotérmica</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Se comprime isotérmicamente un gas ideal, realizando un trabajo de \(620\,\text{J}\) sobre el sistema. ¿Cuánto calor intercambia el gas? Indica si lo absorbe o lo cede.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> En un proceso isotérmico, \(\Delta U = 0\) (la temperatura no cambia).</p>
+                        <p>Por tanto, \(0 = Q + W \Rightarrow Q = -W\).</p>
+                        <p><span class="step-label">Paso 2:</span> El trabajo se realiza <em>sobre</em> el sistema, luego \(W = +620\,\text{J}\).</p>
+                        <p>\(Q = -620\,\text{J}\) (signo negativo: calor cedido).</p>
+                        <p><span class="step-label">Resultado:</span> El sistema cede \(620\,\text{J}\) de calor al entorno.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Expansión adiabática y variación de temperatura</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas se expande adiabáticamente realizando un trabajo de \(480\,\text{J}\).</p>
+                        <ul>
+                            <li>a) Calcula la variación de su energía interna.</li>
+                            <li>b) Si el gas contiene 1.5 moles y su \(c_V = 20.8\,\text{J mol}^{-1}\text{K}^{-1}\), ¿cuánto desciende su temperatura?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> Proceso adiabático: \(Q = 0\) → \(\Delta U = W\).</p>
+                        <p>Expansión → trabajo realizado por el sistema: \(W = -480\,\text{J}\).</p>
+                        <p>\(\Delta U = -480\,\text{J}\) (disminuye la energía interna).</p>
+                        <p><span class="step-label">b)</span> \(\Delta U = n c_V \Delta T\) → \(-480 = 1.5 \times 20.8 \times \Delta T\).</p>
+                        <p>\(\Delta T = -480 / (31.2) \approx -15.38\,\text{K}\).</p>
+                        <p><span class="step-label">Resultado:</span> La temperatura desciende \(15.4\,\text{K}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Ciclo termodinámico completo</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un sistema completa un ciclo en el que absorbe \(1.8\,\text{kJ}\) de calor en la primera etapa y cede \(0.9\,\text{kJ}\) en la segunda. En el ciclo, el entorno realiza sobre el sistema un trabajo neto de \(0.4\,\text{kJ}\).</p>
+                        <ul>
+                            <li>a) Calcula el calor neto intercambiado.</li>
+                            <li>b) Verifica si se cumple el primer principio para el ciclo (\(\Delta U = 0\)).</li>
+                            <li>c) Si no se cumple, ¿qué trabajo neto debería realizar el sistema para que el ciclo sea posible?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \(Q_{\text{neto}} = Q_{\text{abs}} + Q_{\text{ced}} = +1.8 + (-0.9) = +0.9\,\text{kJ}\).</p>
+                        <p><span class="step-label">b)</span> Para un ciclo, \(\Delta U = 0\), luego debe cumplirse \(0 = Q_{\text{neto}} + W_{\text{neto}}\).</p>
+                        <p>Aquí \(W_{\text{neto}} = +0.4\,\text{kJ}\) (trabajo sobre el sistema).</p>
+                        <p>\(Q_{\text{neto}} + W_{\text{neto}} = 0.9 + 0.4 = 1.3\,\text{kJ} \neq 0\). No se cumple.</p>
+                        <p><span class="step-label">c)</span> Para que se cumpla, \(W_{\text{neto}} = -Q_{\text{neto}} = -0.9\,\text{kJ}\) (trabajo realizado por el sistema).</p>
+                        <p><span class="step-label">Conclusión:</span> Los datos iniciales son inconsistentes; el trabajo neto debería ser \(-0.9\,\text{kJ}\) para que el ciclo sea válido.</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> El primer principio es una contabilidad energética. La energía interna (\(\Delta U\)) es el saldo final; el calor (\(Q\)) y el trabajo (\(W\)) son los movimientos que lo modifican. El signo de cada uno indica si la energía entra o sale del sistema. ¡Dominar el convenio de signos es el 80% del éxito en termodinámica!
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.09. Fuerza Centrípeta en Movimiento Circular Uniforme</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.09.- </span>
+                <span class="texto">Fuerza Centrípeta en Movimiento Circular Uniforme</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de aceleración normal en un movimiento curvilíneo y de la segunda ley de Newton, demostrar que una partícula que describe un movimiento circular uniforme requiere una fuerza neta dirigida hacia el centro de la trayectoria, cuyo módulo es proporcional al cuadrado de la velocidad e inversamente proporcional al radio.</p>
+        <div class="formula-box">
+            \[ F_c = \frac{m v^2}{R} = m \omega^2 R \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c09 - Fuerza centrípeta en movimiento circular uniforme.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Derivar la expresión de la fuerza centrípeta a partir de la cinemática del movimiento circular uniforme y la segunda ley de Newton. Esta demostración es fundamental para comprender la dinámica de curvas, órbitas planetarias y sistemas rotativos.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Caracterización del MCU:</strong> En el movimiento circular uniforme, la velocidad angular \( \omega \) es constante. La velocidad lineal \( \vec{v} \) es tangente a la trayectoria y su módulo es constante:
+            <div class="formula-box">
+                \[ v = \omega \, R \]
+            </div>
+            Sin embargo, la dirección de \( \vec{v} \) cambia continuamente, lo que implica la existencia de una aceleración.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Aceleración en el MCU:</strong> Aunque el módulo de \( \vec{v} \) es constante, su vector cambia de dirección. La aceleración resultante es puramente normal (centrípeta), dirigida hacia el centro del círculo. Su módulo se obtiene de la cinemática:
+            <div class="formula-box">
+                \[ a_c = \frac{v^2}{R} \]
+            </div>
+            Esta aceleración se debe exclusivamente al cambio de dirección de la velocidad, no a su módulo.
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Aplicación de la segunda ley de Newton:</strong> Según la segunda ley, la fuerza neta debe producir la aceleración observada. Como la aceleración es centrípeta, la fuerza neta también debe ser centrípeta:
+            <div class="formula-box">
+                \[ \vec{F}_c = m \vec{a}_c \]
+            </div>
+            Sustituyendo el módulo de \( a_c \):
+            <div class="formula-box">
+                \[ F_c = m \frac{v^2}{R} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Expresión en función de la velocidad angular:</strong> Sustituyendo \( v = \omega R \) en la expresión anterior:
+            <div class="formula-box">
+                \[ F_c = m \frac{(\omega R)^2}{R} = m \omega^2 R \]
+            </div>
+            Esta forma es útil cuando se conoce la velocidad angular en lugar de la lineal.
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Expresión en función del periodo:</strong> Como \( \omega = \frac{2\pi}{T} \), donde \( T \) es el periodo de revolución, podemos escribir:
+            <div class="formula-box">
+                \[ F_c = m \left( \frac{2\pi}{T} \right)^2 R = \frac{4\pi^2 m R}{T^2} \]
+            </div>
+            Esta forma es particularmente útil en problemas de satélites y órbitas planetarias.
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Interpretación física:</strong> La fuerza centrípeta no es un tipo nuevo de fuerza, sino el nombre que recibe la fuerza neta cuando su efecto es mantener un cuerpo en trayectoria circular. Puede ser proporcionada por la tensión de una cuerda, la fuerza de rozamiento, la gravedad, la normal en una curva peraltada, etc. Si la fuerza centrípeta desaparece, el cuerpo sigue una trayectoria tangencial (primera ley de Newton).
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que una partícula en movimiento circular uniforme requiere una fuerza neta centrípeta de módulo:</p>
+        <div class="formula-box">
+            \[ \boxed{F_c = \frac{m v^2}{R} = m \omega^2 R = \frac{4\pi^2 m R}{T^2}} \]
+        </div>
+        <p>Esta fuerza está dirigida hacia el centro de la trayectoria circular y es responsable del cambio continuo de dirección de la velocidad.</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Es crucial evitar la confusión entre fuerza centrípeta y fuerza centrífuga. La fuerza centrípeta es una fuerza real que actúa sobre el cuerpo en rotación, mientras que la centrífuga es una fuerza ficticia que aparece en sistemas de referencia no inerciales (rotantes). En un sistema inercial, solo existe la fuerza centrípeta. Un error común es pensar que el cuerpo "tira" hacia fuera; en realidad, tiende a moverse en línea recta (inercia) y la fuerza centrípeta lo obliga a curvar su trayectoria.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Fuerza Centrípeta"       -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Fuerza Centrípeta en Movimiento Circular Uniforme</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Aplicación directa en una curva horizontal -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Coche en curva horizontal</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un coche de \(1200\,\text{kg}\) toma una curva horizontal de radio \(50\,\text{m}\) a una velocidad de \(72\,\text{km/h}\) (\(20\,\text{m/s}\)).</p>
+                    <ul>
+                        <li>a) Calcula la fuerza centrípeta necesaria para que el coche no se salga de la curva.</li>
+                        <li>b) Si el coeficiente de rozamiento estático entre los neumáticos y el asfalto es \(\mu_e = 0,60\), ¿es suficiente el rozamiento para proporcionar esa fuerza?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(F_c = \frac{m v^2}{R} = \frac{1200 \cdot (20)^2}{50} = \frac{1200 \cdot 400}{50} = \frac{480000}{50} = 9600\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La fuerza de rozamiento máxima es \(F_{r,\text{máx}} = \mu_e m g = 0,60 \cdot 1200 \cdot 9,8 = 0,60 \cdot 11760 = 7056\,\text{N}\). Como \(7056 < 9600\), el rozamiento no es suficiente, y el coche patinaría.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Velocidad máxima en una curva -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Velocidad máxima sin patinar</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un ciclista de \(80\,\text{kg}\) (incluyendo la bicicleta) toma una curva de radio \(15\,\text{m}\). El coeficiente de rozamiento entre las ruedas y el suelo es \(\mu = 0,40\).</p>
+                    <ul>
+                        <li>a) ¿Cuál es la velocidad máxima a la que puede tomar la curva sin derrapar?</li>
+                        <li>b) Si el ciclista duplica su masa (con carga extra), ¿cambia la velocidad máxima?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> La fuerza centrípeta máxima es la fuerza de rozamiento: \(\frac{m v^2}{R} \leq \mu m g \Rightarrow v \leq \sqrt{\mu g R}\). \(v_{\text{máx}} = \sqrt{0,40 \cdot 9,8 \cdot 15} = \sqrt{58,8} \approx 7,67\,\text{m/s}\) (\(27,6\,\text{km/h}\)).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La velocidad máxima no depende de la masa (se cancela en la desigualdad). Aunque duplique la masa, la misma velocidad máxima es \(7,67\,\text{m/s}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Comparación de casos (diferentes radios) -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Comparación: curvas de distinto radio</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un vehículo de \(1000\,\text{kg}\) toma dos curvas: una de radio \(40\,\text{m}\) y otra de \(80\,\text{m}\), ambas a la misma velocidad de \(15\,\text{m/s}\).</p>
+                    <ul>
+                        <li>a) Calcula la fuerza centrípeta en cada curva.</li>
+                        <li>b) ¿En cuál de las dos curvas es mayor la fuerza necesaria? ¿Por qué?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Curva 1 (\(R=40\)): \(F_{c1} = \frac{1000 \cdot 15^2}{40} = \frac{1000 \cdot 225}{40} = \frac{225000}{40} = 5625\,\text{N}\). Curva 2 (\(R=80\)): \(F_{c2} = \frac{1000 \cdot 225}{80} = \frac{225000}{80} = 2812,5\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> La fuerza es mayor en la curva de radio menor, porque \(F_c \propto 1/R\). Para un mismo coche y velocidad, una curva más cerrada requiere mayor fuerza centrípeta.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Péndulo cónico (tiovivo) -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Péndulo cónico (asiento de tiovivo)</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un asiento de tiovivo de \(2,0\,\text{kg}\) (masa) describe un círculo de radio \(1,5\,\text{m}\) con una velocidad de \(2,5\,\text{m/s}\). El asiento está suspendido de una cuerda de \(2,0\,\text{m}\) de longitud.</p>
+                    <ul>
+                        <li>a) Calcula la fuerza centrípeta sobre el asiento.</li>
+                        <li>b) Determina la tensión de la cuerda y el ángulo que forma con la vertical.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> \(F_c = \frac{m v^2}{R} = \frac{2,0 \cdot (2,5)^2}{1,5} = \frac{2,0 \cdot 6,25}{1,5} = \frac{12,5}{1,5} \approx 8,33\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> En equilibrio vertical: \(T \cos \theta = m g = 2,0 \cdot 9,8 = 19,6\,\text{N}\). Horizontal: \(T \sin \theta = F_c = 8,33\,\text{N}\). Dividiendo: \(\tan \theta = \frac{8,33}{19,6} \approx 0,425 \Rightarrow \theta \approx 23,0^\circ\). Tensión: \(T = \frac{19,6}{\cos 23,0^\circ} \approx \frac{19,6}{0,9205} \approx 21,3\,\text{N}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Órbita circular de un satélite -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Fuerza centrípeta en una órbita circular</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un satélite de \(500\,\text{kg}\) orbita la Tierra en una órbita circular de radio \(6,8 \times 10^6\,\text{m}\) (aproximadamente \(400\,\text{km}\) de altura). La masa de la Tierra es \(M_T = 5,98 \times 10^{24}\,\text{kg}\).</p>
+                    <ul>
+                        <li>a) Calcula la fuerza centrípeta que actúa sobre el satélite (es la fuerza gravitatoria).</li>
+                        <li>b) Determina la velocidad orbital del satélite.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> La fuerza gravitatoria es \(F = G \frac{m M_T}{R^2}\). Usando \(G = 6,67 \times 10^{-11}\,\text{N·m}^2/\text{kg}^2\): \(F = 6,67 \times 10^{-11} \cdot \frac{500 \cdot 5,98 \times 10^{24}}{(6,8 \times 10^6)^2} = 6,67 \times 10^{-11} \cdot \frac{2,99 \times 10^{27}}{4,624 \times 10^{13}} = 6,67 \times 10^{-11} \cdot 6,466 \times 10^{13} \approx 4310\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Igualando \(F_c = \frac{m v^2}{R}\) con la gravitatoria: \(\frac{m v^2}{R} = G \frac{m M_T}{R^2} \Rightarrow v = \sqrt{\frac{G M_T}{R}} = \sqrt{\frac{6,67 \times 10^{-11} \cdot 5,98 \times 10^{24}}{6,8 \times 10^6}} = \sqrt{\frac{3,988 \times 10^{14}}{6,8 \times 10^6}} = \sqrt{5,864 \times 10^7} \approx 7658\,\text{m/s}\) (aproximadamente \(7,66\,\text{km/s}\)).
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> La fuerza centrípeta no es una fuerza "extra", sino el nombre que recibe la fuerza neta que apunta al centro de la circunferencia. Puede ser rozamiento, gravedad, tensión, etc. Su magnitud crece con el cuadrado de la velocidad y decrece con el radio. La masa se cancela en problemas de velocidad máxima en curvas horizontales, lo que sorprende a muchos estudiantes.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T06.06 - Relación entre velocidad lineal y angular</title>
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (gratuita) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+            color: #ffecb0;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+            font-weight: 300;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 4px;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.8em;
+            line-height: 1.7;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* =========================================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (añadido)
+           ========================================================= */
+        details {
+            margin: 30px 15px 20px 15px;
+            background: #ffffff;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            padding: 0.2rem 0.2rem 0.5rem 0.2rem;
+            box-shadow: 0 6px 14px rgba(102, 126, 234, 0.2);
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            background: #f0f4ff;
+            border-radius: 18px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .fa-chevron-circle-down {
+            font-size: 1.6rem;
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details summary .icon-pulsame {
+            background: #667eea;
+            color: white;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        details .details-content {
+            padding: 0.5rem 1.8rem 2rem 1.8rem;
+        }
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .exercise-card {
+            background: #f9fcff;
+            border: 1px solid #dce7f2;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem 1.8rem;
+            margin: 1.8rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .exercise-card .ex-title {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2d3748;
+            margin-bottom: 0.4rem;
+        }
+        .exercise-card .ex-title .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 40px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.85rem;
+        }
+        .exercise-card .enunciado {
+            background: #f1f6fd;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            margin: 0.6rem 0 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        .exercise-card .solucion {
+            background: #eef3f9;
+            padding: 0.8rem 1.5rem;
+            border-radius: 14px;
+            border: 1px solid #d3e0ee;
+            margin-top: 0.8rem;
+        }
+        .exercise-card .solucion .paso {
+            margin: 0.5rem 0;
+        }
+        .exercise-card .solucion .paso strong {
+            color: #2b3a67;
+        }
+        .clave-didactica {
+            background: #e6f0fa;
+            padding: 1rem 1.8rem;
+            border-radius: 40px;
+            margin-top: 1.8rem;
+            font-weight: 500;
+            color: #1a365d;
+            border-left: 6px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T06.06.- </span>
+                <span class="texto">Relación entre velocidad lineal y angular</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- SECCIÓN ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de velocidad angular \( \omega = \frac{\Delta\theta}{\Delta t} \) y de la relación geométrica entre arco y ángulo en una circunferencia, demostrar que la velocidad lineal (tangencial) de un punto en rotación se expresa como:</p>
+        <div class="formula-box">\[ v = \omega r \]</div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U06c06 - Relación entre velocidad lineal y angular.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+    </div>
+
+    <!-- SECCIÓN OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Conectar las magnitudes angulares con las lineales en el movimiento circular, demostrando que la velocidad tangencial es directamente proporcional al radio y a la velocidad angular. Esta relación es esencial para interpretar el movimiento de ruedas, discos y satélites.</p>
+    </div>
+
+    <!-- SECCIÓN PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definición de velocidad angular</strong>
+            <p>Definimos la velocidad angular media como el cociente entre el ángulo barrido y el tiempo empleado:</p>
+            <div class="formula-box">\[ \omega = \frac{\Delta\theta}{\Delta t} \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Relación arco-ángulo</strong>
+            <p>En una circunferencia de radio \( r \), el arco de circunferencia \( \Delta s \) recorrido por un punto cuando el radio barre un ángulo \( \Delta\theta \) (medido en radianes) viene dado por la definición de radián:</p>
+            <div class="formula-box">\[ \Delta s = r \Delta\theta \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Definición de velocidad lineal</strong>
+            <p>La velocidad lineal (tangencial) se define como el arco recorrido por unidad de tiempo:</p>
+            <div class="formula-box">\[ v = \frac{\Delta s}{\Delta t} \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Sustitución del arco</strong>
+            <p>Sustituimos la expresión del arco \( \Delta s \) en la definición de velocidad lineal:</p>
+            <div class="formula-box">\[ v = \frac{r\Delta\theta}{\Delta t} \]</div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Obtención de la relación</strong>
+            <p>Reconocemos que el cociente \( \frac{\Delta\theta}{\Delta t} \) es precisamente la velocidad angular \( \omega \), obteniendo finalmente:</p>
+            <div class="formula-box">\[ v = \omega r \]</div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN RESULTADO -->
+    <div class="section resultado">
+        <h2>📊 Resultado</h2>
+        <div class="formula-box" style="border-color: #38b2ac; border-width: 3px; background: #e6fffa;">\[ v = \omega r \]</div>
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Todos los puntos de un cuerpo rígido en rotación comparten la misma velocidad angular \( \omega \), pero la velocidad lineal \( v \) aumenta linealmente con la distancia al eje. Por ello, los puntos del borde de una rueda se desplazan más rápido que los cercanos al centro.
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- BLOQUE DESPLEGABLE (añadido según la TAREA 1)             -->
+    <!-- ========================================================= -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO Relación entre velocidad lineal y angular</span>
+            <span class="icon-pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Cálculo de la velocidad lineal a partir de la angular y el radio</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Una rueda de \( 0.40 \, \text{m} \) de radio gira con una velocidad angular constante de \( 15 \, \text{rad/s} \). Calcula la velocidad lineal de un punto en el borde de la rueda.</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( \omega = 15 \, \text{rad/s} \), \( r = 0.40 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Aplicamos la relación \( v = \omega r = 15 \cdot 0.40 = 6.0 \, \text{m/s} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( v = 6.0 \, \text{m/s} \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Despeje de la velocidad angular</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un disco de \( 0.25 \, \text{m} \) de radio gira de modo que un punto de su periferia tiene una velocidad lineal de \( 8.0 \, \text{m/s} \). ¿Cuál es su velocidad angular en rad/s y en rpm?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( v = 8.0 \, \text{m/s} \), \( r = 0.25 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Despejamos \( \omega = \frac{v}{r} = \frac{8.0}{0.25} = 32 \, \text{rad/s} \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> Convertimos a rpm: \( 32 \, \text{rad/s} \times \frac{60 \, \text{s}}{2\pi \, \text{rad}} \approx 305.6 \, \text{rpm} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( \omega = 32 \, \text{rad/s} \) (≈ 306 rpm).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Despeje del radio</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un punto de un disco gira con una velocidad lineal de \( 12 \, \text{m/s} \) y una velocidad angular de \( 6.0 \, \text{rad/s} \). ¿A qué distancia del centro se encuentra?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Datos: \( v = 12 \, \text{m/s} \), \( \omega = 6.0 \, \text{rad/s} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Despejamos \( r = \frac{v}{\omega} = \frac{12}{6.0} = 2.0 \, \text{m} \).</div>
+                    <div class="paso"><strong>Resultado:</strong> \( r = 2.0 \, \text{m} \).</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Comparación de velocidades lineales en un disco</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Un disco gira con velocidad angular constante de \( 4.0 \, \text{rad/s} \). El punto A está a \( 0.10 \, \text{m} \) del centro y el punto B a \( 0.30 \, \text{m} \). Calcula las velocidades lineales de ambos puntos y la relación entre ellas.</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Para A: \( v_A = \omega r_A = 4.0 \cdot 0.10 = 0.40 \, \text{m/s} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Para B: \( v_B = \omega r_B = 4.0 \cdot 0.30 = 1.2 \, \text{m/s} \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> Relación: \( v_B / v_A = 1.2 / 0.40 = 3 \). Es decir, la velocidad lineal es proporcional al radio.</div>
+                    <div class="paso"><strong>Resultados:</strong> A: \( 0.40 \, \text{m/s} \), B: \( 1.2 \, \text{m/s} \), relación 3:1.</div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="ex-title">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Relación con el número de vueltas y la distancia recorrida</span>
+                </div>
+                <div class="enunciado">
+                    <p><strong>Enunciado:</strong> Una rueda de \( 0.30 \, \text{m} \) de radio gira realizando \( 120 \, \text{rpm} \). ¿Qué distancia lineal recorre un punto del borde en \( 10 \, \text{s} \)? ¿Cuántas vueltas da en ese tiempo?</p>
+                </div>
+                <div class="solucion">
+                    <div class="paso"><strong>Paso 1:</strong> Convertimos rpm a rad/s: \( \omega = 120 \, \text{rpm} \times \frac{2\pi}{60} = 4\pi \, \text{rad/s} \approx 12.57 \, \text{rad/s} \).</div>
+                    <div class="paso"><strong>Paso 2:</strong> Velocidad lineal: \( v = \omega r = 12.57 \cdot 0.30 \approx 3.77 \, \text{m/s} \).</div>
+                    <div class="paso"><strong>Paso 3:</strong> Distancia recorrida en 10 s: \( s = v \cdot t = 3.77 \cdot 10 = 37.7 \, \text{m} \).</div>
+                    <div class="paso"><strong>Paso 4:</strong> Número de vueltas: \( n = \frac{s}{2\pi r} = \frac{37.7}{2\pi \cdot 0.30} \approx \frac{37.7}{1.885} \approx 20.0 \, \text{vueltas} \).</div>
+                    <div class="paso"><strong>Resultados:</strong> Distancia: \( 37.7 \, \text{m} \), vueltas: \( 20.0 \).</div>
+                </div>
+            </div>
+
+            <!-- Pie didáctico -->
+            <div class="clave-didactica">
+                <i class="fas fa-lightbulb" style="margin-right: 0.6rem; color: #f1c40f;"></i>
+                <strong>Observaciones claves:</strong> La relación \( v = \omega r \) es fundamental para conectar el movimiento de rotación con el de traslación. La "trampa" mental es pensar que todos los puntos de un objeto en rotación se mueven a la misma velocidad lineal. En realidad, la velocidad angular es común, pero la lineal aumenta con la distancia al eje. Estos ejercicios muestran cómo usar la relación en diferentes contextos y cómo convertir entre unidades angulares y lineales.
+            </div>
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

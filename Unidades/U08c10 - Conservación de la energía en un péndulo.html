@@ -1,0 +1,593 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 10: Conservación de la Energía en un Péndulo Simple</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            padding: 0 0 20px 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        /* Secciones principales */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* ===== ESTILOS PARA EL DESPLEGABLE ===== */
+        details {
+            margin: 30px 20px 20px 20px;
+            border: 1px solid #cbd5e0;
+            border-radius: 12px;
+            padding: 10px 20px 20px;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2b6cb0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        details summary .titulo {
+            flex: 1;
+        }
+        details summary .pulsame {
+            background: #4299e1;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: normal;
+            white-space: nowrap;
+        }
+
+        /* Tarjetas de ejercicios */
+        .card-ejercicio {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #4299e1;
+        }
+        .card-ejercicio .encabezado {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .card-ejercicio .num {
+            background: #4299e1;
+            color: white;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .card-ejercicio .titulo-ej {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border: 1px dashed #a0aec0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 10px;
+        }
+        .resolucion p {
+            margin: 8px 0;
+        }
+        .clave-didactica {
+            background: #e6fffa;
+            border-left: 6px solid #38b2ac;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 25px;
+            font-style: italic;
+            color: #234e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T08.10.- </span>
+                    <span class="texto">Demostración 10: Conservación de la Energía en un Péndulo Simple</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ===== SECCIONES ===== -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo del principio de conservación de la energía mecánica, demostrar que para un péndulo simple de longitud \( L \) y masa \( m \), desplazado un ángulo \( \theta \) de la vertical y abandonado desde el reposo, la velocidad en el punto más bajo de su trayectoria viene dada por:</p>
+            <div class="formula-box">
+                \[ v = \sqrt{2gL(1 - \cos\theta)} \]
+            </div>
+            <p>Y que, en ausencia de rozamiento, el péndulo alcanza la misma altura máxima en ambos extremos de su oscilación.</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U08c10 - Conservación de la energía en un péndulo.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Aplicar el principio de conservación de la energía mecánica a un sistema oscilatorio concreto, demostrando que la energía potencial gravitatoria en los extremos se transforma completamente en energía cinética en el punto más bajo. Comprender la geometría del péndulo para relacionar el ángulo de desplazamiento con la altura ganada/perdida.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Descripción geométrica del péndulo</strong>
+                <p>Consideramos un péndulo simple formado por una masa puntual \( m \) suspendida de un hilo inextensible de masa despreciable y longitud \( L \). El péndulo se desplaza un ángulo \( \theta \) respecto a la vertical y se abandona desde el reposo.</p>
+                <div class="formula-box">
+                    \[ \text{Longitud del hilo: } L \quad ; \quad \text{Ángulo de desplazamiento: } \theta \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Cálculo de la altura ganada</strong>
+                <p>En la posición de equilibrio (vertical), la masa está a una altura que tomamos como referencia \( h = 0 \). En el extremo desplazado, la masa se encuentra a una altura \( h \) respecto al punto más bajo. Por geometría:</p>
+                <div class="formula-box">
+                    \[ h = L - L\cos\theta = L(1 - \cos\theta) \]
+                </div>
+                <p>Esta expresión proviene de restar la proyección vertical del hilo en la posición inclinada (\( L\cos\theta \)) de la longitud total \( L \).</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Energía en la posición extrema (punto A)</strong>
+                <p>En el extremo, el péndulo se suelta desde el reposo, por lo que su energía cinética es nula. Toda la energía mecánica es potencial:</p>
+                <div class="formula-box">
+                    \[ E_{c,A} = 0 \]
+                </div>
+                <div class="formula-box">
+                    \[ E_{p,A} = mgh = mgL(1 - \cos\theta) \]
+                </div>
+                <div class="formula-box">
+                    \[ E_{m,A} = E_{c,A} + E_{p,A} = mgL(1 - \cos\theta) \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Energía en el punto más bajo (punto B)</strong>
+                <p>En el punto más bajo de la trayectoria, la altura es nula (\( h = 0 \)), por lo que la energía potencial es cero. Toda la energía mecánica se ha transformado en cinética:</p>
+                <div class="formula-box">
+                    \[ E_{p,B} = 0 \]
+                </div>
+                <div class="formula-box">
+                    \[ E_{c,B} = \frac{1}{2}mv^{2} \]
+                </div>
+                <div class="formula-box">
+                    \[ E_{m,B} = E_{c,B} + E_{p,B} = \frac{1}{2}mv^{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Aplicación del principio de conservación</strong>
+                <p>En ausencia de rozamiento con el aire, la energía mecánica se conserva:</p>
+                <div class="formula-box">
+                    \[ E_{m,A} = E_{m,B} \]
+                </div>
+                <div class="formula-box">
+                    \[ mgL(1 - \cos\theta) = \frac{1}{2}mv^{2} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Despeje de la velocidad</strong>
+                <p>Simplificando la masa \( m \) (que, como en la caída libre, no influye en el resultado) y despejando \( v \):</p>
+                <div class="formula-box">
+                    \[ gL(1 - \cos\theta) = \frac{1}{2}v^{2} \]
+                </div>
+                <div class="formula-box">
+                    \[ v^{2} = 2gL(1 - \cos\theta) \]
+                </div>
+                <div class="formula-box">
+                    \[ v = \sqrt{2gL(1 - \cos\theta)} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Simetría y altura máxima en el otro extremo</strong>
+                <p>Por conservación de la energía, al oscilar hacia el otro lado, el péndulo alcanzará una altura idéntica (simétrica respecto a la vertical). La energía cinética en el punto más bajo se transforma completamente de nuevo en energía potencial:</p>
+                <div class="formula-box">
+                    \[ E_{m,B} = E_{m,C} \]
+                </div>
+                <div class="formula-box">
+                    \[ \frac{1}{2}mv^{2} = mgh' \]
+                </div>
+                <p>Sustituyendo la velocidad obtenida:</p>
+                <div class="formula-box">
+                    \[ \frac{1}{2}m \cdot 2gL(1 - \cos\theta) = mgh' \]
+                </div>
+                <div class="formula-box">
+                    \[ h' = L(1 - \cos\theta) = h \]
+                </div>
+                <p>La altura alcanzada en el extremo opuesto es exactamente la misma, confirmando la simetría del movimiento.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">8</span>
+                <strong>Consideraciones sobre el rozamiento del aire</strong>
+                <p>En la realidad, existe rozamiento con el aire que disipa energía mecánica en cada oscilación. La amplitud del péndulo disminuye progresivamente hasta que se detiene. La energía "perdida" se transforma en calor:</p>
+                <div class="formula-box">
+                    \[ W_{\text{roz,aire}} = \Delta E_m < 0 \]
+                </div>
+                <p>En cada ciclo, la altura máxima alcanzada es ligeramente menor que la anterior.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-num">9</span>
+                <strong>Verificación con ángulos pequeños</strong>
+                <p>Para ángulos pequeños (\( \theta \ll 1 \) rad), podemos aproximar \( 1 - \cos\theta \approx \frac{\theta^{2}}{2} \), obteniendo:</p>
+                <div class="formula-box">
+                    \[ v \approx \theta\sqrt{gL} \]
+                </div>
+                <p>Esta aproximación es útil para conectar con el estudio del péndulo como oscilador armónico simple en unidades posteriores.</p>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box" style="border-color: #4299e1; background: #bee3f8; font-size: 1.2em;">
+                \[ v = \sqrt{2gL(1 - \cos\theta)} \]
+            </div>
+            <p>En un péndulo simple sin rozamiento, la energía mecánica se conserva y oscila periódicamente entre energía potencial gravitatoria (máxima en los extremos, donde la velocidad es nula) y energía cinética (máxima en el punto más bajo, donde la altura es nula). La velocidad en el punto más bajo depende de la longitud del péndulo, del ángulo de amplitud y de la gravedad, pero es independiente de la masa. El péndulo alcanza la misma altura máxima en ambos extremos, demostrando la simetría y reversibilidad del movimiento conservativo.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> El péndulo simple es el ejemplo paradigmático de conservación de la energía mecánica y una excelente oportunidad para el laboratorio. Se recomienda que los estudiantes verifiquen experimentalmente que: (1) la velocidad en el punto más bajo no depende de la masa, (2) la altura alcanzada en el otro extremo es igual a la inicial (sin rozamiento), y (3) con rozamiento, la amplitud disminuye. El ejercicio 15 del libro propone elaborar una tabla Excel para comprobar el resultado, lo cual es una excelente oportunidad para integrar herramientas informáticas. Es importante destacar que la fórmula \( h = L(1 - \cos\theta) \) es puramente geométrica y que los estudiantes a menudo confunden la altura \( h \) con el arco recorrido \( s = L\theta \). La demostración del ejercicio 31 (hilo que se engancha en un punto intermedio) es un excelente problema de extensión que muestra que el péndulo asciende a la misma altura independientemente de la longitud efectiva del hilo.
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BLOQUE DESPLEGABLE – TAREA 1                               -->
+        <!-- ========================================================= -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo">🧪 DESMITIFICANDO la conservación de la energía en un péndulo simple</span>
+                <span class="pulsame"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+            </summary>
+
+            <!-- EJERCICIO 1: Velocidad en el punto más bajo -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 1</span>
+                    <span class="titulo-ej">Velocidad máxima para un ángulo dado</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un péndulo de 1,2 m de longitud se separa 35° de la vertical y se suelta desde el reposo. Calcula:</p>
+                <ul>
+                    <li>a) La altura que ha ganado respecto al punto más bajo.</li>
+                    <li>b) La velocidad al pasar por el punto más bajo.</li>
+                    <li>c) ¿Cuál sería la velocidad si la masa fuera el doble?</li>
+                </ul>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>a) \( h = L(1 - \cos 35^\circ) = 1,2 \cdot (1 - 0,8192) = 1,2 \cdot 0,1808 \approx 0,217 \, \text{m} \).</p>
+                    <p>b) \( v = \sqrt{2 g h} = \sqrt{2 \cdot 9,8 \cdot 0,217} = \sqrt{4,253} \approx 2,06 \, \text{m/s} \).</p>
+                    <p>(También directamente: \( v = \sqrt{2 \cdot 9,8 \cdot 1,2 \cdot (1 - \cos 35^\circ)} \)).</p>
+                    <p>c) La velocidad es independiente de la masa, por lo que sería la misma: \( 2,06 \, \text{m/s} \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Ángulo para una velocidad deseada -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 2</span>
+                    <span class="titulo-ej">Determinación del ángulo a partir de la velocidad</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un péndulo de 0,80 m de longitud alcanza una velocidad de 1,5 m/s en el punto más bajo. ¿Con qué ángulo se soltó desde el reposo?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Partimos de \( v^2 = 2 g L (1 - \cos\theta) \).</p>
+                    <p>Despejamos \( \cos\theta = 1 - \frac{v^2}{2 g L} = 1 - \frac{1,5^2}{2 \cdot 9,8 \cdot 0,80} = 1 - \frac{2,25}{15,68} \approx 1 - 0,1435 = 0,8565 \).</p>
+                    <p>\( \theta = \arccos(0,8565) \approx 31,1^\circ \).</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Comparación de velocidades para diferentes ángulos -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 3</span>
+                    <span class="titulo-ej">Comparación de ángulos y velocidades</span>
+                </div>
+                <p><strong>Enunciado:</strong> Se tienen dos péndulos de la misma longitud \( L = 1,5 \, \text{m} \). El primero se suelta desde 20° y el segundo desde 45°. ¿Cuántas veces mayor es la velocidad del segundo en el punto más bajo respecto al primero?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>La velocidad es \( v = \sqrt{2 g L (1 - \cos\theta)} \). La relación de velocidades es:</p>
+                    <p>\( \frac{v_2}{v_1} = \sqrt{\frac{1 - \cos 45^\circ}{1 - \cos 20^\circ}} = \sqrt{\frac{1 - 0,7071}{1 - 0,9397}} = \sqrt{\frac{0,2929}{0,0603}} = \sqrt{4,857} \approx 2,20 \).</p>
+                    <p>La velocidad del segundo es aproximadamente 2,2 veces mayor.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Altura máxima en el otro extremo (simetría) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 4</span>
+                    <span class="titulo-ej">Simetría y altura en el extremo opuesto</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un péndulo de 2,0 m se suelta desde un ángulo de 30°. Demuestra que, sin rozamiento, alcanza la misma altura en el otro extremo. Calcula esa altura y verifica que la velocidad en el punto más bajo permite subir hasta esa altura.</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Altura inicial: \( h = 2,0 \cdot (1 - \cos 30^\circ) = 2,0 \cdot (1 - 0,8660) = 2,0 \cdot 0,1340 = 0,268 \, \text{m} \).</p>
+                    <p>Velocidad en el punto más bajo: \( v = \sqrt{2 g h} = \sqrt{2 \cdot 9,8 \cdot 0,268} = \sqrt{5,253} \approx 2,29 \, \text{m/s} \).</p>
+                    <p>Al subir al otro extremo, toda la cinética se convierte en potencial: \( \frac{1}{2} m v^2 = m g h' \Rightarrow h' = \frac{v^2}{2g} = \frac{5,253}{19,6} = 0,268 \, \text{m} \).</p>
+                    <p>Coincide con la altura inicial, confirmando la simetría.</p>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Péndulo con obstáculo (hilo se engancha) -->
+            <div class="card-ejercicio">
+                <div class="encabezado">
+                    <span class="num">Ejercicio 5</span>
+                    <span class="titulo-ej">Péndulo con punto de enganche intermedio</span>
+                </div>
+                <p><strong>Enunciado:</strong> Un péndulo de 1,8 m de longitud se suelta desde un ángulo de 40°. Al llegar a la vertical, el hilo se encuentra con un clavo situado a 0,6 m del punto de suspensión, por lo que el hilo se dobla y el péndulo continúa oscilando con una longitud efectiva menor. ¿Hasta qué altura ascenderá la masa por encima del punto más bajo?</p>
+                <div class="resolucion">
+                    <p><strong>Resolución:</strong></p>
+                    <p>Por conservación de la energía, la altura máxima que puede alcanzar la masa (medida desde el punto más bajo) es la misma que la altura inicial, independientemente de la longitud efectiva, siempre que no haya rozamiento.</p>
+                    <p>Altura inicial: \( h = 1,8 \cdot (1 - \cos 40^\circ) = 1,8 \cdot (1 - 0,7660) = 1,8 \cdot 0,2340 = 0,421 \, \text{m} \).</p>
+                    <p>Por tanto, ascenderá hasta 0,421 m por encima del punto más bajo. El clavo solo cambia la trayectoria, pero la energía total se conserva, y la altura alcanzada es la misma que la inicial.</p>
+                </div>
+            </div>
+
+            <!-- Observaciones claves -->
+            <div class="clave-didactica">
+                <strong>🎯 Observaciones claves:</strong> El péndulo simple es el ejemplo más claro de transformación cíclica entre energía potencial y cinética. La geometría del péndulo (relación entre ángulo y altura) es el punto clave para resolver problemas. Es fundamental que los estudiantes no confundan la altura \( h \) con la longitud del arco \( s = L\theta \). La independencia de la velocidad respecto a la masa es un resultado que suele sorprender y que se puede verificar fácilmente en el laboratorio. El problema del hilo que se engancha (ejercicio 31 del libro) es una excelente extensión que demuestra que la energía mecánica solo depende de la altura, no de la trayectoria.
+            </div>
+
+        </details>
+        <!-- FIN BLOQUE DESPLEGABLE -->
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- /container -->
+</body>
+</html>

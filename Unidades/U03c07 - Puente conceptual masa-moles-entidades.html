@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 7: Puente Conceptual Masa-Moles-Entidades</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        .bridge-diagram {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL DESPLEGABLE INTERACTIVO
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: 1.15em;
+            color: #2d3748;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #4a5568;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 20px 25px;
+            background: white;
+        }
+        .exercise-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .exercise-header {
+            background: #4a5568;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .exercise-header .badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.85em;
+        }
+        .exercise-body {
+            padding: 18px 20px;
+        }
+        .exercise-body .statement {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .exercise-body .resolution {
+            background: #f0fff4;
+            padding: 15px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .exercise-body .resolution .math {
+            margin: 8px 0;
+        }
+        .didactic-footer {
+            background: #ebf4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-left: 5px solid #3182ce;
+            font-style: italic;
+        }
+        .didactic-footer strong {
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T03.07.- </span>
+                <span class="texto">Puente Conceptual Masa-Moles-Entidades</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES TRANSFORMADAS ===== -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la <strong>definición de mol</strong> (cantidad de sustancia que contiene tantas entidades elementales como átomos hay en 0,012 kg de carbono-12, es decir, \( 6,022 \times 10^{23} \) entidades) y de la <strong>definición de masa molar</strong> (masa de un mol de sustancia, expresada en g/mol y numéricamente igual a la masa atómica o molecular relativa), demostrar que existe una <strong>equivalencia directa y bidireccional</strong> entre la masa de una sustancia (g), su cantidad de sustancia (mol) y el número de entidades elementales (átomos, moléculas, iones).</p>
+        <div class="formula-box">
+            \[ m \text{ (g)} \longleftrightarrow n \text{ (mol)} \longleftrightarrow N \text{ (entidades)} \]
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U03c07 - Puente conceptual masa-moles-entidades.png" alt="Imagen" width="800">
+            <!-- -----FIN-------- -->
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Esta demostración permite:</p>
+        <ul>
+            <li>Comprender que el <strong>mol es un puente</strong> entre el mundo macroscópico (masas medibles en balanza) y el mundo microscópico (número de partículas).</li>
+            <li>Justificar por qué las <strong>proporciones en masa</strong> en una reacción química reflejan proporciones en número de entidades.</li>
+            <li>Desarrollar la habilidad de <strong>conversión sistemática</strong> entre las tres magnitudes, fundamental para toda la estequiometría.</li>
+        </ul>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definimos las magnitudes y constantes fundamentales</strong>:
+            <div class="formula-box">
+                <strong>Masa molar</strong> (\( M \)): masa de un mol de sustancia. Unidades: \( \frac{\text{g}}{\text{mol}} \)
+                <br><br>
+                <strong>Número de Avogadro</strong> (\( N_{\text{A}} \)): \( 6,022 \times 10^{23} \frac{\text{entidades}}{\text{mol}} \)
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Relacionamos masa y moles</strong>. Por definición de masa molar, si tenemos \( n \) moles de una sustancia:
+            <div class="formula-box">
+                \[ m = n \cdot M \]
+            </div>
+            <p>Despejando:</p>
+            <div class="formula-box">
+                \[ n = \frac{m}{M} \]
+            </div>
+            <p>Esta es la <strong>primera conversión</strong>: de masa a cantidad de sustancia (o viceversa).</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Relacionamos moles y número de entidades</strong>. Por definición de mol y del número de Avogadro:
+            <div class="formula-box">
+                \[ N = n \cdot N_{\text{A}} \]
+            </div>
+            <p>Despejando:</p>
+            <div class="formula-box">
+                \[ n = \frac{N}{N_{\text{A}}} \]
+            </div>
+            <p>Esta es la <strong>segunda conversión</strong>: de cantidad de sustancia a número de entidades (o viceversa).</p>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Combinamos ambas relaciones</strong> para obtener la conversión directa masa-entidades:
+            <div class="formula-box">
+                \[ N = n \cdot N_{\text{A}} = \frac{m}{M} \cdot N_{\text{A}} \]
+            </div>
+            <p>Despejando la masa:</p>
+            <div class="formula-box">
+                \[ m = \frac{N \cdot M}{N_{\text{A}}} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Verificamos la coherencia dimensional</strong>:
+            <div class="formula-box">
+                \[ [N] = [\text{mol}] \cdot \left[\frac{\text{entidades}}{\text{mol}}\right] = [\text{entidades}] \quad \checkmark \]
+                <br><br>
+                \[ [m] = [\text{entidades}] \cdot \left[\frac{\text{g}}{\text{mol}}\right] \cdot \left[\frac{\text{mol}}{\text{entidades}}\right] = [\text{g}] \quad \checkmark \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Ilustramos el puente conceptual</strong>. Las tres magnitudes forman un triángulo de conversión:
+            <div class="bridge-diagram">
+                <strong>PUENTE CONCEPTUAL</strong><br><br>
+                \[ \text{Masa } m \text{ (g)} \underset{\div M}{\stackrel{\times M}{\longleftrightarrow}} \text{ Moles } n \text{ (mol)} \underset{\div N_{\text{A}}}{\stackrel{\times N_{\text{A}}}{\longleftrightarrow}} \text{ Entidades } N \]
+                <br><br>
+                <em>Para ir de masa a entidades: \( N = \frac{m}{M} \cdot N_{\text{A}} \)</em><br>
+                <em>Para ir de entidades a masa: \( m = \frac{N}{N_{\text{A}}} \cdot M \)</em>
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Justificación de la importancia del mol</strong>. Sin el concepto de mol, comparar masas de sustancias diferentes no refleja la proporción en número de entidades. Por ejemplo:
+            <div class="formula-box">
+                1 mol de Fe (\( 55,85 \text{ g} \)) y 1 mol de S (\( 32,07 \text{ g} \))<br>
+                tienen <strong>la misma cantidad de átomos</strong> (\( 6,022 \times 10^{23} \)),<br>
+                aunque sus masas sean distintas.
+            </div>
+            <p>El mol permite <strong>contar por pesaje</strong>, esencial en el laboratorio.</p>
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado el <strong>puente conceptual completo</strong> entre las tres magnitudes fundamentales:</p>
+        <div class="formula-box">
+            \[ m = n \cdot M \quad \Longleftrightarrow \quad n = \frac{m}{M} \]
+            <br>
+            \[ N = n \cdot N_{\text{A}} \quad \Longleftrightarrow \quad n = \frac{N}{N_{\text{A}}} \]
+            <br>
+            \[ N = \frac{m \cdot N_{\text{A}}}{M} \quad \Longleftrightarrow \quad m = \frac{N \cdot M}{N_{\text{A}}} \]
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">El mol es la unidad que permite convertir entre masa medible en balanza y número de entidades microscópicas.</p>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  Esta es quizás la demostración más fundamental de toda la unidad. Es crucial que se internalice que el mol no es una "unidad de masa" ni de "número de partículas", sino una <strong>unidad de cantidad de sustancia</strong> con una definición operacional precisa. El número de Avogadro no es una constante mágica, sino la proporcionalidad que emerge de la definición. Recomiendo insistir en la analogía del <strong>"docena"</strong> como puente didáctico inicial, pero enfatizando que el mol es una unidad del SI con definición rigurosa. El triángulo de conversión debe practicarse hasta la automatización, ya que permea toda la estequiometría posterior.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="flex: 1;">🧪 DESMITIFICANDO Puente Conceptual Masa-Moles-Entidades</span>
+            <span style="font-size: 0.9em; color: #4a5568; background: #e2e8f0; padding: 2px 12px; border-radius: 20px;">
+                <i class="fas fa-hand-pointer"></i> Púlsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Conversión de masa a moles y a número de moléculas</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Una muestra de agua pura tiene una masa de 36,0 g. (Masa molar del agua = 18,0 g/mol).</p>
+                        <ul>
+                            <li>a) ¿Cuántos moles de agua contiene?</li>
+                            <li>b) ¿Cuántas moléculas de agua hay en esa muestra?</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>a) \( n = \frac{m}{M} = \frac{36,0}{18,0} = 2,00 \, \text{mol} \).</li>
+                            <li>b) \( N = n \cdot N_{\text{A}} = 2,00 \times 6,022 \times 10^{23} = 1,204 \times 10^{24} \, \text{moléculas} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Cálculo de masa a partir del número de moléculas</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Una muestra de metano (CH₄) contiene \( 3,01 \times 10^{23} \) moléculas. (Masa molar del metano = 16,0 g/mol).</p>
+                        <ul>
+                            <li>a) ¿Cuántos moles de CH₄ hay?</li>
+                            <li>b) ¿Cuál es la masa de la muestra?</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>a) \( n = \frac{N}{N_{\text{A}}} = \frac{3,01 \times 10^{23}}{6,022 \times 10^{23}} \approx 0,500 \, \text{mol} \).</li>
+                            <li>b) \( m = n \cdot M = 0,500 \times 16,0 = 8,00 \, \text{g} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Comparación del número de átomos en masas iguales de diferentes elementos</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Se tienen 10,0 g de aluminio (Al, M=27,0) y 10,0 g de hierro (Fe, M=55,8).</p>
+                        <ul>
+                            <li>a) Calcular el número de moles de cada uno.</li>
+                            <li>b) Calcular el número de átomos de cada uno.</li>
+                            <li>c) ¿Cuál contiene más átomos? Justificar.</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>a) \( n_{\text{Al}} = \frac{10,0}{27,0} \approx 0,370 \, \text{mol} \); \( n_{\text{Fe}} = \frac{10,0}{55,8} \approx 0,179 \, \text{mol} \).</li>
+                            <li>b) \( N_{\text{Al}} = 0,370 \times 6,022 \times 10^{23} \approx 2,23 \times 10^{23} \) átomos; \( N_{\text{Fe}} = 0,179 \times 6,022 \times 10^{23} \approx 1,08 \times 10^{23} \) átomos.</li>
+                            <li>c) El aluminio contiene más átomos porque su masa molar es menor: a igual masa, hay más moles y, por tanto, más átomos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Determinación de la masa molar a partir del número de moléculas y la masa</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Una muestra de 2,50 g de un gas contiene \( 2,69 \times 10^{22} \) moléculas. Calcular la masa molar del gas.</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Primero, moles: \( n = \frac{N}{N_{\text{A}}} = \frac{2,69 \times 10^{22}}{6,022 \times 10^{23}} \approx 0,0447 \, \text{mol} \).</li>
+                            <li>Luego, masa molar: \( M = \frac{m}{n} = \frac{2,50}{0,0447} \approx 55,9 \, \text{g/mol} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Aplicación en estequiometría: relación entre moles y átomos en un compuesto</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> En una muestra de 0,50 mol de sulfato de sodio (Na₂SO₄):</p>
+                        <ul>
+                            <li>a) ¿Cuántos moles de átomos de sodio hay?</li>
+                            <li>b) ¿Cuántos átomos de oxígeno hay en total?</li>
+                        </ul>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>a) En 1 mol de Na₂SO₄ hay 2 mol de átomos de Na. En 0,50 mol: \( 0,50 \times 2 = 1,00 \, \text{mol de átomos de Na} \).</li>
+                            <li>b) En 1 mol de Na₂SO₄ hay 4 mol de átomos de O. En 0,50 mol: \( 0,50 \times 4 = 2,00 \, \text{mol de átomos de O} \).</li>
+                            <li>Número de átomos de O: \( 2,00 \times 6,022 \times 10^{23} = 1,204 \times 10^{24} \) átomos de O.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="didactic-footer">
+                <strong>🧠 Observaciones claves:</strong> El mol es el <strong>puente indispensable</strong> entre lo que podemos pesar (gramos) y lo que realmente importa en las reacciones químicas (número de partículas). Los errores más comunes son <strong>confundir masa molar con masa atómica</strong> sin unidades, o <strong>olvidar multiplicar por el número de Avogadro</strong> al calcular el número de entidades. Practicar conversiones en cadena (masa → moles → entidades) es esencial para dominar la estequiometría. Recuerda que el número de Avogadro es una constante de proporcionalidad que relaciona el mundo microscópico con el macroscópico.
+            </div>
+
+        </div>
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.09 - Demostración: Procesos adiabáticos reversibles</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.09.- </span>
+                    <span class="texto">Demostración: Procesos adiabáticos reversibles</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo del Primer Principio de la Termodinámica \( \Delta U = Q + W \), de la condición de proceso adiabático (\( Q = 0 \)), de la ecuación de estado de los gases ideales \( pV = nRT \), y de la relación de Mayer, demostrar que en un proceso adiabático reversible de un gas ideal se cumplen las siguientes ecuaciones:</p>
+            <div class="formula-box">
+                \[ pV^\gamma = \text{cte} \quad ; \quad TV^{\gamma - 1} = \text{cte} \quad ; \quad \frac{T^\gamma}{p^{\gamma - 1}} = \text{cte} \]
+            </div>
+            <p>donde \( \gamma = \frac{c_p}{c_V} = \frac{C_p}{C_V} \) es el coeficiente de dilatación adiabática.</p>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c09 - Ecuaciones de procesos adiabáticos reversibles.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Obtener las ecuaciones que describen la evolución de un gas ideal cuando no intercambia calor con el entorno, mostrando que en una expansión adiabática el gas se enfría (disminuye su temperatura) porque utiliza su propia energía interna para realizar trabajo. Estas ecuaciones son esenciales para comprender el funcionamiento de motores, compresores y la formación de nubes en la atmósfera.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Condición adiabática:</strong> En un proceso adiabático no hay intercambio de calor:
+                <div class="formula-box">
+                    \[ Q = 0 \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Primer Principio simplificado:</strong> Aplicando el Primer Principio con \( Q = 0 \):
+                <div class="formula-box">
+                    \[ \Delta U = W \]
+                </div>
+                El trabajo realizado por el sistema se obtiene íntegramente de su energía interna.
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Expresión diferencial:</strong> En forma diferencial, para un proceso reversible:
+                <div class="formula-box">
+                    \[ \mathrm{d}U = \mathrm{d}W = -p \, \mathrm{d}V \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Variación de energía interna:</strong> Para un gas ideal, \( \mathrm{d}U = n C_V \, \mathrm{d}T \). Por tanto:
+                <div class="formula-box">
+                    \[ n C_V \, \mathrm{d}T = -p \, \mathrm{d}V \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Sustitución de la presión:</strong> De la ecuación de estado \( p = \frac{nRT}{V} \):
+                <div class="formula-box">
+                    \[ n C_V \, \mathrm{d}T = -\frac{nRT}{V} \, \mathrm{d}V \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Simplificación:</strong> Dividimos por \( nT \):
+                <div class="formula-box">
+                    \[ C_V \frac{\mathrm{d}T}{T} = -R \frac{\mathrm{d}V}{V} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Uso de la relación de Mayer:</strong> Sabemos que \( C_p - C_V = R \), por lo que \( \frac{R}{C_V} = \frac{C_p - C_V}{C_V} = \gamma - 1 \), donde \( \gamma = \frac{C_p}{C_V} \). Sustituyendo \( R = C_V(\gamma - 1) \):
+                <div class="formula-box">
+                    \[ C_V \frac{\mathrm{d}T}{T} = -C_V(\gamma - 1) \frac{\mathrm{d}V}{V} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">8</span>
+                <strong>Simplificación y separación de variables:</strong> Dividiendo por \( C_V \) e integrando:
+                <div class="formula-box">
+                    \[ \int \frac{\mathrm{d}T}{T} = -(\gamma - 1) \int \frac{\mathrm{d}V}{V} \]
+                </div>
+                <div class="formula-box">
+                    \[ \ln T = -(\gamma - 1) \ln V + \text{cte} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">9</span>
+                <strong>Primera ecuación adiabática:</strong> Aplicando propiedades de logaritmos:
+                <div class="formula-box">
+                    \[ \ln T + (\gamma - 1) \ln V = \text{cte} \quad \Rightarrow \quad \ln\left( T V^{\gamma - 1} \right) = \text{cte} \]
+                </div>
+                <div class="formula-box">
+                    \[ T V^{\gamma - 1} = \text{cte} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">10</span>
+                <strong>Segunda ecuación adiabática:</strong> Sustituyendo \( T = \frac{pV}{nR} \) en la ecuación anterior:
+                <div class="formula-box">
+                    \[ \frac{pV}{nR} \cdot V^{\gamma - 1} = \text{cte} \quad \Rightarrow \quad p V^\gamma = \text{cte}' \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">11</span>
+                <strong>Tercera ecuación adiabática:</strong> Sustituyendo \( V = \frac{nRT}{p} \) en \( p V^\gamma = \text{cte} \):
+                <div class="formula-box">
+                    \[ p \left( \frac{nRT}{p} \right)^\gamma = \text{cte} \quad \Rightarrow \quad \frac{T^\gamma}{p^{\gamma - 1}} = \text{cte}'' \]
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>Las tres ecuaciones de los procesos adiabáticos reversibles de un gas ideal son:</p>
+            <div class="formula-box">
+                \[ pV^\gamma = \text{cte} \]
+            </div>
+            <div class="formula-box">
+                \[ TV^{\gamma - 1} = \text{cte} \]
+            </div>
+            <div class="formula-box">
+                \[ \frac{T^\gamma}{p^{\gamma - 1}} = \text{cte} \]
+            </div>
+            <p>donde \( \gamma = \frac{c_p}{c_V} = \frac{C_p}{C_V} > 1 \) es el <strong>coeficiente de dilatación adiabática</strong> o <strong>exponente adiabático</strong>.</p>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es crucial que el se comprenda que en una expansión adiabática (\( V \) aumenta), la temperatura disminuye porque el gas realiza trabajo a costa de su energía interna. Esto explica por qué los gases que salen de un pulverizador están fríos, o por qué se forman nubes cuando el aire asciende en la atmósfera (enfriamiento adiabático). En un diagrama \( p \)-\( V \), la curva adiabática es más pronunciada que la isoterma porque \( \gamma > 1 \). Se recomienda comparar visualmente ambas curvas partiendo del mismo punto.
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO los procesos adiabáticos reversibles</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Aplicación de \(pV^\gamma = \text{cte}\)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas ideal diatómico (\(\gamma = 1.4\)) se encuentra inicialmente a \(p_1 = 2.0 \, \text{atm}\) y \(V_1 = 4.0 \, \text{L}\). Se expande adiabáticamente hasta un volumen \(V_2 = 8.0 \, \text{L}\). Calcula la presión final \(p_2\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Usar la ecuación \(p_1 V_1^\gamma = p_2 V_2^\gamma\).</p>
+                        <p><span class="step-label">Paso 2:</span> Despejar \(p_2 = p_1 \left( \frac{V_1}{V_2} \right)^\gamma = 2.0 \times \left( \frac{4.0}{8.0} \right)^{1.4}\).</p>
+                        <p><span class="step-label">Paso 3:</span> Calcular: \(\frac{4.0}{8.0} = 0.5\); \(0.5^{1.4} \approx 0.3789\).</p>
+                        <p>\(p_2 = 2.0 \times 0.3789 = 0.7578 \, \text{atm}\).</p>
+                        <p><span class="step-label">Resultado:</span> La presión final es \(0.76 \, \text{atm}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Aplicación de \(TV^{\gamma-1} = \text{cte}\)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas ideal monoatómico (\(\gamma = 5/3\)) se comprime adiabáticamente desde \(V_1 = 6.0 \, \text{L}\) y \(T_1 = 300 \, \text{K}\) hasta \(V_2 = 2.0 \, \text{L}\). Calcula la temperatura final \(T_2\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Usar \(T_1 V_1^{\gamma-1} = T_2 V_2^{\gamma-1}\).</p>
+                        <p><span class="step-label">Paso 2:</span> Despejar \(T_2 = T_1 \left( \frac{V_1}{V_2} \right)^{\gamma-1} = 300 \times \left( \frac{6.0}{2.0} \right)^{5/3 - 1} = 300 \times 3^{2/3}\).</p>
+                        <p><span class="step-label">Paso 3:</span> \(3^{2/3} = \sqrt[3]{9} \approx 2.080\).</p>
+                        <p>\(T_2 = 300 \times 2.080 = 624 \, \text{K}\).</p>
+                        <p><span class="step-label">Resultado:</span> La temperatura final es \(624 \, \text{K}\) (\(351^\circ\text{C}\)).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Trabajo en expansión adiabática</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un mol de gas ideal monoatómico (\(C_V = \frac{3}{2}R\)) se expande adiabáticamente desde \(T_1 = 400 \, \text{K}\) hasta \(T_2 = 250 \, \text{K}\). Calcula el trabajo realizado por el gas.</p>
+                        <p>Dato: \(R = 8.31 \, \text{J mol}^{-1}\text{K}^{-1}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> En un proceso adiabático, \(Q = 0\), por lo que \(\Delta U = W\).</p>
+                        <p><span class="step-label">Paso 2:</span> Para un gas ideal, \(\Delta U = n C_V \Delta T = 1 \times \frac{3}{2} \times 8.31 \times (250 - 400)\).</p>
+                        <p><span class="step-label">Paso 3:</span> \(\Delta U = 1.5 \times 8.31 \times (-150) = -1869.75 \, \text{J}\).</p>
+                        <p>Por tanto, \(W = \Delta U = -1869.75 \, \text{J}\) (signo negativo: trabajo realizado por el sistema).</p>
+                        <p><span class="step-label">Resultado:</span> El trabajo realizado por el gas es \(-1.87 \, \text{kJ}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Comparación adiabática vs. isoterma</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un gas ideal (\(\gamma = 1.4\)) parte del punto \(p_0 = 2.0 \, \text{atm}\), \(V_0 = 3.0 \, \text{L}\).</p>
+                        <ul>
+                            <li>a) Calcula la presión cuando el volumen se duplica en una expansión isoterma.</li>
+                            <li>b) Calcula la presión cuando el volumen se duplica en una expansión adiabática.</li>
+                            <li>c) Compara los resultados y explica por qué son diferentes.</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> Isoterma: \(p_1 V_1 = p_2 V_2 \Rightarrow p_2 = p_1 \frac{V_1}{V_2} = 2.0 \times \frac{3.0}{6.0} = 1.0 \, \text{atm}\).</p>
+                        <p><span class="step-label">b)</span> Adiabática: \(p_1 V_1^\gamma = p_2 V_2^\gamma \Rightarrow p_2 = p_1 \left( \frac{V_1}{V_2} \right)^\gamma = 2.0 \times \left( \frac{3.0}{6.0} \right)^{1.4} = 2.0 \times 0.5^{1.4} \approx 2.0 \times 0.3789 = 0.758 \, \text{atm}\).</p>
+                        <p><span class="step-label">c)</span> La presión adiabática es menor (0.758 atm) que la isoterma (1.0 atm) porque en la adiabática la temperatura también disminuye, lo que reduce adicionalmente la presión. La curva adiabática es más pronunciada.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Contexto real: enfriamiento adiabático en la atmósfera</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una masa de aire (\(\gamma = 1.4\)) asciende en la atmósfera. Inicialmente a nivel del suelo tiene \(T_1 = 25^\circ\text{C}\) y \(p_1 = 1.0 \, \text{atm}\). Al ascender, la presión cae a \(p_2 = 0.70 \, \text{atm}\).</p>
+                        <ul>
+                            <li>a) Calcula la temperatura final \(T_2\) usando la ecuación \(\frac{T^\gamma}{p^{\gamma-1}} = \text{cte}\).</li>
+                            <li>b) ¿Se formaría nube si la temperatura de rocío es \(5^\circ\text{C}\)?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> Usamos \(\frac{T_1^\gamma}{p_1^{\gamma-1}} = \frac{T_2^\gamma}{p_2^{\gamma-1}}\).</p>
+                        <p>Despejamos \(T_2 = T_1 \left( \frac{p_2}{p_1} \right)^{\frac{\gamma-1}{\gamma}} = 298 \times \left( \frac{0.70}{1.0} \right)^{0.4/1.4}\).</p>
+                        <p>\(0.70^{0.2857} \approx 0.902\); \(T_2 = 298 \times 0.902 \approx 268.8 \, \text{K}\).</p>
+                        <p>\(T_2 = 268.8 - 273 = -4.2^\circ\text{C}\).</p>
+                        <p><span class="step-label">b)</span> La temperatura final es \(-4.2^\circ\text{C}\), que es inferior a \(5^\circ\text{C}\), por lo que el vapor de agua se condensará y se formarán nubes.</p>
+                        <p><span class="step-label">Resultado:</span> \(T_2 \approx -4.2^\circ\text{C}\), sí se formaría nube.</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> En un proceso adiabático reversible no hay intercambio de calor, por lo que todo el trabajo se realiza a expensas de la energía interna. Las ecuaciones de Poisson (\(pV^\gamma = \text{cte}\), \(TV^{\gamma-1} = \text{cte}\)) son la herramienta clave para resolver problemas de adiabáticos. Recuerda que \(\gamma > 1\), por lo que la curva adiabática es más inclinada que la isoterma en un diagrama \(p\)-\(V\).
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

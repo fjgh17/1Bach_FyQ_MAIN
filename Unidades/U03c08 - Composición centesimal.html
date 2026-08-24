@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demostración 8: Composición Centesimal</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            min-width: 200px;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            height: 32px;
+            width: auto;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.15);
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            font-size: 1em;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            font-size: 1em;
+            opacity: 0.95;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+
+        .composition-box {
+            background: #faf5ff;
+            border: 2px solid #9f7aea;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL DESPLEGABLE INTERACTIVO
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #cbd5e0;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        details summary {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: 1.15em;
+            color: #2d3748;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details summary:hover {
+            background: #e2e8f0;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i.fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            color: #4a5568;
+        }
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        .details-content {
+            padding: 20px 25px;
+            background: white;
+        }
+        .exercise-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .exercise-header {
+            background: #4a5568;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .exercise-header .badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 2px 14px;
+            font-size: 0.85em;
+        }
+        .exercise-body {
+            padding: 18px 20px;
+        }
+        .exercise-body .statement {
+            background: #f7fafc;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            margin-bottom: 15px;
+        }
+        .exercise-body .resolution {
+            background: #f0fff4;
+            padding: 15px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            margin-top: 10px;
+        }
+        .exercise-body .resolution .math {
+            margin: 8px 0;
+        }
+        .didactic-footer {
+            background: #ebf4ff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-left: 5px solid #3182ce;
+            font-style: italic;
+        }
+        .didactic-footer strong {
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA OBLIGATORIA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">                <span class="codigo">#T03.08.- </span>
+                <span class="texto">Composición Centesimal de un Compuesto</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES TRANSFORMADAS ===== -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo de la <strong>fórmula química</strong> de un compuesto y de las <strong>masas atómicas relativas</strong> de los elementos que lo constituyen, demostrar que el <strong>porcentaje en masa</strong> de cada elemento en el compuesto se obtiene como el cociente entre la masa total de ese elemento en un mol de compuesto y la masa molar del compuesto, multiplicado por 100.</p>
+        <div class="formula-box">
+            Para un compuesto \( \text{A}_a\text{B}_b\text{C}_c \):
+            \[ \%(\text{A}) = \frac{a \cdot A_r(\text{A})}{M_r(\text{compuesto})} \times 100 \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U03c08 - Composición centesimal.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>La composición centesimal permite:</p>
+        <ul>
+            <li><strong>Identificar y caracterizar</strong> compuestos puros mediante análisis elemental.</li>
+            <li><strong>Verificar la pureza</strong> de una muestra comparando su composición experimental con la teórica.</li>
+            <li><strong>Calcular rendimientos</strong> en síntesis químicas a partir de la estequiometría.</li>
+            <li>Servir como <strong>punto de partida</strong> para determinar la fórmula empírica de un compuesto desconocido.</li>
+        </ul>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Consideremos un compuesto genérico</strong> de fórmula \( \text{A}_a\text{B}_b\text{C}_c \), donde \( a, b, c \) son los subíndices estequiométricos (números enteros).
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Calculamos la masa molar del compuesto</strong>. Por definición, es la suma de las contribuciones de cada elemento:
+            <div class="formula-box">
+                \[ M(\text{compuesto}) = a \cdot A_r(\text{A}) + b \cdot A_r(\text{B}) + c \cdot A_r(\text{C}) \]
+            </div>
+            <p>donde \( A_r \) representa la masa atómica relativa de cada elemento.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Determinamos la masa de cada elemento</strong> en un mol de compuesto. En un mol hay \( a \) moles de átomos de A, \( b \) moles de átomos de B, etc.:
+            <div class="formula-box">
+                \[ m_{\text{A en 1 mol}} = a \cdot M(\text{A}) = a \cdot A_r(\text{A}) \text{ g} \]
+                \[ m_{\text{B en 1 mol}} = b \cdot M(\text{B}) = b \cdot A_r(\text{B}) \text{ g} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Calculamos la fracción másica</strong> de cada elemento. Es el cociente entre la masa del elemento y la masa total del compuesto:
+            <div class="formula-box">
+                \[ x_{\text{A}} = \frac{m_{\text{A}}}{m_{\text{total}}} = \frac{a \cdot A_r(\text{A})}{a \cdot A_r(\text{A}) + b \cdot A_r(\text{B}) + c \cdot A_r(\text{C})} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Obtenemos el porcentaje en masa</strong> multiplicando la fracción másica por 100:
+            <div class="formula-box">
+                \[ \%(\text{A}) = \frac{a \cdot A_r(\text{A})}{M(\text{compuesto})} \times 100 \]
+            </div>
+            <p>Análogamente para los demás elementos.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Verificamos que los porcentajes suman 100%</strong>:
+            <div class="formula-box">
+                \[ \%(\text{A}) + \%(\text{B}) + \%(\text{C}) = \frac{a \cdot A_r(\text{A}) + b \cdot A_r(\text{B}) + c \cdot A_r(\text{C})}{M(\text{compuesto})} \times 100 = 100\% \]
+            </div>
+            <p>Lo cual es una <strong>comprobación de coherencia</strong> del cálculo.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">7</span>
+            <strong>Generalización para compuestos con hidratación</strong>. Para sales hidratadas (ej. \( \text{CuSO}_4 \cdot 5\text{H}_2\text{O} \)), la masa del agua de cristalización se incluye en la masa molar total, pero también puede calcularse el porcentaje de agua por separado:
+            <div class="formula-box">
+                \[ \%(\text{H}_2\text{O}) = \frac{5 \cdot M(\text{H}_2\text{O})}{M(\text{CuSO}_4 \cdot 5\text{H}_2\text{O})} \times 100 \]
+            </div>
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que para cualquier compuesto \( \text{A}_a\text{B}_b\text{C}_c \):</p>
+        <div class="formula-box">
+            \[ \%(\text{elemento } i) = \frac{n_i \cdot A_r(i)}{\sum_{j} n_j \cdot A_r(j)} \times 100 = \frac{n_i \cdot A_r(i)}{M(\text{compuesto})} \times 100 \]
+        </div>
+        <p style="text-align: center; font-weight: 600; color: #2b6cb0;">El porcentaje en masa de cada elemento depende únicamente de su fórmula química y de las masas atómicas de sus componentes.</p>
+        <div class="composition-box">
+            <strong>Ejemplo estructurado:</strong> Propano (\( \text{C}_3\text{H}_8 \))<br>
+            \( M = 3 \times 12 + 8 \times 1 = 44 \text{ g/mol} \)<br>
+            \( \%(\text{C}) = \frac{36}{44} \times 100 = 81,8\% \)<br>
+            \( \%(\text{H}) = \frac{8}{44} \times 100 = 18,2\% \)
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong>  Es fundamental enfatizar que la composición centesimal es una <strong>propiedad intensiva</strong> del compuesto: no depende del tamaño de la muestra. Esta demostración conecta directamente con la Ley de Proust (proporciones definidas). Un error frecuente es confundir la composición centesimal con la fórmula empírica; conviene destacar que la primera da <strong>proporciones en masa</strong> y la segunda <strong>proporciones en número de átomos</strong>. La conversión requiere dividir por las masas atómicas. Para sales hidratadas, recomiendo calcular siempre la masa molar completa incluyendo el agua de cristalización para evitar errores de omisión.
+        </div>
+    </div>
+
+    <!-- ============================================
+         BLOQUE DESPLEGABLE INTERACTIVO (AÑADIDO)
+         ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span style="flex: 1;">🧪 DESMITIFICANDO Composición Centesimal</span>
+            <span style="font-size: 0.9em; color: #4a5568; background: #e2e8f0; padding: 2px 12px; border-radius: 20px;">
+                <i class="fas fa-hand-pointer"></i> Púlsame
+            </span>
+        </summary>
+        <div class="details-content">
+
+            <!-- EJERCICIO 1 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 1</span>
+                    <span>Cálculo de la composición centesimal de un compuesto sencillo</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Calcular el porcentaje en masa de cada elemento en el sulfato de amonio, \( (\text{NH}_4)_2\text{SO}_4 \). (Masas atómicas: N=14, H=1, S=32, O=16).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Masa molar: \( M = 2(14+4) + 32 + 4\cdot16 = 2\cdot18 + 32 + 64 = 36 + 96 = 132 \, \text{g/mol} \).</li>
+                            <li>\( \%\text{N} = \frac{2\cdot14}{132} \times 100 = \frac{28}{132}\times100 \approx 21,2\% \).</li>
+                            <li>\( \%\text{H} = \frac{8\cdot1}{132} \times 100 = \frac{8}{132}\times100 \approx 6,1\% \).</li>
+                            <li>\( \%\text{S} = \frac{32}{132} \times 100 \approx 24,2\% \).</li>
+                            <li>\( \%\text{O} = \frac{64}{132} \times 100 \approx 48,5\% \).</li>
+                            <li>Comprobación: 21,2+6,1+24,2+48,5 = 100,0%.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 2</span>
+                    <span>Cálculo de la masa de un elemento en una cantidad dada de compuesto</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> ¿Qué masa de calcio hay en 250 g de carbonato de calcio (\( \text{CaCO}_3 \)) puro? (Masas atómicas: Ca=40, C=12, O=16).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Masa molar: \( M = 40 + 12 + 3\cdot16 = 40+12+48 = 100 \, \text{g/mol} \).</li>
+                            <li>\( \%\text{Ca} = \frac{40}{100}\times100 = 40\% \).</li>
+                            <li>Masa de Ca en 250 g: \( 250 \times 0,40 = 100 \, \text{g} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 3</span>
+                    <span>Comparación de riqueza en un elemento entre dos compuestos</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> ¿Cuál de los dos compuestos tiene mayor porcentaje de oxígeno: el óxido de aluminio (\( \text{Al}_2\text{O}_3 \)) o el óxido de hierro(III) (\( \text{Fe}_2\text{O}_3 \))? (Masas: Al=27, Fe=56, O=16).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Para \( \text{Al}_2\text{O}_3 \): \( M = 2\cdot27 + 3\cdot16 = 54+48 = 102 \). \( \%\text{O} = \frac{48}{102}\times100 \approx 47,1\% \).</li>
+                            <li>Para \( \text{Fe}_2\text{O}_3 \): \( M = 2\cdot56 + 3\cdot16 = 112+48 = 160 \). \( \%\text{O} = \frac{48}{160}\times100 = 30,0\% \).</li>
+                            <li>El \( \text{Al}_2\text{O}_3 \) tiene mayor porcentaje de oxígeno (47,1% vs 30,0%).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 4</span>
+                    <span>Composición centesimal de una sal hidratada</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Calcular el porcentaje en masa de agua de cristalización en el sulfato de cobre(II) pentahidratado (\( \text{CuSO}_4 \cdot 5\text{H}_2\text{O} \)). (Masas: Cu=63,5, S=32, O=16, H=1).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Masa del compuesto anhidro: \( 63,5 + 32 + 4\cdot16 = 63,5+32+64 = 159,5 \).</li>
+                            <li>Masa de 5H₂O: \( 5\cdot(2\cdot1+16) = 5\cdot18 = 90 \).</li>
+                            <li>Masa molar total: \( 159,5 + 90 = 249,5 \, \text{g/mol} \).</li>
+                            <li>\( \%\text{H}_2\text{O} = \frac{90}{249,5}\times100 \approx 36,1\% \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5 -->
+            <div class="exercise-card">
+                <div class="exercise-header">
+                    <span class="badge">Ejercicio 5</span>
+                    <span>Determinación de la pureza a partir de la composición centesimal</span>
+                </div>
+                <div class="exercise-body">
+                    <div class="statement">
+                        <p><strong>Enunciado:</strong> Una muestra de 20,0 g de un mineral de cinc contiene 13,4 g de Zn. Se sabe que el mineral es blenda (\( \text{ZnS} \)) con impurezas inertes. Calcular la pureza del mineral (% de ZnS). (Masas: Zn=65,4, S=32,1).</p>
+                    </div>
+                    <div class="resolution">
+                        <p><strong>Resolución paso a paso:</strong></p>
+                        <ul>
+                            <li>Masa molar de ZnS: \( 65,4 + 32,1 = 97,5 \, \text{g/mol} \).</li>
+                            <li>\( \%\text{Zn en ZnS} = \frac{65,4}{97,5}\times100 \approx 67,1\% \).</li>
+                            <li>En 13,4 g de Zn, la masa de ZnS puro necesaria es: \( 13,4 / 0,671 \approx 20,0 \, \text{g} \)? ¡Cuidado! En realidad, si la muestra tiene 13,4 g de Zn, y el ZnS tiene 67,1% de Zn, entonces la masa de ZnS en la muestra es \( 13,4 \times \frac{97,5}{65,4} \approx 20,0 \, \text{g} \).</li>
+                            <li>Como la muestra pesa 20,0 g y toda corresponde a ZnS, la pureza es del 100%. (Si hubiera menos, se calcularía).</li>
+                            <li>En general, \( \text{Pureza} = \frac{m_{\text{ZnS real}}}{m_{\text{muestra}}} \times 100 \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="didactic-footer">
+                <strong>🧠 Observaciones claves:</strong> La composición centesimal es una <strong>herramienta de identificación</strong> y control de pureza. El error más común es <strong>olvidar multiplicar por el número de átomos</strong> de cada elemento en la fórmula al calcular la masa molar parcial. También se suele confundir el porcentaje en masa con el porcentaje en moles (fracción molar). Recuerda que la composición centesimal <strong>no depende de la cantidad de muestra</strong>; es una propiedad intensiva del compuesto.
+            </div>
+
+        </div>
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- fin container -->
+</body>
+</html>

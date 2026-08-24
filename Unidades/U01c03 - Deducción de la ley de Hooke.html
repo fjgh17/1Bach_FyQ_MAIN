@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T01.03 - Ley de Hooke</title>
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+        .table-wrap {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 10px 14px;
+            text-align: center;
+        }
+        th {
+            background: #edf2f7;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        td { color: #2d3748; }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (DETAILS)
+           ============================================ */
+        details.desmitificando {
+            margin: 30px 20px 20px 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            border: 2px solid #dee2e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        details.desmitificando > summary {
+            list-style: none;
+            padding: 18px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            background: #edf2f7;
+            border-radius: 14px 14px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        details.desmitificando > summary::-webkit-details-marker {
+            display: none;
+        }
+        details.desmitificando > summary:hover {
+            background: #e2e8f0;
+        }
+        details.desmitificando > summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            font-size: 1.3em;
+            color: #4a5568;
+        }
+        details.desmitificando[open] > summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.desmitificando .contenido {
+            padding: 20px 24px 24px 24px;
+            background: white;
+            border-radius: 0 0 14px 14px;
+        }
+        .ejercicio-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+        .ejercicio-card .card-header {
+            background: #ebf4ff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #bee3f8;
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .ejercicio-card .card-header .num {
+            font-weight: 700;
+            color: #2b6cb0;
+            font-size: 1.1em;
+        }
+        .ejercicio-card .card-header .titulo {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.05em;
+        }
+        .ejercicio-card .card-body {
+            padding: 16px 20px 8px 20px;
+        }
+        .ejercicio-card .card-body .enunciado-ej {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+        .ejercicio-card .card-body .enunciado-ej li {
+            margin-bottom: 4px;
+        }
+        .resolucion {
+            background: #f7fafc;
+            border-left: 4px solid #3182ce;
+            padding: 16px 20px;
+            margin: 12px 0 6px 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.98em;
+        }
+        .resolucion .paso {
+            margin-bottom: 8px;
+        }
+        .resolucion .paso strong {
+            color: #2b6cb0;
+        }
+        .pie-didactico {
+            background: #fefcbf;
+            border: 1px solid #f6e05e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            color: #744210;
+            font-size: 0.98em;
+        }
+        .pie-didactico i {
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            details.desmitificando > summary { font-size: 1em; padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T01.03.- </span>
+                    <span class="texto">Deducción de la Ley de Hooke a partir de Datos Experimentales</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de los datos experimentales de fuerza aplicada \( F \) y alargamiento \( x \) obtenidos al someter un muelle elástico a tracción, demostrar que existe una <strong>relación de proporcionalidad directa</strong> entre ambas magnitudes, expresable como:</p>
+            <div class="formula-box">
+                \[
+                F = k \cdot x
+                \]
+            </div>
+            <p>donde \( k \) es una constante característica del muelle denominada <strong>constante recuperadora</strong> o <strong>constante elástica</strong>.</p>
+
+            <!-- Insertando imagen -->
+            <style>
+              img {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+              }
+            </style>
+
+            <img src="../imagenes/U01c03 - Deducción de la ley de Hooke.png" alt="Imagen" width="800">
+
+            <!-- -----FIN-------- -->
+
+        </div>
+        
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Obtener la <strong>ley constitutiva del muelle elástico</strong> a partir del análisis gráfico de datos experimentales. Esta ley es fundamental para comprender el comportamiento de los sólidos deformables y constituye uno de los primeros ejemplos de <strong>modelización matemática</strong> en física: ajustar una función teórica a datos empíricos.</p>
+        </div>
+        
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Tabla de datos experimentales</strong>
+                <p>Se disponen los datos experimentales en una tabla. Los valores del libro de texto son:</p>
+                <div class="table-wrap">
+                    <table>
+                        <tr>
+                            <th>\( F \) (N)</th>
+                            <th>20</th>
+                            <th>40</th>
+                            <th>60</th>
+                            <th>80</th>
+                            <th>100</th>
+                        </tr>
+                        <tr>
+                            <th>\( x \) (cm)</th>
+                            <td>4,1</td>
+                            <td>8,4</td>
+                            <td>12,4</td>
+                            <td>16,1</td>
+                            <td>20,5</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Representación gráfica</strong>
+                <p>Se representan gráficamente los pares de valores \( (x, F) \), colocando el alargamiento \( x \) en el eje de abscisas (variable independiente) y la fuerza \( F \) en el eje de ordenadas (variable dependiente). Los puntos experimentales se aproximan a una <strong>recta</strong> que pasa por el origen.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Cálculo de la pendiente</strong>
+                <p>Se calcula la <strong>pendiente</strong> de la recta de ajuste. Tomando dos puntos representativos de la recta, por ejemplo \( (x_1, F_1) = (4{,}0\,\text{cm}, 20\,\text{N}) \) y \( (x_2, F_2) = (20{,}0\,\text{cm}, 100\,\text{N}) \):</p>
+                <div class="formula-box">
+                    \[
+                    k = \frac{\Delta F}{\Delta x} = \frac{F_2 - F_1}{x_2 - x_1} = \frac{100\,\text{N} - 20\,\text{N}}{20{,}0\,\text{cm} - 4{,}0\,\text{cm}} = \frac{80\,\text{N}}{16{,}0\,\text{cm}} = 5{,}0\,\frac{\text{N}}{\text{cm}}
+                    \]
+                </div>
+                <p>El valor más preciso (utilizando los mínimos cuadrados), sería 4,9 N/cm. A partir de ahora trabajamos con este valor.</p>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Ecuación de la recta</strong>
+                <p>La ecuación de una recta que pasa por el origen es \( y = m \cdot x \). En nuestro caso, identificamos \( y = F \), \( x = x \) (alargamiento) y la pendiente \( m = k \):</p>
+                <div class="formula-box">
+                    \[
+                    F = k \cdot x
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Expresión en unidades del SI</strong>
+                <p>Se expresa la constante \( k \) en unidades del SI. Dado que \( k = 4{,}9\,\text{N/cm} \):</p>
+                <div class="formula-box">
+                    \[
+                    k = 4{,}9\,\frac{\text{N}}{\text{cm}} \times \frac{100\,\text{cm}}{1\,\text{m}} = 4{,}9 \times 10^{2}\,\frac{\text{N}}{\text{m}}
+                    \]
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Interpretación física</strong>
+                <p><strong>Interpretación física:</strong> la constante \( k \) representa la <strong>rigidez</strong> del muelle. Un muelle con \( k \) grande necesita mucha fuerza para alargarse poco (muelle duro); un muelle con \( k \) pequeño se alarga mucho con poca fuerza (muelle blando).</p>
+            </div>
+        </div>
+        
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <p>La <strong>Ley de Hooke</strong> queda demostrada como la relación lineal de proporcionalidad directa entre fuerza y alargamiento:</p>
+            <div class="formula-box" style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); border-color: #4299e1; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);">
+                \[
+                \boxed{F = k \cdot x \quad \text{con} \quad k = \frac{F}{x} = \text{constante}}
+                \]
+            </div>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong><br>
+                Es crucial que se comprenda que la Ley de Hooke es un <strong>modelo empírico</strong> válido solo dentro del <strong>límite elástico</strong> del material. Más allá de cierto alargamiento, el muelle sufre deformación plástica y la relación deja de ser lineal.&nbsp;
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- BLOQUE DESPLEGABLE: "🧪 DESMITIFICANDO LA LEY DE HOOKE"   -->
+        <!-- ======================================================== -->
+        <details class="desmitificando">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🖱️ Pulsame 👉 🧪 DESMITIFICANDO LA LEY DE HOOKE</span>
+            </summary>
+            <div class="contenido">
+
+                <p style="font-size:1.05em; margin-bottom: 18px;">
+                    <i class="fas fa-spring" style="color:#d69e2e;"></i>
+                    La Ley de Hooke (\( F = k \cdot x \)) es una de las leyes más intuitivas de la física: 
+                    <strong>cuanto más estiras un muelle, más fuerza hace</strong>. 
+                    Pero su aplicación va mucho más allá de los muelles: desde los amortiguadores de un coche hasta la deformación de los huesos. 
+                    Practica con estos <strong>5 ejercicios</strong> para dominar su uso.
+                </p>
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 1</span>
+                        <span class="titulo">Cálculo de la fuerza a partir del alargamiento</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un muelle tiene una constante elástica \( k = 250\,\text{N/m} \). ¿Qué fuerza hay que aplicar para que se alargue \( 8{,}0\,\text{cm} \)?</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Escribir los datos en unidades SI:</strong>
+                                \[
+                                x = 8{,}0\,\text{cm} = 0{,}080\,\text{m}, \quad k = 250\,\text{N/m}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Aplicar la Ley de Hooke:</strong>
+                                \[
+                                F = k \cdot x = 250 \times 0{,}080 = 20\,\text{N}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Resultado:</strong>
+                                \[
+                                \boxed{F = 20\,\text{N}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 2</span>
+                        <span class="titulo">Cálculo del alargamiento a partir de la fuerza</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un muelle de constante \( k = 180\,\text{N/m} \) es sometido a una fuerza de \( 45\,\text{N} \). ¿Cuánto se alarga (en centímetros)?</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Despejar \( x \) de la ley:</strong>
+                                \[
+                                F = k \cdot x \quad \Longrightarrow \quad x = \frac{F}{k}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Sustituir valores:</strong>
+                                \[
+                                x = \frac{45}{180} = 0{,}25\,\text{m}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Convertir a centímetros:</strong>
+                                \[
+                                0{,}25\,\text{m} \times 100 = 25\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Resultado:</strong>
+                                \[
+                                \boxed{x = 25\,\text{cm}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 3</span>
+                        <span class="titulo">Comparación de dos muelles</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Se tienen dos muelles: M1 con \( k_1 = 300\,\text{N/m} \) y M2 con \( k_2 = 120\,\text{N/m} \). Ambos se someten a la misma fuerza de \( 60\,\text{N} \).</p>
+                            <ul>
+                                <li>¿Cuál de los dos se alarga más?</li>
+                                <li>¿Cuánto se alarga cada uno?</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Alargamiento de M1:</strong>
+                                \[
+                                x_1 = \frac{F}{k_1} = \frac{60}{300} = 0{,}20\,\text{m} = 20\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Alargamiento de M2:</strong>
+                                \[
+                                x_2 = \frac{F}{k_2} = \frac{60}{120} = 0{,}50\,\text{m} = 50\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Conclusión:</strong> El muelle M2 (menor \( k \)) se alarga <strong>más</strong> (50 cm frente a 20 cm). Es más "blando".
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 4</span>
+                        <span class="titulo">Contexto real: peso colgado de un muelle</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> Un muelle vertical de constante \( k = 500\,\text{N/m} \) cuelga del techo. Se cuelga una masa de \( 2{,}5\,\text{kg} \) de su extremo. ¿Cuánto se estira el muelle? (Usa \( g = 9{,}8\,\text{m/s}^2 \)).</p>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Calcular el peso (fuerza que estira el muelle):</strong>
+                                \[
+                                F = m \cdot g = 2{,}5 \times 9{,}8 = 24{,}5\,\text{N}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Despejar el alargamiento:</strong>
+                                \[
+                                x = \frac{F}{k} = \frac{24{,}5}{500} = 0{,}049\,\text{m}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Expresar en centímetros:</strong>
+                                \[
+                                0{,}049\,\text{m} \times 100 = 4{,}9\,\text{cm}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Resultado:</strong>
+                                \[
+                                \boxed{x = 4{,}9\,\text{cm}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="card-header">
+                        <span class="num">Ejercicio 5</span>
+                        <span class="titulo">Determinación de \( k \) a partir de datos experimentales</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="enunciado-ej">
+                            <p><strong>Enunciado:</strong> En un experimento se han medido los siguientes pares de fuerza y alargamiento para un muelle:</p>
+                            <div class="table-wrap">
+                                <table style="width:60%; margin:0 auto;">
+                                    <tr><th>\( F \) (N)</th><td>10</td><td>25</td><td>40</td><td>55</td></tr>
+                                    <tr><th>\( x \) (cm)</th><td>2,0</td><td>5,1</td><td>8,0</td><td>11,0</td></tr>
+                                </table>
+                            </div>
+                            <ul>
+                                <li>Representa \( F \) frente a \( x \) y calcula la pendiente (constante \( k \)) en N/m.</li>
+                            </ul>
+                        </div>
+                        <div class="resolucion">
+                            <p><strong>Resolución paso a paso:</strong></p>
+                            <div class="paso">
+                                <strong>Paso 1 → Convertir alargamientos a metros:</strong>
+                                \( 2{,}0\,\text{cm}=0{,}020\,\text{m}, \quad 5{,}1\,\text{cm}=0{,}051\,\text{m}, \quad 8{,}0\,\text{cm}=0{,}080\,\text{m}, \quad 11{,}0\,\text{cm}=0{,}110\,\text{m} \).
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 2 → Elegir dos puntos de la recta:</strong>
+                                Por ejemplo, el primero y el último: \( (x_1, F_1) = (0{,}020, 10) \) y \( (x_2, F_2) = (0{,}110, 55) \).
+                            </div>
+                            <div class="paso">
+                                <strong>Paso 3 → Calcular la pendiente \( k \):</strong>
+                                \[
+                                k = \frac{\Delta F}{\Delta x} = \frac{55 - 10}{0{,}110 - 0{,}020} = \frac{45}{0{,}090} = 500\,\text{N/m}
+                                \]
+                            </div>
+                            <div class="paso">
+                                <strong>Resultado:</strong>
+                                \[
+                                \boxed{k = 500\,\text{N/m}}
+                                \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIE DIDÁCTICO -->
+                <div class="pie-didactico">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Observaciones claves:</strong> La "trampa" mental que resuelve la Ley de Hooke es entender que la <strong>deformación no es la causa de la fuerza</strong>, sino que <strong>ambas son proporcionales</strong>. 
+                    Es fácil pensar que "más fuerza → más alargamiento" (correcto), pero también es cierto "más alargamiento → más fuerza" (el muelle responde). 
+                    La constante \( k \) es la <strong>rigidez</strong>: un muelle con \( k \) grande es difícil de estirar; uno con \( k \) pequeña se estira fácilmente.
+                </div>
+
+            </div> <!-- fin .contenido -->
+        </details>
+
+        <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+    </div> <!-- fin .container -->
+</body>
+</html>

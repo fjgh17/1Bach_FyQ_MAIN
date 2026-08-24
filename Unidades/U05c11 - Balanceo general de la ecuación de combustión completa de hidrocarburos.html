@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T05.12 - Demostración: Balanceo general de la combustión de hidrocarburos</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILOS ORIGINALES (se mantienen)
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+            flex-wrap: wrap;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .codigo {
+            font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+        .texto {
+            font-weight: 500;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p { line-height: 1.7; margin-bottom: 10px; }
+        ul { margin-left: 20px; line-height: 1.7; }
+        .balance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .balance-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 14px 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .balance-table td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .balance-table tr:last-child td { border-bottom: none; }
+        .balance-table tr:nth-child(even) { background: #f7fafc; }
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        @media (max-width: 600px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-right { align-self: flex-end; }
+            .section { padding: 18px; margin: 10px; }
+            .balance-table { font-size: 0.85em; }
+            .balance-table th, .balance-table td { padding: 10px 8px; }
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE (TAREA 1)
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #eef4fa;
+            border-radius: 16px;
+            padding: 10px 20px 20px;
+            border: 1px solid #bdd6e8;
+            transition: all 0.2s;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            user-select: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary i {
+            transition: transform 0.3s ease;
+            font-size: 1.6rem;
+            color: #2a7faa;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        .exercise-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #d3e2ed;
+        }
+        .exercise-card h3 {
+            margin-top: 0;
+            color: #0b3b5c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+        .exercise-card h3 .badge {
+            background: #2a7faa;
+            color: white;
+            border-radius: 30px;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+        }
+        .solution {
+            background: #f7fbfe;
+            border-left: 4px solid #2a7faa;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 0.98rem;
+        }
+        .solution .step {
+            background: transparent;
+            border-left: none;
+            padding: 6px 0;
+            margin: 6px 0;
+            box-shadow: none;
+        }
+        .solution .step strong {
+            color: #0b3b5c;
+        }
+        .didactic-footer {
+            background: #d7e7f3;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #144a66;
+        }
+        .didactic-footer i {
+            font-size: 1.8rem;
+        }
+        .highlight-sol {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T05.11.- </span>
+                <span class="texto">Demostración: Balanceo general de la combustión de hidrocarburos</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📘 Enunciado</h2>
+        <p>Partiendo del principio de conservación de la masa y de la fórmula general de un hidrocarburo \( C_xH_y \), demostrar que la ecuación de combustión completa puede balancearse sistemáticamente mediante un procedimiento algebraico general, obteniendo los coeficientes estequiométricos en función de \( x \) e \( y \).</p>
+        <div class="formula-box">
+            \( C_xH_y + \left(x + \dfrac{y}{4}\right)O_2 \longrightarrow x\,CO_2 + \dfrac{y}{2}\,H_2O \)
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U05c11 - Balanceo general de la ecuación de combustión completa de hidrocarburos.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Establecer un método sistemático y general para balancear cualquier ecuación de combustión de hidrocarburos sin necesidad de tanteo. El estudiante debe ser capaz de:</p>
+        <ul>
+            <li>Determinar directamente el oxígeno necesario para la combustión completa de cualquier hidrocarburo.</li>
+            <li>Calcular el volumen de aire (u oxígeno) requerido para una combustión dada.</li>
+            <li>Predecir las masas de \( CO_2 \) y \( H_2O \) producidas a partir de una masa de combustible.</li>
+        </ul>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>⚙️ Procedimiento</h2>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Escribir la ecuación sin coeficientes.</strong> Para un hidrocarburo genérico \( C_xH_y \), la combustión completa produce dióxido de carbono y agua:
+            <div class="formula-box">
+                \( C_xH_y + O_2 \longrightarrow CO_2 + H_2O \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Balancear el carbono.</strong> El hidrocarburo contiene \( x \) átomos de carbono, que deben aparecer íntegramente en el \( CO_2 \):
+            <div class="formula-box">
+                \( C_xH_y + O_2 \longrightarrow \mathbf{x}\,CO_2 + H_2O \)
+            </div>
+            <p>(El coeficiente \( x \) se ha puesto en negrita para destacarlo).</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Balancear el hidrógeno.</strong> El hidrocarburo contiene \( y \) átomos de hidrógeno. Como cada molécula de agua tiene 2 átomos de H, se necesitan \( \dfrac{y}{2} \) moléculas de \( H_2O \):
+            <div class="formula-box">
+                \( C_xH_y + O_2 \longrightarrow x\,CO_2 + \mathbf{\dfrac{y}{2}}\,H_2O \)
+            </div>
+            <p>(El coeficiente \( \dfrac{y}{2} \) se ha puesto en negrita para destacarlo).</p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Balancear el oxígeno.</strong> Contar los átomos de oxígeno en los productos:
+            <ul>
+                <li>En \( x\,CO_2 \): \( 2x \) átomos de O.</li>
+                <li>En \( \dfrac{y}{2}\,H_2O \): \( \dfrac{y}{2} \) átomos de O.</li>
+                <li><strong>Total de O en productos:</strong> \( 2x + \dfrac{y}{2} = \dfrac{4x + y}{2} \) átomos.</li>
+            </ul>
+            <p>Como cada molécula de \( O_2 \) aporta 2 átomos de O, el coeficiente del oxígeno molecular es:</p>
+            <div class="formula-box">
+                Coeficiente de \( O_2 = \dfrac{\dfrac{4x + y}{2}}{2} = \dfrac{4x + y}{4} = x + \dfrac{y}{4} \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Ecuación final balanceada:</strong>
+            <div class="formula-box">
+                \( C_xH_y + \left(x + \dfrac{y}{4}\right)O_2 \longrightarrow x\,CO_2 + \dfrac{y}{2}\,H_2O \)
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Verificación con ejemplos del documento:</strong>
+            <table class="balance-table">
+                <tr>
+                    <th>Hidrocarburo</th>
+                    <th>\( x \)</th>
+                    <th>\( y \)</th>
+                    <th>\( O_2 \)</th>
+                    <th>Ecuación balanceada</th>
+                </tr>
+                <tr>
+                    <td>Metano</td>
+                    <td>1</td>
+                    <td>4</td>
+                    <td>\( 1 + 1 = 2 \)</td>
+                    <td>\( CH_4 + 2O_2 \to CO_2 + 2H_2O \)</td>
+                </tr>
+                <tr>
+                    <td>Propano</td>
+                    <td>3</td>
+                    <td>8</td>
+                    <td>\( 3 + 2 = 5 \)</td>
+                    <td>\( C_3H_8 + 5O_2 \to 3CO_2 + 4H_2O \)</td>
+                </tr>
+                <tr>
+                    <td>Octano</td>
+                    <td>8</td>
+                    <td>18</td>
+                    <td>\( 8 + 4{,}5 = 12{,}5 \)</td>
+                    <td>\( C_8H_{18} + 12{,}5\,O_2 \to 8CO_2 + 9H_2O \)</td>
+                </tr>
+                <tr>
+                    <td>Eteno</td>
+                    <td>2</td>
+                    <td>4</td>
+                    <td>\( 2 + 1 = 3 \)</td>
+                    <td>\( C_2H_4 + 3O_2 \to 2CO_2 + 2H_2O \)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="note">
+            <strong>Observaciones sobre el alumnado:</strong> Cuando el coeficiente \( x + \dfrac{y}{4} \) no es entero (como en el octano, 12,5), es preferible multiplicar toda la ecuación por 2 para trabajar con coeficientes enteros: \( 2C_8H_{18} + 25O_2 \to 16CO_2 + 18H_2O \). Esta demostración también permite introducir el concepto de <em>relación estequiométrica</em> como herramienta para resolver problemas de rendimiento, reactivo limitante y análisis de gases de combustión.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            <strong>Ecuación general de combustión completa</strong>
+            \[ \boxed{C_xH_y + \left(x + \dfrac{y}{4}\right)O_2 \longrightarrow x\,CO_2 + \dfrac{y}{2}\,H_2O} \]
+        </div>
+        <div class="formula-box" style="margin-top: 12px;">
+            <strong>Relaciones estequiométricas útiles</strong>
+            <p style="text-align: left; font-size: 0.95em; margin: 10px 0 0 0;">
+                <strong>Moles de \( O_2 \) por mol de HC:</strong> \( n_{O_2} = x + \dfrac{y}{4} \)<br><br>
+                <strong>Moles de \( CO_2 \) producidos:</strong> \( n_{CO_2} = x \cdot n_{HC} \)<br><br>
+                <strong>Moles de \( H_2O \) producidos:</strong> \( n_{H_2O} = \dfrac{y}{2} \cdot n_{HC} \)<br><br>
+                <strong>Volumen de aire necesario:</strong> \( V_{\text{aire}} = V_{O_2} \times 5 \) (el aire contiene ~20% de \( O_2 \))
+            </p>
+        </div>
+        <p>La demostración realizada mediante el balanceo sistemático de átomos confirma la ecuación general de combustión y proporciona las herramientas estequiométricas necesarias para resolver problemas de combustión de hidrocarburos.</p>
+        <div style="background: #e6fffa; border-radius: 8px; padding: 10px; margin-top: 12px; border-left: 4px solid #319795;">
+            <p style="margin: 0;"><strong>📌 Conclusión:</strong> El balanceo general de la combustión de hidrocarburos permite determinar de forma directa y sistemática las cantidades de reactivos y productos, siendo una herramienta fundamental para el cálculo estequiométrico en procesos de combustión.</p>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- BLOQUE DESPLEGABLE (TAREA 1)                 -->
+    <!-- ============================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🖱️ Pulsame 👉 🧪 DESMITIFICANDO el balanceo de la combustión de hidrocarburos</span>
+        </summary>
+
+        <!-- Ejercicio 1 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 1</span> Combustión de hexano</h3>
+            <p><strong>Enunciado:</strong> Se queman completamente 15,0 g de hexano (\( C_6H_{14} \)). Calcula:</p>
+            <ul>
+                <li>Los moles de \( O_2 \) necesarios.</li>
+                <li>La masa de \( CO_2 \) producida.</li>
+                <li>La masa de \( H_2O \) producida.</li>
+            </ul>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Ecuación balanceada:</strong> Para \( C_6H_{14} \), \( x=6, y=14 \). \( O_2 = 6 + \frac{14}{4} = 6 + 3,5 = 9,5 \). Por tanto: \( C_6H_{14} + 9,5\,O_2 \to 6CO_2 + 7H_2O \). (Multiplicamos por 2 para enteros: \( 2C_6H_{14} + 19O_2 \to 12CO_2 + 14H_2O \)).</div>
+                <div class="step"><strong>2. Moles de hexano:</strong> \( M(C_6H_{14}) = 6·12 + 14·1 = 86 \, \text{g/mol} \). \( n = \frac{15,0}{86} = 0,1744 \, \text{mol} \).</div>
+                <div class="step"><strong>3. Moles de \( O_2 \):</strong> \( n_{O_2} = 0,1744 \times 9,5 = 1,657 \, \text{mol} \).</div>
+                <div class="step"><strong>4. Masa de \( CO_2 \):</strong> \( n_{CO_2} = 0,1744 \times 6 = 1,046 \, \text{mol} \). \( m = 1,046 \times 44 = 46,0 \, \text{g} \).</div>
+                <div class="step"><strong>5. Masa de \( H_2O \):</strong> \( n_{H_2O} = 0,1744 \times 7 = 1,221 \, \text{mol} \). \( m = 1,221 \times 18 = 22,0 \, \text{g} \).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> Se necesitan 1,66 mol de \( O_2 \); se producen 46,0 g de \( CO_2 \) y 22,0 g de \( H_2O \).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 2</span> Determinación de fórmula empírica a partir de productos de combustión</h3>
+            <p><strong>Enunciado:</strong> Al quemar 0,350 g de un hidrocarburo desconocido se obtienen 1,10 g de \( CO_2 \) y 0,450 g de \( H_2O \). Determina su fórmula empírica.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Masa de C:</strong> \( m_C = 1,10 \times \frac{12}{44} = 0,300 \, \text{g} \).</div>
+                <div class="step"><strong>2. Masa de H:</strong> \( m_H = 0,450 \times \frac{2}{18} = 0,0500 \, \text{g} \).</div>
+                <div class="step"><strong>3. Comprobar que solo hay C e H:</strong> \( 0,300 + 0,0500 = 0,350 \, \text{g} \) (coincide con la masa inicial, por lo que no hay oxígeno).</div>
+                <div class="step"><strong>4. Moles de cada elemento:</strong> \( n_C = \frac{0,300}{12} = 0,0250 \, \text{mol} \); \( n_H = \frac{0,0500}{1} = 0,0500 \, \text{mol} \).</div>
+                <div class="step"><strong>5. Relación:</strong> \( 0,0250 : 0,0500 = 1 : 2 \).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La fórmula empírica es \( CH_2 \).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 3</span> Comparación de consumos de oxígeno</h3>
+            <p><strong>Enunciado:</strong> En las mismas condiciones de presión y temperatura, ¿qué volumen de oxígeno se necesita para quemar 10 L de etano (\( C_2H_6 \)) y 10 L de butano (\( C_4H_{10} \))? ¿Cuántas veces más oxígeno consume el butano?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Ecuaciones balanceadas:</strong> Etano: \( C_2H_6 + \frac{7}{2}O_2 \to 2CO_2 + 3H_2O \) (coeficiente O₂ = 3,5). Butano: \( C_4H_{10} + \frac{13}{2}O_2 \to 4CO_2 + 5H_2O \) (coeficiente O₂ = 6,5).</div>
+                <div class="step"><strong>2. Volumen de O₂ para etano:</strong> \( V_{O_2} = 10 \times 3,5 = 35 \, \text{L} \).</div>
+                <div class="step"><strong>3. Volumen de O₂ para butano:</strong> \( V_{O_2} = 10 \times 6,5 = 65 \, \text{L} \).</div>
+                <div class="step"><strong>4. Relación:</strong> \( \frac{65}{35} \approx 1,86 \). El butano consume aproximadamente 1,86 veces más oxígeno que el etano para el mismo volumen.</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> Etano: 35 L; butano: 65 L. El butano necesita ~1,86 veces más \( O_2 \).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 4</span> Emisión de \( CO_2 \) en un viaje en coche</h3>
+            <p><strong>Enunciado:</strong> Un coche consume 8,0 L de gasolina (densidad 0,74 g/mL) en un trayecto. Suponiendo que la gasolina es octano (\( C_8H_{18} \)), calcula la masa de \( CO_2 \) emitida. ¿Cuántos kg de \( CO_2 \) se liberan?</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Masa de gasolina:</strong> \( m = 8,0 \, \text{L} \times 1000 \, \text{mL/L} \times 0,74 \, \text{g/mL} = 5920 \, \text{g} \).</div>
+                <div class="step"><strong>2. Moles de octano:</strong> \( M(C_8H_{18}) = 114 \, \text{g/mol} \). \( n = \frac{5920}{114} = 51,93 \, \text{mol} \).</div>
+                <div class="step"><strong>3. Ecuación balanceada:</strong> \( C_8H_{18} + 12,5\,O_2 \to 8CO_2 + 9H_2O \). Por cada mol de octano se producen 8 mol de \( CO_2 \).</div>
+                <div class="step"><strong>4. Moles y masa de \( CO_2 \):</strong> \( n_{CO_2} = 51,93 \times 8 = 415,4 \, \text{mol} \). \( m = 415,4 \times 44 = 18278 \, \text{g} \approx 18,3 \, \text{kg} \).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> Se emiten aproximadamente 18,3 kg de \( CO_2 \).</div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <div class="exercise-card">
+            <h3><span class="badge">Ejercicio 5</span> Determinación de fórmula molecular con densidad</h3>
+            <p><strong>Enunciado:</strong> Un hidrocarburo gaseoso tiene una densidad de 2,59 g/L en condiciones normales. Al quemar 0,500 g se obtienen 1,57 g de \( CO_2 \) y 0,643 g de \( H_2O \). Determina su fórmula molecular.</p>
+            <div class="solution">
+                <div class="step"><strong>🔍 Resolución:</strong></div>
+                <div class="step"><strong>1. Fórmula empírica:</strong> \( m_C = 1,57 \times \frac{12}{44} = 0,428 \, \text{g} \); \( m_H = 0,643 \times \frac{2}{18} = 0,0714 \, \text{g} \). \( n_C = \frac{0,428}{12} = 0,0357 \); \( n_H = \frac{0,0714}{1} = 0,0714 \). Relación 1:2 → \( CH_2 \).</div>
+                <div class="step"><strong>2. Masa molar a partir de la densidad en CN:</strong> \( M = d \times 22,4 = 2,59 \times 22,4 = 58,0 \, \text{g/mol} \).</div>
+                <div class="step"><strong>3. Relación con la masa empírica:</strong> \( M(CH_2) = 14 \). \( \frac{58,0}{14} \approx 4,14 \approx 4 \) (redondeando).</div>
+                <div class="step"><strong>4. Fórmula molecular:</strong> \( (CH_2)_4 = C_4H_8 \).</div>
+                <div class="step"><span class="highlight-sol">Resultado:</span> La fórmula molecular es \( C_4H_8 \) (buteno o ciclobutano).</div>
+            </div>
+        </div>
+
+        <!-- Pie didáctico -->
+        <div class="didactic-footer">
+            <i class="fas fa-graduation-cap"></i>
+            <span><strong>Observaciones claves:</strong> El balanceo general de la combustión de hidrocarburos es una herramienta que evita el tanteo y permite resolver problemas de forma sistemática. La "trampa" más común es olvidar que el oxígeno molecular es \( O_2 \) y no \( O \), o confundir el número de átomos de hidrógeno en el agua. Practicar con diferentes hidrocarburos y situaciones reales (como emisiones de vehículos) ayuda a consolidar el método.</span>
+        </div>
+    </details>
+    <!-- FIN DEL BLOQUE DESPLEGABLE -->
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T07.12. Ley de Gravitación Universal de Newton</title>
+    <!-- FontAwesome CDN (versión 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .header-sub img {
+            max-height: 28px;
+            width: auto;
+            border-radius: 4px;
+            background: white;
+            padding: 2px;
+        }
+        .header-sub .codigo {
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .header-sub .texto {
+            font-size: 1.1em;
+        }
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 30px 15px 15px 15px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 2px solid #dbeafe;
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 20px rgba(59,130,246,0.12);
+        }
+        summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            padding: 0.8rem 0.5rem 0.8rem 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary i {
+            font-size: 1.8rem;
+            color: #2563eb;
+            transition: transform 0.3s ease;
+        }
+        details[open] summary i {
+            transform: rotate(180deg);
+        }
+        summary .titulo-principal {
+            flex: 1;
+        }
+        summary .badge-pulsa {
+            background: #dbeafe;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e40af;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .contenido-desplegable {
+            padding: 0.5rem 0.8rem 1.8rem 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 0.5rem;
+        }
+        .tarjeta-ejercicio {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .tarjeta-ejercicio .cabecera-ej {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px dashed #bfdbfe;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .cabecera-ej .num-ej {
+            background: #2563eb;
+            color: white;
+            font-weight: 700;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .cabecera-ej .titulo-ej {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0b1e33;
+        }
+        .enunciado-ej {
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+        .resolucion-ej {
+            background: #f1f5f9;
+            padding: 1.2rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.98rem;
+        }
+        .resolucion-ej .paso {
+            margin: 0.6rem 0;
+        }
+        .resolucion-ej .paso strong {
+            color: #1e40af;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            padding: 1rem 1.8rem;
+            background: #eef2ff;
+            border-radius: 40px;
+            border-left: 6px solid #3b82f6;
+            font-weight: 500;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pie-clave i {
+            font-size: 1.6rem;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- CABECERA -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T07.12.- </span>
+                <span class="texto">Ley de Gravitación Universal de Newton</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ENUNCIADO -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de las leyes de Kepler sobre el movimiento planetario, especialmente de la tercera ley \( T^2 \propto R^3 \), y de la segunda ley de Newton, demostrar que la fuerza de atracción gravitatoria entre dos masas es proporcional al producto de las masas e inversamente proporcional al cuadrado de la distancia que las separa.</p>
+        <div class="formula-box">
+            \[ F = G \, \frac{M \, m}{r^2} \]
+        </div>
+
+        <!-- Insertando imagen -->
+        <style>
+          img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+          }
+        </style>
+
+        <img src="../imagenes/U07c12 - Ley de gravitación universal de Newton.png" alt="Imagen" width="800">
+        <!-- -----FIN-------- -->
+
+    </div>
+
+    <!-- OBJETIVO -->
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Derivar la ley de gravitación universal combinando la mecánica newtoniana con las observaciones astronómicas de Kepler. Esta demostración histórica muestra cómo la física terrestre y celestial se unifican bajo un mismo marco teórico, constituyendo uno de los mayores logros de la ciencia.</p>
+    </div>
+
+    <!-- PROCEDIMIENTO -->
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Tercera ley de Kepler:</strong> Kepler estableció experimentalmente que, para los planetas del sistema solar, el cuadrado del periodo orbital es proporcional al cubo del semieje mayor de la órbita:
+            <div class="formula-box">
+                \[ T^2 = k \, R^3 \]
+            </div>
+            donde \( k \) es una constante que tiene el mismo valor para todos los planetas que orbitan alrededor del Sol.
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Fuerza centrípeta en la órbita planetaria:</strong> Suponiendo órbitas circulares aproximadas (válidas para excentricidades pequeñas), la fuerza que mantiene a un planeta en su órbita es la fuerza centrípeta:
+            <div class="formula-box">
+                \[ F_c = \frac{m \, v^2}{R} \]
+            </div>
+            donde \( m \) es la masa del planeta, \( v \) su velocidad orbital y \( R \) el radio de la órbita.
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Relación entre velocidad orbital y periodo:</strong> La velocidad orbital es la longitud de la órbita dividida por el periodo:
+            <div class="formula-box">
+                \[ v = \frac{2\pi R}{T} \quad \Rightarrow \quad v^2 = \frac{4\pi^2 R^2}{T^2} \]
+            </div>
+            Sustituyendo en la expresión de la fuerza centrípeta:
+            <div class="formula-box">
+                \[ F_c = \frac{m}{R} \cdot \frac{4\pi^2 R^2}{T^2} = \frac{4\pi^2 m R}{T^2} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Eliminación del periodo usando la tercera ley de Kepler:</strong> De la tercera ley, \( T^2 = k R^3 \). Sustituyendo:
+            <div class="formula-box">
+                \[ F_c = \frac{4\pi^2 m R}{k R^3} = \frac{4\pi^2}{k} \cdot \frac{m}{R^2} \]
+            </div>
+            La fuerza es proporcional a la masa del planeta e inversamente proporcional al cuadrado de la distancia al Sol.
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Aplicación de la tercera ley de Newton:</strong> Por el principio de acción y reacción, si el Sol atrae al planeta con una fuerza, el planeta atrae al Sol con una fuerza igual y opuesta. Por simetría, la fuerza debe ser proporcional también a la masa del Sol \( M \):
+            <div class="formula-box">
+                \[ F \propto \frac{M \, m}{R^2} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Introducción de la constante universal:</strong> La constante de proporcionalidad \( G \) es la <strong>constante de gravitación universal</strong>, cuyo valor experimental es \( G = 6{,}67 \times 10^{-11} \, \mathrm{N \cdot m^2 \cdot kg^{-2}} \). La ley completa es válida para cualquier par de masas puntuales:
+            <div class="formula-box">
+                \[ F = G \, \frac{M \, m}{r^2} \]
+            </div>
+            donde \( r \) es la distancia entre los centros de las dos masas. La fuerza es atractiva, dirigida a lo largo de la línea que une ambas masas.
+        </div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <p>Se ha demostrado que dos masas puntuales \( M \) y \( m \) separadas una distancia \( r \) se atraen con una fuerza gravitatoria de módulo:</p>
+        <div class="formula-box">
+            \[ \boxed{F = G \, \frac{M \, m}{r^2}} \]
+        </div>
+        <p>donde \( G = 6{,}67 \times 10^{-11} \, \mathrm{N \cdot m^2 \cdot kg^{-2}} \) es la constante de gravitación universal. La fuerza es siempre atractiva, actúa a lo largo de la línea que une ambas masas, y constituye un par de acción-reacción.</p>
+        <div class="note">
+            <strong>💡 Observaciones sobre el alumnado:</strong> Newton logró unificar la física terrestre (caída de manzanas) y la física celestial (órbitas planetarias) bajo una sola ley. Es importante destacar que la masa que aparece en la ley de gravitación es la <strong>masa gravitatoria</strong>, que experimentalmente resulta ser idéntica a la <strong>masa inercial</strong> de la segunda ley de Newton (principio de equivalencia). Esta identidad, aparentemente casual, tiene profundas implicaciones que Einstein desarrollaría en la relatividad general. Para cuerpos esféricos de distribución de masa uniforme, la ley es válida considerando toda la masa concentrada en su centro.
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- BLOQUE DESPLEGABLE: "DESMITIFICANDO Ley de Gravitación Universal" -->
+    <!-- ============================================================ -->
+    <details>
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span class="titulo-principal">🧪 DESMITIFICANDO Ley de Gravitación Universal de Newton</span>
+            <span class="badge-pulsa"><i class="fas fa-hand-pointer"></i> Pulsame</span>
+        </summary>
+        <div class="contenido-desplegable">
+
+            <!-- EJERCICIO 1: Aplicación directa de la ley -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 1</span>
+                    <span class="titulo-ej">Fuerza entre dos masas puntuales</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Dos esferas metálicas de masas \(m_1 = 5,0\,\text{kg}\) y \(m_2 = 8,0\,\text{kg}\) están separadas por una distancia de \(0,20\,\text{m}\).</p>
+                    <ul>
+                        <li>a) Calcula la fuerza gravitatoria entre ellas.</li>
+                        <li>b) Si la distancia se triplica, ¿cuánto vale la nueva fuerza?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Usamos la ley de gravitación: \(F = G \frac{m_1 m_2}{r^2} = 6,67 \times 10^{-11} \cdot \frac{5,0 \cdot 8,0}{(0,20)^2} = 6,67 \times 10^{-11} \cdot \frac{40}{0,04} = 6,67 \times 10^{-11} \cdot 1000 = 6,67 \times 10^{-8}\,\text{N}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Si \(r' = 3r = 0,60\,\text{m}\), entonces \(F' = G \frac{m_1 m_2}{(3r)^2} = \frac{F}{9} = \frac{6,67 \times 10^{-8}}{9} \approx 7,41 \times 10^{-9}\,\text{N}\). La fuerza se reduce en un factor de 9 (inversamente proporcional al cuadrado de la distancia).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Cálculo de la masa de un planeta -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 2</span>
+                    <span class="titulo-ej">Determinación de la masa de un planeta</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un satélite orbita un planeta describiendo una órbita circular de radio \(R = 4,0 \times 10^7\,\text{m}\) con un periodo de \(T = 8,0 \times 10^4\,\text{s}\).</p>
+                    <ul>
+                        <li>a) Calcula la masa del planeta.</li>
+                        <li>b) Si el satélite tiene masa \(m = 500\,\text{kg}\), ¿qué fuerza gravitatoria ejerce el planeta sobre él?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Igualando la fuerza gravitatoria con la centrípeta: \(G \frac{M m}{R^2} = m \frac{4\pi^2 R}{T^2}\) (la masa del satélite se cancela). Despejando \(M\): \(M = \frac{4\pi^2 R^3}{G T^2} = \frac{4\pi^2 (4,0 \times 10^7)^3}{6,67 \times 10^{-11} \cdot (8,0 \times 10^4)^2}\). Calculamos: \(R^3 = 6,4 \times 10^{22}\); \(4\pi^2 R^3 \approx 39,48 \cdot 6,4 \times 10^{22} \approx 2,53 \times 10^{24}\). Denominador: \(6,67 \times 10^{-11} \cdot 6,4 \times 10^9 \approx 4,27 \times 10^{-1}\). \(M \approx \frac{2,53 \times 10^{24}}{4,27 \times 10^{-1}} \approx 5,93 \times 10^{24}\,\text{kg}\) (similar a la masa de la Tierra).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(F = G \frac{M m}{R^2} = \frac{6,67 \times 10^{-11} \cdot 5,93 \times 10^{24} \cdot 500}{(4,0 \times 10^7)^2} = \frac{6,67 \times 10^{-11} \cdot 2,965 \times 10^{27}}{1,6 \times 10^{15}} \approx \frac{1,978 \times 10^{17}}{1,6 \times 10^{15}} \approx 123,6\,\text{N}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Comparación de fuerzas gravitatorias -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 3</span>
+                    <span class="titulo-ej">Comparación de fuerzas entre diferentes pares de masas</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Se tienen dos casos:</p>
+                    <ul>
+                        <li>Caso A: dos masas de \(10\,\text{kg}\) y \(20\,\text{kg}\) separadas \(1,0\,\text{m}\).</li>
+                        <li>Caso B: dos masas de \(5,0\,\text{kg}\) y \(40\,\text{kg}\) separadas \(2,0\,\text{m}\).</li>
+                        <li>a) Calcula la fuerza en cada caso.</li>
+                        <li>b) ¿En cuál de los dos casos la fuerza es mayor? Justifica.</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Caso A: \(F_A = G \frac{10 \cdot 20}{1^2} = 200 G\). Caso B: \(F_B = G \frac{5 \cdot 40}{2^2} = G \frac{200}{4} = 50 G\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> \(F_A = 200G\), \(F_B = 50G\), por lo que la fuerza en el caso A es 4 veces mayor que en el B. Aunque el producto de masas es el mismo (200 kg²), la distancia en el caso B es el doble, lo que reduce la fuerza en un factor de 4 debido al cuadrado de la distancia.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Variación de la gravedad con la altura -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 4</span>
+                    <span class="titulo-ej">Gravedad a diferentes alturas</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>La aceleración de la gravedad en la superficie terrestre es \(g_0 = 9,81\,\text{m/s}^2\). El radio de la Tierra es \(R_T = 6,38 \times 10^6\,\text{m}\).</p>
+                    <ul>
+                        <li>a) Calcula la aceleración de la gravedad a una altura de \(h = 500\,\text{km}\) sobre la superficie.</li>
+                        <li>b) ¿A qué altura la gravedad se reduce a la mitad de su valor en la superficie?</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> La gravedad a una distancia \(r = R_T + h\) del centro es \(g = g_0 \frac{R_T^2}{r^2}\). \(h = 500\,\text{km} = 5,0 \times 10^5\,\text{m}\). \(r = 6,38 \times 10^6 + 5,0 \times 10^5 = 6,88 \times 10^6\,\text{m}\). \(g = 9,81 \cdot \frac{(6,38 \times 10^6)^2}{(6,88 \times 10^6)^2} = 9,81 \cdot \frac{4,070 \times 10^{13}}{4,733 \times 10^{13}} = 9,81 \cdot 0,860 = 8,44\,\text{m/s}^2\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Queremos \(g = g_0/2\). Entonces \(g_0 \frac{R_T^2}{r^2} = \frac{g_0}{2} \Rightarrow r^2 = 2 R_T^2 \Rightarrow r = R_T \sqrt{2}\). La altura \(h = r - R_T = R_T (\sqrt{2} - 1) \approx 6,38 \times 10^6 \cdot (1,4142 - 1) \approx 6,38 \times 10^6 \cdot 0,4142 \approx 2,64 \times 10^6\,\text{m} = 2640\,\text{km}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Órbita de un satélite geoestacionario -->
+            <div class="tarjeta-ejercicio">
+                <div class="cabecera-ej">
+                    <span class="num-ej">Ejercicio 5</span>
+                    <span class="titulo-ej">Altura de un satélite geoestacionario</span>
+                </div>
+                <div class="enunciado-ej">
+                    <p>Un satélite geoestacionario tiene un periodo orbital igual al periodo de rotación de la Tierra (\(T = 24\,\text{h} = 86400\,\text{s}\)).</p>
+                    <ul>
+                        <li>a) Calcula el radio de su órbita (distancia al centro de la Tierra).</li>
+                        <li>b) ¿A qué altura sobre la superficie se encuentra? Dato: \(R_T = 6,38 \times 10^6\,\text{m}\).</li>
+                    </ul>
+                </div>
+                <div class="resolucion-ej">
+                    <p><strong>Resolución:</strong></p>
+                    <div class="paso">
+                        <strong>a)</strong> Usamos \(T^2 = \frac{4\pi^2}{G M_T} R^3\) (deducido de igualar \(F_g = F_c\)). Despejando \(R\): \(R^3 = \frac{G M_T T^2}{4\pi^2}\). Con \(M_T = 5,98 \times 10^{24}\,\text{kg}\): \(R^3 = \frac{6,67 \times 10^{-11} \cdot 5,98 \times 10^{24} \cdot (86400)^2}{4\pi^2} = \frac{6,67 \times 10^{-11} \cdot 5,98 \times 10^{24} \cdot 7,46496 \times 10^9}{39,48}\). El numerador: \(6,67 \cdot 5,98 \cdot 7,46496 \times 10^{22} \approx 297,5 \times 10^{22} = 2,975 \times 10^{24}\). Dividiendo por \(39,48\): \(R^3 \approx 7,536 \times 10^{22}\). \(R \approx (7,536 \times 10^{22})^{1/3} \approx 4,22 \times 10^7\,\text{m}\).
+                    </div>
+                    <div class="paso">
+                        <strong>b)</strong> Altura \(h = R - R_T = 4,22 \times 10^7 - 6,38 \times 10^6 = 3,582 \times 10^7\,\text{m} \approx 35800\,\text{km}\) (valor típico de los satélites geoestacionarios).
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DIDÁCTICO -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i>
+                <span><strong>Observaciones claves:</strong> La ley de gravitación universal es una ley de <em>inversa al cuadrado</em>: la fuerza disminuye con el cuadrado de la distancia. Esto explica por qué la gravedad en la superficie de la Tierra es mucho mayor que en la cima de una montaña, aunque la diferencia de altura sea pequeña comparada con el radio terrestre. La ley también muestra que la fuerza es directamente proporcional al producto de las masas, lo que hace que la interacción gravitatoria sea extremadamente débil para objetos cotidianos, pero dominante a escala astronómica.</span>
+            </div>
+
+        </div> <!-- fin contenido-desplegable -->
+    </details>
+
+    <!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+</div> <!-- fin container -->
+</body>
+</html>

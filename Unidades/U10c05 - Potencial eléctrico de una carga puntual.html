@@ -1,0 +1,583 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#T10.05 · Potencial Eléctrico de una Carga Puntual</title>
+<!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome (versión 6) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ============================================
+   ESTILOS EXISTENTES (no modificados)
+   ============================================ */
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.header-left h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+.header-left p {
+    margin: 6px 0 0 0;
+    font-size: 1em;
+}
+.header-right img {
+    max-height: 70px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+}
+.section {
+    padding: 25px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border-left: 5px solid;
+}
+.enunciado { background: #f7fafc; border-color: #a0aec0; }
+.objetivo  { background: #fffaf0; border-color: #ed8936; }
+.procedimiento { background: #f0fff4; border-color: #48bb78; }
+.resultado { background: #ebf8ff; border-color: #4299e1; }
+.section h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.enunciado h2 { color: #4a5568; }
+.objetivo h2  { color: #c05621; }
+.procedimiento h2 { color: #276749; }
+.resultado h2 { color: #2b6cb0; }
+.formula-box {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+}
+.step {
+    background: white;
+    border-left: 4px solid #a0aec0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.step-num {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #744210;
+}
+p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.header-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.header-sub img {
+    height: 28px;
+    width: auto;
+    display: block;
+    border-radius: 4px;
+}
+.header-sub .codigo {
+    font-weight: 700;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+    color: #f0e6ff;
+}
+.header-sub .texto {
+    font-size: 1em;
+    color: #f0e6ff;
+    font-weight: 500;
+}
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+/* ============================================
+   NUEVOS ESTILOS PARA EL BLOQUE DESPLEGABLE
+   ============================================ */
+details.desmitificando {
+    margin: 30px 15px 20px 15px;
+    border: 2px solid #ed8936;
+    border-radius: 12px;
+    background: #fffaf0;
+    padding: 0.5rem 1rem 1rem 1rem;
+    transition: all 0.2s;
+}
+details.desmitificando summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.5rem 0;
+    user-select: none;
+}
+details.desmitificando summary::-webkit-details-marker {
+    display: none;
+}
+details.desmitificando summary i.fa-chevron-circle-down {
+    transition: transform 0.3s ease;
+    color: #ed8936;
+    font-size: 1.6rem;
+}
+details.desmitificando[open] summary i.fa-chevron-circle-down {
+    transform: rotate(180deg);
+}
+details.desmitificando summary .pulsame {
+    font-size: 0.8rem;
+    color: #9c6b2c;
+    background: #fde8c8;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+details.desmitificando .contenido-ejercicios {
+    margin-top: 0.5rem;
+    border-top: 1px solid #f5d6a8;
+    padding-top: 1rem;
+}
+
+.ejercicio-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    border: 1px solid #f5d6a8;
+}
+.ejercicio-header {
+    background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ejercicio-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.ejercicio-body {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+}
+.ejercicio-body .enunciado-ej {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.ejercicio-body ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+.resolucion {
+    background: #fff9ef;
+    border-left: 4px solid #ed8936;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 0.5rem 0;
+    font-size: 0.98rem;
+}
+.resolucion .paso {
+    margin-bottom: 0.6rem;
+}
+.resolucion .paso strong {
+    color: #9c6b2c;
+}
+.pie-clave {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: #744210;
+}
+.pie-clave i {
+    margin-right: 8px;
+    color: #d69e2e;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== CABECERA OBLIGATORIA ===== -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T10.05.- </span>
+                <span class="texto">Potencial Eléctrico de una Carga Puntual</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES EXISTENTES ===== -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de potencial eléctrico como trabajo por unidad de carga necesario para traer una carga de prueba desde el infinito (donde el potencial es cero por convenio) hasta un punto del espacio, y de la expresión del campo eléctrico creado por una carga puntual, demostrar que el potencial eléctrico creado por una carga \( Q \) a una distancia \( r \) viene dado por:</p>
+        <div class="formula-box">
+            \[ V = K \frac{Q}{r} \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U10c05 - Potencial eléctrico de una carga puntual.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Obtener la expresión escalar del potencial eléctrico, que es una magnitud más sencilla de manejar que el campo vectorial. El potencial permite calcular trabajos y energías potenciales sin necesidad de integrales vectoriales, simplificando enormemente los problemas electrostáticos. Esta demostración conecta el concepto de trabajo con el campo eléctrico y establece las bases para el estudio de la energía en sistemas de cargas.</p>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definición de potencial eléctrico.</strong> El potencial eléctrico en un punto se define como el trabajo que debe realizar una fuerza externa (que equilibra la fuerza del campo) para traer una carga de prueba unitaria \( q_0 = 1 \, \text{C} \) desde el infinito (donde \( V_{\infty} = 0 \) por convenio) hasta dicho punto, dividido por la carga:
+            <div class="formula-box">
+                \[ V(r) = \frac{W_{\infty \to r}}{q_0} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Trabajo contra el campo.</strong> El trabajo realizado por una fuerza externa que equilibra exactamente la fuerza del campo (movimiento cuasiestático) es igual y opuesto al trabajo del campo. Para una carga de prueba \( q_0 \) en el campo de \( Q \):
+            <div class="formula-box">
+                \[ W_{\text{ext}} = -\int_{\infty}^{r} \vec{F}_{\text{campo}} \cdot d\vec{r} = -\int_{\infty}^{r} q_0 \vec{E} \cdot d\vec{r} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Sustitución del campo.</strong> El campo creado por \( Q \) es radial y tiene magnitud \( E = K \frac{Q}{r^2} \). El desplazamiento elemental \( d\vec{r} \) es también radial, por lo que el producto escalar se reduce al producto de magnitudes:
+            <div class="formula-box">
+                \[ W_{\text{ext}} = -\int_{\infty}^{r} q_0 \cdot K \frac{Q}{r'^2} \cdot dr' \]
+            </div>
+            <p>donde \( r' \) es la variable de integración.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Resolución de la integral.</strong> Extraemos las constantes y resolvemos la integral:
+            <div class="formula-box">
+                \[ W_{\text{ext}} = -q_0 \cdot K \cdot Q \int_{\infty}^{r} \frac{1}{r'^2} \, dr' = -q_0 \cdot K \cdot Q \left[ -\frac{1}{r'} \right]_{\infty}^{r} \]
+            </div>
+            <p>Evaluando los límites:</p>
+            <div class="formula-box">
+                \[ W_{\text{ext}} = -q_0 \cdot K \cdot Q \left( -\frac{1}{r} - \left(-\frac{1}{\infty}\right) \right) = -q_0 \cdot K \cdot Q \left( -\frac{1}{r} - 0 \right) \]
+            </div>
+            <div class="formula-box">
+                \[ W_{\text{ext}} = q_0 \cdot K \cdot \frac{Q}{r} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Cálculo del potencial.</strong> Dividiendo el trabajo por la carga de prueba \( q_0 \):
+            <div class="formula-box">
+                \[ V(r) = \frac{W_{\text{ext}}}{q_0} = K \frac{Q}{r} \]
+            </div>
+            <p>La carga de prueba se cancela, confirmando que el potencial es una propiedad del campo, independiente de la carga que se utilice para medirlo.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Interpretación física.</strong> El potencial disminuye con la distancia como \( \frac{1}{r} \) (más lentamente que el campo, que lo hace como \( \frac{1}{r^2} \)):
+            <ul>
+                <li>Si \( Q > 0 \): el potencial es positivo y disminuye al alejarse de la carga</li>
+                <li>Si \( Q < 0 \): el potencial es negativo y aumenta (se hace menos negativo) al alejarse</li>
+            </ul>
+            <p>El potencial en el infinito es cero por convenio, lo que fija la referencia de energía.</p>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong> Es crucial enfatizar que el potencial es una <strong>magnitud escalar</strong>, lo que simplifica enormemente los cálculos respecto al campo vectorial. En el SI se mide en voltios (\( \text{V} = \text{J} \cdot \text{C}^{-1} \)). La elección del infinito como referencia de potencial cero es un convenio matemático, no una necesidad física; para problemas con cargas infinitas se elige otro punto de referencia. La relación \( V = K \frac{Q}{r} \) es análoga a la energía potencial gravitatoria \( U = -G \frac{Mm}{r} \), permitiendo establecer paralelismos instructivos.
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            \[ V = K \frac{Q}{r} \quad \text{(Potencial eléctrico de una carga puntual)} \]
+        </div>
+        <p>El potencial eléctrico de una carga puntual es una magnitud escalar que depende inversamente de la distancia a la carga. Es positivo para cargas positivas y negativo para cargas negativas, y se anula en el infinito por convenio.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- BLOQUE DESPLEGABLE AÑADIDO (TAREA 1)      -->
+    <!-- ======================================== -->
+    <details class="desmitificando">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO el Potencial Eléctrico de una Carga Puntual</span>
+            <span class="pulsame">🖱️ Pulsame</span>
+        </summary>
+        <div class="contenido-ejercicios">
+
+            <!-- EJERCICIO 1: Cálculo directo del potencial -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">1</span>
+                    <span>Cálculo directo del potencial de una carga puntual</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una carga puntual de \( Q = -5{,}0\,\mu\text{C} \) está en el origen. Calcula el potencial eléctrico en un punto situado a \( 12\,\text{cm} \) de la carga.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Escribimos la fórmula del potencial de una carga puntual:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ V = K \frac{Q}{r} \]
+                        </div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos los valores: \( K = 8{,}99\times10^9\,\text{N·m}^2/\text{C}^2 \), \( Q = -5{,}0\times10^{-6}\,\text{C} \), \( r = 0{,}12\,\text{m} \):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ V = 8{,}99\times10^9 \cdot \frac{-5{,}0\times10^{-6}}{0{,}12}
+                            = 8{,}99\times10^9 \cdot (-4{,}17\times10^{-5})
+                            \approx -3{,}75\times10^{5}\,\text{V} \]
+                        </div>
+                        <div class="paso"><strong>Resultado:</strong> \( V = -3{,}75\times10^{5}\,\text{V} \) (negativo, como corresponde a una carga negativa).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Determinación de la carga a partir del potencial -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">2</span>
+                    <span>Determinación de la carga fuente a partir del potencial</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>El potencial eléctrico a una distancia de \( 0{,}50\,\text{m} \) de una carga puntual es de \( 1{,}8\times10^{4}\,\text{V} \). ¿Cuánto vale la carga? ¿Es positiva o negativa?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Despejamos \( Q \) de \( V = K \frac{Q}{r} \): \( Q = \frac{V \cdot r}{K} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( Q = \frac{1{,}8\times10^{4} \times 0{,}50}{8{,}99\times10^9} = \frac{9{,}0\times10^{3}}{8{,}99\times10^9} \approx 1{,}0\times10^{-6}\,\text{C} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> \( Q \approx +1{,}0\,\mu\text{C} \). Es positiva porque el potencial es positivo.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Superposición escalar de potenciales -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">3</span>
+                    <span>Potencial total debido a dos cargas (superposición escalar)</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos cargas puntuales están sobre el eje \( x \): \( q_1 = +2{,}0\,\mu\text{C} \) en \( x = 0 \), y \( q_2 = -4{,}0\,\mu\text{C} \) en \( x = 8{,}0\,\text{cm} \). Calcula el potencial eléctrico total en el punto \( x = 4{,}0\,\text{cm} \).</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Punto \( P \) en \( x = 0{,}04\,\text{m} \). Distancias: \( r_1 = 0{,}04\,\text{m} \), \( r_2 = 0{,}04\,\text{m} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Potencial creado por \( q_1 \):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ V_1 = 8{,}99\times10^9 \cdot \frac{2{,}0\times10^{-6}}{0{,}04}
+                            = 4{,}50\times10^{5}\,\text{V} \]
+                        </div>
+                        <div class="paso"><strong>Paso 3:</strong> Potencial creado por \( q_2 \):</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ V_2 = 8{,}99\times10^9 \cdot \frac{-4{,}0\times10^{-6}}{0{,}04}
+                            = -8{,}99\times10^{5}\,\text{V} \]
+                        </div>
+                        <div class="paso"><strong>Paso 4:</strong> El potencial total es la suma escalar:</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ V_{\text{total}} = V_1 + V_2 = 4{,}50\times10^5 - 8{,}99\times10^5 = -4{,}49\times10^{5}\,\text{V} \]
+                        </div>
+                        <div class="paso"><strong>Resultado:</strong> \( V_{\text{total}} \approx -4{,}5\times10^{5}\,\text{V} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Trabajo para mover una carga entre dos puntos -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">4</span>
+                    <span>Trabajo necesario para mover una carga entre puntos de diferente potencial</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una carga \( q = +3{,}0\,\mu\text{C} \) se mueve desde un punto \( A \), donde el potencial es \( V_A = 200\,\text{V} \), hasta un punto \( B \), donde \( V_B = 800\,\text{V} \). Calcula el trabajo que debe realizar una fuerza externa para llevar la carga de \( A \) a \( B \) en equilibrio.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> El trabajo externo es \( W_{\text{ext}} = q (V_B - V_A) \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( W_{\text{ext}} = (3{,}0\times10^{-6}) \cdot (800 - 200) = 3{,}0\times10^{-6} \cdot 600 = 1{,}8\times10^{-3}\,\text{J} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> Se requiere \( 1{,}8\times10^{-3}\,\text{J} \) de trabajo externo. (El potencial aumenta, por lo que se debe aportar energía).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Energía potencial de un sistema de dos cargas -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">5</span>
+                    <span>Energía potencial eléctrica de un sistema de dos cargas</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Dos cargas puntuales, \( q_1 = +6{,}0\,\mu\text{C} \) y \( q_2 = -2{,}0\,\mu\text{C} \), están separadas \( 15\,\text{cm} \). Calcula la energía potencial eléctrica del sistema.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> La energía potencial de un sistema de dos cargas es \( U = K \frac{q_1 q_2}{r} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Sustituimos: \( U = 8{,}99\times10^9 \cdot \frac{(6{,}0\times10^{-6})(-2{,}0\times10^{-6})}{0{,}15} \).</div>
+                        <div class="formula-box" style="margin:5px 0;">
+                            \[ U = 8{,}99\times10^9 \cdot \frac{-12\times10^{-12}}{0{,}15}
+                            = 8{,}99\times10^9 \cdot (-8{,}0\times10^{-11})
+                            \approx -0{,}72\,\text{J} \]
+                        </div>
+                        <div class="paso"><strong>Resultado:</strong> \( U \approx -0{,}72\,\text{J} \) (negativa, porque las cargas son de signo opuesto y el sistema está ligado).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE Observaciones claves -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> El potencial eléctrico es una magnitud <strong>escalar</strong>, lo que hace que la superposición sea una simple suma algebraica, a diferencia del campo que requiere suma vectorial. La principal "trampa" es olvidar que el potencial puede ser negativo y que el trabajo depende de la <strong>diferencia</strong> de potencial, no del valor absoluto. La energía potencial de un sistema se obtiene multiplicando la carga por el potencial creado por las otras cargas.
+            </div>
+
+        </div> <!-- /contenido-ejercicios -->
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- /container -->
+</body>
+</html>

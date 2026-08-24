@@ -1,0 +1,616 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T09.10 - Demostración: Rendimiento de Carnot</title>
+    <!-- MathJax -->
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Font Awesome 6 (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .header-sub img {
+            max-height: 30px;
+            width: auto;
+        }
+        .header-sub .codigo {
+            font-weight: bold;
+            font-size: 1em;
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajustes para listas y tablas */
+        ul, ol {
+            padding-left: 25px;
+            margin: 10px 0;
+        }
+        li {
+            line-height: 1.7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #edf2f7;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details.ejercicios-desplegable {
+            margin: 30px 25px 20px 25px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e0;
+        }
+        details.ejercicios-desplegable summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            padding: 0.8rem 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+            transition: color 0.2s;
+        }
+        details.ejercicios-desplegable summary::-webkit-details-marker {
+            display: none;
+        }
+        details.ejercicios-desplegable summary .fa-chevron-circle-down {
+            transition: transform 0.3s ease;
+            color: #667eea;
+            font-size: 1.8rem;
+        }
+        details.ejercicios-desplegable[open] summary .fa-chevron-circle-down {
+            transform: rotate(180deg);
+        }
+        details.ejercicios-desplegable summary .icono-pulsame {
+            background: #667eea;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-left: 0.3rem;
+        }
+        .contenido-ejercicios {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        .tarjeta-ej {
+            background: white;
+            border-radius: 18px;
+            padding: 1.2rem 1.8rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e9edf4;
+        }
+        .tarjeta-ej .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-ej .ej-num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+        .tarjeta-ej .ej-titulo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #1e293b;
+        }
+        .tarjeta-ej .enunciado {
+            margin-bottom: 0.8rem;
+        }
+        .tarjeta-ej .enunciado ul {
+            margin-left: 1.5rem;
+        }
+        .resolucion {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid #667eea;
+            margin-top: 0.8rem;
+            font-size: 0.98rem;
+        }
+        .resolucion p {
+            margin: 0.5rem 0;
+        }
+        .resolucion .step-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .pie-clave {
+            margin-top: 1.8rem;
+            background: #e0f2fe;
+            border-radius: 14px;
+            padding: 1rem 1.5rem;
+            font-size: 0.98rem;
+            border-left: 6px solid #0ea5e9;
+            color: #0c4a6e;
+        }
+        .pie-clave i {
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            .container {
+                margin: 10px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-self: flex-end;
+            }
+            details.ejercicios-desplegable summary {
+                font-size: 1.1rem;
+                flex-wrap: wrap;
+            }
+            .tarjeta-ej {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABECERA OBLIGATORIA -->
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T09.10.- </span>
+                    <span class="texto">Demostración: Rendimiento de Carnot</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIONES TRANSFORMADAS -->
+        <!-- ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📘 Enunciado</h2>
+            <p>Partiendo del Primer Principio de la Termodinámica aplicado a un ciclo, de la definición de rendimiento de una máquina térmica, y de las ecuaciones de los procesos isotérmicos y adiabáticos reversibles, demostrar que el rendimiento máximo de una máquina térmica reversible que opera entre dos focos térmicos a temperaturas \( T_c \) (foco caliente) y \( T_f \) (foco frío) viene dado por:</p>
+            <div class="formula-box">
+                \[ \eta = 1 - \frac{T_f}{T_c} \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U09c10 - Rendimiento máximo de una máquina térmica.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Demostrar que el rendimiento de cualquier máquina térmica real no puede superar el de una máquina reversible de Carnot que opere entre las mismas temperaturas. Este resultado, conocido como teorema de Carnot, establece un límite fundamental impuesto por la segunda ley de la termodinámica y explica por qué ningún motor puede convertir todo el calor en trabajo útil.</p>
+        </div>
+
+        <!-- PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔬 Procedimiento</h2>
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definición de rendimiento:</strong> El rendimiento de una máquina térmica se define como el cociente entre el trabajo útil obtenido y el calor absorbido del foco caliente:
+                <div class="formula-box">
+                    \[ \eta = \frac{|W|}{Q_c} = \frac{Q_c - Q_f}{Q_c} = 1 - \frac{Q_f}{Q_c} \]
+                </div>
+                donde \( Q_c \) es el calor absorbido del foco caliente y \( Q_f \) es el calor cedido al foco frío (ambos valores positivos en esta expresión).
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Ciclo de Carnot:</strong> Un ciclo de Carnot consta de cuatro procesos reversibles:
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li><strong>1→2:</strong> Expansión isotérmica reversible a \( T_c \) (absorción de calor \( Q_c \))</li>
+                    <li><strong>2→3:</strong> Expansión adiabática reversible (descenso de temperatura de \( T_c \) a \( T_f \))</li>
+                    <li><strong>3→4:</strong> Compresión isotérmica reversible a \( T_f \) (cesión de calor \( Q_f \))</li>
+                    <li><strong>4→1:</strong> Compresión adiabática reversible (ascenso de temperatura de \( T_f \) a \( T_c \))</li>
+                </ul>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Trabajo en procesos isotérmicos:</strong> Para un gas ideal, en un proceso isotérmico reversible el trabajo es igual al calor intercambiado (porque \( \Delta U = 0 \)):
+                <div class="formula-box">
+                    \[ Q_c = nRT_c \ln\left( \frac{V_2}{V_1} \right) \quad \text{(expansión isotérmica a } T_c \text{)} \]
+                    \[ Q_f = nRT_f \ln\left( \frac{V_3}{V_4} \right) \quad \text{(compresión isotérmica a } T_f \text{)} \]
+                </div>
+                Nota: \( Q_f \) representa el valor absoluto del calor cedido.
+            </div>
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Relación de volúmenes en procesos adiabáticos:</strong> De las ecuaciones de los procesos adiabáticos reversibles (\( TV^{\gamma - 1} = \text{cte} \)):
+                <div class="formula-box">
+                    \[ T_c V_2^{\gamma - 1} = T_f V_3^{\gamma - 1} \quad \text{y} \quad T_f V_4^{\gamma - 1} = T_c V_1^{\gamma - 1} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Igualación de relaciones:</strong> De las dos ecuaciones anteriores:
+                <div class="formula-box">
+                    \[ \frac{T_c}{T_f} = \left( \frac{V_3}{V_2} \right)^{\gamma - 1} = \left( \frac{V_4}{V_1} \right)^{\gamma - 1} \]
+                </div>
+                Por tanto:
+                <div class="formula-box">
+                    \[ \frac{V_3}{V_2} = \frac{V_4}{V_1} \quad \Rightarrow \quad \frac{V_2}{V_1} = \frac{V_3}{V_4} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">6</span>
+                <strong>Cociente de calores:</strong> Sustituyendo en las expresiones de \( Q_c \) y \( Q_f \):
+                <div class="formula-box">
+                    \[ \frac{Q_f}{Q_c} = \frac{nRT_f \ln\left( \frac{V_3}{V_4} \right)}{nRT_c \ln\left( \frac{V_2}{V_1} \right)} = \frac{T_f}{T_c} \cdot \frac{\ln\left( \frac{V_2}{V_1} \right)}{\ln\left( \frac{V_2}{V_1} \right)} = \frac{T_f}{T_c} \]
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-num">7</span>
+                <strong>Sustitución en el rendimiento:</strong> Sustituyendo el cociente de calores en la definición de rendimiento:
+                <div class="formula-box">
+                    \[ \eta = 1 - \frac{Q_f}{Q_c} = 1 - \frac{T_f}{T_c} \]
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ \eta_{\text{Carnot}} = 1 - \frac{T_f}{T_c} = \frac{T_c - T_f}{T_c} \]
+            </div>
+            <p>Donde:</p>
+            <ul style="margin-left: 20px;">
+                <li>\( T_c \): temperatura absoluta del foco caliente (K)</li>
+                <li>\( T_f \): temperatura absoluta del foco frío (K)</li>
+                <li>\( \eta \): rendimiento (adimensional, expresable en %)</li>
+            </ul>
+            <div class="note">
+                <strong>💡 Observaciones sobre el alumnado:</strong> Es fundamental enfatizar que este es el rendimiento <em>máximo teórico</em>; ninguna máquina real puede alcanzarlo debido a las irreversibilidades (fricción, transferencia de calor finita, etc.). Un motor de combustión interna típico tiene \( T_c \approx 2500 \text{ K} \) y \( T_f \approx 300 \text{ K} \), dando \( \eta_{\text{Carnot}} \approx 88\% \), pero los motores reales rondan el 25-30%. Esta discrepancia motiva la discusión sobre irreversibilidades y la segunda ley. También es importante destacar que el rendimiento solo depende de las temperaturas de los focos, no de la sustancia de trabajo.
+            </div>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- BLOQUE DESPLEGABLE: EJERCICIOS TIPO RESUELTOS              -->
+        <!-- ========================================================== -->
+        <details class="ejercicios-desplegable">
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span>🧪 DESMITIFICANDO el rendimiento de Carnot</span>
+                <span class="icono-pulsame"><i class="fas fa-hand-pointer"></i> Púlsame</span>
+            </summary>
+
+            <div class="contenido-ejercicios">
+
+                <!-- EJERCICIO 1 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 1</span>
+                        <span class="ej-titulo">Cálculo directo del rendimiento de Carnot</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una máquina térmica reversible opera entre un foco caliente a \( 600 \, \text{K} \) y un foco frío a \( 300 \, \text{K} \). Calcula su rendimiento máximo.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> Identificar \( T_c = 600 \, \text{K} \) y \( T_f = 300 \, \text{K} \).</p>
+                        <p><span class="step-label">Paso 2:</span> Aplicar \( \eta = 1 - \frac{T_f}{T_c} = 1 - \frac{300}{600} = 1 - 0.5 = 0.5 \).</p>
+                        <p><span class="step-label">Resultado:</span> El rendimiento máximo es \( 50\% \).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 2</span>
+                        <span class="ej-titulo">Cálculo de la temperatura del foco frío</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una máquina de Carnot tiene un rendimiento del \( 40\% \) y su foco caliente está a \( 800 \, \text{K} \). ¿Cuál es la temperatura del foco frío?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> \( \eta = 0.40 \), \( T_c = 800 \, \text{K} \).</p>
+                        <p><span class="step-label">Paso 2:</span> De \( \eta = 1 - \frac{T_f}{T_c} \) despejamos \( T_f = T_c (1 - \eta) = 800 \times (1 - 0.40) = 800 \times 0.60 = 480 \, \text{K} \).</p>
+                        <p><span class="step-label">Resultado:</span> La temperatura del foco frío es \( 480 \, \text{K} \) (\( 207^\circ\text{C} \)).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 3</span>
+                        <span class="ej-titulo">Cálculo de la temperatura del foco caliente</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Se desea que una máquina de Carnot tenga un rendimiento del \( 60\% \) operando con un foco frío a \( 300 \, \text{K} \). ¿A qué temperatura debe estar el foco caliente?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">Paso 1:</span> \( \eta = 0.60 \), \( T_f = 300 \, \text{K} \).</p>
+                        <p><span class="step-label">Paso 2:</span> Despejamos \( T_c = \frac{T_f}{1 - \eta} = \frac{300}{1 - 0.60} = \frac{300}{0.40} = 750 \, \text{K} \).</p>
+                        <p><span class="step-label">Resultado:</span> El foco caliente debe estar a \( 750 \, \text{K} \) (\( 477^\circ\text{C} \)).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 4</span>
+                        <span class="ej-titulo">Comparación con una máquina real</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una central térmica opera entre \( T_c = 700 \, \text{K} \) y \( T_f = 350 \, \text{K} \). Su rendimiento real es del \( 25\% \).</p>
+                        <ul>
+                            <li>a) Calcula el rendimiento de Carnot para estas temperaturas.</li>
+                            <li>b) ¿Qué fracción del rendimiento máximo alcanza la máquina real?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \( \eta_{\text{Carnot}} = 1 - \frac{350}{700} = 1 - 0.5 = 0.50 \, (50\%) \).</p>
+                        <p><span class="step-label">b)</span> Fracción = \( \frac{\eta_{\text{real}}}{\eta_{\text{Carnot}}} = \frac{0.25}{0.50} = 0.50 \). La máquina real alcanza el \( 50\% \) del rendimiento máximo.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="tarjeta-ej">
+                    <div class="ej-header">
+                        <span class="ej-num">Ejercicio 5</span>
+                        <span class="ej-titulo">Contexto real: motor de automóvil</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un motor de gasolina tiene una temperatura de combustión de \( 2500 \, \text{K} \) y expulsa gases a \( 900 \, \text{K} \).</p>
+                        <ul>
+                            <li>a) Calcula su rendimiento máximo (Carnot).</li>
+                            <li>b) Si el motor consume \( 50 \, \text{MJ} \) de calor en cada ciclo, ¿cuánto trabajo máximo podría obtener?</li>
+                            <li>c) Si el rendimiento real es del \( 30\% \), ¿cuánto trabajo obtiene realmente?</li>
+                        </ul>
+                    </div>
+                    <div class="resolucion">
+                        <p><span class="step-label">a)</span> \( \eta_{\text{Carnot}} = 1 - \frac{900}{2500} = 1 - 0.36 = 0.64 \, (64\%) \).</p>
+                        <p><span class="step-label">b)</span> \( W_{\text{máx}} = \eta_{\text{Carnot}} \cdot Q_c = 0.64 \times 50 \, \text{MJ} = 32 \, \text{MJ} \).</p>
+                        <p><span class="step-label">c)</span> \( W_{\text{real}} = 0.30 \times 50 \, \text{MJ} = 15 \, \text{MJ} \).</p>
+                        <p><span class="step-label">Resultado:</span> Rendimiento máximo \( 64\% \), trabajo máximo \( 32 \, \text{MJ} \), trabajo real \( 15 \, \text{MJ} \).</p>
+                    </div>
+                </div>
+
+            </div> <!-- fin contenido-ejercicios -->
+
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> El rendimiento de Carnot es el límite superior teórico para cualquier máquina térmica que opere entre dos focos. Depende solo de las temperaturas absolutas, no de la sustancia de trabajo ni del diseño de la máquina. Nunca puede ser del 100% a menos que \( T_f = 0 \, \text{K} \) (imposible). Este resultado es fundamental para entender por qué siempre hay energía "desperdiciada" en forma de calor cedido al foco frío.
+            </div>
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>

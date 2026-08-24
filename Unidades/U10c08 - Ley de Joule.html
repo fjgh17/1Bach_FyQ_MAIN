@@ -1,0 +1,564 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>#T10.08 · Ley de Joule</title>
+<!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- FontAwesome (versión 6) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ============================================
+   ESTILOS EXISTENTES (no modificados)
+   ============================================ */
+.container {
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.header-left h1 {
+    font-size: 1.8em;
+    margin: 0;
+}
+.header-left p {
+    margin: 6px 0 0 0;
+    font-size: 1em;
+}
+.header-right img {
+    max-height: 70px;
+    max-width: 180px;
+    object-fit: contain;
+    display: block;
+}
+.section {
+    padding: 25px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border-left: 5px solid;
+}
+.enunciado { background: #f7fafc; border-color: #a0aec0; }
+.objetivo  { background: #fffaf0; border-color: #ed8936; }
+.procedimiento { background: #f0fff4; border-color: #48bb78; }
+.resultado { background: #ebf8ff; border-color: #4299e1; }
+.section h2 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.enunciado h2 { color: #4a5568; }
+.objetivo h2  { color: #c05621; }
+.procedimiento h2 { color: #276749; }
+.resultado h2 { color: #2b6cb0; }
+.formula-box {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+}
+.step {
+    background: white;
+    border-left: 4px solid #a0aec0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.step-num {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.note {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: #744210;
+}
+p {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.header-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+.header-sub img {
+    height: 28px;
+    width: auto;
+    display: block;
+    border-radius: 4px;
+}
+.header-sub .codigo {
+    font-weight: 700;
+    font-size: 1.05em;
+    letter-spacing: 0.5px;
+    color: #f0e6ff;
+}
+.header-sub .texto {
+    font-size: 1em;
+    color: #f0e6ff;
+    font-weight: 500;
+}
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    margin: 0;
+}
+
+/* ============================================
+   NUEVOS ESTILOS PARA EL BLOQUE DESPLEGABLE
+   ============================================ */
+details.desmitificando {
+    margin: 30px 15px 20px 15px;
+    border: 2px solid #d69e2e;
+    border-radius: 12px;
+    background: #fffff0;
+    padding: 0.5rem 1rem 1rem 1rem;
+    transition: all 0.2s;
+}
+details.desmitificando summary {
+    list-style: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.5rem 0;
+    user-select: none;
+}
+details.desmitificando summary::-webkit-details-marker {
+    display: none;
+}
+details.desmitificando summary i.fa-chevron-circle-down {
+    transition: transform 0.3s ease;
+    color: #d69e2e;
+    font-size: 1.6rem;
+}
+details.desmitificando[open] summary i.fa-chevron-circle-down {
+    transform: rotate(180deg);
+}
+details.desmitificando summary .pulsame {
+    font-size: 0.8rem;
+    color: #975a16;
+    background: #fefcbf;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+details.desmitificando .contenido-ejercicios {
+    margin-top: 0.5rem;
+    border-top: 1px solid #f6e05e;
+    padding-top: 1rem;
+}
+
+.ejercicio-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+    border: 1px solid #f6e05e;
+}
+.ejercicio-header {
+    background: linear-gradient(135deg, #d69e2e 0%, #b7791f 100%);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ejercicio-header .num {
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.ejercicio-body {
+    padding: 1rem 1.5rem 0.5rem 1.5rem;
+}
+.ejercicio-body .enunciado-ej {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+.ejercicio-body ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+.resolucion {
+    background: #fffff0;
+    border-left: 4px solid #d69e2e;
+    border-radius: 0 8px 8px 0;
+    padding: 0.8rem 1.2rem;
+    margin: 0.8rem 0 0.5rem 0;
+    font-size: 0.98rem;
+}
+.resolucion .paso {
+    margin-bottom: 0.6rem;
+}
+.resolucion .paso strong {
+    color: #975a16;
+}
+.pie-clave {
+    background: #fffbeb;
+    border: 1px solid #f6e05e;
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+    color: #744210;
+}
+.pie-clave i {
+    margin-right: 8px;
+    color: #d69e2e;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ===== CABECERA OBLIGATORIA ===== -->
+    <div class="header">
+        <div class="header-left">
+            <h1>IES Valle del Alberche</h1>
+            <div class="header-sub">
+                <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                <span class="codigo">#T10.08.- </span>
+                <span class="texto">Ley de Joule</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+        </div>
+    </div>
+
+    <!-- ===== SECCIONES EXISTENTES ===== -->
+    <div class="section enunciado">
+        <h2>📋 Enunciado</h2>
+        <p>Partiendo de la definición de potencia eléctrica como trabajo por unidad de tiempo, y de la Ley de Ohm, demostrar que la potencia disipada en forma de calor en una resistencia \( R \) por la que circula una corriente de intensidad \( I \), o a la que se aplica una diferencia de potencial \( V \), viene dada por las siguientes expresiones equivalentes:</p>
+        <div class="formula-box">
+            \[ P = V \cdot I = I^2 \cdot R = \frac{V^2}{R} \]
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U10c08 - Ley de Joule.png" alt="Imagen" width="800">
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <div class="section objetivo">
+        <h2>🎯 Objetivo</h2>
+        <p>Obtener las tres formas equivalentes de la Ley de Joule que relacionan la potencia disipada con las magnitudes eléctricas fundamentales. Esta demostración es esencial para el cálculo de consumos energéticos, el diseño de sistemas de calefacción eléctrica, la protección de circuitos contra sobrecargas y la comprensión de la eficiencia energética en dispositivos eléctricos.</p>
+    </div>
+
+    <div class="section procedimiento">
+        <h2>🔧 Procedimiento</h2>
+        <div class="step">
+            <span class="step-num">1</span>
+            <strong>Definición de potencia eléctrica.</strong> La potencia eléctrica \( P \) se define como la energía (o trabajo) transferida por unidad de tiempo:
+            <div class="formula-box">
+                \[ P = \frac{W}{t} \]
+            </div>
+            <p>donde \( W \) es el trabajo realizado y \( t \) es el tiempo transcurrido.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">2</span>
+            <strong>Trabajo eléctrico.</strong> El trabajo realizado por el campo eléctrico al mover una carga \( q \) entre dos puntos con diferencia de potencial \( V \) es:
+            <div class="formula-box">
+                \[ W = V \cdot q \]
+            </div>
+            <p>Sustituyendo en la definición de potencia:</p>
+            <div class="formula-box">
+                \[ P = \frac{V \cdot q}{t} \]
+            </div>
+        </div>
+        <div class="step">
+            <span class="step-num">3</span>
+            <strong>Primera forma: \( P = V \cdot I \).</strong> Recordando que la intensidad de corriente se define como carga por unidad de tiempo \( I = \frac{q}{t} \), sustituimos:
+            <div class="formula-box">
+                \[ P = V \cdot \frac{q}{t} = V \cdot I \]
+            </div>
+            <p>Esta es la expresión general de la potencia eléctrica, válida para cualquier elemento de circuito.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">4</span>
+            <strong>Segunda forma: \( P = I^2 \cdot R \).</strong> Aplicando la Ley de Ohm \( V = I \cdot R \) a una resistencia, sustituimos \( V \) en la expresión anterior:
+            <div class="formula-box">
+                \[ P = (I \cdot R) \cdot I = I^2 \cdot R \]
+            </div>
+            <div class="formula-box">
+                \[ P = I^2 \cdot R \]
+            </div>
+            <p>Esta forma es especialmente útil cuando se conoce la intensidad que circula por la resistencia.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">5</span>
+            <strong>Tercera forma: \( P = \frac{V^2}{R} \).</strong> Alternativamente, despejamos \( I \) de la Ley de Ohm \( I = \frac{V}{R} \) y sustituimos en \( P = V \cdot I \):
+            <div class="formula-box">
+                \[ P = V \cdot \frac{V}{R} = \frac{V^2}{R} \]
+            </div>
+            <div class="formula-box">
+                \[ P = \frac{V^2}{R} \]
+            </div>
+            <p>Esta forma es útil cuando se conoce la diferencia de potencial aplicada a la resistencia.</p>
+        </div>
+        <div class="step">
+            <span class="step-num">6</span>
+            <strong>Energía disipada en forma de calor.</strong> La energía total disipada en un tiempo \( t \) se obtiene multiplicando la potencia por el tiempo:
+            <div class="formula-box">
+                \[ E = P \cdot t = V \cdot I \cdot t = I^2 \cdot R \cdot t = \frac{V^2}{R} \cdot t \]
+            </div>
+            <p>Esta energía se transforma en calor por efecto Joule, lo que explica el funcionamiento de hornos, secadores y fusibles.</p>
+        </div>
+        <div class="note">
+            💡 <strong>Observaciones sobre el alumnado:</strong> Las tres formas son matemáticamente equivalentes pero conceptualmente distintas. La forma \( P = I^2 R \) muestra explícitamente que la disipación de calor crece con el <strong>cuadrado</strong> de la intensidad, lo que explica por qué las pérdidas en líneas de transmisión se minimizan elevando el voltaje (y reduciendo la intensidad). La forma \( P = V^2/R \) muestra que para una tensión fija, una resistencia menor disipa más potencia. Es importante destacar que la Ley de Joule describe una <strong>transformación irreversible</strong> de energía eléctrica en térmica, fundamental para comprender la eficiencia energética.
+        </div>
+    </div>
+
+    <div class="section resultado">
+        <h2>✅ Resultado</h2>
+        <div class="formula-box">
+            \[ P = V \cdot I = I^2 \cdot R = \frac{V^2}{R} \quad \text{(Ley de Joule)} \]
+        </div>
+        <p>La potencia disipada en una resistencia se puede expresar de tres formas equivalentes. La elección de una u otra depende de las magnitudes conocidas en cada problema. El efecto Joule es la base del calentamiento eléctrico y de las pérdidas energéticas en conductores.</p>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- BLOQUE DESPLEGABLE AÑADIDO (TAREA 1)      -->
+    <!-- ======================================== -->
+    <details class="desmitificando">
+        <summary>
+            <i class="fas fa-chevron-circle-down"></i>
+            <span>🧪 DESMITIFICANDO la Ley de Joule</span>
+            <span class="pulsame">🖱️ Pulsame</span>
+        </summary>
+        <div class="contenido-ejercicios">
+
+            <!-- EJERCICIO 1: Cálculo de potencia a partir de V e I -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">1</span>
+                    <span>Cálculo directo de potencia con V e I</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Un calentador eléctrico se conecta a \( 230\,\text{V} \) y por él circula una corriente de \( 8{,}5\,\text{A} \). Calcula la potencia que consume y la energía que disipa en \( 2 \) horas de funcionamiento.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Potencia: \( P = V \cdot I = 230 \times 8{,}5 = 1955\,\text{W} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Energía: \( E = P \cdot t = 1955 \times (2 \times 3600) = 1955 \times 7200 = 14\,076\,000\,\text{J} \approx 3{,}91\,\text{kWh} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> Potencia \( \approx 1{,}96\,\text{kW} \), energía \( \approx 3{,}91\,\text{kWh} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 2: Uso de P = I²·R -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">2</span>
+                    <span>Potencia a partir de I y R</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una resistencia de \( 47\,\Omega \) es recorrida por una corriente de \( 0{,}5\,\text{A} \). Calcula la potencia disipada y la tensión aplicada.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Potencia: \( P = I^2 \cdot R = (0{,}5)^2 \times 47 = 0{,}25 \times 47 = 11{,}75\,\text{W} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Tensión: \( V = I \cdot R = 0{,}5 \times 47 = 23{,}5\,\text{V} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> Potencia \( \approx 11{,}8\,\text{W} \), tensión \( 23{,}5\,\text{V} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 3: Uso de P = V²/R -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">3</span>
+                    <span>Potencia a partir de V y R</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una bombilla de \( 230\,\text{V} \) y \( 60\,\text{W} \) se conecta a \( 230\,\text{V} \). Calcula su resistencia y la intensidad que circula.</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> De \( P = \frac{V^2}{R} \) despejamos \( R = \frac{V^2}{P} = \frac{230^2}{60} = \frac{52900}{60} \approx 881{,}7\,\Omega \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Intensidad: \( I = \frac{V}{R} = \frac{230}{881{,}7} \approx 0{,}261\,\text{A} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> Resistencia \( \approx 882\,\Omega \), intensidad \( \approx 0{,}26\,\text{A} \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 4: Comparación de potencias al cambiar la tensión -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">4</span>
+                    <span>Efecto de cambiar la tensión (misma resistencia)</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una plancha eléctrica de \( 2000\,\text{W} \) está diseñada para \( 230\,\text{V} \). Si se conecta a \( 110\,\text{V} \), ¿qué potencia disipa? ¿Y si se conecta a \( 400\,\text{V} \)? (suponiendo que no se queme).</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> Calculamos la resistencia de la plancha: \( R = \frac{V^2}{P} = \frac{230^2}{2000} = \frac{52900}{2000} = 26{,}45\,\Omega \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> A \( 110\,\text{V} \): \( P' = \frac{110^2}{26{,}45} = \frac{12100}{26{,}45} \approx 457\,\text{W} \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> A \( 400\,\text{V} \): \( P'' = \frac{400^2}{26{,}45} = \frac{160000}{26{,}45} \approx 6049\,\text{W} \).</div>
+                        <div class="paso"><strong>Resultado:</strong> A \( 110\,\text{V} \) disipa \( 457\,\text{W} \) (poco calienta); a \( 400\,\text{V} \) disipa \( 6049\,\text{W} \) (se quemaría). La potencia varía con el cuadrado de la tensión.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 5: Contexto real – pérdidas en una línea de transmisión -->
+            <div class="ejercicio-card">
+                <div class="ejercicio-header">
+                    <span class="num">5</span>
+                    <span>Pérdidas por efecto Joule en una línea de transmisión</span>
+                </div>
+                <div class="ejercicio-body">
+                    <div class="enunciado-ej">📌 Enunciado:</div>
+                    <p>Una línea de transmisión tiene una resistencia de \( 0{,}5\,\Omega \). Si transporta una potencia de \( 10\,\text{MW} \) a \( 100\,\text{kV} \), calcula las pérdidas por efecto Joule en la línea. ¿Cuáles serían esas pérdidas si la transmisión se hiciera a \( 10\,\text{kV} \) en lugar de \( 100\,\text{kV} \)?</p>
+                    <div class="resolucion">
+                        <div class="paso"><strong>Paso 1:</strong> A \( 100\,\text{kV} \): \( I = \frac{P}{V} = \frac{10\times10^6}{100\times10^3} = 100\,\text{A} \).</div>
+                        <div class="paso"><strong>Paso 2:</strong> Pérdidas: \( P_{\text{pérdidas}} = I^2 \cdot R = 100^2 \times 0{,}5 = 5000\,\text{W} = 5\,\text{kW} \).</div>
+                        <div class="paso"><strong>Paso 3:</strong> A \( 10\,\text{kV} \): \( I' = \frac{10\times10^6}{10\times10^3} = 1000\,\text{A} \).</div>
+                        <div class="paso"><strong>Paso 4:</strong> Pérdidas: \( P'_{\text{pérdidas}} = (1000)^2 \times 0{,}5 = 500\,000\,\text{W} = 500\,\text{kW} \).</div>
+                        <div class="paso"><strong>Conclusión:</strong> Elevar la tensión reduce drásticamente las pérdidas (factor 100) porque \( P_{\text{pérdidas}} \propto I^2 \).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE Observaciones claves -->
+            <div class="pie-clave">
+                <i class="fas fa-lightbulb"></i> <strong>Observaciones claves:</strong> La Ley de Joule muestra que la potencia disipada en una resistencia es proporcional al <strong>cuadrado</strong> de la intensidad, lo que explica por qué las pérdidas en líneas de transmisión se minimizan usando alta tensión (baja corriente). La "trampa" común es confundir qué expresión usar: si tienes \( V \) y \( R \), usa \( V^2/R \); si tienes \( I \) y \( R \), usa \( I^2 R \). La elección correcta evita errores en problemas de circuitos.
+            </div>
+
+        </div> <!-- /contenido-ejercicios -->
+    </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+</div> <!-- /container -->
+</body>
+</html>

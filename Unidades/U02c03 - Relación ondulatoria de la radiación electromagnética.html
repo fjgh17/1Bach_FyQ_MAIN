@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#T02.03. Relación ondulatoria de la radiación electromagnética</title>
+    <!-- FontAwesome 6 (gratuito) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>  -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* ============================================
+           ESTILO DE CAJAS PARA SECCIONES INFORMATIVAS
+           ============================================ */
+        /* Contenedor principal (opcional, da fondo blanco y sombra) */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin: 0 auto;      /* <--- ESTA ES LA CLAVE */
+        }
+        /* Cabecera general */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        /* Zona izquierda de la cabecera */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header-left h1 {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .header-left p {
+            margin: 6px 0 0 0;
+            font-size: 1em;
+        }
+        /* Zona derecha de la cabecera */
+        .header-right img {
+            max-height: 70px;
+            max-width: 180px;
+            object-fit: contain;
+            display: block;
+        }
+        /* ---------- SECCIONES PRINCIPALES ---------- */
+        .section {
+            padding: 25px 30px;
+            margin: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+        /* Variantes de color para cada tipo de sección */
+        .enunciado { background: #f7fafc; border-color: #a0aec0; }
+        .objetivo  { background: #fffaf0; border-color: #ed8936; }
+        .procedimiento { background: #f0fff4; border-color: #48bb78; }
+        .resultado { background: #ebf8ff; border-color: #4299e1; }
+        /* Títulos de sección */
+        .section h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .enunciado h2 { color: #4a5568; }
+        .objetivo h2  { color: #c05621; }
+        .procedimiento h2 { color: #276749; }
+        .resultado h2 { color: #2b6cb0; }
+        /* ---------- CAJA DE FÓRMULA ---------- */
+        .formula-box {
+            background: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        /* ---------- PASOS DEL PROCEDIMIENTO ---------- */
+        .step {
+            background: white;
+            border-left: 4px solid #a0aec0;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-num {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* ---------- NOTA DESTACADA ---------- */
+        .note {
+            background: #fffbeb;
+            border: 1px solid #f6e05e;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #744210;
+        }
+        /* ---------- TEXTO BASE (párrafos) ---------- */
+        p {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        /* Ajuste para el subtítulo de la cabecera */
+        .header-sub {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+        .header-sub img {
+            max-height: 24px;
+            width: auto;
+            border-radius: 4px;
+        }
+        .header-sub .codigo {
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .header-sub .texto {
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        /* ============================================
+           ESTILOS PARA EL BLOQUE DESPLEGABLE
+           ============================================ */
+        details {
+            margin: 25px 30px 20px 30px;  /* mismo padding que las secciones */
+            border: 2px solid #cbd5e0;
+            border-radius: 20px;
+            background: #f8fafc;
+            padding: 0.2rem 0.6rem 0.6rem 0.6rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        details[open] {
+            border-color: #667eea;
+            background: #f4f7ff;
+        }
+
+        details summary {
+            list-style: none;           /* oculta el triángulo por defecto en Firefox/Chrome */
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 0.4rem 0.8rem 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            border-radius: 16px;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;              /* oculta el triángulo en WebKit */
+        }
+
+        details summary i.fa-chevron-circle-down {
+            font-size: 2rem;
+            color: #667eea;
+            transition: transform 0.35s ease;
+        }
+
+        details[open] summary i.fa-chevron-circle-down {
+            transform: rotate(180deg);
+            color: #764ba2;
+        }
+
+        details summary .titulo-desplegable {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.3rem 0.8rem;
+        }
+
+        details summary .titulo-desplegable .pulsame {
+            font-size: 1rem;
+            font-weight: 400;
+            background: #e9edf4;
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            color: #2d3748;
+            letter-spacing: 0.3px;
+        }
+
+        .contenido-desplegable {
+            padding: 0.2rem 0.8rem 1.2rem 0.8rem;
+        }
+
+        /* Tarjetas de ejercicios dentro del desplegable */
+        .ejercicio-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #dde6ef;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .ejercicio-card .ej-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .ejercicio-card .ej-header .num {
+            background: #667eea;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.1rem 0.9rem;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .ejercicio-card .ej-header .tit {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #2d3748;
+        }
+
+        .ejercicio-card .enunciado {
+            margin: 0.6rem 0 1rem 0;
+            padding-left: 0.6rem;
+            border-left: 3px solid #b3cbe0;
+        }
+
+        .ejercicio-card .enunciado ul {
+            list-style: disc;
+            padding-left: 1.6rem;
+            margin: 0.4rem 0;
+        }
+
+        .ejercicio-card .enunciado ul li {
+            margin-bottom: 0.2rem;
+        }
+
+        .resolucion {
+            background: #f2f7fd;
+            border-radius: 16px;
+            padding: 1rem 1.6rem;
+            border: 1px solid #d4e2f0;
+            margin-top: 0.8rem;
+        }
+
+        .resolucion p {
+            margin-bottom: 0.4rem;
+        }
+
+        .clave-didactica {
+            margin-top: 1.2rem;
+            padding: 0.8rem 1.6rem;
+            background: #e5eff9;
+            border-radius: 40px;
+            color: #1a3c5e;
+            font-weight: 500;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>IES Valle del Alberche</h1>
+                <div class="header-sub">
+                    <img src="../img_comunes/Cápsula.png" width="40" height="auto">
+                    <span class="codigo">#T02.03.- </span>
+                    <span class="texto">Relación ondulatoria de la radiación electromagnética</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <img src="../img_comunes/Valle del Alberche v2-Small.png" alt="Logo del centro" width="1000">
+            </div>
+        </div>
+
+        <!-- SECCIÓN ENUNCIADO -->
+        <div class="section enunciado">
+            <h2>📋 Enunciado</h2>
+            <p>Partiendo de la definición de velocidad de propagación de una onda y de sus magnitudes características (longitud de onda \(\lambda\) y frecuencia \(\nu\)), demostrar que para cualquier radiación electromagnética en el vacío se cumple:</p>
+            <div class="formula-box">
+                \[ c = \lambda \nu \]
+            </div>
+
+
+
+
+
+
+<!-- Insertando imagen -->
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+</style>
+
+<img src="../imagenes/U02c03 - Relación ondulatoria de la radiación electromagnética.png" alt="Imagen" width="800">
+
+<!-- -----FIN-------- -->
+
+
+
+
+
+
+
+        </div>
+
+        <!-- SECCIÓN OBJETIVO -->
+        <div class="section objetivo">
+            <h2>🎯 Objetivo</h2>
+            <p>Obtener la ecuación fundamental que relaciona las tres magnitudes de cualquier radiación electromagnética: su velocidad de propagación \(c\), su longitud de onda \(\lambda\) y su frecuencia \(\nu\). Esta relación permite calcular cualquiera de ellas conociendo las otras dos.</p>
+        </div>
+
+        <!-- SECCIÓN PROCEDIMIENTO -->
+        <div class="section procedimiento">
+            <h2>🔧 Procedimiento</h2>
+            
+            <div class="step">
+                <span class="step-num">1</span>
+                <strong>Definir la longitud de onda \(\lambda\):</strong> es la distancia espacial entre dos puntos equivalentes y consecutivos de la onda (por ejemplo, entre dos crestas o dos valles sucesivos).
+            </div>
+
+            <div class="step">
+                <span class="step-num">2</span>
+                <strong>Definir la frecuencia \(\nu\):</strong> es el número de oscilaciones completas que realiza la onda por unidad de tiempo. Se relaciona con el periodo \(T\) (tiempo de una oscilación) mediante:
+                <div class="formula-box">
+                    \[ \nu = \frac{1}{T} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">3</span>
+                <strong>Expresar la velocidad de propagación:</strong> durante un periodo \(T\), la onda recorre exactamente una longitud de onda \(\lambda\). Por tanto, la velocidad de propagación es:
+                <div class="formula-box">
+                    \[ c = \frac{\lambda}{T} \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">4</span>
+                <strong>Sustituir el periodo por la frecuencia:</strong> como \(T = \frac{1}{\nu}\), al introducir esta relación en la expresión anterior se obtiene:
+                <div class="formula-box">
+                    \[ c = \frac{\lambda}{\frac{1}{\nu}} = \lambda \nu \]
+                </div>
+            </div>
+
+            <div class="step">
+                <span class="step-num">5</span>
+                <strong>Verificación dimensional:</strong> \(\lambda\) se mide en metros (\(\text{m}\)) y \(\nu\) en hercios (\(\text{s}^{-1}\)), por lo que su producto da \(\text{m} \cdot \text{s}^{-1}\), que son las unidades correctas de velocidad.
+            </div>
+        </div>
+
+        <!-- SECCIÓN RESULTADO -->
+        <div class="section resultado">
+            <h2>✅ Resultado</h2>
+            <div class="formula-box">
+                \[ c = \lambda \nu \quad \Longleftrightarrow \quad \lambda = \frac{c}{\nu} \quad \Longleftrightarrow \quad \nu = \frac{c}{\lambda} \]
+            </div>
+            <div class="note">
+                <strong>Observaciones sobre el alumnado:</strong> Es fundamental que los estudiantes interioricen que \(c\) es constante en el vacío (\(3{,}00 \times 10^{8}\ \text{m s}^{-1}\)). Por ello, la longitud de onda y la frecuencia son magnitudes inversamente proporcionales: a mayor \(\lambda\) menor \(\nu\), y viceversa. Esto explica por qué los rayos X (baja \(\lambda\)) tienen alta frecuencia y energía, mientras que las radiofrecuencias (alta \(\lambda\)) tienen baja frecuencia.
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- BLOQUE DESPLEGABLE CON EJERCICIOS TIPO        -->
+        <!-- ============================================ -->
+        <details>
+            <summary>
+                <i class="fas fa-chevron-circle-down"></i>
+                <span class="titulo-desplegable">
+                    <span>🧪 DESMITIFICANDO Relación ondulatoria de la radiación electromagnética</span>
+                    <span class="pulsame"><i class="fas fa-hand-pointer" style="margin-right: 6px;"></i>Púlsame</span>
+                </span>
+            </summary>
+            <div class="contenido-desplegable">
+
+                <!-- EJERCICIO 1 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">1</span>
+                        <span class="tit">Cálculo de longitud de onda a partir de la frecuencia (radio FM)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una emisora de radio FM emite en una frecuencia de \(98{,}5\ \text{MHz}\). Calcula la longitud de onda de esta radiación en el vacío.</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Datos: \(\nu = 98{,}5\ \text{MHz} = 98{,}5 \times 10^{6}\ \text{s}^{-1}\), \(c = 3{,}00 \times 10^{8}\ \text{m/s}\).</p>
+                        <p>Usamos \(\lambda = \dfrac{c}{\nu}\):</p>
+                        \[
+                        \lambda = \frac{3{,}00 \times 10^{8}}{98{,}5 \times 10^{6}} = \frac{3{,}00}{98{,}5} \times 10^{2} \approx 3{,}05\ \text{m}
+                        \]
+                        <p>La longitud de onda es aproximadamente \(3{,}05\ \text{m}\), que corresponde a la banda de FM.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 2 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">2</span>
+                        <span class="tit">Cálculo de frecuencia a partir de la longitud de onda (luz visible)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Un rayo de luz láser tiene una longitud de onda de \(532\ \text{nm}\) (verde). ¿Cuál es su frecuencia? ¿A qué región del espectro pertenece?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Convertimos la longitud de onda a metros: \(532\ \text{nm} = 532 \times 10^{-9}\ \text{m} = 5{,}32 \times 10^{-7}\ \text{m}\).</p>
+                        <p>Usamos \(\nu = \dfrac{c}{\lambda}\):</p>
+                        \[
+                        \nu = \frac{3{,}00 \times 10^{8}}{5{,}32 \times 10^{-7}} = \frac{3{,}00}{5{,}32} \times 10^{15} \approx 5{,}64 \times 10^{14}\ \text{Hz}
+                        \]
+                        <p>Esta frecuencia corresponde a la luz visible (verde), que está en el rango de \(10^{14}\ \text{Hz}\).</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 3 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">3</span>
+                        <span class="tit">Conversión de unidades y cálculo de frecuencia (radiación UV)</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Una lámpara ultravioleta emite radiación con una longitud de onda de \(254\ \text{nm}\). Calcula su frecuencia en hercios y expresa el resultado en \(\text{s}^{-1}\).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Convertimos \(254\ \text{nm}\) a metros: \(254 \times 10^{-9}\ \text{m} = 2{,}54 \times 10^{-7}\ \text{m}\).</p>
+                        <p>Aplicamos \(\nu = \dfrac{c}{\lambda}\):</p>
+                        \[
+                        \nu = \frac{3{,}00 \times 10^{8}}{2{,}54 \times 10^{-7}} = \frac{3{,}00}{2{,}54} \times 10^{15} \approx 1{,}18 \times 10^{15}\ \text{Hz}
+                        \]
+                        <p>La frecuencia es \(1{,}18 \times 10^{15}\ \text{s}^{-1}\), una radiación ultravioleta de alta frecuencia.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 4 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">4</span>
+                        <span class="tit">Relación inversa: comparación de dos radiaciones</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>La luz roja tiene una longitud de onda de \(700\ \text{nm}\), mientras que la luz violeta tiene \(400\ \text{nm}\). ¿Cuántas veces es mayor la frecuencia de la luz violeta comparada con la roja?</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Como \(c\) es constante, \(\nu \propto 1/\lambda\). Por tanto, la relación de frecuencias es inversa a la relación de longitudes de onda:</p>
+                        \[
+                        \frac{\nu_{\text{violeta}}}{\nu_{\text{rojo}}} = \frac{\lambda_{\text{rojo}}}{\lambda_{\text{violeta}}} = \frac{700}{400} = 1{,}75
+                        \]
+                        <p>La luz violeta tiene una frecuencia \(1{,}75\) veces mayor que la roja. También podemos calcularlo numéricamente usando las frecuencias si se desea.</p>
+                    </div>
+                </div>
+
+                <!-- EJERCICIO 5 -->
+                <div class="ejercicio-card">
+                    <div class="ej-header">
+                        <span class="num">5</span>
+                        <span class="tit">Aplicación en rayos X: cálculo de longitud de onda</span>
+                    </div>
+                    <div class="enunciado">
+                        <p>Los rayos X utilizados en medicina suelen tener frecuencias del orden de \(3 \times 10^{18}\ \text{Hz}\). Calcula su longitud de onda en nanómetros y compara con el tamaño de un átomo (aproximadamente \(0{,}1\ \text{nm}\)).</p>
+                    </div>
+                    <div class="resolucion">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Usamos \(\lambda = \dfrac{c}{\nu}\):</p>
+                        \[
+                        \lambda = \frac{3{,}00 \times 10^{8}}{3 \times 10^{18}} = 1{,}00 \times 10^{-10}\ \text{m}
+                        \]
+                        <p>Convertimos a nanómetros: \(1{,}00 \times 10^{-10}\ \text{m} = 0{,}100\ \text{nm}\).</p>
+                        <p>Esta longitud de onda es del orden del tamaño de un átomo (\(0{,}1\ \text{nm}\)), lo que permite a los rayos X interactuar con estructuras atómicas y ser usados en cristalografía y diagnóstico médico.</p>
+                    </div>
+                </div>
+
+                <!-- Observaciones claves -->
+                <div class="clave-didactica">
+                    💡 <strong>Observaciones claves:</strong> La relación \(c = \lambda \nu\) es la base para entender el espectro electromagnético. Recuerda que \(c\) es constante, así que si conoces una de las dos magnitudes (longitud de onda o frecuencia), puedes calcular la otra fácilmente. ¡No olvides convertir siempre las unidades a metros y hercios antes de operar!
+                </div>
+
+            </div> <!-- fin contenido-desplegable -->
+        </details>
+
+
+
+
+
+
+
+<!-- ============================================
+     BLOQUE "ES HORA DE" (versión fija, sin desplegar)
+     ============================================ -->
+
+<div style="padding: 25px 15px; text-align: center; background: white; margin: 20px;">
+    <div style="
+        max-width: 100%;
+        padding: 15px;
+        margin: 10px auto;
+        text-align: center;
+        background: #f8fafc;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    ">
+        <p style="
+            font-size: clamp(0.95rem, 3vw, 1.2rem);
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding: 0 10px;
+        ">
+                     <br>  Con un par de multiplicaciones y algo de práctica, esto es más fácil de lo que parece. 😉<br>
+            <i>(Los detalles sobre lo que entra en las pruebas escritas se publicarán periódicamente en M.Teams).</i>
+        </p>
+
+        <div style="text-align:center;">
+            <a
+                href="https://clasesinstitutofyq-netizen.github.io/1Bach/"
+                target="_blank"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#0078D4;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:12px;
+                    font-weight:bold;
+                "
+            >
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===================FIN DE ES HORA DE ==================== -->
+
+
+
+
+
+
+
+
+
+
+    </div> <!-- fin container -->
+</body>
+</html>
